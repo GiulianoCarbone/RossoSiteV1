@@ -87,6 +87,117 @@
     /* Footer */
     .main-footer{background:#111827;color:#fff;padding:24px 0}
     .main-footer .container{text-align:center}
+
+    /* ====== Estilos para Slider tipo Split ====== */
+    .slide.split-layout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color:  color:#fff /* Fondo blanco */
+    }
+
+    .slide.split-layout .slide-split-text {
+      color: var(--brand); /* Texto en azul */
+    }
+
+    /* Eliminamos el overlay que ya no es necesario en este diseño */
+    .slide.split-layout .slide-overlay {
+      display: none;
+    }
+
+    .slide-split-container {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      width: 100%;
+    }
+
+    .slide-split-text {
+      flex: 1 1 50%;
+    }
+
+    .slide-split-text h2 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .slide-split-text p {
+      font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+      margin-bottom: 1.5rem;
+      max-width: 45ch;
+      color: var(--ink); /* Párrafo en color oscuro para mejor contraste */
+    }
+    
+    .slide.split-layout .slide-button {
+      background: var(--accent); /* Botón del slider split en naranja */
+      color: #fff;
+    }
+    
+    .slide.split-layout .slide-button:hover {
+      background-color: var(--brand); /* Cambiamos el hover a azul */
+    }
+
+    .slide-split-image {
+      flex: 1 1 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide-split-image img {
+      max-width: 100%;
+      max-height: 60vh; /* Altura máxima para desktop */
+      object-fit: contain;
+      animation: float 3s ease-in-out infinite alternate; /* Aplicamos la animación */
+    }
+
+    /* Definimos la animación "float" */
+    @keyframes float {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-10px); /* Ajusta la distancia del "flotado" */
+      }
+    }
+    
+    /* Estilos para los otros slides (sin split) */
+    .slide:not(.split-layout) .slide-overlay {
+      background: linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.15));
+    }
+
+    /* ====== Media Queries para Responsivo ====== */
+    @media (max-width: 768px) {
+      /* Estilos para el contenido del slider split en mobile */
+      .slide-split-container {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
+      .slide-split-text {
+        order: 2; /* El texto va abajo */
+      }
+      .slide-split-image {
+        order: 1; /* La imagen va arriba */
+      }
+      .slide-split-text p {
+        margin-inline: auto;
+      }
+
+      /* Arreglo para botones del slider en mobile */
+      .slider-control {
+        padding: 8px; /* Hacemos el padding más pequeño */
+        background: rgba(0, 0, 0, 0.45); /* Aseguramos que tengan un fondo visible */
+      }
+
+      /* Limita la altura de la imagen en el slider split para evitar que estire el contenedor */
+      .slide.split-layout .slide-split-image img {
+        max-height: 35vh; /* Puedes ajustar este valor si lo necesitas */
+      }
+    }
+    
   </style>
 </head>
 <body>
@@ -96,7 +207,6 @@
         <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
       </a>
 
-      <!-- Links desktop -->
       <div class="nav-links" id="nav-links">
         <a href="#promos">Promociones</a>
         <a href="#catalogo">Catálogo</a>
@@ -104,12 +214,10 @@
         <a href="#presupuesto">Presupuesto</a>
       </div>
 
-      <!-- Botón mobile -->
       <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú">
         <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
       </button>
 
-      <!-- Menú mobile (faltaba en tu versión) -->
       <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
         <a href="#promos">Promociones</a>
         <a href="#catalogo">Catálogo</a>
@@ -120,55 +228,55 @@
   </header>
 
   <main id="inicio">
-    <!-- SLIDER -->
     <section id="slider" class="slider-section" aria-label="Destacados">
       <div class="slides-container" aria-live="polite">
-        <!-- Slide 1 -->
-        <div class="slide active" data-index="0">
-          <picture>
-            <img src="assets/frentes2.jpg" alt="Obra de construcción con equipos" class="slide-image" loading="eager" />
-          </picture>
-          <div class="slide-overlay">
-            <div class="slide-content">
+        <div class="slide active split-layout" data-index="0">
+          <div class="slide-split-container container">
+            <div class="slide-split-text">
               <h2>Somos la mejor opción para tu obra</h2>
               <p>Hacemos de tu proyecto una realidad.</p>
               <a href="#presupuesto" class="slide-button">Pedir presupuesto</a>
             </div>
+            <div class="slide-split-image">
+              <img src="assets/the-left-hand-of-a-white-man-holding-a-black-mobile-phone-or-cellphone-and-a-white-screen-for-mockup-content-at-an-isolated-or-cutout-white-background-with-a-clipping-path-png.webp" alt="Imagen de producto o promoción" />
+            </div>
           </div>
         </div>
-        <!-- Slide 2 | OJO: evita espacios y comas en nombres -->
-        <div class="slide" data-index="1">
-          <picture>
-            <img src="assets/slider-productos.jpg" alt="Productos de construcción en exposición" class="slide-image" loading="lazy" />
-          </picture>
-          <div class="slide-overlay">
-            <div class="slide-content">
+
+        <div class="slide active split-layout" data-index="0">
+          <div class="slide-split-container container">
+            <div class="slide-split-text">
               <h2>Calidad y diseño en cada producto</h2>
-              <p>Explorá nuestro catálogo y encontrá exactamente lo que buscás.</p>
-              <a href="#catalogo" class="slide-button">Ver catálogo</a>
+              <p>Explorá nuestro catálogo.</p>
+              <a href="#presupuesto" class="slide-button">Pedir presupuesto</a>
+            </div>
+            <div class="slide-split-image">
+              <img src="assets/MAPA-BRR2-min.png" alt="Imagen de producto o promoción" />
             </div>
           </div>
         </div>
-        <!-- Slide 3 -->
-        <div class="slide" data-index="2">
-          <picture>
-            <img src="assets/slider-promo.jpg" alt="Promociones vigentes" class="slide-image" loading="lazy" />
-          </picture>
-          <div class="slide-overlay">
-            <div class="slide-content">
+
+        <div class="slide active split-layout" data-index="0">
+          <div class="slide-split-container container">
+            <div class="slide-split-text">
               <h2>Las mejores promos y precios del mercado</h2>
-              <p>Contanos tu idea y te ayudamos a hacerla realidad. Presupuestos sin cargo.</p>
-              <a href="#promos" class="slide-button">Ver promociones</a>
+              <p>Hacemos de tu proyecto una realidad.</p>
+              <a href="#presupuesto" class="slide-button">Pedir presupuesto</a>
+            </div>
+            <div class="slide-split-image">
+              <img src="assets/add-shopping-links-to-digital-product-catalogue.png" alt="Imagen de producto o promoción" />
             </div>
           </div>
         </div>
+        
+       
+        
       </div>
       <button id="prevBtn" class="slider-control prev" aria-label="Anterior">&#10094;</button>
       <button id="nextBtn" class="slider-control next" aria-label="Siguiente">&#10095;</button>
       <div class="dots" role="tablist" aria-label="Paginación del slider"></div>
     </section>
 
-    <!-- CARDS -->
     <section class="main-sections">
       <div class="container">
         <div class="cards-grid">
