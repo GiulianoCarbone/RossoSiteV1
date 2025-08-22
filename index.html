@@ -59,7 +59,7 @@
     .slider-control.prev{inset-inline-start:8px}
     .slider-control.next{inset-inline-end:8px}
 
-    .dots{position:absolute;inset-inline:0;bottom:12px;display:flex;justify-content:center;gap:10px;z-index:10}
+    .dots{position:absolute;bottom:12px;display:flex;justify-content:center;gap:10px;z-index:10}
     .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.55);border:0}
     .dot[aria-current="true"], .dot:hover{background:#fff}
 
@@ -93,7 +93,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color:  color:#fff /* Fondo blanco */
+      background-color: #fff /* Fondo blanco */
     }
 
     .slide.split-layout .slide-split-text {
@@ -104,6 +104,7 @@
     .slide.split-layout .slide-overlay {
       display: none;
     }
+    
 
     .slide-split-container {
       display: flex;
@@ -137,7 +138,10 @@
     .slide.split-layout .slide-button:hover {
       background-color: var(--brand); /* Cambiamos el hover a azul */
     }
-
+.slide-button {
+  position: relative;   /* Se crea un nuevo contexto de apilamiento */
+  z-index: 9999;        /* Muy por encima de todo */
+}
     .slide-split-image {
       flex: 1 1 50%;
       display: flex;
@@ -256,7 +260,7 @@
           </div>
         </div>
 
-        <div class="slide split-layout" data-index="2">
+        <div class="slide split-layout" data-index="0">
           <div class="slide-split-container container">
             <div class="slide-split-text">
               <h2>Las mejores promos y precios del mercado</h2>
