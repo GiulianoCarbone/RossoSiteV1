@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Empresa - Landing Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- Reseteo Básico y Estilos Globales --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #1f2937;
+            overflow-x: hidden; /* Previene el desbordamiento horizontal */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- Header y Navegación --- */
+        .main-header {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 50;
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-image {
+            height: 80px; /* Ajusta la altura de tu logo */
+            width: auto;
+        }
+
+        .nav-links {
+            display: none; /* Oculto en móvil */
+        }
+
+        .nav-links a {
+            color: #4b5567;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #f97316;
+        }
+
+        .mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+        .mobile-menu.show {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        .mobile-menu a:hover {
+            background-color: #e5e7eb;
+        }
+
+
+        /* --- Slider --- */
+        .slider-section {
+            position: relative;
+            width: 100%;
+            height: 50vh; /* Altura para móvil - AUMENTADA */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 88px; /* Espacio para el header fijo, ajustado a la altura del header */
+        }
+
+        .slides-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active-slide {
+            opacity: 1;
+        }
+
+        .slide-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: #ffffff;
+            padding: 1rem;
+        }
+
+        .slide-content h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            max-width: 42rem;
+        }
+
+        .slide-content p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            max-width: 36rem;
+        }
+
+        .slide-button {
+            background-color: #1e40af;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .slide-button:hover {
+            background-color: #1e3a8a;
+        }
+
+        .slider-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            padding: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 10;
+        }
+        .slider-control:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .slider-control.prev {
+            left: 0;
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        .slider-control.next {
+            right: 0;
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        /* --- Secciones Principales y Cards --- */
+        .main-sections {
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+            background-color: #f9fafb;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .card-link {
+            display: block;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .card-link.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-link:hover {
+            transform: translateY(-0.5rem);
+        }
+        
+        .card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .card-image-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: -6rem; 
+            position: relative;
+            z-index: 10;
+        }
+        
+        .card-image {
+            max-width: 100%;
+            max-height: 12rem;
+        }
+
+        .card-content {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            padding-top: 7rem;
+            transition: box-shadow 0.3s;
+        }
+
+        .card-link:hover .card-content {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1e3a8a;
+        }
+
+        .card-content p {
+            color: #4b5567;
+        }
+
+
+        /* --- Footer --- */
+        .main-footer {
+            background-color: #1f2937;
+            color: #ffffff;
+            padding: 2rem 0;
+        }
+
+        .main-footer .container {
+            text-align: center;
+        }
+
+        /* --- Media Queries para Responsividad --- */
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+                gap: 1.5rem;
+            }
+            .mobile-menu-btn {
+                display: none;
+            }
+            .slider-section {
+                height: 80vh; 
+            }
+            .slide-content h2 {
+                font-size: 3.75rem;
+            }
+            .slide-content p {
+                font-size: 1.25rem;
+            }
+            .slide-button {
+                padding: 0.75rem 2rem;
+                font-size: 1.125rem;
+            }
+            .slider-control {
+                padding: 1rem;
+            }
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .cards-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <nav class="main-nav container ">
+            <a href="#" class="logo">
+                <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Logo de Mi Empresa" class="logo-image">
+            </a>
+            <button id="mobile-menu-button" class="mobile-menu-btn">
+                 <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        
+    </header>
+
+
+    <main>
+        <section id="slider" class="slider-section">
+            <div class="slides-container">
+                <div class="slide active-slide">
+                    <img src="assets/frentes2.jpg" 
+                         alt="Ingeniero trabajando en una obra" class="slide-image">
+                    <div class="slide-overlay">
+                        <div class="slide-content">
+                            <h2>Somos la mejor opción para tu obra</h2>
+                            <p>Hacemos de tu proyecto una realidad.</p>
+                            <a href="#" class="slide-button">Pedir Presupuesto</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="assets/slider, productos.JPG" 
+                         alt="Pared de hormigón con textura" class="slide-image">
+                    <div class="slide-overlay">
+                        <div class="slide-content">
+                            <h2>Calidad y Diseño en Cada Producto</h2>
+                            <p>Explorá nuestro catálogo y encontrá exactamente lo que buscás.</p>
+                            <a href="#" class="slide-button">Ver Catálogo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="assets/slider-promo.jpg" 
+                         alt="Arquitectos revisando planos en obra" class="slide-image">
+                    <div class="slide-overlay">
+                        <div class="slide-content">
+                            <h2>Las mejores promos y precios del mercado</h2>
+                            <p>Contanos tu idea y te ayudamos a hacerla realidad. Presupuestos sin cargo.</p>
+                            <a href="#" class="slide-button">Ver Promociones</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="prevBtn" class="slider-control prev">&#10094;</button>
+            <button id="nextBtn" class="slider-control next">&#10095;</button>
+        </section>
+
+        <section class="main-sections">
+            <div class="container">
+                <div class="cards-grid">
+                    <a href="#" class="card-link">
+                        <div class="card">
+                            <div class="card-image-container">
+                                <img class="card-image" src="assets/images-removebg-preview.png" alt="Teléfono móvil mostrando promociones">
+                            </div>
+                            <div class="card-content">
+                                <h3>Promociones</h3>
+                                <p>Aprovechá nuestros descuentos y ofertas especiales por tiempo limitado.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="card-link">
+                        <div class="card">
+                            <div class="card-image-container">
+                                <img class="card-image" src="assets/add-shopping-links-to-digital-product-catalogue.png" alt="Libro abierto representando un catálogo de productos">
+                            </div>
+                            <div class="card-content">
+                                <h3>Catálogo</h3>
+                                <p>Explorá nuestra completa línea de productos y soluciones para tu proyecto.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="card-link">
+                        <div class="card">
+                            <div class="card-image-container">
+                                <img class="card-image" src="assets/MAPA-BRR2-min.png" alt="Pin de mapa para encontrar sucursales">
+                            </div>
+                            <div class="card-content">
+                                <h3>Sucursales</h3>
+                                <p>Encontrá tu local más cercano y vení a visitarnos para un asesoramiento personalizado.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="card-link">
+                        <div class="card">
+                           <div class="card-image-container">
+                               <img class="card-image" src="assets/the-left-hand-of-a-white-man-holding-a-black-mobile-phone-or-cellphone-and-a-white-screen-for-mockup-content-at-an-isolated-or-cutout-white-background-with-a-clipping-path-png.webp" alt="Calculadora para pedir presupuesto">
+                           </div>
+                           <div class="card-content">
+                                <h3>Pedí tu Presupuesto</h3>
+                                <p>Contanos tu proyecto y te enviaremos una cotización a medida sin cargo.</p>
+                           </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 Mi Empresa. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Lógica del menú móvil
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('show');
+            });
+
+            // Lógica del Slider
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            let currentSlide = 0;
+            let slideInterval;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active-slide');
+                    if (i === index) {
+                        slide.classList.add('active-slide');
+                    }
+                });
+            }
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+
+            function startSlideShow() {
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+            
+            function stopSlideShow() {
+                clearInterval(slideInterval);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                stopSlideShow();
+                startSlideShow();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                stopSlideShow();
+                startSlideShow();
+            });
+
+            startSlideShow();
+
+            // Lógica para la animación de aparición al hacer scroll
+            const cards = document.querySelectorAll('.card-link');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
