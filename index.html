@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
     <title>Mapa de Sucursales</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,20 @@
     <style>
         #map { height: 500px; }
     </style>
+=======
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rosso Materiales – Tu espacio, tu vida</title>
+  <meta name="description" content="Materiales para la construcción en Tucumán y Salta. Promociones, catálogo, sucursales y presupuestos sin cargo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link href="style.css" rel="stylesheet" />
+>>>>>>> cfeb4e40363cfa905560080d1df0b91260962534
 </head>
 <body>
 
+<<<<<<< HEAD
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
@@ -47,5 +59,136 @@
     }
 </script>
 
+=======
+      <div class="nav-links" id="nav-links">
+        <a href="https://rossomateriales.netlify.app">Promociones</a>
+        <a href="https://catalogo.rossomateriales.site">Catálogo</a>
+        <a href="sucursales.html">Sucursales</a>
+        <a href="#presupuesto">Presupuesto</a>
+      </div>
+
+      <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú">
+        <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+
+      <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
+        <a href="https://rossomateriales.netlify.app">Promociones</a>
+        <a href="https://catalogo.rossomateriales.site">Catálogo</a>
+        <a href="sucursales.html">Sucursales</a>
+        <a href="#presupuesto">Presupuesto</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    
+    <section id="slider" class="slider-section" aria-label="Destacados">
+      <div class="slides-container" aria-live="polite">
+        <div class="slide active split-layout" data-index="0">
+          <div class="slide-split-container container">
+            <div class="slide-split-text">
+              <h2>Somos la mejor opción para tu obra</h2>
+              <p>Hacemos de tu proyecto una realidad.</p>
+              <a href="#presupuesto" class="slide-button">Pedir presupuesto</a>
+            </div>
+            <div class="slide-split-image">
+              <img src="assets/the-left-hand-of-a-white-man-holding-a-black-mobile-phone-or-cellphone-and-a-white-screen-for-mockup-content-at-an-isolated-or-cutout-white-background-with-a-clipping-path-png.webp" alt="Imagen de producto o promoción" />
+            </div>
+          </div>
+        </div>
+
+        <div class="slide split-layout" data-index="1">
+          <div class="slide-split-container container">
+            <div class="slide-split-text">
+              <h2>Calidad y diseño en cada producto</h2>
+              <p>Explorá nuestro catálogo.</p>
+              <a href="#presupuesto" class="slide-button">Ver catálogo</a>
+            </div>
+            <div class="slide-split-image">
+              <img src="assets/MAPA-BRR2-min.png" alt="Imagen de producto o promoción" />
+            </div>
+          </div>
+        </div>
+
+        <div class="slide split-layout" data-index="0">
+          <div class="slide-split-container container">
+            <div class="slide-split-text">
+              <h2>Las mejores promos y precios</h2>
+              <p>Hacemos de tu proyecto una realidad.</p>
+              <a href="#presupuesto" class="slide-button">Ver Promos</a>
+            </div>
+            <div class="slide-split-image">
+              <img src="assets/add-shopping-links-to-digital-product-catalogue.png" alt="Imagen de producto o promoción" />
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <button id="prevBtn" class="slider-control prev" aria-label="Anterior">&#10094;</button>
+      <button id="nextBtn" class="slider-control next" aria-label="Siguiente">&#10095;</button>
+      <div class="dots" role="tablist" aria-label="Paginación del slider"></div>
+    </section>
+
+    <section class="main-sections">
+      <div class="container">
+        <div class="cards-grid">
+          <a href="#promos" class="card-link" id="promos">
+            <div class="card">
+              <div class="card-image-container">
+                <img class="card-image" src="assets/images-removebg-preview.png" alt="Promociones en el celular" loading="lazy" />
+              </div>
+              <div class="card-content">
+                <h3>Promociones</h3>
+                <p>Aprovechá nuestros descuentos y ofertas especiales por tiempo limitado.</p>
+              </div>
+            </div>
+          </a>
+          <a href="#catalogo" class="card-link" id="catalogo">
+            <div class="card">
+              <div class="card-image-container">
+                <img class="card-image" src="assets/add-shopping-links-to-digital-product-catalogue.png" alt="Catálogo digital de productos" loading="lazy" />
+              </div>
+              <div class="card-content">
+                <h3>Catálogo</h3>
+                <p>Explorá nuestra línea de productos y soluciones para tu proyecto.</p>
+              </div>
+            </div>
+          </a>
+          <a href="sucursales.html" class="card-link" id="sucursales">
+            <div class="card">
+              <div class="card-image-container">
+                <img class="card-image" src="assets/MAPA-BRR2-min.png" alt="Mapa con sucursales" loading="lazy" />
+              </div>
+              <div class="card-content">
+                <h3>Sucursales</h3>
+                <p>Encontrá tu local más cercano y recibí asesoramiento personalizado.</p>
+              </div>
+            </div>
+          </a>
+          <a href="#presupuesto" class="card-link" id="presupuesto">
+            <div class="card">
+              <div class="card-image-container">
+                <img class="card-image" src="assets/the-left-hand-of-a-white-man-holding-a-black-mobile-phone-or-cellphone-and-a-white-screen-for-mockup-content-at-an-isolated-or-cutout-white-background-with-a-clipping-path-png.webp" alt="Teléfono para hacer pedidos" loading="lazy" />
+              </div>
+              <div class="card-content">
+                <h3>Pedí tu presupuesto</h3>
+                <p>Contanos tu proyecto y te enviamos una cotización a medida sin cargo.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  
+  </main>
+
+  <footer class="main-footer">
+    <div class="container">
+      <p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+>>>>>>> cfeb4e40363cfa905560080d1df0b91260962534
 </body>
 </html>
