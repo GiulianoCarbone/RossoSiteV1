@@ -1,6 +1,6 @@
 :root{
   --bg:#ffffff;--ink:#1f2937;--muted:#4b5567;--brand:#1e40af;--brand-600:#1e3a8a;--accent:#f97316;--surface:#f9fafb;--card:#ffffff;--shadow:0 4px 6px -1px rgba(0,0,0,.1);
-  --radius:12px;--header-h:88px;
+  --radius:12px;--header-h:110px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html:focus-within{scroll-behavior:smooth}
@@ -12,7 +12,7 @@ a{color:inherit;text-decoration:none}
 /* Header */
 .main-header{position:fixed;inset-inline:0;top:0;background:#fff;box-shadow:var(--shadow);z-index:50;height:var(--header-h)}
 .main-nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo-image{height:80px;width:auto}
+.logo-image{height:100px;width:auto}
 
 .nav-links{display:none;gap:24px} /* Por defecto los enlaces están ocultos (móvil) */
 .nav-links a{color:#374151;font-weight:500}
