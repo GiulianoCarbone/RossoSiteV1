@@ -1,15 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<<<<<<< HEAD
-    <title>Mapa de Sucursales</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <style>
-        #map { height: 500px; }
-    </style>
-=======
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Rosso Materiales – Tu espacio, tu vida</title>
@@ -18,48 +9,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <link href="style.css" rel="stylesheet" />
->>>>>>> cfeb4e40363cfa905560080d1df0b91260962534
 </head>
 <body>
+  <header class="main-header" role="banner">
+    <nav class="main-nav container" aria-label="Primaria">
+      <a href="#inicio" class="logo" aria-label="Ir al inicio">
+        <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+      </a>
 
-<<<<<<< HEAD
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script>
-    // Inicializar el mapa
-    var map = L.map('map').setView([-27.133, -65.594], 13); // Coordenadas iniciales y zoom
-
-    // Capa de mapa de OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Sucursales (puedes agregar todas las que necesites)
-    var sucursales = [
-        {
-            "nombre": "Sucursal 1",
-            "lat": -27.130,
-            "lng": -65.590,
-            "info": "Información de la sucursal 1."
-        },
-        {
-            "nombre": "Sucursal 2",
-            "lat": -27.135,
-            "lng": -65.600,
-            "info": "Información de la sucursal 2."
-        }
-    ];
-
-    // Agregar marcadores al mapa
-    for (var i = 0; i < sucursales.length; i++) {
-        var sucursal = sucursales[i];
-        var marker = L.marker([sucursal.lat, sucursal.lng]).addTo(map);
-        marker.bindPopup("<b>" + sucursal.nombre + "</b><br>" + sucursal.info);
-    }
-</script>
-
-=======
       <div class="nav-links" id="nav-links">
         <a href="https://rossomateriales.netlify.app">Promociones</a>
         <a href="https://catalogo.rossomateriales.site">Catálogo</a>
@@ -189,6 +146,5 @@
   </footer>
 
   <script src="script.js"></script>
->>>>>>> cfeb4e40363cfa905560080d1df0b91260962534
 </body>
 </html>
