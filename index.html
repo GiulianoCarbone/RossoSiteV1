@@ -1,316 +1,51 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rosso Materiales – Tu espacio, tu vida</title>
-  <meta name="description" content="Materiales para la construcción en Tucumán y Salta. Promociones, catálogo, sucursales y presupuestos sin cargo." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  <link href="style.css" rel="stylesheet" />
-  
-  <style>
-    :root{
-      --bg:#ffffff;--ink:#1f2937;--muted:#4b5567;--brand:#1e40af;--brand-600:#1e3a8a;--accent:#f97316;--surface:#f9fafb;--card:#ffffff;--shadow:0 4px 6px -1px rgba(0,0,0,.1);
-      --radius:12px;--header-h:88px;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html:focus-within{scroll-behavior:smooth}
-    body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
-    img{max-width:100%;display:block}
-    a{color:inherit;text-decoration:none}
-    .container{width:90%;max-width:1200px;margin-inline:auto}
-
-    /* Header */
-    .main-header{position:fixed;inset-inline:0;top:0;background:#fff;box-shadow:var(--shadow);z-index:50;height:var(--header-h)}
-    .main-nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .logo-image{height:64px;width:auto}
-
-    .nav-links{display:none;gap:24px}
-    .nav-links a{color:#374151;font-weight:500}
-    .nav-links a:hover{color:var(--accent)}
-
-    .mobile-menu-btn{display:flex;align-items:center;background:none;border:0;cursor:pointer;padding:8px;border-radius:10px}
-    .mobile-menu-btn:focus-visible{outline:2px solid var(--brand)}
-    .menu-icon{width:28px;height:28px}
-
-    .mobile-menu{position:absolute;inset-inline:0;top:var(--header-h);background:#fff;border-bottom:1px solid #e5e7eb;display:none}
-    .mobile-menu.show{display:block}
-    .mobile-menu a{display:block;padding:12px 20px;color:#374151}
-    .mobile-menu a:hover{background:#f3f4f6}
-
-    /* Slider */
-    .slider-section{position:relative;isolation:isolate;height:60vh;margin-top:var(--header-h);overflow:hidden;display:grid}
-    @media (min-width:768px){.slider-section{height:80vh}}
-    .slides-container{position:relative;width:100%;height:100%}
-    .slide{position:absolute;inset:0;opacity:0;transition:opacity 600ms ease}
-    .slide.active{opacity:1}
-    .slide-image{width:100%;height:100%;object-fit:cover}
-    .slide-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.35));display:grid;place-items:center;padding:16px}
-    .slide-content{color:#fff;text-align:center;max-width:64ch}
-    .slide-content h2{font-size:clamp(1.75rem,3.5vw,3.25rem);font-weight:800;margin-bottom:.5rem}
-    .slide-content p{font-size:clamp(1rem,1.6vw,1.25rem);margin-bottom:1.25rem}
-    .slide-button{display:inline-block;background:var(--brand);color:#fff;font-weight:700;padding:.7rem 1.4rem;border-radius:10px}
-    .slide-button:hover{background:var(--brand-600)}
-
-    .slider-control{position:absolute;inset-block-start:50%;transform:translateY(-50%);background:rgba(0,0,0,.35);color:#fff;border:0;border-radius:10px;padding:.6rem;cursor:pointer;z-index:10}
-    .slider-control:hover{background:rgba(0,0,0,.55)}
-    .slider-control.prev{inset-inline-start:8px}
-    .slider-control.next{inset-inline-end:8px}
-
-    .dots{position:absolute;inset-inline:0;bottom:12px;display:flex;justify-content:center;gap:10px;z-index:10}
-    .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.55);border:0}
-    .dot[aria-current="true"], .dot:hover{background:#fff}
-
-    @media (prefers-reduced-motion: reduce){
-      .slide{transition:none}
-      html{scroll-behavior:auto}
-    }
-
-    /* Sections */
-    .main-sections{padding-block:64px;background:var(--surface)}
-    .cards-grid{display:grid;grid-template-columns:1fr;gap:32px}
-    @media (min-width:768px){.cards-grid{grid-template-columns:repeat(2,1fr)}}
-    @media (min-width:1024px){.cards-grid{grid-template-columns:repeat(4,1fr)}}
-
-    .card-link{display:block;opacity:0;transform:translateY(40px);transition:opacity .6s ease, transform .6s ease}
-    .card-link.is-visible{opacity:1;transform:none}
-    .card{height:100%;display:flex;flex-direction:column;text-align:center}
-    .card-image-container{display:grid;place-items:center;margin-bottom:-80px;position:relative;z-index:1}
-    .card-image{max-height:190px;aspect-ratio:16/10;object-fit:contain}
-    .card-content{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;padding-top:96px;transition:box-shadow .3s}
-    .card-link:hover .card-content{box-shadow:0 10px 15px -3px rgba(0,0,0,.1)}
-    .card-content h3{font-size:1.25rem;font-weight:800;margin-bottom:.35rem;color:var(--brand)}
-    .card-content p{color:var(--muted)}
-
-    /* Footer */
-    .main-footer{background:#111827;color:#fff;padding:24px 0}
-    .main-footer .container{text-align:center}
-  </style>
+    <title>Mapa de Sucursales</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 500px; }
+    </style>
 </head>
 <body>
-  <header class="main-header" role="banner">
-    <nav class="main-nav container" aria-label="Primaria">
-      <a href="#inicio" class="logo" aria-label="Ir al inicio">
-        <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
-      </a>
 
-      <!-- Links desktop -->
-      <div class="nav-links" id="nav-links">
-        <a href="#promos">Promociones</a>
-        <a href="#catalogo">Catálogo</a>
-        <a href="#sucursales">Sucursales</a>
-        <a href="#presupuesto">Presupuesto</a>
-      </div>
+<div id="map"></div>
 
-      <!-- Botón mobile -->
-      <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú">
-        <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-      </button>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    // Inicializar el mapa
+    var map = L.map('map').setView([-27.133, -65.594], 13); // Coordenadas iniciales y zoom
 
-      <!-- Menú mobile (faltaba en tu versión) -->
-      <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
-        <a href="#promos">Promociones</a>
-        <a href="#catalogo">Catálogo</a>
-        <a href="#sucursales">Sucursales</a>
-        <a href="#presupuesto">Presupuesto</a>
-      </div>
-    </nav>
-  </header>
+    // Capa de mapa de OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-  <main id="inicio">
-    <!-- SLIDER -->
-    <section id="slider" class="slider-section" aria-label="Destacados">
-      <div class="slides-container" aria-live="polite">
-        <!-- Slide 1 -->
-        <div class="slide active" data-index="0">
-          <picture>
-            <img src="assets/frentes2.jpg" alt="Obra de construcción con equipos" class="slide-image" loading="eager" />
-          </picture>
-          <div class="slide-overlay">
-            <div class="slide-content">
-              <h2>Somos la mejor opción para tu obra</h2>
-              <p>Hacemos de tu proyecto una realidad.</p>
-              <a href="#presupuesto" class="slide-button">Pedir presupuesto</a>
-            </div>
-          </div>
-        </div>
-        <!-- Slide 2 | OJO: evita espacios y comas en nombres -->
-        <div class="slide" data-index="1">
-          <picture>
-            <img src="assets/slider-productos.jpg" alt="Productos de construcción en exposición" class="slide-image" loading="lazy" />
-          </picture>
-          <div class="slide-overlay">
-            <div class="slide-content">
-              <h2>Calidad y diseño en cada producto</h2>
-              <p>Explorá nuestro catálogo y encontrá exactamente lo que buscás.</p>
-              <a href="#catalogo" class="slide-button">Ver catálogo</a>
-            </div>
-          </div>
-        </div>
-        <!-- Slide 3 -->
-        <div class="slide" data-index="2">
-          <picture>
-            <img src="assets/slider-promo.jpg" alt="Promociones vigentes" class="slide-image" loading="lazy" />
-          </picture>
-          <div class="slide-overlay">
-            <div class="slide-content">
-              <h2>Las mejores promos y precios del mercado</h2>
-              <p>Contanos tu idea y te ayudamos a hacerla realidad. Presupuestos sin cargo.</p>
-              <a href="#promos" class="slide-button">Ver promociones</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button id="prevBtn" class="slider-control prev" aria-label="Anterior">&#10094;</button>
-      <button id="nextBtn" class="slider-control next" aria-label="Siguiente">&#10095;</button>
-      <div class="dots" role="tablist" aria-label="Paginación del slider"></div>
-    </section>
-
-    <!-- CARDS -->
-    <section class="main-sections">
-      <div class="container">
-        <div class="cards-grid">
-          <a href="#promos" class="card-link" id="promos">
-            <div class="card">
-              <div class="card-image-container">
-                <img class="card-image" src="assets/images-removebg-preview.png" alt="Promociones en el celular" loading="lazy" />
-              </div>
-              <div class="card-content">
-                <h3>Promociones</h3>
-                <p>Aprovechá nuestros descuentos y ofertas especiales por tiempo limitado.</p>
-              </div>
-            </div>
-          </a>
-          <a href="#catalogo" class="card-link" id="catalogo">
-            <div class="card">
-              <div class="card-image-container">
-                <img class="card-image" src="assets/add-shopping-links-to-digital-product-catalogue.png" alt="Catálogo digital de productos" loading="lazy" />
-              </div>
-              <div class="card-content">
-                <h3>Catálogo</h3>
-                <p>Explorá nuestra línea de productos y soluciones para tu proyecto.</p>
-              </div>
-            </div>
-          </a>
-          <a href="#sucursales" class="card-link" id="sucursales">
-            <div class="card">
-              <div class="card-image-container">
-                <img class="card-image" src="assets/MAPA-BRR2-min.png" alt="Mapa con sucursales" loading="lazy" />
-              </div>
-              <div class="card-content">
-                <h3>Sucursales</h3>
-                <p>Encontrá tu local más cercano y recibí asesoramiento personalizado.</p>
-              </div>
-            </div>
-          </a>
-          <a href="#presupuesto" class="card-link" id="presupuesto">
-            <div class="card">
-              <div class="card-image-container">
-                <img class="card-image" src="assets/the-left-hand-of-a-white-man-holding-a-black-mobile-phone-or-cellphone-and-a-white-screen-for-mockup-content-at-an-isolated-or-cutout-white-background-with-a-clipping-path-png.webp" alt="Teléfono para hacer pedidos" loading="lazy" />
-              </div>
-              <div class="card-content">
-                <h3>Pedí tu presupuesto</h3>
-                <p>Contanos tu proyecto y te enviamos una cotización a medida sin cargo.</p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="main-footer">
-    <div class="container">
-      <p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p>
-    </div>
-  </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // ====== Mobile menu ======
-      const btn = document.getElementById('mobile-menu-button');
-      const menu = document.getElementById('mobile-menu');
-      btn.addEventListener('click', () => {
-        const expanded = btn.getAttribute('aria-expanded') === 'true' || false;
-        btn.setAttribute('aria-expanded', String(!expanded));
-        menu.classList.toggle('show');
-      });
-
-      // Cerrar al hacer click en un enlace (mejora UX)
-      menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-        menu.classList.remove('show');
-        btn.setAttribute('aria-expanded', 'false');
-      }));
-
-      // ====== Slider ======
-      const slides = Array.from(document.querySelectorAll('.slide'));
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      const dotsWrap = document.querySelector('.dots');
-      let current = 0;
-      let timer;
-
-      // Crear dots accesibles
-      slides.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'dot';
-        dot.setAttribute('role','tab');
-        dot.setAttribute('aria-label', `Ir al slide ${i+1}`);
-        dot.addEventListener('click', () => goTo(i, true));
-        dotsWrap.appendChild(dot);
-      });
-
-      function render(){
-        slides.forEach((s, i) => s.classList.toggle('active', i === current));
-        dotsWrap.querySelectorAll('.dot').forEach((d, i) => d.setAttribute('aria-current', i === current ? 'true' : 'false'));
-      }
-
-      function goTo(i, user=false){
-        current = (i + slides.length) % slides.length;
-        render();
-        if(user){ restart(); }
-      }
-
-      function next(){ goTo(current + 1); }
-      function prev(){ goTo(current - 1); }
-
-      function start(){ timer = setInterval(next, 5000); }
-      function stop(){ clearInterval(timer); }
-      function restart(){ stop(); start(); }
-
-      nextBtn.addEventListener('click', () => { prevBtn.blur(); next(); restart(); });
-      prevBtn.addEventListener('click', () => { nextBtn.blur(); prev(); restart(); });
-
-      // Teclado
-      document.addEventListener('keydown', (e) => {
-        if(e.key === 'ArrowRight') { next(); restart(); }
-        if(e.key === 'ArrowLeft') { prev(); restart(); }
-      });
-
-      // Gestos táctiles
-      let x0 = null;
-      const threshold = 30;
-      document.getElementById('slider').addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, {passive:true});
-      document.getElementById('slider').addEventListener('touchmove', e => {
-        if(x0===null) return;
-        const dx = e.touches[0].clientX - x0;
-        if(Math.abs(dx) > threshold){
-          dx > 0 ? prev() : next();
-          x0 = null; restart();
+    // Sucursales (puedes agregar todas las que necesites)
+    var sucursales = [
+        {
+            "nombre": "Sucursal 1",
+            "lat": -27.130,
+            "lng": -65.590,
+            "info": "Información de la sucursal 1."
+        },
+        {
+            "nombre": "Sucursal 2",
+            "lat": -27.135,
+            "lng": -65.600,
+            "info": "Información de la sucursal 2."
         }
-      }, {passive:true});
+    ];
 
-      start();
+    // Agregar marcadores al mapa
+    for (var i = 0; i < sucursales.length; i++) {
+        var sucursal = sucursales[i];
+        var marker = L.marker([sucursal.lat, sucursal.lng]).addTo(map);
+        marker.bindPopup("<b>" + sucursal.nombre + "</b><br>" + sucursal.info);
+    }
+</script>
 
-      // ====== Scroll reveal de tarjetas ======
-      const cards = document.querySelectorAll('.card-link');
-      const io = new IntersectionObserver((entries, ob) => {
-        entries.forEach(ent => { if(ent.isIntersecting){ ent.target.classList.add('is-visible'); ob.unobserve(ent.target); } });
-      }, {threshold:.15});
-      cards.forEach(c => io.observe(c));
-    });
-  </script>
 </body>
 </html>
