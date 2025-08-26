@@ -80,4 +80,37 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach(ent => { if(ent.isIntersecting){ ent.target.classList.add('is-visible'); ob.unobserve(ent.target); } });
   }, {threshold:.15});
   cards.forEach(c => io.observe(c));
+
+  // ====== NUEVO CÓDIGO PARA TAPAR LA MARCA DE AGUA ======
+  const coverElfsightWatermark = () => {
+    // Buscamos el link específico del widget
+    const elfsightLink = document.querySelector('.elfsight-app-c5df1215-bda9-4bd4-bd0d-a9af02f21dbe a[href*="elfsight"]');
+    
+    // Buscamos nuestro div "tapa"
+    const coverDiv = document.getElementById('watermark-cover');
+
+    // Si encontramos ambos elementos...
+    if (elfsightLink && coverDiv) {
+      // Obtenemos la posición y tamaño exacto del link
+      const linkRect = elfsightLink.getBoundingClientRect();
+
+      // Aplicamos estilos a nuestro div para que se posicione encima
+      coverDiv.style.position = 'fixed'; // Usamos fixed para que no se mueva con el scroll
+      coverDiv.style.top = `${linkRect.top}px`;
+      coverDiv.style.left = `${linkRect.left}px`;
+      coverDiv.style.width = `${linkRect.width}px`;
+      coverDiv.style.height = `${linkRect.height}px`;
+      coverDiv.style.backgroundColor = 'white'; // Color del sólido
+      coverDiv.style.zIndex = '99999'; // Un z-index muy alto para asegurar que esté por encima
+      
+      // Opcional: Para verificar que funcionó en la consola del navegador
+      console.log('Marca de agua cubierta exitosamente.');
+    }
+  };
+
+  // El widget puede tardar en cargar, así que lo intentamos varias veces.
+  setInterval(coverElfsightWatermark, 100);
+  
+  // También lo re-calculamos si cambia el tamaño de la ventana
+  window.addEventListener('resize', coverElfsightWatermark);
 });
