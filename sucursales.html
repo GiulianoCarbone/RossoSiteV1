@@ -101,15 +101,46 @@
     <script>
         // --- DATOS DE LAS SUCURSALES ---
         const stores = [
-            { id: 'monteros', name: 'Rosso Materiales - Monteros', address: 'Juan Bautista Alberdi 53, T4142 BWB, Monteros, Tucumán', phone: '+54 381 414-6917', whatsappNumber: '543814146917', lat: -27.1691, lng: -65.4985, imageUrl: 'assets/monteros.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
-            { id: 'famailla', name: 'Rosso Materiales - Famailla', address: 'Av. Calchaquí y, Larrea 106, T4132 Famaillá, Tucumán', phone: '+54 381 414-6917', whatsappNumber: '543814146917', lat: -27.0558, lng: -65.4033, imageUrl: 'assets/famailla.jpg', websiteUrl: 'catalogo.rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
-            { id: 'concepcion', name: 'Rosso Materiales - Concepción', address: 'Padre Carlos Juangorena 1850, T4146 Concepción, Tucumán', phone: '+54 9 381 414-6917', whatsappNumber: '5493814146917', lat: -27.3421, lng: -65.5925, imageUrl: 'assets/concepcion.jpg', websiteUrl: 'rosso-materiales.netlify.app', schedule: { 1: { open: '08:30', close: '17:30' }, 2: { open: '08:30', close: '17:30' }, 3: { open: '08:30', close: '17:30' }, 4: { open: '08:30', close: '17:30' }, 5: { open: '08:30', close: '17:30' }, 6: { open: '08:30', close: '13:00' } } },
-            { id: 'aguilares', name: 'Rosso Materiales - Aguilares', address: 'Av. Sarmiento 739, T4162 Aguilares, Tucumán', phone: '+54 9 381 414-6917', whatsappNumber: '5493814146917', lat: -27.4330, lng: -65.6330, imageUrl: 'assets/aguilares.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
-            { id: 'alberdi', name: 'Rosso Materiales - J.B. Alberdi', address: 'Lidoro Quinteros 789, J. B. Alberdi, Tucumán', phone: '3865-472222', whatsappNumber: '543865472222', lat: -27.5881, lng: -65.6175, imageUrl: 'assets/alberdi.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '21:00' }, 2: { open: '08:30', close: '21:00' }, 3: { open: '08:30', close: '21:00' }, 4: { open: '08:30', close: '21:00' }, 5: { open: '08:30', close: '21:00' }, 6: { open: '08:30', close: '13:00' } } },
-            { id: 'tafidelvalle', name: 'Rosso Materiales - Tafi del Valle', address: 'RP307 60.5, T4137 Tafí del Valle, Tucumán', phone: '+54 9 381 414-6917', whatsappNumber: '5493814146917', lat: -26.8500, lng: -65.6833, imageUrl: 'assets/tafi.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '17:30' }, 2: { open: '08:30', close: '17:30' }, 3: { open: '08:30', close: '17:30' }, 4: { open: '08:30', close: '17:30' }, 5: { open: '08:30', close: '17:30' }, 6: { open: '08:30', close: '13:00' } } },
-            { id: 'salta', name: 'Rosso Materiales - Salta', address: 'Av. Ex Combatientes de Malvinas 5202, A4400 Salta', phone: '+54 387 422-1234', whatsappNumber: '543874221234', lat: -24.82752, lng: -65.42653, imageUrl: 'assets/salta.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '19:00' }, 2: { open: '08:30', close: '19:00' }, 3: { open: '08:30', close: '19:00' }, 4: { open: '08:30', close: '19:00' }, 5: { open: '08:30', close: '19:00' }, 6: { open: '08:30', close: '13:00' } } },
-            { id: 'metan', name: 'Rosso Materiales - Metán', address: 'Ruta Nacional 9/34, A4440 San José de Metán, Salta', phone: '+54 387 642-5678', whatsappNumber: '543876425678', lat: -25.49249, lng: -64.96946, imageUrl: 'assets/metan.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
+
+         // --- SUC.EL MANANTIAL ---
             { id: 'manantial', name: 'Rosso Express - El Manantial', address: 'Av. Solano Vera 2300, T4107 Yerba Buena, Tucumán', phone: '+54 381 425-8910', whatsappNumber: '543814258910', lat: -26.8144, lng: -65.3124, imageUrl: 'https://scontent.faep14-2.fna.fbcdn.net/v/t39.30808-6/486249212_1086255250196202_5887728741812768363_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=lx0YqzpU1AsQ7kNvwGBsGKi&_nc_oc=AdmDF_jb-O_PU-NIcekQtGXLCXE3xsOgDZUhxyZfu1gbU6omTzO-T1tsUy76r2pA4q4&_nc_zt=23&_nc_ht=scontent.faep14-2.fna&_nc_gid=6OkksOPg20aXx61VR8COiQ&oh=00_AfUReYShXDLGE8ZKBX5TIcSfpV5z0qnKmWXLmvjP9wTnPA&oe=68B2B675', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '20:00' }, 2: { open: '08:30', close: '20:00' }, 3: { open: '08:30', close: '20:00' }, 4: { open: '08:30', close: '20:00' }, 5: { open: '08:30', close: '20:00' }, 6: { open: '08:30', close: '13:00' } } },
+
+            
+            // --- SUC.SALTA ---
+            { id: 'salta', name: 'Rosso Materiales - Salta', address: 'Av. Ex Combatientes de Malvinas 5202, A4400 Salta', phone: '+54 387 422-1234', whatsappNumber: '543874221234', lat: -24.82752, lng: -65.42653, imageUrl: 'https://i.ibb.co/fdX9wN2c/IMG-8087-Copy.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '19:00' }, 2: { open: '08:30', close: '19:00' }, 3: { open: '08:30', close: '19:00' }, 4: { open: '08:30', close: '19:00' }, 5: { open: '08:30', close: '19:00' }, 6: { open: '08:30', close: '13:00' } } },
+
+        // --- SUC.METAN ---
+            { id: 'metan', name: 'Rosso Materiales - Metán', address: 'Ruta Nacional 9/34, A4440 San José de Metán, Salta', phone: '+54 387 642-5678', whatsappNumber: '543876425678', lat: -25.49249, lng: -64.96946, imageUrl: 'https://i.ibb.co/kV9TpKXW/IMG-7990.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
+
+            // --- SUC.MONTEROS ---
+            { id: 'monteros', name: 'Rosso Materiales - Monteros', address: 'Juan Bautista Alberdi 53, T4142 BWB, Monteros, Tucumán', phone: '+54 381 414-6917', whatsappNumber: '543814146917', lat: -27.1691, lng: -65.4985, imageUrl: 'https://i.ibb.co/rf1XnWyT/IMG-2050-1.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
+
+            
+            
+            // --- SUC.CONCEPCION ---
+            { id: 'concepcion', name: 'Rosso Materiales - Concepción', address: 'Padre Carlos Juangorena 1850, T4146 Concepción, Tucumán', phone: '+54 9 381 414-6917', whatsappNumber: '5493814146917', lat: -27.3421, lng: -65.5925, imageUrl: 'assets/concepcion.jpg', websiteUrl: 'rosso-materiales.netlify.app', schedule: { 1: { open: '08:30', close: '17:30' }, 2: { open: '08:30', close: '17:30' }, 3: { open: '08:30', close: '17:30' }, 4: { open: '08:30', close: '17:30' }, 5: { open: '08:30', close: '17:30' }, 6: { open: '08:30', close: '13:00' } } },
+
+            
+            // --- SUC.JB.ALBERDI ---
+            { id: 'alberdi', name: 'Rosso Materiales - J.B. Alberdi', address: 'Lidoro Quinteros 789, J. B. Alberdi, Tucumán', phone: '3865-472222', whatsappNumber: '543865472222', lat: -27.5881, lng: -65.6175, imageUrl: 'https://i.ibb.co/dN6x4ww/DJI-20231206-083139-798.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '21:00' }, 2: { open: '08:30', close: '21:00' }, 3: { open: '08:30', close: '21:00' }, 4: { open: '08:30', close: '21:00' }, 5: { open: '08:30', close: '21:00' }, 6: { open: '08:30', close: '13:00' } } },
+            
+    
+            // --- SUC.AGUILARES ---
+            { id: 'aguilares', name: 'Rosso Materiales - Aguilares', address: 'Av. Sarmiento 739, T4162 Aguilares, Tucumán', phone: '+54 9 381 414-6917', whatsappNumber: '5493814146917', lat: -27.4330, lng: -65.6330, imageUrl: 'https://i.ibb.co/s9Xkh8zX/IMG-3182.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
+
+
+
+            // --- SUC.FAMAILLA ---
+            { id: 'famailla', name: 'Rosso Materiales - Famailla', address: 'Av. Calchaquí y, Larrea 106, T4132 Famaillá, Tucumán', phone: '+54 381 414-6917', whatsappNumber: '543814146917', lat: -27.0558, lng: -65.4033, imageUrl: 'https://i.ibb.co/67D9zWdN/Whats-App-Image-2025-08-26-at-4-22-13-PM-1.webp', websiteUrl: 'catalogo.rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
+
+            // --- SUC.TAFI DEL VALLE ---
+            { id: 'tafidelvalle', name: 'Rosso Materiales - Tafi del Valle', address: 'RP307 60.5, T4137 Tafí del Valle, Tucumán', phone: '+54 9 381 414-6917', whatsappNumber: '5493814146917', lat: -26.8500, lng: -65.6833, imageUrl: 'https://i.ibb.co/27Z8zz7T/Whats-App-Image-2025-07-04-at-9-47-52-AM.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '17:30' }, 2: { open: '08:30', close: '17:30' }, 3: { open: '08:30', close: '17:30' }, 4: { open: '08:30', close: '17:30' }, 5: { open: '08:30', close: '17:30' }, 6: { open: '08:30', close: '13:00' } } },
+
+            
+
+           
+
+            // --- SUC.ALEM ---
             { id: 'alem', name: 'Rosso Materiales - Av. Alem', address: 'Av. Leandro N. Alem 1799, T4000 San Miguel de Tucumán, Tucumán', phone: '+54 381 423-1122', whatsappNumber: '543814231122', lat: -26.84351, lng: -65.21549, imageUrl: 'assets/alem.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } }
         ];
 
@@ -219,7 +250,7 @@
             (position) => {
                 const userLat = position.coords.latitude; const userLng = position.coords.longitude;
                 stores.forEach(store => store.distance = calculateDistance(userLat, userLng, store.lat, store.lng));
-                stores.sort((a, b) => a.distance - b.distance);
+                // stores.sort((a, b) => a.distance - b.distance);
                 renderStores(stores);
             },
             () => {
