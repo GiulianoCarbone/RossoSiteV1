@@ -1,265 +1,833 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nuestras Sucursales - Rosso</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        .store-list::-webkit-scrollbar { width: 8px; }
-        .store-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-        .store-list::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-        .store-list::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
-        
+      body {
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .store-list::-webkit-scrollbar {
+        width: 8px;
+      }
+      .store-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+      .store-list::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 10px;
+      }
+      .store-list::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+      }
+
+      #detail-panel {
+        transition: transform 0.3s ease-in-out;
+        z-index: 2000;
+      }
+
+      @media (max-width: 767px) {
         #detail-panel {
-            transition: transform 0.3s ease-in-out;
-            z-index: 2000;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
         }
-        
-        @media (max-width: 767px) {
-            #detail-panel {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-        }
+      }
 
-        .animated-marker { position: relative; width: 36px; height: 36px; }
-        .animated-marker .pulse {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px; height: 20px; border-radius: 50%;
-            background-color: rgba(234, 88, 12, 0.7);
-            animation: pulse 2s infinite;
-            z-index: 1;
-        }
-        .animated-marker .icon {
-            position: absolute; top: 0; left: 0;
-            width: 36px; height: 36px; z-index: 2;
-        }
+      .animated-marker {
+        position: relative;
+        width: 36px;
+        height: 36px;
+      }
+      .animated-marker .pulse {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: rgba(234, 88, 12, 0.7);
+        animation: pulse 2s infinite;
+        z-index: 1;
+      }
+      .animated-marker .icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 36px;
+        height: 36px;
+        z-index: 2;
+      }
 
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.7; }
-            70% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+      @keyframes pulse {
+        0% {
+          transform: translate(-50%, -50%) scale(0.5);
+          opacity: 0.7;
         }
+        70% {
+          transform: translate(-50%, -50%) scale(2.5);
+          opacity: 0;
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(0.5);
+          opacity: 0;
+        }
+      }
     </style>
-</head>
-<body class="bg-gray-100 h-screen flex flex-col">
-
+  </head>
+  <body class="bg-gray-100 h-screen flex flex-col">
     <header class="bg-white shadow-md py-4">
-        <div class="container mx-auto px-4">
-            <a href="index.html" class="flex items-center w-fit"> <img src="assets/logo2.png" alt="Logo Rosso" class="h-8 mr-3">
-              
-            </a>
-        </div>
+      <div class="container mx-auto px-4">
+        <a href="index.html" class="flex items-center w-fit">
+          <img src="assets/logo2.png" alt="Logo Rosso" class="h-8 mr-3" />
+        </a>
+      </div>
     </header>
 
-    <div class="flex flex-col md:flex-row flex-grow ">
-        <aside id="store-list-panel" class="w-full md:w-1/3 lg:w-1/4 bg-white shadow-lg flex flex-col transition-transform duration-300">
-            <header class="p-4 border-b">
-                <h1 class="text-2xl font-bold text-blue-900 mb-4">Nuestras sucursales</h1>
-                <div class="mt-2 relative">
-                    <input type="text" id="search-box" placeholder="Buscar por cuidad, código pos..." class="w-full pl-4 pr-24 py-2 border-transparent bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-                    <button id="search-button" class="absolute right-1 top-1 bottom-1 px-4 bg-blue-900 text-white rounded-md text-sm font-semibold hover:bg-blue-800">Buscar</button>
-                </div>
-            </header>
-            <div id="store-list-container" class="store-list flex-grow overflow-y-auto">
-                <div class="p-4 text-center text-gray-500">Buscando tu ubicación para calcular distancias...</div>
-            </div>
-        </aside>
+    <div class="flex flex-col md:flex-row flex-grow">
+      <aside
+        id="store-list-panel"
+        class="w-full md:w-1/3 lg:w-1/4 bg-white shadow-lg flex flex-col transition-transform duration-300"
+      >
+        <header class="p-4 border-b">
+          <h1 class="text-2xl font-bold text-blue-900 mb-4">
+            Nuestras sucursales
+          </h1>
+          <div class="mt-2 relative">
+            <input
+              type="text"
+              id="search-box"
+              placeholder="Buscar por cuidad, código pos..."
+              class="w-full pl-4 pr-24 py-2 border-transparent bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            />
+            <button
+              id="search-button"
+              class="absolute right-1 top-1 bottom-1 px-4 bg-blue-900 text-white rounded-md text-sm font-semibold hover:bg-blue-800"
+            >
+              Buscar
+            </button>
+          </div>
+        </header>
+        <div
+          id="store-list-container"
+          class="store-list flex-grow overflow-y-auto"
+        >
+          <div class="p-4 text-center text-gray-500">
+            Buscando tu ubicación para calcular distancias...
+          </div>
+        </div>
+      </aside>
 
-        <main class="relative w-full md:w-2/3 lg:w-3/4 h-full">
-            <div id="map" class="w-full h-full"></div>
-            
-            <div id="detail-panel" class="absolute top-0 right-0 h-full w-full md:w-80 bg-white shadow-2xl p-4 transform translate-x-full overflow-y-auto">
-                <button id="close-panel-btn" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 z-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-                <div id="detail-content" class="mt-6">
-                    </div>
-            </div>
-        </main>
+      <main class="relative w-full md:w-2/3 lg:w-3/4 h-full">
+        <div id="map" class="w-full h-full"></div>
+
+        <div
+          id="detail-panel"
+          class="absolute top-0 right-0 h-full w-full md:w-80 bg-white shadow-2xl p-4 transform translate-x-full overflow-y-auto"
+        >
+          <button
+            id="close-panel-btn"
+            class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 z-10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <div id="detail-content" class="mt-6"></div>
+        </div>
+      </main>
     </div>
 
     <script>
-        // --- DATOS DE LAS SUCURSALES ---
-        const stores = [
-
-         // --- SUC.EL MANANTIAL ---
-            { id: 'manantial', name: 'Rosso Express - El Manantial', address: 'Av. Solano Vera 2300, T4107 Yerba Buena, Tucumán', phone: '+54 381 425-8910', whatsappNumber: '543814258910', lat: -26.8144, lng: -65.3124, imageUrl: 'https://scontent.faep14-2.fna.fbcdn.net/v/t39.30808-6/486249212_1086255250196202_5887728741812768363_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=lx0YqzpU1AsQ7kNvwGBsGKi&_nc_oc=AdmDF_jb-O_PU-NIcekQtGXLCXE3xsOgDZUhxyZfu1gbU6omTzO-T1tsUy76r2pA4q4&_nc_zt=23&_nc_ht=scontent.faep14-2.fna&_nc_gid=6OkksOPg20aXx61VR8COiQ&oh=00_AfUReYShXDLGE8ZKBX5TIcSfpV5z0qnKmWXLmvjP9wTnPA&oe=68B2B675', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '20:00' }, 2: { open: '08:30', close: '20:00' }, 3: { open: '08:30', close: '20:00' }, 4: { open: '08:30', close: '20:00' }, 5: { open: '08:30', close: '20:00' }, 6: { open: '08:30', close: '13:00' } } },
-
-            
-            // --- SUC.SALTA ---
-            { id: 'salta', name: 'Rosso Materiales - Salta', address: 'Av. Ex Combatientes de Malvinas 5202, A4400 Salta', phone: '+54 387 422-1234', whatsappNumber: '543874221234', lat: -24.82752, lng: -65.42653, imageUrl: 'https://i.ibb.co/fdX9wN2c/IMG-8087-Copy.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '19:00' }, 2: { open: '08:30', close: '19:00' }, 3: { open: '08:30', close: '19:00' }, 4: { open: '08:30', close: '19:00' }, 5: { open: '08:30', close: '19:00' }, 6: { open: '08:30', close: '13:00' } } },
-
-        // --- SUC.METAN ---
-            { id: 'metan', name: 'Rosso Materiales - Metán', address: 'Ruta Nacional 9/34, A4440 San José de Metán, Salta', phone: '+54 387 642-5678', whatsappNumber: '543876425678', lat: -25.49249, lng: -64.96946, imageUrl: 'https://i.ibb.co/kV9TpKXW/IMG-7990.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
-
-            // --- SUC.MONTEROS ---
-            { id: 'monteros', name: 'Rosso Materiales - Monteros', address: 'Juan Bautista Alberdi 53, T4142 BWB, Monteros, Tucumán', phone: '+54 381 414-6917', whatsappNumber: '543814146917', lat: -27.1691, lng: -65.4985, imageUrl: 'https://i.ibb.co/rf1XnWyT/IMG-2050-1.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
-
-            
-            
-            // --- SUC.CONCEPCION ---
-            { id: 'concepcion', name: 'Rosso Materiales - Concepción', address: 'Padre Carlos Juangorena 1850, T4146 Concepción, Tucumán', phone: '+54 9 381 414-6917', whatsappNumber: '5493814146917', lat: -27.3421, lng: -65.5925, imageUrl: 'https://i.ibb.co/27Z8zz7T/Whats-App-Image-2025-07-04-at-9-47-52-AM.jpg', websiteUrl: 'rosso-materiales.netlify.app', schedule: { 1: { open: '08:30', close: '17:30' }, 2: { open: '08:30', close: '17:30' }, 3: { open: '08:30', close: '17:30' }, 4: { open: '08:30', close: '17:30' }, 5: { open: '08:30', close: '17:30' }, 6: { open: '08:30', close: '13:00' } } },
-
-            
-            // --- SUC.JB.ALBERDI ---
-            { id: 'alberdi', name: 'Rosso Materiales - J.B. Alberdi', address: 'Lidoro Quinteros 789, J. B. Alberdi, Tucumán', phone: '3865-472222', whatsappNumber: '543865472222', lat: -27.5881, lng: -65.6175, imageUrl: 'https://i.ibb.co/dN6x4ww/DJI-20231206-083139-798.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '21:00' }, 2: { open: '08:30', close: '21:00' }, 3: { open: '08:30', close: '21:00' }, 4: { open: '08:30', close: '21:00' }, 5: { open: '08:30', close: '21:00' }, 6: { open: '08:30', close: '13:00' } } },
-
-    
-            // --- SUC.AGUILARES ---
-            { id: 'aguilares', name: 'Rosso Materiales - Aguilares', address: 'Av. Sarmiento 739, T4162 Aguilares, Tucumán', phone: '+54 9 381 414-6917', whatsappNumber: '5493814146917', lat: -27.4330, lng: -65.6330, imageUrl: 'https://i.ibb.co/s9Xkh8zX/IMG-3182.webp', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
-
-
-
-            // --- SUC.FAMAILLA ---
-            { id: 'famailla', name: 'Rosso Materiales - Famailla', address: 'Av. Calchaquí y, Larrea 106, T4132 Famaillá, Tucumán', phone: '+54 381 414-6917', whatsappNumber: '543814146917', lat: -27.0558, lng: -65.4033, imageUrl: 'https://i.ibb.co/67D9zWdN/Whats-App-Image-2025-08-26-at-4-22-13-PM-1.webp', websiteUrl: 'catalogo.rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } },
-
-            // --- SUC.TAFI DEL VALLE ---
-            { id: 'tafidelvalle', name: 'Rosso Materiales - Tafi del Valle', address: 'RP307 60.5, T4137 Tafí del Valle, Tucumán', phone: '+54 9 381 414-6917', whatsappNumber: '5493814146917', lat: -26.8500, lng: -65.6833, imageUrl: 'https://i.ibb.co/27Z8zz7T/Whats-App-Image-2025-07-04-at-9-47-52-AM.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '17:30' }, 2: { open: '08:30', close: '17:30' }, 3: { open: '08:30', close: '17:30' }, 4: { open: '08:30', close: '17:30' }, 5: { open: '08:30', close: '17:30' }, 6: { open: '08:30', close: '13:00' } } }
-
-
-            // --- SUC.ALEM ---
-            // { id: 'alem', name: 'Rosso Materiales - Av. Alem', address: 'Av. Leandro N. Alem 1799, T4000 San Miguel de Tucumán, Tucumán', phone: '+54 381 423-1122', whatsappNumber: '543814231122', lat: -26.84351, lng: -65.21549, imageUrl: 'assets/alem.jpg', websiteUrl: 'rossomateriales.site', schedule: { 1: { open: '08:30', close: '18:00' }, 2: { open: '08:30', close: '18:00' }, 3: { open: '08:30', close: '18:00' }, 4: { open: '08:30', close: '18:00' }, 5: { open: '08:30', close: '18:00' }, 6: { open: '08:30', close: '13:00' } } }
-        ];
-
-        // --- INICIALIZACIÓN Y ELEMENTOS DEL DOM ---
-        const map = L.map('map').setView([-26.5, -65.3], 8);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19, attribution: '© OpenStreetMap © CARTO' }).addTo(map);
-        
-        const storeListPanel = document.getElementById('store-list-panel');
-        const storeListContainer = document.getElementById('store-list-container');
-        const detailPanel = document.getElementById('detail-panel');
-        const detailContent = document.getElementById('detail-content');
-        const closePanelBtn = document.getElementById('close-panel-btn');
-        const searchBox = document.getElementById('search-box');
-        const searchButton = document.getElementById('search-button');
-        
-        const markers = {};
-        const markersLayer = L.layerGroup().addTo(map);
-        let miniMap = null;
-
-        // --- FUNCIONES ---
-        const calculateDistance = (lat1, lon1, lat2, lon2) => (6371 * 2 * Math.atan2(Math.sqrt(Math.sin(((lat2 - lat1) * Math.PI / 180) / 2) * Math.sin(((lat2 - lat1) * Math.PI / 180) / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(((lon2 - lon1) * Math.PI / 180) / 2) * Math.sin(((lon2 - lon1) * Math.PI / 180) / 2)), Math.sqrt(1 - (Math.sin(((lat2 - lat1) * Math.PI / 180) / 2) * Math.sin(((lat2 - lat1) * Math.PI / 180) / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(((lon2 - lon1) * Math.PI / 180) / 2) * Math.sin(((lon2 - lon1) * Math.PI / 180) / 2)))));
-
-        const getStoreStatus = (schedule) => {
-            const now = new Date();
-            const dayOfWeek = now.getDay();
-            const todaysHours = schedule[dayOfWeek];
-            if (!todaysHours) return { status: 'Cerrado', hours: 'Cerrado hoy', statusColor: 'text-red-600' };
-            const [openHour, openMinute] = todaysHours.open.split(':').map(Number);
-            const [closeHour, closeMinute] = todaysHours.close.split(':').map(Number);
-            const openTime = new Date(); openTime.setHours(openHour, openMinute, 0, 0);
-            const closeTime = new Date(); closeTime.setHours(closeHour, closeMinute, 0, 0);
-            if (now >= openTime && now < closeTime) {
-                const diffMs = closeTime - now;
-                const diffMinutesTotal = Math.floor(diffMs / (1000 * 60));
-                if (diffMinutesTotal <= 60) {
-                    const diffHours = Math.floor(diffMinutesTotal / 60);
-                    const diffMinutes = diffMinutesTotal % 60;
-                    let statusText = 'Cierra en';
-                    if (diffHours > 0) statusText += ` ${diffHours}h`;
-                    if (diffMinutes > 0) statusText += ` ${diffMinutes}m`;
-                    return { status: statusText, hours: `Cierra a las ${todaysHours.close}`, statusColor: 'text-orange-500' };
-                } else {
-                    return { status: `Abierto hasta las ${todaysHours.close}`, hours: `Cierra a las ${todaysHours.close}`, statusColor: 'text-green-600' };
-                }
-            } else {
-                return { status: 'Cerrado', hours: `Abre a las ${todaysHours.open}`, statusColor: 'text-red-600' };
-            }
-        };
-        
-        const openDetailPanel = (store) => {
-            if (miniMap) { miniMap.remove(); miniMap = null; }
-            const showMiniMap = window.innerWidth < 768;
-            const miniMapHTML = showMiniMap ? `<div id="mini-map" class="w-full h-48 mt-4 rounded-lg z-0"></div>` : '';
-            detailContent.innerHTML = `<img src="${store.imageUrl}" alt="Foto de ${store.name}" class="w-full h-40 object-cover rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/ffffff?text=...';"><h2 class="text-2xl font-bold text-gray-900 mt-4">${store.name}</h2><div class="mt-4 space-y-3"><a href="https://wa.me/${store.whatsappNumber}" target="_blank" class="flex items-center justify-center w-full bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">WhatsApp</a><a href="https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}" target="_blank" class="flex items-center justify-center w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">Cómo llegar</a></div><div class="mt-4 space-y-4 text-gray-700"><div class="flex items-start space-x-3"><span class="mt-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg></span><p>${store.phone}</p></div><div class="flex items-start space-x-3"><span class="mt-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg></span><p>${store.address}</p></div><div class="flex items-start space-x-3"><span class="mt-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C3.732 4.943 10 2.5 10 2.5s6.268 2.443 9.542 7.5c-3.274 5.057-9.542 7.5-9.542 7.5S3.732 15.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" /></svg></span><a href="https://${store.websiteUrl}" target="_blank" class="text-gray-500 hover:underline">${store.websiteUrl}</a></div><div class="flex items-start space-x-3"><span class="mt-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.415L11 9.586V6z" clip-rule="evenodd" /></svg></span><p><span class="${store.statusColor} font-semibold">${store.status}</span> - ${store.hours}</p></div></div>${miniMapHTML}`;
-            if (window.innerWidth < 768) { storeListPanel.classList.add('-translate-x-full'); }
-            detailPanel.classList.remove('translate-x-full');
-            if (showMiniMap) {
-                setTimeout(() => {
-                    miniMap = L.map('mini-map', { center: [store.lat, store.lng], zoom: 15, dragging: false, zoomControl: false, scrollWheelZoom: false, doubleClickZoom: false, touchZoom: false });
-                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(miniMap);
-                    L.marker([store.lat, store.lng]).addTo(miniMap);
-                }, 300);
-            }
-        };
-
-        const closeDetailPanel = () => {
-            detailPanel.classList.add('translate-x-full');
-            storeListPanel.classList.remove('-translate-x-full');
-            document.querySelectorAll('.store-item').forEach(el => el.classList.remove('bg-gray-100'));
-            if (miniMap) { miniMap.remove(); miniMap = null; }
-        };
-
-        const renderStores = (storeData) => {
-            markersLayer.clearLayers();
-            storeListContainer.innerHTML = '';
-            if (storeData.length === 0) storeListContainer.innerHTML = `<div class="p-4 text-center text-gray-500">No se encontraron sucursales.</div>`;
-            storeData.forEach(store => {
-                const statusInfo = getStoreStatus(store.schedule);
-                store.status = statusInfo.status; store.hours = statusInfo.hours; store.statusColor = statusInfo.statusColor;
-                const distanceText = store.distance ? `<strong class="text-blue-900">${store.distance.toFixed(1)} km</strong>` : '';
-                const animatedIcon = L.divIcon({ className: 'animated-marker', html: `<div class="pulse"></div><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#EA580C"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>`, iconSize: [36, 36], iconAnchor: [18, 36] });
-                const marker = L.marker([store.lat, store.lng], { icon: animatedIcon });
-                marker.on('click', () => { document.getElementById(`store-${store.id}`).click(); });
-                markersLayer.addLayer(marker);
-                const storeElement = document.createElement('div');
-                storeElement.id = `store-${store.id}`;
-                storeElement.className = 'store-item p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors duration-200 flex space-x-4';
-                storeElement.innerHTML = `<img src="${store.imageUrl}" alt="Foto de ${store.name}" class="w-20 h-24 object-cover rounded-md flex-shrink-0" onerror="this.onerror=null;this.src='https://placehold.co/200x200/cccccc/ffffff?text=...';"><div class="text-sm"><h2 class="font-semibold text-blue-900">${store.name}</h2><p>${distanceText} <span class="text-gray-500">•</span> <span class="${store.statusColor} font-semibold">${store.status}</span></p><p class="text-gray-500">${store.address}</p><p class="text-gray-500">${store.phone}</p><a href="https://${store.websiteUrl}" target="_blank" class="text-gray-500 hover:underline">${store.websiteUrl}</a></div>`;
-                storeElement.addEventListener('click', () => {
-                    map.flyTo([store.lat, store.lng], 15);
-                    openDetailPanel(store);
-                    document.querySelectorAll('.store-item').forEach(el => el.classList.remove('bg-gray-100'));
-                    storeElement.classList.add('bg-gray-100');
-                });
-                storeListContainer.appendChild(storeElement);
-            });
-        };
-
-        // --- LÓGICA PRINCIPAL Y EVENTOS ---
-        const filterStores = () => {
-            const searchTerm = searchBox.value.toLowerCase();
-            const filteredStores = stores.filter(store => store.name.toLowerCase().includes(searchTerm) || store.address.toLowerCase().includes(searchTerm));
-            renderStores(filteredStores);
-        };
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const userLat = position.coords.latitude; const userLng = position.coords.longitude;
-                stores.forEach(store => store.distance = calculateDistance(userLat, userLng, store.lat, store.lng));
-                // stores.sort((a, b) => a.distance - b.distance);
-                renderStores(stores);
+      // --- DATOS DE LAS SUCURSALES ---
+      const stores = [
+        // --- SUC.EL MANANTIAL ---
+        {
+          id: "manantial",
+          name: "Rosso Materiales - El Manantial",
+          address: "km 0.6, RP301, San Miguel de Tucumán, Tucumán",
+          phone: "+54 381 414-6917",
+          whatsappNumber: "5493814146917",
+          lat: -26.8368596951598,  
+          lng: -65.26288875539471,
+          imageUrl:
+            "https://scontent.faep14-2.fna.fbcdn.net/v/t39.30808-6/486249212_1086255250196202_5887728741812768363_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=lx0YqzpU1AsQ7kNvwGBsGKi&_nc_oc=AdmDF_jb-O_PU-NIcekQtGXLCXE3xsOgDZUhxyZfu1gbU6omTzO-T1tsUy76r2pA4q4&_nc_zt=23&_nc_ht=scontent.faep14-2.fna&_nc_gid=6OkksOPg20aXx61VR8COiQ&oh=00_AfUReYShXDLGE8ZKBX5TIcSfpV5z0qnKmWXLmvjP9wTnPA&oe=68B2B675",
+          websiteUrl: "rossomateriales.site",
+          schedule: {
+            1: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
             },
-            () => {
-                console.warn('No se pudo obtener la ubicación. Mostrando lista sin ordenar por distancia.');
-                renderStores(stores);
-            }
+            2: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            3: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            4: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            5: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            6: { am_open: "08:30", am_close: "13:00" },
+          },
+        },
+        // --- SUC.SALTA ---
+        {
+          id: "salta",
+          name: "Rosso Materiales - Salta",
+          address: "Av. Chile 1474, A4400 Salta",
+          phone: "+54 381 414-6917",
+          whatsappNumber: "5493814146917",
+          lat: -24.80774,   
+          lng: -65.41841, 
+          imageUrl: "https://i.ibb.co/fdX9wN2c/IMG-8087-Copy.webp",
+          websiteUrl: "rossomateriales.site",
+          schedule: {
+            1: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            2: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            3: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            4: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            5: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            6: { am_open: "08:30", am_close: "13:00" },
+          },
+        },
+        // --- SUC.METAN ---
+        {
+          id: "metan",
+          name: "Rosso Materiales - Metán",
+          address: "Tucuman, Cnel. Vidt esq, A4440 San José de Metán, Salta",
+          phone: "+54 381 414-6917",
+          whatsappNumber: "5493814146917",
+          lat: -25.505431529399463,    
+          lng: -64.97209097627173,
+          imageUrl: "https://i.ibb.co/kV9TpKXW/IMG-7990.webp",
+          websiteUrl: "rossomateriales.site",
+          schedule: {
+            1: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            2: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            3: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            4: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            5: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            6: { am_open: "08:30", am_close: "13:00" },
+          },
+        },
+        // --- SUC.MONTEROS ---
+        {
+          id: "monteros",
+          name: "Rosso Materiales - Monteros",
+          address: "Juan Bautista Alberdi 53, T4142 BWB, Tucumán",
+          phone: "+54 381 414-6917",
+          whatsappNumber: "5493814146917",
+          lat: -27.17127479138811, 
+          lng: -65.49710679446056,
+          imageUrl: "https://i.ibb.co/rf1XnWyT/IMG-2050-1.webp",
+          websiteUrl: "rossomateriales.site",
+          schedule: {
+            1: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            2: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            3: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            4: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            5: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            6: { am_open: "08:30", am_close: "13:00" },
+          },
+        },
+        // --- SUC.CONCEPCION ---
+        {
+          id: "concepcion",
+          name: "Rosso Materiales - Concepción",
+          address: "Padre Carlos Juangorena 1850, T4146 Concepción, Tucumán",
+          phone: "+54 9 381 414-6917",
+          whatsappNumber: "5493814146917",
+          lat: -27.346295070752795,
+          lng: -65.59767583019305,
+          imageUrl:
+            "https://i.ibb.co/27Z8zz7T/Whats-App-Image-2025-07-04-at-9-47-52-AM.jpg",
+          websiteUrl: "rosso-materiales.netlify.app",
+          schedule: {
+            1: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            2: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            3: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            4: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            5: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            6: { am_open: "08:30", am_close: "13:00" },
+          },
+        },
+        // --- SUC.JB.ALBERDI ---
+        {
+          id: "alberdi",
+          name: "Rosso Materiales - J.B. Alberdi",
+          address: "Ricardo Rojas, C. Monteagudo y, T4185 Juan Bautista Alberdi, Tucumán",
+          phone: "3865-472222",
+          whatsappNumber: "5493814146917",
+          lat: -27.56517318880546, 
+          lng: -65.6120588936078,
+          imageUrl: "https://i.ibb.co/dN6x4ww/DJI-20231206-083139-798.webp",
+          websiteUrl: "rossomateriales.site",
+          schedule: {
+            1: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            2: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            3: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            4: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            5: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            6: { am_open: "08:30", am_close: "13:00" },
+          },
+        },
+        // --- SUC.AGUILARES ---
+        {
+          id: "aguilares",
+          name: "Rosso Materiales - Aguilares",
+          address: "Av. Sarmiento 739, T4152 Aguilares, Tucumán",
+          phone: "+54 9 381 414-6917",
+          whatsappNumber: "5493814146917",
+          lat: -27.428411714357022, 
+          lng: -65.61438190020249,
+          imageUrl: "https://i.ibb.co/s9Xkh8zX/IMG-3182.webp",
+          websiteUrl: "rossomateriales.site",
+          schedule: {
+            1: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            2: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            3: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            4: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            5: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            6: { am_open: "08:30", am_close: "13:00" },
+          },
+        },
+        // --- SUC.FAMAILLA ---
+        {
+          id: "famailla",
+          name: "Rosso Materiales - Famailla",
+          address: "Av. Calchaquí y, Larrea 106, T4132 Famaillá, Tucumán",
+          phone: "+54 381 414-6917",
+          whatsappNumber: "543814146917",
+          lat: -27.062898394516886,
+          lng: -65.40283673204807,
+          imageUrl:
+            "https://i.ibb.co/67D9zWdN/Whats-App-Image-2025-08-26-at-4-22-13-PM-1.webp",
+          websiteUrl: "rossomateriales.site",
+          schedule: {
+            1: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            2: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            3: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            4: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            5: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            6: { am_open: "08:30", am_close: "13:00" },
+          },
+        },
+        // --- SUC.TAFI DEL VALLE ---
+        {
+          id: "tafidelvalle",
+          name: "Rosso Materiales - Tafi del Valle",
+          address: "Km. 60.5 Ruta P. 307, T4137 Tafí del Valle, Tucumánn",
+          phone: "+54 9 381 414-6917",
+          whatsappNumber: "5493814146917",
+          lat: -26.85749368894493, 
+          lng: -65.6960278339007,
+          imageUrl:
+            "https://i.ibb.co/27Z8zz7T/Whats-App-Image-2025-07-04-at-9-47-52-AM.jpg",
+          websiteUrl: "rossomateriales.site",
+          schedule: {
+            1: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            2: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            3: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            4: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            5: {
+              am_open: "08:00",
+              am_close: "13:00",
+              pm_open: "15:00",
+              pm_close: "18:00",
+            },
+            6: { am_open: "08:30", am_close: "13:00" },
+          },
+        },
+      ];
+
+      // --- INICIALIZACIÓN Y ELEMENTOS DEL DOM ---
+      const map = L.map("map").setView([-26.5, -65.3], 8);
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+        { maxZoom: 19, attribution: "© OpenStreetMap © CARTO" }
+      ).addTo(map);
+
+      const storeListPanel = document.getElementById("store-list-panel");
+      const storeListContainer = document.getElementById(
+        "store-list-container"
+      );
+      const detailPanel = document.getElementById("detail-panel");
+      const detailContent = document.getElementById("detail-content");
+      const closePanelBtn = document.getElementById("close-panel-btn");
+      const searchBox = document.getElementById("search-box");
+      const searchButton = document.getElementById("search-button");
+
+      const markers = {};
+      const markersLayer = L.layerGroup().addTo(map);
+      let miniMap = null;
+
+      // --- FUNCIONES ---
+      const calculateDistance = (lat1, lon1, lat2, lon2) =>
+        6371 *
+        2 *
+        Math.atan2(
+          Math.sqrt(
+            Math.sin(((lat2 - lat1) * Math.PI) / 180 / 2) *
+              Math.sin(((lat2 - lat1) * Math.PI) / 180 / 2) +
+              Math.cos((lat1 * Math.PI) / 180) *
+                Math.cos((lat2 * Math.PI) / 180) *
+                Math.sin(((lon2 - lon1) * Math.PI) / 180 / 2) *
+                Math.sin(((lon2 - lon1) * Math.PI) / 180 / 2)
+          ),
+          Math.sqrt(
+            1 -
+              (Math.sin(((lat2 - lat1) * Math.PI) / 180 / 2) *
+                Math.sin(((lat2 - lat1) * Math.PI) / 180 / 2) +
+                Math.cos((lat1 * Math.PI) / 180) *
+                  Math.cos((lat2 * Math.PI) / 180) *
+                  Math.sin(((lon2 - lon1) * Math.PI) / 180 / 2) *
+                  Math.sin(((lon2 - lon1) * Math.PI) / 180 / 2))
+          )
         );
 
-        searchButton.addEventListener('click', filterStores);
-        searchBox.addEventListener('input', filterStores);
-        closePanelBtn.addEventListener('click', closeDetailPanel);
-        map.on('click', closeDetailPanel);
+      // --- FUNCIÓN getStoreStatus ACTUALIZADA ---
+      const getStoreStatus = (schedule) => {
+        const now = new Date();
+        const dayOfWeek = now.getDay();
+        const todaysHours = schedule[dayOfWeek];
+
+        if (!todaysHours) {
+          return { status: "Cerrado hoy", statusColor: "text-red-600" };
+        }
+
+        const createDate = (timeStr) => {
+          if (!timeStr) return null;
+          const [hour, minute] = timeStr.split(":").map(Number);
+          const date = new Date();
+          date.setHours(hour, minute, 0, 0);
+          return date;
+        };
+
+        const amOpenTime = createDate(todaysHours.am_open);
+        const amCloseTime = createDate(todaysHours.am_close);
+        const pmOpenTime = createDate(todaysHours.pm_open);
+        const pmCloseTime = createDate(todaysHours.pm_close);
+
+        // Turno mañana
+        if (
+          amOpenTime &&
+          amCloseTime &&
+          now >= amOpenTime &&
+          now < amCloseTime
+        ) {
+          return {
+            status: `Abierto hasta las ${todaysHours.am_close}`,
+            statusColor: "text-green-600",
+          };
+        }
+
+        // Turno tarde
+        if (
+          pmOpenTime &&
+          pmCloseTime &&
+          now >= pmOpenTime &&
+          now < pmCloseTime
+        ) {
+          return {
+            status: `Abierto hasta las ${todaysHours.pm_close}`,
+            statusColor: "text-green-600",
+          };
+        }
+
+        // Si está cerrado, vemos cuándo abre
+        if (amOpenTime && now < amOpenTime) {
+          return {
+            status: `Cerrado, abre a las ${todaysHours.am_open}`,
+            statusColor: "text-red-600",
+          };
+        }
+
+        if (pmOpenTime && now >= amCloseTime && now < pmOpenTime) {
+          return {
+            status: `Cerrado, abre a las ${todaysHours.pm_open}`,
+            statusColor: "text-red-600",
+          };
+        }
+
+        return { status: "Cerrado por hoy", statusColor: "text-red-600" };
+      };
+
+      const openDetailPanel = (store) => {
+        if (miniMap) {
+          miniMap.remove();
+          miniMap = null;
+        }
+        const showMiniMap = window.innerWidth < 768;
+        const miniMapHTML = showMiniMap
+          ? `<div id="mini-map" class="w-full h-48 mt-4 rounded-lg z-0"></div>`
+          : "";
+        // --- LÍNEA DE HORARIO MODIFICADA EN EL PANEL DE DETALLE ---
+        detailContent.innerHTML = `<img src="${store.imageUrl}" alt="Foto de ${store.name}" class="w-full h-40 object-cover rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/400x300/cccccc/ffffff?text=...';"><h2 class="text-2xl font-bold text-gray-900 mt-4">${store.name}</h2><div class="mt-4 space-y-3"><a href="https://wa.me/${store.whatsappNumber}" target="_blank" class="flex items-center justify-center w-full bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors">WhatsApp</a><a href="https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}" target="_blank" class="flex items-center justify-center w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">Cómo llegar</a></div><div class="mt-4 space-y-4 text-gray-700"><div class="flex items-start space-x-3"><span class="mt-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg></span><p>${store.phone}</p></div><div class="flex items-start space-x-3"><span class="mt-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg></span><p>${store.address}</p></div><div class="flex items-start space-x-3"><span class="mt-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C3.732 4.943 10 2.5 10 2.5s6.268 2.443 9.542 7.5c-3.274 5.057-9.542 7.5-9.542 7.5S3.732 15.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" /></svg></span><a href="https://${store.websiteUrl}" target="_blank" class="text-gray-500 hover:underline">${store.websiteUrl}</a></div><div class="flex items-start space-x-3"><span class="mt-1"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.415L11 9.586V6z" clip-rule="evenodd" /></svg></span><p class="${store.statusColor} font-semibold">${store.status}</p></div></div>${miniMapHTML}`;
+        if (window.innerWidth < 768) {
+          storeListPanel.classList.add("-translate-x-full");
+        }
+        detailPanel.classList.remove("translate-x-full");
+        if (showMiniMap) {
+          setTimeout(() => {
+            miniMap = L.map("mini-map", {
+              center: [store.lat, store.lng],
+              zoom: 15,
+              dragging: false,
+              zoomControl: false,
+              scrollWheelZoom: false,
+              doubleClickZoom: false,
+              touchZoom: false,
+            });
+            L.tileLayer(
+              "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            ).addTo(miniMap);
+            L.marker([store.lat, store.lng]).addTo(miniMap);
+          }, 300);
+        }
+      };
+
+      const closeDetailPanel = () => {
+        detailPanel.classList.add("translate-x-full");
+        storeListPanel.classList.remove("-translate-x-full");
+        document
+          .querySelectorAll(".store-item")
+          .forEach((el) => el.classList.remove("bg-gray-100"));
+        if (miniMap) {
+          miniMap.remove();
+          miniMap = null;
+        }
+      };
+
+      const renderStores = (storeData) => {
+        markersLayer.clearLayers();
+        storeListContainer.innerHTML = "";
+        if (storeData.length === 0)
+          storeListContainer.innerHTML = `<div class="p-4 text-center text-gray-500">No se encontraron sucursales.</div>`;
+        storeData.forEach((store) => {
+          const statusInfo = getStoreStatus(store.schedule);
+          store.status = statusInfo.status;
+          store.statusColor = statusInfo.statusColor;
+          const distanceText = store.distance
+            ? `<strong class="text-blue-900">${store.distance.toFixed(
+                1
+              )} km</strong>`
+            : "";
+          const animatedIcon = L.divIcon({
+            className: "animated-marker",
+            html: `<div class="pulse"></div><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#EA580C"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.5 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>`,
+            iconSize: [36, 36],
+            iconAnchor: [18, 36],
+          });
+          const marker = L.marker([store.lat, store.lng], {
+            icon: animatedIcon,
+          });
+          marker.on("click", () => {
+            document.getElementById(`store-${store.id}`).click();
+          });
+          markersLayer.addLayer(marker);
+          const storeElement = document.createElement("div");
+          storeElement.id = `store-${store.id}`;
+          storeElement.className =
+            "store-item p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors duration-200 flex space-x-4";
+          // --- LÍNEA DE ESTADO MODIFICADA EN LA LISTA ---
+          storeElement.innerHTML = `<img src="${store.imageUrl}" alt="Foto de ${store.name}" class="w-20 h-24 object-cover rounded-md flex-shrink-0" onerror="this.onerror=null;this.src='https://placehold.co/200x200/cccccc/ffffff?text=...';"><div class="text-sm"><h2 class="font-semibold text-blue-900">${store.name}</h2><p>${distanceText} <span class="text-gray-500">•</span> <span class="${store.statusColor} font-semibold">${store.status}</span></p><p class="text-gray-500">${store.address}</p><p class="text-gray-500">${store.phone}</p><a href="https://${store.websiteUrl}" target="_blank" class="text-gray-500 hover:underline">${store.websiteUrl}</a></div>`;
+          storeElement.addEventListener("click", () => {
+            map.flyTo([store.lat, store.lng], 15);
+            openDetailPanel(store);
+            document
+              .querySelectorAll(".store-item")
+              .forEach((el) => el.classList.remove("bg-gray-100"));
+            storeElement.classList.add("bg-gray-100");
+          });
+          storeListContainer.appendChild(storeElement);
+        });
+      };
+
+      // --- LÓGICA PRINCIPAL Y EVENTOS ---
+      const filterStores = () => {
+        const searchTerm = searchBox.value.toLowerCase();
+        const filteredStores = stores.filter(
+          (store) =>
+            store.name.toLowerCase().includes(searchTerm) ||
+            store.address.toLowerCase().includes(searchTerm)
+        );
+        renderStores(filteredStores);
+      };
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          stores.forEach(
+            (store) =>
+              (store.distance = calculateDistance(
+                userLat,
+                userLng,
+                store.lat,
+                store.lng
+              ))
+          );
+          // stores.sort((a, b) => a.distance - b.distance);
+          renderStores(stores);
+        },
+        () => {
+          console.warn(
+            "No se pudo obtener la ubicación. Mostrando lista sin ordenar por distancia."
+          );
+          renderStores(stores);
+        }
+      );
+
+      searchButton.addEventListener("click", filterStores);
+      searchBox.addEventListener("input", filterStores);
+      closePanelBtn.addEventListener("click", closeDetailPanel);
+      map.on("click", closeDetailPanel);
     </script>
-</body>
+  </body>
 </html>
