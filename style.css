@@ -289,6 +289,7 @@ a {
   padding: 24px;
   padding-top: 96px;
   transition: box-shadow 0.3s;
+  flex-grow: 1; /* <-- Agregá esta línea */
 }
 .card-link:hover .card-content {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
