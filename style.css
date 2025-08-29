@@ -542,3 +542,83 @@ a {
   animation: wave-animation 2.5s infinite; /* Aplica la animación, dura 2.5s y se repite infinitamente */
   transform-origin: 70% 70%; /* El punto desde donde rota el emoji */
 }
+
+
+/* ===== SECCIÓN DE LOGOS (NUEVO CÓDIGO) ===== */
+.partners-section {
+  padding-block: 64px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--brand);
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  color: var(--muted);
+  max-width: 50ch;
+  margin-inline: auto;
+  margin-bottom: 48px;
+}
+
+.logo-ticker {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  /* Efecto de desvanecido en los bordes */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    white 20%,
+    white 80%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    white 20%,
+    white 80%,
+    transparent
+  );
+}
+
+.logo-track {
+  display: flex;
+  gap: 48px; /* Espacio entre logos */
+  width: max-content;
+  align-items: center;
+  animation: scroll 25s linear infinite;
+}
+
+.logo-track:hover {
+  animation-play-state: paused; /* Pausa la animación al pasar el mouse */
+}
+
+.logo-track img {
+  height: 60px; /* Tamaño de los logos */
+  max-width: 170px;
+  object-fit: contain;
+   /* Logos en blanco y negro */
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.logo-track img:hover {
+  filter: grayscale(0%); /* Logos a color al pasar el mouse */
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Animación de desplazamiento infinito */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* Mueve el carrusel la mitad de su ancho total */
+    transform: translateX(calc(-50% - 24px)); /* 24px es la mitad del gap */
+  }
+}
