@@ -22,7 +22,7 @@ html:focus-within {
 body {
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
     Arial, sans-serif;
-  background: var(--bg);
+  background: var(--surface); /* <--- CAMBIO AQUÍ */
   color: var(--ink);
   overflow-x: hidden;
 }
@@ -319,7 +319,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
+  /* Se elimina la línea "background-color: #fff;" */
 }
 
 .slide.split-layout .slide-split-text {
@@ -546,7 +546,8 @@ a {
 
 /* ===== SECCIÓN DE LOGOS (NUEVO CÓDIGO) ===== */
 .partners-section {
-  padding-block: 64px;
+  padding-top:  0px;
+  padding-bottom:  50px;
   text-align: center;
 }
 
@@ -561,7 +562,7 @@ a {
   color: var(--muted);
   max-width: 50ch;
   margin-inline: auto;
-  margin-bottom: 48px;
+  margin-bottom: 8px;
 }
 
 .logo-ticker {
@@ -590,7 +591,7 @@ a {
   gap: 48px; /* Espacio entre logos */
   width: max-content;
   align-items: center;
-  animation: scroll 25s linear infinite;
+  animation: scroll 75s linear infinite;
 }
 
 .logo-track:hover {
@@ -601,7 +602,9 @@ a {
   height: 60px; /* Tamaño de los logos */
   max-width: 170px;
   object-fit: contain;
-   /* Logos en blanco y negro */
+   
+  /* Logos en blanco y negro */
+  /* filter: grayscale(100%); */
   opacity: 1;
   transition: all 0.3s ease;
 }
@@ -620,5 +623,31 @@ a {
   100% {
     /* Mueve el carrusel la mitad de su ancho total */
     transform: translateX(calc(-50% - 24px)); /* 24px es la mitad del gap */
+  }
+}
+
+.aaa {   /* DEGRADE BLANCO A LOS COSTADOS DEL WIDGGET DE INSTA */
+ 
+  /* Efecto de desvanecido en los bordes */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    white 20%,
+    white 80%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    white 20%,
+    white 80%,
+    transparent
+  );
+}
+
+@media (min-width: 1024px) {
+  .container-wide {
+    width: 95%; /* Aumentamos el ancho del 90% al 95% para reducir los márgenes */
+    max-width: 1400px; /* Opcional: aumentamos el ancho máximo para pantallas grandes */
   }
 }
