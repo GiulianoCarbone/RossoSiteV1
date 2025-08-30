@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Materiales - Rosso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+    <style>
+        /* Estilos específicos para la calculadora */
+        .calculator-section {
+            padding: 120px 0 64px 0;
+            min-height: 80vh;
+        }
+        .calculator-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: var(--card);
+            padding: 24px 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--accent);
+        }
+        .calculator-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--brand);
+            margin-bottom: 8px;
+        }
+        .calculator-subtitle {
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 32px;
+        }
+        .form-grid {
+            display: grid;
+            gap: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--ink);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 1rem;
+        }
+        .form-group input:focus {
+            outline: 2px solid var(--brand);
+            border-color: transparent;
+        }
+        .calculate-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background-color 0.3s;
+        }
+        .calculate-button:hover {
+            background-color: #d95324;
+        }
+        .result-box {
+            margin-top: 32px;
+            padding: 24px;
+            background-color: var(--surface);
+            border-radius: 8px;
+            text-align: center;
+            display: none; /* Oculto por defecto */
+        }
+        .result-box h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--brand);
+        }
+        .result-box p {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin: 8px 0;
+        }
+        .result-box .disclaimer {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header" role="banner">
+        <nav class="main-nav container" aria-label="Primaria">
+            <a href="index.html" class="logo" aria-label="Ir al inicio">
+                <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html#promos">Promociones</a>
+                <a href="https://catalogo.rossomateriales.site">Catálogo</a>
+                <a href="sucursales.html">Sucursales</a>
+                <a href="https://wa.me/5493814146917">Presupuesto</a>
+            </div>
+            <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú">
+                <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="calculator-section">
+            <div class="calculator-container">
+                <h2 class="calculator-title">Calculadora de Pisos y Revestimientos</h2>
+                <p class="calculator-subtitle">Ingresá las medidas para saber cuántas cajas necesitás.</p>
+                
+                <form id="calculator-form" onsubmit="return false;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="largo">Largo de la superficie (en metros)</label>
+                            <input type="number" id="largo" placeholder="Ej: 4.5" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ancho">Ancho de la superficie (en metros)</label>
+                            <input type="number" id="ancho" placeholder="Ej: 3" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rendimiento">Rendimiento por caja (en m²)</label>
+                            <input type="number" id="rendimiento" placeholder="Ej: 1.75" step="0.01" required>
+                        </div>
+                    </div>
+                    <button type="button" class="calculate-button" onclick="calculate()">Calcular</button>
+                </form>
+
+                <div id="result" class="result-box">
+                    <h3>Vas a necesitar:</h3>
+                    <p id="result-text">0 cajas</p>
+                    <p class="disclaimer">Recomendamos comprar un 10% extra por desperdicios y cortes.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function calculate() {
+            // 1. Obtener los valores de los inputs
+            const largo = parseFloat(document.getElementById('largo').value);
+            const ancho = parseFloat(document.getElementById('ancho').value);
+            const rendimiento = parseFloat(document.getElementById('rendimiento').value);
+
+            // 2. Validar que los campos no estén vacíos
+            if (isNaN(largo) || isNaN(ancho) || isNaN(rendimiento) || largo <= 0 || ancho <= 0 || rendimiento <= 0) {
+                alert("Por favor, ingresá valores válidos y mayores a cero.");
+                return;
+            }
+
+            // 3. Hacer los cálculos
+            const superficieTotal = largo * ancho;
+            const superficieConDesperdicio = superficieTotal * 1.10; // Añadimos un 10%
+            const cajasNecesarias = Math.ceil(superficieConDesperdicio / rendimiento); // Redondeamos hacia arriba
+
+            // 4. Mostrar el resultado
+            document.getElementById('result-text').innerText = `${cajasNecesarias} cajas`;
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
