@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enciclopedia de Construcción - Rosso Materiales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+    <style>
+        .glossary-section { padding: 120px 0 64px 0; }
+        .glossary-container { max-width: 900px; margin: 0 auto; padding-inline: 25px; /* <-- AÑADE ESTA LÍNEA */}
+        .glossary-header { text-align: center; margin-bottom: 40px; }
+        .glossary-title { font-size: 2.5rem; font-weight: 800; color: var(--brand); }
+        .glossary-subtitle { font-size: 1.1rem; color: var(--muted); max-width: 60ch; margin: 8px auto 0; }
+        
+        .glossary-controls { display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; }
+        .search-bar { width: 100%; padding: 12px 16px; font-size: 1rem; border-radius: 8px; border: 1px solid #d1d5db; }
+        .filter-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .filter-button { padding: 8px 16px; font-weight: 600; border: 1px solid #d1d5db; background-color: #fff; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
+        .filter-button.active, .filter-button:hover { background-color: var(--brand); color: #fff; border-color: var(--brand); }
+
+        .glossary-letter-group { margin-bottom: 32px; }
+        .glossary-letter-group h3 { font-size: 2rem; font-weight: 800; color: var(--accent); border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; margin-bottom: 24px; }
+
+        .glossary-term { display: grid; grid-template-columns: 1fr; gap: 16px 24px; margin-bottom: 32px; }
+        @media (min-width: 768px) { .glossary-term { grid-template-columns: 200px 1fr; } }
+        .term-image-container { width: 100%; height: 150px; border-radius: var(--radius); overflow: hidden; }
+        .term-image-container img { width: 100%; height: 100%; object-fit: cover; }
+        .term-content { display: flex; flex-direction: column; }
+        .term-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .term-header dt { font-size: 1.75rem; font-weight: 700; color: var(--brand); }
+        .term-category { font-size: 0.8rem; font-weight: 600; color: #fff; background-color: var(--muted); padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+        .term-content dd { font-size: 1rem; line-height: 1.6; color: var(--ink); margin: 0; }
+        .related-terms { margin-top: 16px; padding-top: 16px; border-top: 1px solid #f3f4f6; }
+        .related-terms strong { font-size: 0.9rem; color: var(--muted); }
+        .related-terms a { color: var(--brand); text-decoration: underline; font-size: 0.9rem; margin-left: 8px; }
+    </style>
+</head>
+<body>
+    <header class="main-header"> </header>
+
+    <main>
+        <section class="glossary-section">
+            <div class="glossary-container">
+                <div class="glossary-header">
+                    <h2 class="glossary-title">Enciclopedia de Construcción</h2>
+                    <p class="glossary-subtitle">Navegá, buscá y aprendé. La guía definitiva para entender cada etapa de tu obra.</p>
+                </div>
+
+                <div class="glossary-controls">
+                    <input type="text" id="search-bar" class="search-bar" placeholder="Buscá un término (ej: 'revoque')">
+                    <nav class="filter-nav" id="category-filters">
+                        </nav>
+                </div>
+
+                <dl id="glossary-list">
+                    </dl>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer"> </footer>
+
+    <script>
+        const terms = [
+            { id: 'aditivo', term: 'Aditivo', definition: 'Sustancia que se añade en pequeñas cantidades a materiales como el hormigón o el mortero para modificar sus propiedades, como el tiempo de secado (fraguado), la impermeabilidad o la resistencia.', category: 'Obra Gruesa', image: 'https://i.ibb.co/3cH3N3S/aditivo.jpg', related: ['fraguado', 'hidrofugo'] },
+            { id: 'carpeta', term: 'Carpeta', definition: 'Capa de mortero de cemento y arena que se aplica sobre el contrapiso para crear una superficie perfectamente lisa, nivelada y lista para recibir el revestimiento final.', category: 'Terminaciones', image: 'https://i.ibb.co/L8yP5y8/ceramicos.jpg', related: ['contrapiso', 'revoque'] },
+            { id: 'contrapiso', term: 'Contrapiso', definition: 'Es la primera capa sólida que se coloca sobre el terreno. Se hace con hormigón pobre y su función es nivelar el suelo y servir de base para la carpeta y el piso final.', category: 'Obra Gruesa', image: 'https://i.ibb.co/mH0JzTg/obra-gruesa.jpg', related: ['carpeta', 'viga'] },
+            { id: 'fraguado', term: 'Fraguado', definition: 'Proceso químico de endurecimiento de materiales como el cemento o yeso tras ser mezclados con agua. Es crucial para alcanzar la resistencia final del material.', category: 'Obra Gruesa', image: 'https://i.ibb.co/yQn7L2j/cemento.jpg', related: ['aditivo'] },
+            { id: 'hidrofugo', term: 'Hidrófugo', definition: 'Aditivo impermeabilizante que se mezcla con el mortero para crear una barrera contra la humedad. Es fundamental en cimientos y paredes.', category: 'Obra Gruesa', image: 'https://i.ibb.co/WcWhV5G/hidrofugo.jpg', related: ['aditivo', 'revoque'] },
+            { id: 'pastina', term: 'Pastina', definition: 'Mortero fino y con color que se utiliza para rellenar las juntas entre las piezas de cerámicos o porcelanatos, dándoles una terminación estética y protegiéndolas.', category: 'Terminaciones', image: 'https://i.ibb.co/dJtB1Pb/pastina.jpg', related: ['carpeta'] },
+            { id: 'revoque', term: 'Revoque', definition: 'Revestimiento de mortero que se aplica a las paredes. Se divide en "grueso" para enderezar, y "fino" para dar la terminación lisa final antes de la pintura.', category: 'Terminaciones', image: 'https://i.ibb.co/K2C94k9/revoque.jpg', related: ['hidrofugo', 'carpeta'] },
+            { id: 'viga', term: 'Viga', definition: 'Elemento estructural horizontal, de hormigón armado o acero, diseñado para soportar cargas y transmitirlas a los apoyos verticales como columnas o muros.', category: 'Obra Gruesa', image: 'https://i.ibb.co/L1j63zX/viga.jpg', related: ['contrapiso'] }
+        ];
+
+        const glossaryList = document.getElementById('glossary-list');
+        const searchBar = document.getElementById('search-bar');
+        const categoryFilters = document.getElementById('category-filters');
+        let currentCategory = 'all';
+
+        function getTermById(id) {
+            return terms.find(t => t.id === id);
+        }
+
+        function renderGlossary(filter = '') {
+            glossaryList.innerHTML = '';
+            
+            const filteredTerms = terms.filter(t => 
+                (t.term.toLowerCase().includes(filter.toLowerCase())) &&
+                (currentCategory === 'all' || t.category === currentCategory)
+            );
+            
+            if (filteredTerms.length === 0) {
+                glossaryList.innerHTML = '<p>No se encontraron términos que coincidan con tu búsqueda.</p>';
+                return;
+            }
+
+            const grouped = filteredTerms.reduce((groups, term) => {
+                const letter = term.term[0].toUpperCase();
+                groups[letter] = groups[letter] || [];
+                groups[letter].push(term);
+                return groups;
+            }, {});
+
+            Object.keys(grouped).sort().forEach(letter => {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'glossary-letter-group';
+                
+                let html = `<h3>${letter}</h3>`;
+                grouped[letter].forEach(term => {
+                    const relatedLinks = term.related.map(id => {
+                        const relatedTerm = getTermById(id);
+                        return `<a href="#${relatedTerm.id}">${relatedTerm.term}</a>`;
+                    }).join(', ');
+
+                    html += `
+                        <div class="glossary-term" id="${term.id}">
+                            <div class="term-image-container">
+                                <img src="${term.image}" alt="${term.term}" loading="lazy">
+                            </div>
+                            <div class="term-content">
+                                <div class="term-header">
+                                    <dt>${term.term}</dt>
+                                    <span class="term-category">${term.category}</span>
+                                </div>
+                                <dd>${term.definition}</dd>
+                                <div class="related-terms">
+                                    <strong>Ver también:</strong> ${relatedLinks}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                groupDiv.innerHTML = html;
+                glossaryList.appendChild(groupDiv);
+            });
+        }
+
+        function renderCategoryFilters() {
+            const categories = ['all', ...new Set(terms.map(t => t.category))];
+            categories.forEach(cat => {
+                const button = document.createElement('button');
+                button.className = 'filter-button';
+                button.innerText = cat === 'all' ? 'Ver Todos' : cat;
+                if (cat === 'all') button.classList.add('active');
+                
+                button.addEventListener('click', () => {
+                    currentCategory = cat;
+                    document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    renderGlossary(searchBar.value);
+                });
+                categoryFilters.appendChild(button);
+            });
+        }
+
+        searchBar.addEventListener('input', (e) => renderGlossary(e.target.value));
+
+        // Carga inicial
+        renderCategoryFilters();
+        renderGlossary();
+    </script>
+</body>
+</html>
