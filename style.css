@@ -22,7 +22,7 @@ html:focus-within {
 body {
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
     Arial, sans-serif;
-  background: var(--surface); /* <--- CAMBIO AQUÍ */
+  background: var(--bg);
   color: var(--ink);
   overflow-x: hidden;
 }
@@ -235,8 +235,7 @@ a {
 
 /* Sections */
 .main-sections {
-  padding-bottom: 30px;
-  padding-bottom: 64px;
+  padding-block: 64px;
   background: var(--surface);
 }
 .cards-grid {
@@ -270,7 +269,6 @@ a {
   display: flex;
   flex-direction: column;
   text-align: center;
-  
 }
 .card-image-container {
   display: grid;
@@ -283,7 +281,6 @@ a {
   max-height: 190px;
   aspect-ratio: 16/10;
   object-fit: contain;
-  margin: 6px;
 }
 .card-content {
   background: var(--card);
@@ -291,10 +288,12 @@ a {
   box-shadow: var(--shadow);
   padding: 24px;
   padding-top: 96px;
-  /* transition: box-shadow 0.3s; */ /* <-- ELIMINA O COMENTA ESTA LÍNEA */
-  flex-grow: 1; 
+  transition: box-shadow 0.3s;
+  flex-grow: 1; /* <-- Agregá esta línea */
 }
-
+.card-link:hover .card-content {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
 .card-content h3 {
   font-size: 1.25rem;
   font-weight: 800;
@@ -320,7 +319,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Se elimina la línea "background-color: #fff;" */
+  background-color: #fff;
 }
 
 .slide.split-layout .slide-split-text {
@@ -547,8 +546,7 @@ a {
 
 /* ===== SECCIÓN DE LOGOS (NUEVO CÓDIGO) ===== */
 .partners-section {
-  padding-top:  0px;
-  padding-bottom:  50px;
+  padding-block: 64px;
   text-align: center;
 }
 
@@ -563,7 +561,7 @@ a {
   color: var(--muted);
   max-width: 50ch;
   margin-inline: auto;
-  margin-bottom: 8px;
+  margin-bottom: 48px;
 }
 
 .logo-ticker {
@@ -592,7 +590,7 @@ a {
   gap: 48px; /* Espacio entre logos */
   width: max-content;
   align-items: center;
-  animation: scroll 75s linear infinite;
+  animation: scroll 25s linear infinite;
 }
 
 .logo-track:hover {
@@ -603,9 +601,7 @@ a {
   height: 60px; /* Tamaño de los logos */
   max-width: 170px;
   object-fit: contain;
-   
-  /* Logos en blanco y negro */
-  /* filter: grayscale(100%); */
+   /* Logos en blanco y negro */
   opacity: 1;
   transition: all 0.3s ease;
 }
@@ -625,103 +621,4 @@ a {
     /* Mueve el carrusel la mitad de su ancho total */
     transform: translateX(calc(-50% - 24px)); /* 24px es la mitad del gap */
   }
-}
-
-.aaa {   /* DEGRADE BLANCO A LOS COSTADOS DEL WIDGGET DE INSTA */
- 
-  /* Efecto de desvanecido en los bordes */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    white 20%,
-    white 80%,
-    transparent
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    white 20%,
-    white 80%,
-    transparent
-  );
-}
-
-@media (min-width: 1024px) {
-  .container-wide {
-    width: 95%; /* Aumentamos el ancho del 90% al 95% para reducir los márgenes */
-    max-width: 1400px; /* Opcional: aumentamos el ancho máximo para pantallas grandes */
-  }
-}
-
-/* ===== ANIMACIONES DUALES PARA SLIDER (NUEVO CÓDIGO) ===== */
-
-/* 1. Definimos la animación de entrada desde la izquierda */
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* 2. Definimos la animación de entrada desde la derecha */
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px); /* Empieza 30px a la derecha */
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0); /* Termina en su posición original */
-  }
-}
-
-/* 3. Ocultamos ambos bloques si el slide no está activo */
-.slide:not(.active) .slide-split-text,
-.slide:not(.active) .slide-split-image {
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* 4. Aplicamos las animaciones cuando el slide se activa */
-.slide.active .slide-split-text {
-  visibility: visible;
-  animation: fadeInLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.slide.active .slide-split-image {
-  visibility: visible;
-  animation: fadeInRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-/* ===== AJUSTE DE PADDING PARA SLIDER EN VERSIÓN WEB (NUEVO CÓDIGO) ===== */
-@media (min-width: 1024px) {
-  .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-    /* Se elimina max-width y margin-inline para que ocupe todo el contenedor */
-  }
-
-  .card-image {
-    max-height: 210px;
-  }
-}
-
-
-/* ===== ANIMACIÓN DE ZOOM PARA IMÁGENES DE TARJETAS (NUEVO CÓDIGO) ===== */
-
-/* Hacemos que la imagen tenga una transición suave */
-.card-image {
-  transition: transform 0.4s ease;
-}
-
-/* Le decimos al contenedor de la imagen que oculte lo que se desborde */
-.card-image-container {
-  overflow: hidden;
-}
-
-/* Aplicamos el efecto de escala (zoom) cuando el mouse está sobre el link */
-.card-link:hover .card-image {
-  transform: scale(1.1); /* Aumentamos la escala de la imagen en un 10% */
 }
