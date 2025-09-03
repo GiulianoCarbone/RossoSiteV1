@@ -25,6 +25,10 @@ body {
   background: var(--surface); /* <--- CAMBIO AQUÍ */
   color: var(--ink);
   overflow-x: hidden;
+  /* --- AÑADE ESTAS TRES LÍNEAS --- */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 img {
   max-width: 100%;
@@ -41,6 +45,9 @@ a {
 }
 
 /* Header */
+main {
+  flex-grow: 1; /* <-- AÑADE ESTA LÍNEA */
+}
 .main-header {
   position: fixed;
   inset-inline: 0;
@@ -65,13 +72,29 @@ a {
 .nav-links {
   display: none;
   gap: 24px;
+  
 }
 .nav-links a {
-  color: #374151;
+  color: #272e68;
   font-weight: 500;
+  /* --- AÑADE ESTAS TRES LÍNEAS --- */
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre el icono y el texto */
 }
+/* Color para los iconos del menú (NUEVO) */
+.nav-links a i {
+  color: var(--accent); /* Usamos la variable de color naranja que ya tienes definida */
+  transition: transform 0.3s ease; /* <-- AÑADE ESTA LÍNEA */
+}
+.nav-links a:hover i {
+  transform: translateY(-3px) scale(1.1); /* Mueve el icono 3px hacia arriba y lo agranda un 10% */
+}
+
+
 .nav-links a:hover {
   color: var(--accent);
+  
 }
 
 .mobile-menu-btn {
@@ -117,7 +140,7 @@ a {
   margin-top: var(--header-h); /* <-- UNA SOLA VEZ */
   position: relative;
   isolation: isolate;
-  height: 60vh;
+  height: 70vh;
   overflow: hidden;
   display: grid;
 }
@@ -726,4 +749,178 @@ a {
 /* Aplicamos el efecto de escala (zoom) cuando el mouse está sobre el link */
 .card-link:hover .card-image {
   transform: scale(1.1); /* Aumentamos la escala de la imagen en un 10% */
+}
+/* ====== Estilos para Menú Desplegable (NUEVO) ====== */
+
+/* Contenedor principal del menú */
+.dropdown {
+  position: relative; /* Clave para que el menú se posicione correctamente */
+  display: inline-block;
+}
+
+/* Estilo para el botón "Utilidades" */
+.dropdown-toggle {
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer; /* Cambia el cursor para que parezca un botón */
+}
+
+/* Contenedor de los enlaces del submenú (oculto por defecto) */
+.dropdown-menu {
+  display: none; /* Oculto hasta que pasemos el mouse por encima */
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 100;
+  border-radius: 8px;
+  overflow: hidden; /* Para que los bordes redondeados se apliquen a los links */
+}
+
+/* Estilo para los enlaces dentro del menú */
+.dropdown-menu a {
+  color: #1f2937;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Cambia el color del enlace al pasar el mouse por encima */
+.dropdown-menu a:hover {
+  background-color: #f1f1f1;
+  color: var(--accent); /* Usa el color de acento de tu marca */
+}
+
+/* Muestra el menú desplegable cuando se pasa el mouse sobre el contenedor */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+/* ====== Estilos para Menú Desplegable Móvil (NUEVO) ====== */
+
+/* Aseguramos que el contenedor del dropdown ocupe todo el ancho */
+#mobile-menu .dropdown {
+  width: 100%;
+}
+
+/* Hacemos que el botón "Utilidades" se vea igual que los otros links del menú */
+#mobile-menu .dropdown-toggle {
+  display: block;
+  padding: 12px 20px;
+  color: #1f244f;
+  text-align: right;
+  width: 100%;
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: none;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+#mobile-menu .dropdown-toggle:hover {
+  background: #f3f4f6;
+}
+
+/* El submenú en móvil no debe ser flotante */
+#mobile-menu .dropdown-menu {
+  position: static; /* No es absoluto como en desktop */
+  display: none; /* Oculto por defecto */
+  box-shadow: none;
+  border-radius: 0;
+  min-width: unset;
+  background-color: #f9fafb; /* Un color de fondo ligeramente diferente */
+}
+
+/* Estilo para los links del submenú */
+#mobile-menu .dropdown-menu a {
+  padding-right: 30px; /* Un poco más de padding para que se vea anidado */
+  font-size: 0.9em; /* Letra un poco más pequeña */
+}
+
+/* Cuando el dropdown esté abierto, muestra el menú */
+#mobile-menu .dropdown.open .dropdown-menu {
+  display: block;
+}
+/* ====== Estilos para Página Nosotros (ACTUALIZADO) ====== */
+
+.about-section {
+  /* Hacemos que la sección ocupe al menos toda la altura de la pantalla */
+  min-height: calc(100vh - 180px); /* 100% de la altura de la vista - la altura del header y footer */
+  
+  /* Centramos el contenido vertical y horizontalmente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  padding: 40px 0; /* Espaciado interno */
+}
+
+.about-container {
+  max-width: 900px; /* Aumentamos el ancho máximo para que el video sea más grande */
+  width: 90%; /* Aseguramos que se vea bien en pantallas más pequeñas */
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--brand);
+  margin-bottom: 16px;
+}
+
+.about-subtitle {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-bottom: 40px;
+  max-width: 60ch; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.video-responsive {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; 
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.video-responsive iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+/* ====== Estilos específicos para la página Nosotros (NUEVO) ====== */
+
+/* Le decimos al body de la página "Nosotros" que sea flexible */
+.page-nosotros {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Hacemos que el main de "Nosotros" crezca para ocupar el espacio */
+.page-nosotros main {
+  flex-grow: 1;
+  display: flex; /* Añadimos flex para poder centrar la sección */
+}
+
+/* Y ahora centramos la sección .about-section dentro del main */
+.page-nosotros .about-section {
+  width: 100%; /* Ocupa todo el ancho del main */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
 }

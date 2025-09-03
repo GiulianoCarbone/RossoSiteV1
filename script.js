@@ -9,10 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Cerrar al hacer click en un enlace (mejora UX)
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    menu.classList.remove('show');
-    btn.setAttribute('aria-expanded', 'false');
-  }));
+menu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', (event) => {
+    // VERIFICAMOS: Solo cerramos el menú si el enlace que tocamos NO es un desplegable.
+    if (!a.classList.contains('dropdown-toggle')) {
+      menu.classList.remove('show');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+});
 
   // ====== Slider ======
   const slides = Array.from(document.querySelectorAll('.slide'));
@@ -113,4 +118,25 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // También lo re-calculamos si cambia el tamaño de la ventana
   window.addEventListener('resize', coverElfsightWatermark);
+});
+
+// ====== Dropdown en menú móvil (NUEVO) ======
+// Seleccionamos todos los botones de dropdown que estén DENTRO del menú móvil
+const mobileDropdownToggles = document.querySelectorAll('#mobile-menu .dropdown-toggle');
+
+// Recorremos cada botón encontrado
+mobileDropdownToggles.forEach(toggle => {
+  // Le añadimos un evento de 'click'
+  toggle.addEventListener('click', (event) => {
+    // Prevenimos que el enlace '#' nos lleve al inicio de la página
+    event.preventDefault(); 
+    
+    // Buscamos el elemento padre con la clase 'dropdown'
+    const dropdown = toggle.closest('.dropdown');
+    
+    // Si lo encontramos, le añadimos o quitamos la clase 'open'
+    if (dropdown) {
+      dropdown.classList.toggle('open');
+    }
+  });
 });
