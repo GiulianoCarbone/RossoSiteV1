@@ -283,6 +283,7 @@ a {
   max-height: 190px;
   aspect-ratio: 16/10;
   object-fit: contain;
+  margin: 6px;
 }
 .card-content {
   background: var(--card);
