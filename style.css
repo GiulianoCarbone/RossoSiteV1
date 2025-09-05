@@ -924,3 +924,35 @@ main {
   padding: 40px 20px;
   box-sizing: border-box;
 }
+
+/* ===== Botón Volver Arriba (Back to Top) ===== */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 80px; /* Mantenemos la altura para que no se superponga */
+  right: 25px;
+  display: none; /* Oculto por defecto */
+  width: 40px;
+  height: 40px;
+  background-color: var(--accent); /* Fondo azul de tu marca */
+  color: #fff; /* Flecha blanca */
+  border: none; /* Quitamos el borde */
+  border-radius: 50%;
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.back-to-top-btn.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.back-to-top-btn:hover {
+  background-color: var(--brand); /* Cambia a naranja al pasar el mouse */
+  cursor: pointer;
+}
+

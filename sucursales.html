@@ -96,6 +96,64 @@
           opacity: 0;
         }
       }
+
+      /* ===== Horarios Desplegable Estético (v2) ===== */
+.horarios-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #ec6434;
+    color: #fff;
+    padding: 1px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    user-select: none;
+    /* margin-top: 6px; */ /* <--- ELIMINA ESTA LÍNEA */
+}
+.horarios-toggle:hover {
+    background-color: #d95324; /* Naranja un poco más oscuro */
+}
+.horarios-toggle .icon {
+    transition: transform 0.3s ease-in-out;
+    width: 0.7rem;
+    height: 0.7rem;
+}
+.horarios-detalle {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    margin-top: 10px;
+    padding: 8px 12px;
+}
+.horarios-detalle ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+.horarios-detalle li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem; /* Tamaño más chico */
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.horarios-detalle li:last-child {
+    border-bottom: none;
+}
+.horarios-detalle li span:first-child {
+    color: #4b5563; /* Día en color gris */
+    font-weight: 500;
+}
+.horarios-detalle li span:last-child {
+    color: #272e68; /* Horario en azul de tu marca */
+    font-weight: 500;
+}
+.horarios-detalle li.today span {
+    font-weight: 700;
+    color: #1f244f; /* Azul más oscuro para el día de hoy */
+}
     </style>
   </head>
   <body class="bg-gray-100 h-screen flex flex-col">
@@ -585,7 +643,33 @@
           },
         },
       ];
-
+// --- FUNCIÓN PARA FORMATEAR HORARIOS ---
+const formatSchedule = (schedule) => {
+    const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+    const todayIndex = new Date().getDay();
+    let html = '<ul>';
+    // Lunes a Sábado
+    for (let i = 1; i <= 6; i++) {
+        const dayHours = schedule[i];
+        const isToday = i === todayIndex;
+        html += `<li class="${isToday ? 'today' : ''}">`;
+        html += `<span>${days[i]}</span>`;
+        if (dayHours) {
+            let hoursText = `${dayHours.am_open} - ${dayHours.am_close}`;
+            if (dayHours.pm_open) {
+                hoursText += ` &nbsp;•&nbsp; ${dayHours.pm_open} - ${dayHours.pm_close}`;
+            }
+            html += `<span>${hoursText}</span>`;
+        } else {
+            html += '<span>Cerrado</span>';
+        }
+        html += '</li>';
+    }
+    // Domingo
+    html += `<li class="${todayIndex === 0 ? 'today' : ''}"><span>Domingo</span><span>Cerrado</span></li>`;
+    html += '</ul>';
+    return html;
+};
       // --- INICIALIZACIÓN Y ELEMENTOS DEL DOM ---
       const map = L.map("map").setView([-26.5, -65.3], 8);
       L.tileLayer(
@@ -744,51 +828,87 @@
         }
       };
 
-      const renderStores = (storeData) => {
-        markersLayer.clearLayers();
-        storeListContainer.innerHTML = "";
-        if (storeData.length === 0)
-          storeListContainer.innerHTML = `<div class="p-4 text-center text-gray-500">No se encontraron sucursales.</div>`;
-        storeData.forEach((store) => {
-          const statusInfo = getStoreStatus(store.schedule);
-          store.status = statusInfo.status;
-          store.statusColor = statusInfo.statusColor;
-          const distanceText = store.distance
-            ? `<strong class="text-blue-900">${store.distance.toFixed(
-                1
-              )} km</strong>`
-            : "";
-          const animatedIcon = L.divIcon({
+const renderStores = (storeData) => {
+    markersLayer.clearLayers();
+    storeListContainer.innerHTML = "";
+    if (storeData.length === 0)
+        storeListContainer.innerHTML = `<div class="p-4 text-center text-gray-500">No se encontraron sucursales.</div>`;
+    
+    storeData.forEach((store) => {
+        const statusInfo = getStoreStatus(store.schedule);
+        store.status = statusInfo.status;
+        store.statusColor = statusInfo.statusColor;
+        const distanceText = store.distance ? `<strong class="text-blue-900">${store.distance.toFixed(1)} km</strong>` : "";
+        const animatedIcon = L.divIcon({
             className: "animated-marker",
             html: `<div class="pulse"></div><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#EA580C"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.5 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>`,
             iconSize: [36, 36],
             iconAnchor: [18, 36],
-          });
-          const marker = L.marker([store.lat, store.lng], {
-            icon: animatedIcon,
-          });
-          marker.on("click", () => {
-            document.getElementById(`store-${store.id}`).click();
-          });
-          markersLayer.addLayer(marker);
-          const storeElement = document.createElement("div");
-          storeElement.id = `store-${store.id}`;
-          storeElement.className =
-            "store-item p-4 border-b cursor-pointer hover:bg-gray-50 transition-colors duration-200 flex space-x-4";
-          // --- LÍNEA DE ESTADO MODIFICADA EN LA LISTA ---
-          storeElement.innerHTML = `<img src="${store.imageUrl}" alt="Foto de ${store.name}" class="w-20 h-24 object-cover rounded-md flex-shrink-0" onerror="this.onerror=null;this.src='https://placehold.co/200x200/cccccc/ffffff?text=...';"><div class="text-sm"><h2 class="font-semibold text-blue-900">${store.name}</h2><p>${distanceText} <span class="text-gray-500">•</span> <span class="${store.statusColor} font-semibold">${store.status}</span></p><p class="text-gray-500">${store.address}</p><p class="text-gray-500">${store.phone}</p><a href="https://${store.websiteUrl}" target="_blank" class="text-gray-500 hover:underline">${store.websiteUrl}</a></div>`;
-          storeElement.addEventListener("click", () => {
+        });
+        const marker = L.marker([store.lat, store.lng], { icon: animatedIcon });
+        marker.on("click", () => { document.getElementById(`store-${store.id}`).click(); });
+        markersLayer.addLayer(marker);
+
+        const storeElement = document.createElement("div");
+        storeElement.id = `store-${store.id}`;
+        storeElement.className = "store-item p-4 border-b hover:bg-gray-50 transition-colors duration-200";
+        
+        const horariosHTML = formatSchedule(store.schedule);
+
+        storeElement.innerHTML = `
+            <div class="flex space-x-4">
+                <img src="${store.imageUrl}" alt="Foto de ${store.name}" class="w-20 h-24 object-cover rounded-md flex-shrink-0" onerror="this.onerror=null;this.src='https://placehold.co/200x200/cccccc/ffffff?text=...';">
+                <div class="text-sm flex-grow">
+                    <h2 class="font-semibold text-blue-900 cursor-pointer">${store.name}</h2>
+                    <p class="cursor-pointer">
+                        ${distanceText} <span class="text-gray-500">•</span> 
+                        <span class="${store.statusColor} font-semibold">${store.status}</span>
+                    </p>
+                    <p class="text-gray-500 cursor-pointer text-xs mt-1">${store.address}</p>
+                    
+                    <div class="flex items-center justify-between mt-1 md:mt-2">
+                        <p class="text-gray-500 cursor-pointer text-xs m-0">${store.phone}</p>
+                        <span class="horarios-toggle">
+                            Ver horarios
+                            <svg class="icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="horarios-wrapper" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out;">
+                <div class="horarios-detalle">
+                    ${horariosHTML}
+                </div>
+            </div>
+        `;
+        
+        storeElement.addEventListener("click", (e) => {
+            if (e.target.closest('.horarios-toggle')) return; 
             map.flyTo([store.lat, store.lng], 15);
             openDetailPanel(store);
-            document
-              .querySelectorAll(".store-item")
-              .forEach((el) => el.classList.remove("bg-gray-100"));
+            document.querySelectorAll(".store-item").forEach((el) => el.classList.remove("bg-gray-100"));
             storeElement.classList.add("bg-gray-100");
-          });
-          storeListContainer.appendChild(storeElement);
         });
-      };
 
+        storeListContainer.appendChild(storeElement);
+        
+        const horariosToggle = storeElement.querySelector('.horarios-toggle');
+        const horariosWrapper = storeElement.querySelector('.horarios-wrapper');
+        const icon = horariosToggle.querySelector('.icon');
+
+        horariosToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            const isOpen = horariosWrapper.style.maxHeight !== '0px';
+            if (isOpen) {
+                horariosWrapper.style.maxHeight = '0px';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                horariosWrapper.style.maxHeight = horariosWrapper.scrollHeight + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        });
+    });
+};
       // --- LÓGICA PRINCIPAL Y EVENTOS ---
       const filterStores = () => {
         const searchTerm = searchBox.value.toLowerCase();
