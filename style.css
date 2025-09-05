@@ -956,3 +956,17 @@ main {
   cursor: pointer;
 }
 
+.mobile-menu a {
+  display: flex;
+  justify-content: flex-end; /* Alinea el contenido a la derecha */
+  align-items: center;     /* Centra verticalmente el ícono y el texto */
+  gap: 8px;                /* Crea un espacio entre el ícono y el texto */
+}
+
+#mobile-menu a i {
+  color: var(--accent); /* Pinta el ícono con el color naranja de tu marca */
+}
+/* ===== Color para el ícono del menú hamburguesa ===== */
+.mobile-menu-btn .menu-icon {
+  color: var(--accent); /* Pinta el ícono con el color naranja de tu marca */
+}
