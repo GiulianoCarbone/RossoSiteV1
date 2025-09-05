@@ -905,6 +905,13 @@ const renderStores = (storeData) => {
             } else {
                 horariosWrapper.style.maxHeight = horariosWrapper.scrollHeight + 'px';
                 icon.style.transform = 'rotate(180deg)';
+                
+                // ===== LA MAGIA ESTÁ AQUÍ =====
+                // Esperamos un poquito a que la animación de abrir empiece
+                // y luego hacemos scroll para que se vea.
+                setTimeout(() => {
+                    storeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 300); // 300 milisegundos
             }
         });
     });
