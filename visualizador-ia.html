@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visualizador IA Funcional - Rosso Materiales</title>
+    <link href="assets/FAV.png" rel="icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link href="style.css" rel="stylesheet" />
+    <style>
+        .visualizer-section { padding: 120px 20px 64px; background-color: #f0f2f5; }
+        .visualizer-container { max-width: 1200px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-title { font-size: 2.8rem; font-weight: 800; color: var(--brand); }
+        .section-subtitle { font-size: 1.2rem; color: var(--muted); max-width: 65ch; margin: 10px auto 0; }
+        .visualizer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .config-column, .result-column { display: flex; flex-direction: column; gap: 30px; }
+        .step-card { background: #fff; padding: 25px 30px; border-radius: 12px; box-shadow: var(--shadow); }
+        .step-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .step-number { background: var(--brand); color: #fff; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 1.5rem; font-weight: 700; }
+        .step-title { font-size: 1.4rem; font-weight: 700; color: var(--brand); margin: 0; }
+        .surface-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .surface-option { border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+        .surface-option svg { width: 48px; height: 48px; }
+        .surface-option span { font-weight: 600; font-size: 1.1rem; }
+        .surface-option:hover { border-color: var(--brand); }
+        .surface-option.selected { border-color: var(--accent); background-color: #fef5f2; box-shadow: 0 0 0 2px rgba(236, 100, 52, 0.3); }
+        .product-gallery { max-height: 250px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; padding: 5px; }
+        .product-item { border: 2px solid transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; overflow: hidden; }
+        .product-item img{ display:block; width:100%; }
+        .product-item.selected { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(236, 100, 52, 0.3); }
+        #image-preview-container { text-align: center; }
+        #image-preview { max-width: 100%; max-height: 200px; border-radius: 8px; margin-top: 15px; }
+        #results-gallery { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .result-card { background: #fff; border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+        .result-card img { width: 100%; display: block; }
+        .result-info { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #f9fafb; }
+        .result-info p { font-weight: 600; color: var(--brand); margin: 0; }
+        .result-card .quote-button { padding: 8px 12px; font-size: 0.9rem; background: var(--accent); color:#fff; border-radius: 8px; font-weight:600; text-decoration: none; }
+        .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
+        #generate-btn { flex-grow: 1; display: flex; justify-content: center; align-items: center; gap: 10px; background-color: var(--brand); color:#fff; }
+        #clear-btn { background: #6c757d; color:#fff; padding: 0 20px; }
+        #generate-btn .fa-spinner { display: none; }
+        #generate-btn.loading .fa-spinner { display: inline-block; animation: spin 1s linear infinite; }
+        #generate-btn.loading .btn-text { margin-left: -15px; }
+        #generate-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @media (max-width: 900px) { .visualizer-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<header class="main-header" role="banner">
+     <nav class="main-nav container" aria-label="Primaria"><a href="index.html" class="logo" aria-label="Ir al inicio"><img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" /></a><div class="nav-links" id="nav-links"><a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a><a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a><a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a><a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a><div class="dropdown"><a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a><div class="dropdown-menu"><a href="calculadora.html">Calculá los m²</a><a href="checklist.html">Checklist de Materiales</a><a href="glosario.html">Glosario</a><a href="visualizador-ia.html">Visualizador IA</a></div></div></div><button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú"><svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button><div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú"></div></nav>
+</header>
+
+<main>
+<section class="visualizer-section">
+    <div class="visualizer-container">
+        <div class="section-header">
+            <h1 class="section-title">Visualizador IA</h1>
+            <p class="section-subtitle">Tu proyecto, hecho realidad. Seguí estos 4 simples pasos y creá el diseño perfecto para tu hogar.</p>
+        </div>
+
+        <div class="visualizer-grid">
+            <div class="config-column">
+                <div class="step-card">
+                    <div class="step-header"><div class="step-number">1</div><h2 class="step-title">¿Qué querés renovar?</h2></div>
+                    <div class="surface-selector">
+                        <div class="surface-option" data-surface="floor">
+                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 54L2 24H62L56 54H8Z" stroke="#EC6434" stroke-width="3"/><path d="M32 24V54" stroke="#EC6434" stroke-width="2.5"/><path d="M17 24L25 54" stroke="#EC6434" stroke-width="2.5"/><path d="M47 24L39 54" stroke="#EC6434" stroke-width="2.5"/><path d="M4 39H60" stroke="#EC6434" stroke-width="2.5"/></svg>
+                            <span>Piso</span>
+                        </div>
+                        <div class="surface-option" data-surface="wall">
+                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10" width="54" height="44" stroke="#EC6434" stroke-width="3"/><line x1="5" y1="28" x2="59" y2="28" stroke="#EC6434" stroke-width="2.5"/><line x1="5" y1="42" x2="59" y2="42" stroke="#EC6434" stroke-width="2.5"/><line x1="32" y1="10" x2="32" y2="28" stroke="#EC6434" stroke-width="2.5"/><line x1="18" y1="28" x2="18" y2="42" stroke="#EC6434" stroke-width="2.5"/><line x1="46" y1="28" x2="46" y2="42" stroke="#EC6434" stroke-width="2.5"/><line x1="32" y1="42" x2="32" y2="54" stroke="#EC6434" stroke-width="2.5"/></svg>
+                            <span>Pared</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-header"><div class="step-number">2</div><h2 class="step-title">Elegí el Revestimiento</h2></div>
+                    <div class="product-gallery">
+                        <div class="product-item" data-product-id="calacata"><img src="assets/bilboanatural51x51caraweb.jpg" alt="Calacata Gold"></div>
+                        <div class="product-item" data-product-id="madera"><img src="assets/bilboanatural51x51caraweb.jpg" alt="Símil Madera"></div>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-header"><div class="step-number">3</div><h2 class="step-title">Subí tu Foto</h2></div>
+                    <div id="upload-area" class="upload-area"><p>Arrastrá y soltá una imagen o hacé clic</p><input type="file" id="image-upload" hidden accept="image/*"></div>
+                    <div id="image-preview-container"><img id="image-preview" src="#" alt="Vista previa" style="display: none;" /></div>
+                </div>
+            </div>
+            <div class="result-column">
+                <div class="step-card">
+                    <div class="step-header"><div class="step-number">4</div><h2 class="step-title">¡Creá y Compará!</h2></div>
+                    <p>Hacé clic en "Generar Diseño" para ver la magia. Podés crear varias versiones con distintos productos.</p>
+                    <div class="action-buttons">
+                        <button id="generate-btn" class="generate-button"><i class="fas fa-spinner"></i><span class="btn-text">Generar Diseño</span></button>
+                        <button id="clear-btn" class="generate-button" title="Empezar de nuevo"><i class="fa-solid fa-eraser"></i></button>
+                    </div>
+                </div>
+                 <div class="step-card">
+                    <div class="step-header"><h2 class="step-title">Mis Diseños</h2></div>
+                    <div id="results-gallery">
+                        <p id="results-placeholder">Tus diseños generados aparecerán aquí.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+<footer class="main-footer"><div class="container"><p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p></div></footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Base de datos de productos (puedes ampliarla)
+    const productsData = {
+        'calacata': { name: 'Porcelanato Calacata Gold', image: 'assets/SLIDER2/revestimientos2.jpg' },
+        'madera': { name: 'Cerámica Símil Madera', image: 'assets/SLIDER2/revestimientos.jpg' }
+    };
+
+    let selectedSurface = null;
+    let selectedProductId = null;
+    let userImageFile = null; // Guardaremos el archivo de imagen
+
+    // --- PASO 1: SELECCIÓN DE SUPERFICIE ---
+    document.querySelectorAll('.surface-option').forEach(option => {
+        option.addEventListener('click', () => {
+            document.querySelectorAll('.surface-option').forEach(o => o.classList.remove('selected'));
+            option.classList.add('selected');
+            selectedSurface = option.dataset.surface;
+        });
+    });
+
+    // --- PASO 2: SELECCIÓN DE PRODUCTO ---
+    document.querySelectorAll('.product-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.product-item').forEach(p => p.classList.remove('selected'));
+            item.classList.add('selected');
+            selectedProductId = item.dataset.productId;
+        });
+    });
+
+    // --- PASO 3: CARGA DE IMAGEN ---
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('image-upload');
+    const imagePreview = document.getElementById('image-preview');
+
+    uploadArea.addEventListener('click', () => fileInput.click());
+    
+    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.borderColor = 'var(--brand)'; });
+    uploadArea.addEventListener('dragleave', () => { uploadArea.style.borderColor = '#d1d5db'; });
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#d1d5db';
+        const files = e.dataTransfer.files;
+        if (files.length) {
+            handleFile(files[0]);
+        }
+    });
+
+    fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+
+    function handleFile(file) {
+        if (file && file.type.startsWith('image/')) {
+            userImageFile = file; // Guardamos el archivo
+            const reader = new FileReader();
+            reader.onload = e => {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+                uploadArea.querySelector('p').style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            alert('Por favor, seleccioná un archivo de imagen válido.');
+            userImageFile = null;
+        }
+    }
+
+    // --- PASO 4: GENERAR Y MOSTRAR RESULTADOS ---
+    const generateBtn = document.getElementById('generate-btn');
+    const resultsGallery = document.getElementById('results-gallery');
+
+    generateBtn.addEventListener('click', () => {
+        if (!selectedSurface) { alert('Paso 1: Por favor, elegí si vas a renovar un piso o una pared.'); return; }
+        if (!selectedProductId) { alert('Paso 2: No te olvides de seleccionar un revestimiento.'); return; }
+        if (!userImageFile) { alert('Paso 3: ¡Falta la foto de tu ambiente!'); return; }
+
+        generateBtn.classList.add('loading');
+        generateBtn.disabled = true;
+        generateBtn.querySelector('.btn-text').textContent = 'Procesando...';
+
+        const formData = new FormData();
+        formData.append('userImageFile', userImageFile);
+        formData.append('productId', selectedProductId);
+        formData.append('surfaceType', selectedSurface);
+
+        const API_ENDPOINT = "http://127.0.0.1:5000/generate-design";
+
+        fetch(API_ENDPOINT, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.error || 'Error desconocido del servidor.') });
+            }
+            return response.json();
+        })
+        .then(data => {
+            const product = productsData[selectedProductId];
+            const resultImageUrl = data.result_url; 
+            
+            const placeholder = document.getElementById('results-placeholder');
+            if (placeholder) { placeholder.style.display = 'none'; }
+            
+            const resultCardHTML = `
+                <div class="result-card">
+                    <img src="${resultImageUrl}" alt="Diseño con ${product.name}">
+                    <div class="result-info">
+                        <p>Diseño con: <strong>${product.name}</strong></p>
+                        <a href="https://wa.me/5493814146917?text=Hola,%20quisiera%20un%20presupuesto%20para%20este%20diseño%20con%20el%20producto%20${product.name}" target="_blank" class="quote-button">Pedir Presupuesto</a>
+                    </div>
+                </div>`;
+            resultsGallery.insertAdjacentHTML('beforeend', resultCardHTML);
+        })
+        .catch(error => {
+            console.error('Error en la llamada a la IA:', error);
+            alert(`Hubo un problema al generar el diseño: ${error.message}`);
+        })
+        .finally(() => {
+            generateBtn.classList.remove('loading');
+            generateBtn.disabled = false;
+            generateBtn.querySelector('.btn-text').textContent = 'Generar Diseño';
+        });
+    });
+
+    // --- BOTÓN LIMPIAR ---
+    document.getElementById('clear-btn').addEventListener('click', () => {
+        selectedSurface = null;
+        selectedProductId = null;
+        userImageFile = null;
+        document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+        imagePreview.style.display = 'none';
+        uploadArea.querySelector('p').style.display = 'block';
+        fileInput.value = '';
+        resultsGallery.innerHTML = '<p id="results-placeholder">Tus diseños generados aparecerán aquí.</p>';
+    });
+});
+</script>
+<script src="script.js"></script> 
+</body>
+</html>

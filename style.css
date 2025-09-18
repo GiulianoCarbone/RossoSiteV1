@@ -970,3 +970,39 @@ main {
 .mobile-menu-btn .menu-icon {
   color: var(--accent); /* Pinta el ícono con el color naranja de tu marca */
 }
+
+/* ===== ESTILOS PARA SLIDER CON DESPLAZAMIENTO HORIZONTAL ===== */
+#horizontal-slider {
+  position: relative;
+  overflow: hidden; /* Oculta los slides que están fuera de la vista */
+}
+
+.horizontal-slider-container {
+  display: flex; /* Pone las imágenes en fila */
+  transition: transform 0.5s ease-in-out; /* La animación del desplazamiento */
+}
+
+.horizontal-slide {
+  flex: 0 0 100%; /* Cada slide ocupa el 100% del ancho */
+  min-width: 100%;
+}
+
+/* ===== AJUSTE DE FONDO PARA SECCIÓN INSTAGRAM (NUEVO) ===== */
+.instagram-container {
+  background-color: var(--surface);
+  padding-top: 20px; /* Le da un poco de aire arriba */
+}
+
+/* ===== AJUSTE ALTURA SLIDER HORIZONTAL EN MÓVIL (CORREGIDO) ===== */
+@media (max-width: 768px) {
+  #horizontal-slider {
+    height: 177px !important; /* Aumentamos la altura y forzamos el estilo */
+  }
+
+  .horizontal-slide img {
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
