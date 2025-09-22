@@ -43,9 +43,9 @@
         <div class="dropdown">
           <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
           <div class="dropdown-menu">
-            <a href="calculadora.html">Calculá los m²</a>
-            <a href="checklist.html">Checklist de Materiales</a>
-            <a href="glosario.html">Glosario</a>
+            <a href="/calculadora">Calculá los m²</a>
+            <a href="/checklist">Checklist de Materiales</a>
+            <a href="/glosario">Glosario</a>
           </div>
         </div>
       </div>
@@ -261,9 +261,12 @@
 </h3>
     
     <form id="newsletter-form-ajax" class="newsletter-form" action="https://rossomateriales1.ipzmarketing.com/f/OdA2AtykkcQ" method="post">
-      <input id="newsletter-email" type="email" name="subscriber[email]" placeholder="Ingresá tu email" required>
-      <button id="newsletter-button" type="submit">ENVIAR</button>
-    </form>
+  
+  <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px;" tabindex="-1" autocomplete="off">
+
+  <input id="newsletter-email" type="email" name="subscriber[email]" placeholder="Ingresá tu email" required>
+  <button id="newsletter-button" type="submit">ENVIAR</button>
+</form>
     
     <div id="newsletter-message" class="newsletter-message"></div>
 
