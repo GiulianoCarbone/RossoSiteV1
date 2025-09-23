@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(response => {
         // Mailrelay no nos da una respuesta clara, pero si no hay error, asumimos que funcionó.
         newsletterForm.style.display = 'none'; // Ocultamos el formulario
-        messageContainer.innerHTML = '¡Gracias por suscribirte! Por favor, revisá tu email para activar tu cuenta. Si no lo encontrás, ¡no te olvides de revisar la carpeta de spam!.';
+        messageContainer.innerHTML = '¡Gracias por suscribirte!🙌 Por favor, revisá tu email para activar tu cuenta. Si no lo encontrás, ¡no te olvides de revisar la carpeta de spam!🔎.';
         messageContainer.className = 'newsletter-message success'; // Aplicamos el estilo verde
         messageContainer.style.display = 'block'; // Mostramos el mensaje
       })
