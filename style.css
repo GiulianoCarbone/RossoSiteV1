@@ -1110,3 +1110,7 @@ main {
     transform: scale(1.2);
   }
 }
+/* Solución para contenido tapado por el header fijo */
+.contenido-principal {
+  padding-top: var(--header-h); /* Usa la variable de la altura del header (110px) */
+}
