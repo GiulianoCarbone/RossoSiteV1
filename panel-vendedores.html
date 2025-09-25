@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Vendedores | Rosso Materiales</title>
+    <link href="assets/FAV.png" rel="icon">
+    <link href="style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        :root {
+            --panel-bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --border-color: #e5e7eb;
+        }
+        body, html {
+            margin: 0; padding: 0; width: 100%;
+            background-color: var(--panel-bg);
+            font-family: "Inter", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* --- ESTILOS LOGIN --- */
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; z-index: 2000; }
+        #login-container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 400px; text-align: center; }
+        #login-container img.logo { max-width: 180px; margin-bottom: 24px; }
+        #login-container h2 { margin: 0 0 24px 0; color: var(--brand); font-size: 1.5rem; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--muted); }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
+        #login-button { width: 100%; padding: 14px; border: none; border-radius: 8px; background-color: var(--accent); color: white; font-size: 1.1rem; font-weight: 700; cursor: pointer; }
+        #login-error { color: #d9534f; margin-top: 15px; font-weight: 600; height: 20px; }
+
+        /* --- ESTILOS PANEL --- */
+        #panel-wrapper {
+            display: none; /* Oculto por defecto */
+            padding-top: var(--header-h);
+        }
+        .panel-header { background: var(--card-bg); padding: 20px 0; border-bottom: 1px solid var(--border-color); }
+        .panel-header-content { display: flex; justify-content: space-between; align-items: center; }
+        .panel-header-content h1 { font-size: 1.8rem; color: var(--brand); margin: 0; }
+        .panel-user-info { text-align: right; }
+        .panel-user-info span { display: block; font-weight: 600; color: var(--brand); font-size: 1.1rem; }
+        .logout-button { background: none; border: none; font-size: 0.9rem; color: var(--muted); cursor: pointer; }
+        
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 30px 0;
+        }
+        .panel-card { background: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
+        .panel-card-header { padding: 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border-color); }
+        
+        .panel-card-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            animation: icon-bounce 2.5s ease-in-out infinite;
+        }
+        
+        .panel-card-header h3 { font-size: 1.3rem; color: var(--brand); margin: 0; }
+        .panel-card-body { padding: 20px; }
+        
+        .news-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .news-section h4 { color: var(--brand); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin: 0 0 15px 0; }
+        .news-section ul, .arguments-list { list-style: none; padding: 0; margin: 0; }
+        .news-section li, .arguments-list li { padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
+        .news-section li:last-child, .arguments-list li:last-child { border-bottom: none; }
+
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .tool-link { display: flex; align-items: center; gap: 15px; background: #f8f9fa; padding: 20px; border-radius: 10px; font-weight: 600; color: var(--brand); transition: all 0.2s ease; }
+        .tool-link i { font-size: 1.5rem; color: var(--accent); }
+        .tool-link:hover { background-color: var(--accent); color: white; transform: translateY(-5px); }
+        .tool-link:hover i { color: white; }
+        
+        .featured-employee-card {
+            background: linear-gradient(135deg, var(--brand) 0%, #3e489b 100%);
+            color: white;
+        }
+        .featured-employee-card .panel-card-header h3, .featured-employee-card .panel-card-icon {
+            color: white;
+        }
+        .employee-body { text-align: center; padding: 20px; }
+        .employee-photo {
+            width: 120px; height: 120px; border-radius: 50%;
+            border: 4px solid var(--accent); object-fit: cover;
+            margin: 0 auto 15px;
+        }
+        .employee-name { font-size: 1.5rem; font-weight: 700; margin: 0; }
+        .employee-title { margin-top: 5px; opacity: 0.9; }
+
+        @keyframes icon-bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div id="login-container">
+            <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales Logo" class="logo">
+            <h2>Acceso para Vendedores</h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="nombre">Nombre y Apellido</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="input-group">
+                    <label for="dni">Documento</label>
+                    <input type="password" id="dni" required>
+                </div>
+                <button type="submit" id="login-button">Ingresar</button>
+                <div id="login-error"></div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="panel-wrapper">
+        <header class="main-header" role="banner">
+             <nav class="main-nav container" aria-label="Primaria">
+                <a href="/" class="logo" aria-label="Ir al inicio">
+                    <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+                </a>
+             </nav>
+        </header>
+        
+        <main>
+            <div class="panel-header">
+                <div class="container panel-header-content">
+                    <h1 id="welcome-message">Panel de Vendedores</h1>
+                    <button id="logout-button" class="logout-button"><i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesión</button>
+                </div>
+            </div>
+
+            <div class="container panel-grid">
+
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <span class="panel-card-icon"><i class="fa-solid fa-bullhorn"></i></span>
+                        <h3>Novedades</h3>
+                    </div>
+                    <div class="panel-card-body">
+                        <div class="news-container">
+                            <div class="news-section">
+                                <h4><i class="fa-solid fa-tags"></i> Comerciales</h4>
+                                <ul>
+                                    <li><strong>Oferta Flash:</strong> 15% OFF en grifería FV (contado).</li>
+                                </ul>
+                            </div>
+                            <div class="news-section">
+                                <h4><i class="fa-solid fa-users"></i> Recursos Humanos</h4>
+                                <ul>
+                                    <li><strong>Recordatorio:</strong> Viernes cerramos 13:00 hs por inventario.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              
+
+                <div class="panel-card">
+                    <div class="panel-card-header">
+                        <span class="panel-card-icon"><i class="fa-solid fa-wrench"></i></span>
+                        <h3>Herramientas</h3>
+                    </div>
+                    <div class="panel-card-body">
+                        <div class="tools-grid">
+                            <a href="manual-vendedores.html" target="_blank" class="tool-link">
+                                <i class="fa-solid fa-book-open"></i>
+                                <span>Manual de Productos</span>
+                            </a>
+                            <a href="calculadora.html" target="_blank" class="tool-link">
+                                <i class="fa-solid fa-calculator"></i>
+                                <span>Calculadora de M²</span>
+                            </a>
+                            <a href="calculadora.html" target="_blank" class="tool-link">
+                                <i class="fa-solid fa-video"></i>
+                                <span>Capacitaciones</span>
+                            </a>
+                            <a href="calculadora.html" target="_blank" class="tool-link">
+                                <i class="fa-solid fa-comments-dollar"></i>
+                                <span>Argumentario de ventas</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+  <div class="panel-card featured-employee-card">
+                    <div class="panel-card-header">
+                        <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
+                        <h3>Empleado Destacado del Mes</h3>
+                    </div>
+                    <div class="panel-card-body employee-body">
+                        <img src="https://blog-pixomatic.s3.appcnt.com/image/22/01/26/61f166e1377d4/_orig/pixomatic_1572877223091.png" alt="Foto de Juan Perez" class="employee-photo">
+                        <h4 class="employee-name">Juan Perez</h4>
+                        <p class="employee-title">¡Felicitaciones por ser el vendedor con más ventas este mes!</p>
+                    </div>
+                </div>
+                <!-- <div class="panel-card">
+                    <div class="panel-card-header">
+                        <span class="panel-card-icon"><i class="fa-solid fa-comments-dollar"></i></span>
+                        <h3>Argumentarios de Venta</h3>
+                    </div>
+                    <div class="panel-card-body">
+                        <ul class="arguments-list">
+                            <li><strong>Cemento Holcim:</strong> "Es el único con tecnología ECOPlanet, reduce la huella de carbono y garantiza máxima resistencia."</li>
+                        </ul>
+                    </div>
+                </div> -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- ¡ACCIÓN REQUERIDA! ---
+            const vendedoresAutorizados = [
+                { nombre: "Juan Perez", dni: "12345678" },
+                { nombre: "Maria Garcia", dni: "87654321" },
+            ];
+            
+            const loginForm = document.getElementById('login-form');
+            const loginOverlay = document.getElementById('login-overlay');
+            const panelWrapper = document.getElementById('panel-wrapper');
+            const logoutButton = document.getElementById('logout-button');
+            const welcomeMessage = document.getElementById('welcome-message');
+
+            function checkLogin() {
+                const loggedInUserName = sessionStorage.getItem('vendedorLogueado');
+                if (loggedInUserName) {
+                    loginOverlay.style.display = 'none';
+                    panelWrapper.style.display = 'block';
+                    welcomeMessage.innerHTML = `¡Hola, <span style="color: var(--accent);">${loggedInUserName}</span>!`;
+                } else {
+                    loginOverlay.style.display = 'flex';
+                    panelWrapper.style.display = 'none';
+                }
+            }
+            
+            checkLogin();
+
+            if(loginForm) {
+                loginForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const nombreInput = document.getElementById('nombre').value.trim();
+                    const dniInput = document.getElementById('dni').value.trim();
+                    const user = vendedoresAutorizados.find(v => 
+                        v.nombre.toLowerCase() === nombreInput.toLowerCase() && 
+                        v.dni === dniInput
+                    );
+                    if (user) {
+                        sessionStorage.setItem('vendedorLogueado', user.nombre);
+                        checkLogin();
+                    } else {
+                        document.getElementById('login-error').textContent = 'Nombre o DNI incorrecto.';
+                    }
+                });
+            }
+
+            if(logoutButton) {
+                logoutButton.addEventListener('click', function() {
+                    sessionStorage.removeItem('vendedorLogueado');
+                    location.reload();
+                });
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
