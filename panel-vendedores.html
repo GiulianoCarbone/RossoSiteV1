@@ -68,7 +68,7 @@
         .news-section li:last-child, .arguments-list li:last-child { border-bottom: none; }
 
         .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-        .tool-link { display: flex; align-items: center; gap: 15px; background: #f8f9fa; padding: 20px; border-radius: 10px; font-weight: 600; color: var(--brand); transition: all 0.2s ease; }
+        .tool-link { display: flex; align-items: center; gap: 15px; background: #f8f9fa; padding: 20px; border-radius: 10px; font-weight: 600; color: var(--brand); transition: all 0.2s ease; cursor: pointer; }
         .tool-link i { font-size: 1.5rem; color: var(--accent); }
         .tool-link:hover { background-color: var(--accent); color: white; transform: translateY(-5px); }
         .tool-link:hover i { color: white; }
@@ -94,6 +94,19 @@
             40% { transform: translateY(-8px); }
             60% { transform: translateY(-4px); }
         }
+
+        /* --- ESTILOS MODAL LINKS ÚTILES (NUEVO) --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
+        .modal-header h4 { font-size: 1.5rem; color: var(--brand); margin: 0; }
+        .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--muted); }
+        .link-item { display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; }
+        .link-item-info { display: flex; flex-direction: column; }
+        .link-item-info strong { color: var(--brand); }
+        .link-item-info span { font-size: 0.85rem; color: var(--muted); word-break: break-all; }
+        .copy-link-btn { padding: 8px 12px; border: none; background: var(--accent); color: white; font-weight: 600; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+        .copy-link-btn:active { transform: scale(0.95); }
 
     </style>
 </head>
@@ -160,8 +173,6 @@
                     </div>
                 </div>
 
-              
-
                 <div class="panel-card">
                     <div class="panel-card-header">
                         <span class="panel-card-icon"><i class="fa-solid fa-wrench"></i></span>
@@ -169,15 +180,19 @@
                     </div>
                     <div class="panel-card-body">
                         <div class="tools-grid">
-                            <a href="/manualdeproductos.html" target="_blank" class="tool-link">
+                             <a href="manualdeproductos.html" class="tool-link">
                                 <i class="fa-solid fa-book-open"></i>
                                 <span>Manual de Productos</span>
                             </a>
+                              <div id="open-links-modal-btn" class="tool-link">
+                                <i class="fa-solid fa-link"></i>
+                                <span>Links Útiles</span>
+                            </div>
                             <a href="calculadora.html" target="_blank" class="tool-link">
                                 <i class="fa-solid fa-calculator"></i>
                                 <span>Calculadora de M²</span>
                             </a>
-                            <a href="calculadora.html" target="_blank" class="tool-link">
+                            <a href="https://www.youtube.com/playlist?list=PLHdKOri3coqCjTx62kuV39L2PEECS0huQ" target="_blank" class="tool-link">
                                 <i class="fa-solid fa-video"></i>
                                 <span>Capacitaciones</span>
                             </a>
@@ -185,11 +200,12 @@
                                 <i class="fa-solid fa-comments-dollar"></i>
                                 <span>Argumentario de ventas</span>
                             </a>
+                           
                         </div>
                     </div>
                 </div>
 
-  <div class="panel-card featured-employee-card">
+                <div class="panel-card featured-employee-card">
                     <div class="panel-card-header">
                         <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
                         <h3>Empleado Destacado del Mes</h3>
@@ -200,20 +216,56 @@
                         <p class="employee-title">¡Felicitaciones por ser el vendedor con más ventas este mes!</p>
                     </div>
                 </div>
-                <!-- <div class="panel-card">
-                    <div class="panel-card-header">
-                        <span class="panel-card-icon"><i class="fa-solid fa-comments-dollar"></i></span>
-                        <h3>Argumentarios de Venta</h3>
-                    </div>
-                    <div class="panel-card-body">
-                        <ul class="arguments-list">
-                            <li><strong>Cemento Holcim:</strong> "Es el único con tecnología ECOPlanet, reduce la huella de carbono y garantiza máxima resistencia."</li>
-                        </ul>
-                    </div>
-                </div> -->
             </div>
         </main>
     </div>
+
+    <div id="links-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Links Útiles</h4>
+                <button id="close-links-modal-btn" class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="link-item">
+                    <div class="link-item-info">
+                        <strong>Catálogo Online</strong>
+                        <span>https://catalogo.rossomateriales.site</span>
+                    </div>
+                    <button class="copy-link-btn" data-link="https://catalogo.rossomateriales.site">Copiar</button>
+                </div>
+                <div class="link-item">
+                    <div class="link-item-info">
+                        <strong>Promociones Vigentes</strong>
+                        <span>https://rossomateriales.netlify.app</span>
+                    </div>
+                    <button class="copy-link-btn" data-link="https://rossomateriales.netlify.app">Copiar</button>
+                </div>
+                  <div class="link-item">
+                    <div class="link-item-info">
+                        <strong>Horarios y ubicación de sucursales</strong>
+                        <span>https://rossomateriales.site/sucursales</span>
+                    </div>
+                    <button class="copy-link-btn" data-link="https://rossomateriales.site/sucursales">Copiar</button>
+                </div>
+                 <div class="link-item">
+                    <div class="link-item-info">
+                        <strong>Web Institucional</strong>
+                        <span>https://rossomateriales.site</span>
+                    </div>
+                    <button class="copy-link-btn" data-link="https://rossomateriales.site">Copiar</button>
+                </div>
+                 <div class="link-item">
+                    <div class="link-item-info">
+                        <strong>Ecomerce</strong>
+                        <span>https://wa.me/5493814146917</span>
+                    </div>
+                    <button class="copy-link-btn" data-link="https://wa.me/5493814146917">Copiar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -267,6 +319,40 @@
                     location.reload();
                 });
             }
+
+            // --- LÓGICA DEL MODAL DE LINKS (NUEVO) ---
+            const linksModal = document.getElementById('links-modal');
+            const openModalBtn = document.getElementById('open-links-modal-btn');
+            const closeModalBtn = document.getElementById('close-links-modal-btn');
+
+            openModalBtn.addEventListener('click', () => {
+                linksModal.style.display = 'flex';
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                linksModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == linksModal) {
+                    linksModal.style.display = 'none';
+                }
+            });
+
+            document.querySelectorAll('.copy-link-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const linkToCopy = button.dataset.link;
+                    navigator.clipboard.writeText(linkToCopy).then(() => {
+                        const originalText = button.textContent;
+                        button.textContent = '¡Copiado!';
+                        setTimeout(() => {
+                            button.textContent = originalText;
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Error al copiar: ', err);
+                    });
+                });
+            });
         });
     </script>
     <script src="script.js"></script>
