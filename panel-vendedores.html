@@ -6,7 +6,7 @@
     <title>Panel de Vendedores | Rosso Materiales</title>
     <link href="assets/FAV.png" rel="icon">
     <link href="style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         :root {
             --panel-bg: #f4f7f6;
@@ -27,7 +27,7 @@
         #login-container h2 { margin: 0 0 24px 0; color: var(--brand); font-size: 1.5rem; }
         .input-group { margin-bottom: 20px; text-align: left; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--muted); }
-        .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
+        .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
         #login-button { width: 100%; padding: 14px; border: none; border-radius: 8px; background-color: var(--accent); color: white; font-size: 1.1rem; font-weight: 700; cursor: pointer; }
         #login-error { color: #d9534f; margin-top: 15px; font-weight: 600; height: 20px; }
 
@@ -50,8 +50,10 @@
             padding: 30px 0;
         }
         .panel-card { background: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow); display: flex; flex-direction: column; }
-        .panel-card-header { padding: 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border-color); }
+        .panel-card-header { padding: 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-bottom: 1px solid var(--border-color); }
         
+        .panel-card-icon-title { display: flex; align-items: center; gap: 15px; }
+
         .panel-card-icon {
             font-size: 1.5rem;
             color: var(--accent);
@@ -61,11 +63,17 @@
         .panel-card-header h3 { font-size: 1.3rem; color: var(--brand); margin: 0; }
         .panel-card-body { padding: 20px; }
         
-        .news-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .news-container { display: grid; grid-template-columns: 1fr; gap: 20px; }
         .news-section h4 { color: var(--brand); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin: 0 0 15px 0; }
-        .news-section ul, .arguments-list { list-style: none; padding: 0; margin: 0; }
-        .news-section li, .arguments-list li { padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
-        .news-section li:last-child, .arguments-list li:last-child { border-bottom: none; }
+        .news-section ul { list-style: none; padding: 0; margin: 0; }
+        .news-item { 
+            position: relative;
+            padding-bottom: 30px; 
+            margin-bottom: 10px; 
+            border-bottom: 1px solid #f0f0f0; 
+        }
+        .news-item p { margin: 0; }
+        .news-item:last-child { border-bottom: none; }
 
         .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
         .tool-link { display: flex; align-items: center; gap: 15px; background: #f8f9fa; padding: 20px; border-radius: 10px; font-weight: 600; color: var(--brand); transition: all 0.2s ease; cursor: pointer; }
@@ -95,64 +103,30 @@
             60% { transform: translateY(-4px); }
         }
 
-        /* --- ESTILOS MODAL LINKS ÚTILES --- */
+        /* --- ESTILOS MODALES --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; }
+        .modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; display: flex; flex-direction: column; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
         .modal-header h4 { font-size: 1.5rem; color: var(--brand); margin: 0; }
         .close-modal { background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--muted); }
+        
+        /* Links Útiles */
         .link-item { display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; }
         .link-item-info { display: flex; flex-direction: column; }
         .link-item-info strong { color: var(--brand); }
         .link-item-info span { font-size: 0.85rem; color: var(--muted); word-break: break-all; }
         .copy-link-btn { padding: 8px 12px; border: none; background: var(--accent); color: white; font-weight: 600; border-radius: 6px; cursor: pointer; white-space: nowrap; }
         .copy-link-btn:active { transform: scale(0.95); }
-
+        
         /* --- ESTILOS DIRECTORIO DESPLEGABLE --- */
-        .directory-accordion details {
-            background: #fff;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-            transition: box-shadow 0.2s ease;
-        }
-        .directory-accordion details[open] {
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .directory-accordion summary {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--brand);
-            cursor: pointer;
-            list-style: none;
-        }
-        .directory-accordion summary i.area-icon {
-            color: var(--accent);
-            font-size: 1.5rem;
-            width: 30px;
-            text-align: center;
-        }
-        .directory-accordion summary::-webkit-details-marker {
-            display: none;
-        }
-        .directory-accordion summary::after {
-            content: '⮟';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            margin-left: auto;
-            transition: transform 0.2s ease-in-out;
-        }
-        .directory-accordion details[open] summary::after {
-            transform: rotate(180deg);
-        }
-        .directory-content {
-            padding: 0 20px 20px;
-            border-top: 1px solid var(--border-color);
-        }
+        .directory-accordion details { background: #fff; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border-color); transition: box-shadow 0.2s ease; }
+        .directory-accordion details[open] { box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .directory-accordion summary { display: flex; align-items: center; gap: 15px; padding: 15px; font-size: 1.2rem; font-weight: 700; color: var(--brand); cursor: pointer; list-style: none; }
+        .directory-accordion summary i.area-icon { color: var(--accent); font-size: 1.5rem; width: 30px; text-align: center; }
+        .directory-accordion summary::-webkit-details-marker { display: none; }
+        .directory-accordion summary::after { content: '⮟'; font-family: 'Font Awesome 6 Free'; font-weight: 900; margin-left: auto; transition: transform 0.2s ease-in-out; }
+        .directory-accordion details[open] summary::after { transform: rotate(180deg); }
+        .directory-content { padding: 0 20px 20px; border-top: 1px solid var(--border-color); }
         .employee-contact-card { display: grid; grid-template-columns: auto 1fr; gap: 10px 15px; align-items: center; background: #f8f9fa; padding: 12px; border-radius: 8px; margin-top: 12px; }
         .employee-contact-card .name { font-weight: 600; color: var(--brand); grid-column: 1 / -1; }
         .employee-contact-card .position { font-size: 0.9rem; color: var(--muted); grid-column: 1 / -1; margin-top: -8px; }
@@ -160,6 +134,39 @@
         .employee-contact-card .contact-info { font-size: 0.9rem; color: var(--ink); word-break: break-all; }
         .employee-contact-card a.contact-info { text-decoration: none; }
         .employee-contact-card a.contact-info:hover { text-decoration: underline; }
+        
+        /* --- ESTILOS REACCIONES --- */
+        .news-footer { position: absolute; bottom: 5px; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .reactions-summary { display: flex; gap: 4px; }
+        .reaction-display { display: flex; align-items: center; gap: 4px; background-color: #f0f2f5; padding: 2px 8px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; }
+        .reaction-display .emoji { font-size: 0.9rem; }
+        .add-reaction-container { position: relative; }
+        .add-reaction-btn { cursor: pointer; font-size: 1rem; color: #adb5bd; background: transparent; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+        .add-reaction-btn:hover { background-color: #f0f2f5; color: var(--muted); }
+        .reaction-picker { position: absolute; bottom: 100%; right: 0; background: white; border-radius: 20px; box-shadow: var(--shadow); padding: 5px; display: flex; gap: 5px; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.2s ease; }
+        .add-reaction-container:hover .reaction-picker { opacity: 1; visibility: visible; transform: translateY(0); }
+        .picker-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; transition: transform 0.1s ease; }
+        .picker-btn:hover { transform: scale(1.2); }
+
+        /* --- ESTILOS PANEL DE ADMINISTRACIÓN --- */
+        #admin-controls { margin-bottom: 20px; display: flex; justify-content: flex-end; }
+        #add-news-btn { padding: 8px 16px; font-weight: 700; background-color: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; }
+        #admin-news-list { display: flex; flex-direction: column; gap: 12px; max-height: 50vh; overflow-y: auto; padding-right: 10px; }
+        .admin-news-item { display: flex; align-items: center; justify-content: space-between; gap: 15px; background: #f8f9fa; padding: 10px 15px; border-radius: 8px; }
+        .admin-news-content { font-size: 0.9rem; flex-grow: 1; overflow: hidden; }
+        .admin-news-content p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin:0; }
+        .admin-news-content small { display: block; color: var(--muted); font-family: monospace; margin-top: 4px; }
+        .admin-news-actions { display: flex; gap: 8px; flex-shrink: 0; }
+        .admin-btn { padding: 6px 12px; border: none; color: white; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .edit-btn { background-color: #007bff; }
+        .delete-btn { background-color: #dc3545; }
+        .reset-btn { background-color: #6c757d; }
+        .delete-btn.confirm { background-color: #ffc107; color: black; }
+        
+        /* Formulario de Noticias */
+        #news-form { display: flex; flex-direction: column; gap: 15px; }
+        #news-form textarea { min-height: 120px; resize: vertical; }
+        #news-form button { padding: 12px; background-color: var(--accent); color: white; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; }
 
     </style>
 </head>
@@ -205,22 +212,20 @@
 
                 <div class="panel-card">
                     <div class="panel-card-header">
-                        <span class="panel-card-icon"><i class="fa-solid fa-bullhorn"></i></span>
-                        <h3>Novedades</h3>
+                        <div class="panel-card-icon-title">
+                            <span class="panel-card-icon"><i class="fa-solid fa-bullhorn"></i></span>
+                            <h3>Novedades</h3>
+                        </div>
                     </div>
                     <div class="panel-card-body">
                         <div class="news-container">
                             <div class="news-section">
                                 <h4><i class="fa-solid fa-tags"></i> Comerciales</h4>
-                                <ul>
-                                    <li><strong>Oferta Flash:</strong> 15% OFF en grifería FV (contado).</li>
-                                </ul>
+                                <ul id="comerciales-news-list"></ul>
                             </div>
                             <div class="news-section">
                                 <h4><i class="fa-solid fa-users"></i> Recursos Humanos</h4>
-                                <ul>
-                                    <li><strong>Recordatorio:</strong> Viernes cerramos 13:00 hs por inventario.</li>
-                                </ul>
+                                <ul id="rrhh-news-list"></ul>
                             </div>
                         </div>
                     </div>
@@ -228,8 +233,10 @@
 
                 <div class="panel-card">
                     <div class="panel-card-header">
-                        <span class="panel-card-icon"><i class="fa-solid fa-wrench"></i></span>
-                        <h3>Herramientas</h3>
+                         <div class="panel-card-icon-title">
+                            <span class="panel-card-icon"><i class="fa-solid fa-wrench"></i></span>
+                            <h3>Herramientas</h3>
+                        </div>
                     </div>
                     <div class="panel-card-body">
                         <div class="tools-grid">
@@ -253,18 +260,19 @@
                                 <i class="fa-solid fa-comments-dollar"></i>
                                 <span>Argumentario de ventas</span>
                             </a>
-                           
                         </div>
                     </div>
                 </div>
 
                 <div class="panel-card featured-employee-card">
                     <div class="panel-card-header">
-                        <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
-                        <h3>Empleado Destacado del Mes</h3>
+                        <div class="panel-card-icon-title">
+                            <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
+                            <h3>Empleado Destacado del Mes</h3>
+                        </div>
                     </div>
                     <div class="panel-card-body employee-body">
-                        <img src="https://blog-pixomatic.s3.appcnt.com/image/22/01/26/61f166e1377d4/_orig/pixomatic_1572877223091.png" alt="Foto de Juan Perez" class="employee-photo">
+                        <img src="https://i.ibb.co/Nd8FH3S8/JOSELO.png" alt="Foto de Juan Perez" class="employee-photo">
                         <h4 class="employee-name">Juan Perez</h4>
                         <p class="employee-title">¡Felicitaciones por ser el vendedor con más ventas este mes!</p>
                     </div>
@@ -272,13 +280,14 @@
 
                 <div class="panel-card" style="grid-column: 1 / -1;">
                     <div class="panel-card-header">
-                        <span class="panel-card-icon"><i class="fa-solid fa-address-book"></i></span>
-                        <h3>Directorio de Contactos</h3>
-                    </div>
-                    <div class="panel-card-body directory-accordion" id="directory-container">
+                         <div class="panel-card-icon-title">
+                            <span class="panel-card-icon"><i class="fa-solid fa-address-book"></i></span>
+                            <h3>Directorio de Contactos</h3>
                         </div>
+                    </div>
+                    <div class="panel-card-body directory-accordion" id="directory-container"></div>
                 </div>
-                </div>
+            </div>
         </main>
     </div>
 
@@ -328,224 +337,403 @@
         </div>
     </div>
 
+    <div id="admin-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Panel de Administración</h4>
+                <button id="close-admin-modal-btn" class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="admin-controls">
+                    <button id="add-news-btn"><i class="fa-solid fa-plus"></i> Crear Noticia</button>
+                </div>
+                <div id="admin-news-list">
+                    <!-- La lista de noticias para administrar se generará aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="news-form-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="news-form-title">Crear Noticia</h4>
+                <button id="close-news-form-modal-btn" class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="news-form">
+                    <input type="hidden" id="news-id-field">
+                    <div class="input-group">
+                        <label for="news-title-field">Título</label>
+                        <input type="text" id="news-title-field" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="news-description-field">Descripción (acepta HTML como &lt;strong&gt;)</label>
+                        <textarea id="news-description-field" required></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="news-category-field">Categoría</label>
+                        <select id="news-category-field" required>
+                            <option value="comerciales">Comerciales</option>
+                            <option value="rrhh">Recursos Humanos</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="save-news-btn">Guardar Noticia</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const vendedoresAutorizados = [
-                { nombre: "Juan Perez", dni: "12345678" },
-                { nombre: "Maria Garcia", dni: "87654321" },
-            ];
-            
-            const loginForm = document.getElementById('login-form');
-            const loginOverlay = document.getElementById('login-overlay');
-            const panelWrapper = document.getElementById('panel-wrapper');
-            const logoutButton = document.getElementById('logout-button');
-            const welcomeMessage = document.getElementById('welcome-message');
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+            authDomain: "backend-panel-vendedores.firebaseapp.com",
+            projectId: "backend-panel-vendedores",
+            storageBucket: "backend-panel-vendedores.firebasestorage.app",
+            messagingSenderId: "24873830395",
+            appId: "1:24873830395:web:ea6749407f991ee8226d5e",
+            measurementId: "G-E4Z0Y849KF"
+        };
 
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const vendedoresAutorizados = [ { nombre: "Juan Perez", dni: "12345678" }, { nombre: "Maria Garcia", dni: "87654321" }];
+            const directoryData = {
+                "Gerencia General": { icon: "fa-user-tie", members: [ { puesto: "Gerencia General", nombre: "Molicia Jose", email: "jmolicia@rossomateriales.com.ar", numero: "+5493814145401" } ] },
+                "Ventas": { icon: "fa-headset", members: [ { puesto: "Gerencia Comercial", nombre: "Rosso Andrea", email: "andrea@rossomateriales.com.ar", numero: "+5493815062999" }, { puesto: "Jefe de Ventas Retail", nombre: "Garcia Juan", email: "jgarcia@rossomateriales.com.ar", numero: "+5493863512483" }, { puesto: "Supervisor Retail", nombre: "Almaraz Nahuel", email: "nalmaraz@rossomateriales.com.ar", numero: "+5493814146719" }, { puesto: "Gerente. Suc. Salta", nombre: "Ruano Etel", email: "salta@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" }, { puesto: "Gerente. Suc. Metan", nombre: "Tanquia Nelson", email: "metan@rossomateriales.com.ar", numero: "+5493813539959" }, { puesto: "Gerente. Suc. Tucumán", nombre: "Montenegro Carlos", email: "tucuman@rossomateriales.com.ar", numero: "+5493815153152" }, { puesto: "Gerente. Suc. Manantial", nombre: "Puente Emanuel", email: "manantial@rossomateriales.com.ar", numero: "+5493814147314" }, { puesto: "Gerente. Suc. Monteros", nombre: "Nallen Mauricio", email: "monteros@rossomateriales.com.ar", numero: "+5493814148286" }, { puesto: "Gerente. Suc. Concepción", nombre: "Alí Alberto", email: "concepcion@rossomateriales.com.ar", numero: "+5493814147723" }, { puesto: "Gerente. Suc. Tafi del Valle", nombre: "Cordoba Jonathan", email: "tafidelvalle@rossomateriales.com.ar", numero: "+5493814148083" }, { puesto: "Gerente. Suc. Aguilares", nombre: "Carabajal Damian", email: "aguilares@rossomateriales.com.ar", numero: "+5493814167106" }, { puesto: "Gerente. Suc. Alberdi", nombre: "Oyola Esteban", email: "alberdi@rossomateriales.com.ar", numero: "+5493814147642" }, { puesto: "Gerente. Suc. Famailla", nombre: "Leal Franscisco", email: "famailla@rossomateriales.com.ar", numero: "+5493814145876" } ] },
+                "Suministro": { icon: "fa-truck-ramp-box", members: [ { puesto: "Gerencia", nombre: "Rizzio Constanza", email: "criccio@rossomateriales.com.ar", numero: "+5493815857491" }, { puesto: "Jefe de Compras", nombre: "Amran Eduardo", email: "compras@rossomateriales.com.ar", numero: "+5493863515623" }, { puesto: "Jefe de Logistica", nombre: "Nieva Sergio", email: "snieva@rossomateriales.com.ar", numero: "+5493814145405" } ] },
+                "Finanzas y Tesorería": { icon: "fa-chart-pie", members: [ { puesto: "Gerencia", nombre: "Capalbo Javier", email: "jcapalbo@rossomateriales.com.ar", numero: "+5491140239900" }, { puesto: "Tesorero", nombre: "Jose Brito", email: "jbrito@rossomateriales.com.ar", numero: "+5493813539956" } ] },
+                "Contabilidad y Auditoría": { icon: "fa-calculator", members: [ { puesto: "Gerencia", nombre: "Del Pero Casey Mariana", email: "mdelpaero@rossomateriales.com.ar", numero: "+5493814145515" }, { puesto: "Auditoría", nombre: "Rosso Julieta", email: "auditorias@rossomateriales.com.ar", numero: "+5493815272274" } ] },
+                "RRHH": { icon: "fa-users-gear", members: [ { puesto: "Jefe de RRHH", nombre: "Olea Babich Emilia", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" }, { puesto: "Analista", nombre: "Garcia Etelvina", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" } ] },
+                "Marketing": { icon: "fa-bullhorn", members: [ { puesto: "Jefe de marketing", nombre: "-", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" }, { puesto: "Diseño Gráfico", nombre: "Delgado Cirene", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" } ] },
+                "Deposito": { icon: "fa-warehouse", members: [ { puesto: "Supervisor de Deposito", nombre: "Araoz Walter", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" } ] },
+                "Obras y Mantenimiento": { icon: "fa-helmet-safety", members: [ { puesto: "Jefe de Obras", nombre: "Figueroa Raul", email: "obras@rossomateriales.com.ar", numero: "+5493814146928" } ] },
+                "IT": { icon: "fa-laptop-code", members: [ { puesto: "Responsable IT", nombre: "Ahumada Jose", email: "jahumada@rossomateriales.com.ar", numero: "+5493814148584" } ] }
+            };
+
+            // --- LÓGICA DE LOGIN Y RENDERIZADO INICIAL ---
             function checkLogin() {
                 const loggedInUserName = sessionStorage.getItem('vendedorLogueado');
                 if (loggedInUserName) {
-                    loginOverlay.style.display = 'none';
-                    panelWrapper.style.display = 'block';
-                    welcomeMessage.innerHTML = `¡Hola, <span style="color: var(--accent);">${loggedInUserName}</span>!`;
+                    document.getElementById('login-overlay').style.display = 'none';
+                    document.getElementById('panel-wrapper').style.display = 'block';
+                    document.getElementById('welcome-message').innerHTML = `¡Hola, <span style="color: var(--accent);">${loggedInUserName}</span>!`;
+                    populateNews(); 
+                    populateDirectory();
                 } else {
-                    loginOverlay.style.display = 'flex';
-                    panelWrapper.style.display = 'none';
+                    document.getElementById('login-overlay').style.display = 'flex';
+                    document.getElementById('panel-wrapper').style.display = 'none';
                 }
             }
-            
             checkLogin();
 
-            if(loginForm) {
-                loginForm.addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    const nombreInput = document.getElementById('nombre').value.trim();
-                    const dniInput = document.getElementById('dni').value.trim();
-                    const user = vendedoresAutorizados.find(v => 
-                        v.nombre.toLowerCase() === nombreInput.toLowerCase() && 
-                        v.dni === dniInput
-                    );
-                    if (user) {
-                        sessionStorage.setItem('vendedorLogueado', user.nombre);
-                        checkLogin();
-                    } else {
-                        document.getElementById('login-error').textContent = 'Nombre o DNI incorrecto.';
-                    }
-                });
-            }
-
-            if(logoutButton) {
-                logoutButton.addEventListener('click', function() {
-                    sessionStorage.removeItem('vendedorLogueado');
-                    location.reload();
-                });
-            }
-
-            const linksModal = document.getElementById('links-modal');
-            const openModalBtn = document.getElementById('open-links-modal-btn');
-            const closeModalBtn = document.getElementById('close-links-modal-btn');
-
-            if (openModalBtn) {
-                openModalBtn.addEventListener('click', () => {
-                    linksModal.style.display = 'flex';
-                });
-            }
-
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener('click', () => {
-                    linksModal.style.display = 'none';
-                });
-            }
-
-            window.addEventListener('click', (event) => {
-                if (event.target == linksModal) {
-                    linksModal.style.display = 'none';
+            document.getElementById('login-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const user = vendedoresAutorizados.find(v => v.nombre.toLowerCase() === document.getElementById('nombre').value.trim().toLowerCase() && v.dni === document.getElementById('dni').value.trim());
+                if (user) {
+                    sessionStorage.setItem('vendedorLogueado', user.nombre);
+                    checkLogin();
+                } else {
+                    document.getElementById('login-error').textContent = 'Nombre o DNI incorrecto.';
                 }
             });
 
-            document.querySelectorAll('.copy-link-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const linkToCopy = button.dataset.link;
-                    navigator.clipboard.writeText(linkToCopy).then(() => {
-                        const originalText = button.textContent;
-                        button.textContent = '¡Copiado!';
-                        setTimeout(() => {
-                            button.textContent = originalText;
-                        }, 2000);
-                    }).catch(err => {
-                        console.error('Error al copiar: ', err);
-                    });
-                });
+            document.getElementById('logout-button').addEventListener('click', () => {
+                sessionStorage.removeItem('vendedorLogueado');
+                localStorage.clear();
+                location.reload();
             });
 
-            const directoryData = {
-                "Gerencia General": {
-                    icon: "fa-user-tie",
-                    members: [ { puesto: "Gerencia General", nombre: "Molicia Jose", email: "jmolicia@rossomateriales.com.ar", numero: "+5493814145401" } ]
-                },
-                "Ventas": {
-                    icon: "fa-headset",
-                    members: [
-                        { puesto: "Gerencia Comercial", nombre: "Rosso Andrea", email: "andrea@rossomateriales.com.ar", numero: "+5493815062999" },
-                        { puesto: "Jefe de Ventas Retail", nombre: "Garcia Juan", email: "jgarcia@rossomateriales.com.ar", numero: "+5493863512483" },
-                        { puesto: "Supervisor Retail", nombre: "Almaraz Nahuel", email: "nalmaraz@rossomateriales.com.ar", numero: "+5493814146719" },
-                        { puesto: "Gerente. Suc. Salta", nombre: "Ruano Etel", email: "salta@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" },
-                        { puesto: "Gerente. Suc. Metan", nombre: "Tanquia Nelson", email: "metan@rossomateriales.com.ar", numero: "+5493813539959" },
-                        { puesto: "Gerente. Suc. Tucumán", nombre: "Montenegro Carlos", email: "tucuman@rossomateriales.com.ar", numero: "+5493815153152" },
-                        { puesto: "Gerente. Suc. Manantial", nombre: "Puente Emanuel", email: "manantial@rossomateriales.com.ar", numero: "+5493814147314" },
-                        { puesto: "Gerente. Suc. Monteros", nombre: "Nallen Mauricio", email: "monteros@rossomateriales.com.ar", numero: "+5493814148286" },
-                        { puesto: "Gerente. Suc. Concepción", nombre: "Alí Alberto", email: "concepcion@rossomateriales.com.ar", numero: "+5493814147723" },
-                        { puesto: "Gerente. Suc. Tafi del Valle", nombre: "Cordoba Jonathan", email: "tafidelvalle@rossomateriales.com.ar", numero: "+5493814148083" },
-                        { puesto: "Gerente. Suc. Aguilares", nombre: "Carabajal Damian", email: "aguilares@rossomateriales.com.ar", numero: "+5493814167106" },
-                        { puesto: "Gerente. Suc. Alberdi", nombre: "Oyola Esteban", email: "alberdi@rossomateriales.com.ar", numero: "+5493814147642" },
-                        { puesto: "Gerente. Suc. Famailla", nombre: "Leal Franscisco", email: "famailla@rossomateriales.com.ar", numero: "+5493814145876" }
-                    ]
-                },
-                "Suministro": {
-                    icon: "fa-truck-ramp-box",
-                    members: [
-                        { puesto: "Gerencia", nombre: "Rizzio Constanza", email: "criccio@rossomateriales.com.ar", numero: "+5493815857491" },
-                        { puesto: "Jefe de Compras", nombre: "Amran Eduardo", email: "compras@rossomateriales.com.ar", numero: "+5493863515623" },
-                        { puesto: "Jefe de Logistica", nombre: "Nieva Sergio", email: "snieva@rossomateriales.com.ar", numero: "+5493814145405" }
-                    ]
-                },
-                "Finanzas y Tesorería": {
-                    icon: "fa-chart-pie",
-                    members: [
-                        { puesto: "Gerencia", nombre: "Capalbo Javier", email: "jcapalbo@rossomateriales.com.ar", numero: "+5491140239900" },
-                        { puesto: "Tesorero", nombre: "Jose Brito", email: "jbrito@rossomateriales.com.ar", numero: "+5493813539956" }
-                    ]
-                },
-                "Contabilidad y Auditoría": {
-                    icon: "fa-calculator",
-                    members: [
-                        { puesto: "Gerencia", nombre: "Del Pero Casey Mariana", email: "mdelpaero@rossomateriales.com.ar", numero: "+5493814145515" },
-                        { puesto: "Auditoría", nombre: "Rosso Julieta", email: "auditorias@rossomateriales.com.ar", numero: "+5493815272274" }
-                    ]
-                },
-                "RRHH": {
-                    icon: "fa-users-gear",
-                    members: [
-                        { puesto: "Jefe de RRHH", nombre: "Olea Babich Emilia", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" },
-                        { puesto: "Analista", nombre: "Garcia Etelvina", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" }
-                    ]
-                },
-                "Marketing": {
-                    icon: "fa-bullhorn",
-                    members: [
-                        { puesto: "Jefe de marketing", nombre: "-", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" },
-                        { puesto: "Diseño Gráfico", nombre: "Delgado Cirene", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" }
-                    ]
-                },
-                "Deposito": {
-                    icon: "fa-warehouse",
-                    members: [ { puesto: "Supervisor de Deposito", nombre: "Araoz Walter", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" } ]
-                },
-                "Obras y Mantenimiento": {
-                    icon: "fa-helmet-safety",
-                    members: [ { puesto: "Jefe de Obras", nombre: "Figueroa Raul", email: "obras@rossomateriales.com.ar", numero: "+5493814146928" } ]
-                },
-                "IT": {
-                    icon: "fa-laptop-code",
-                    members: [ { puesto: "Responsable IT", nombre: "Ahumada Jose", email: "jahumada@rossomateriales.com.ar", numero: "+5493814148584" } ]
-                }
-            };
+            // --- LÓGICA DE NOTICIAS (AHORA CON FIREBASE) ---
+            function populateNews() {
+                db.collection('news').orderBy('timestamp', 'desc').onSnapshot(querySnapshot => {
+                    const comercialesList = document.getElementById('comerciales-news-list');
+                    const rrhhList = document.getElementById('rrhh-news-list');
+                    if (!comercialesList || !rrhhList) return;
 
-            const directoryContainer = document.getElementById('directory-container');
-            if (directoryContainer) {
-                let directoryHTML = '';
+                    comercialesList.innerHTML = '';
+                    rrhhList.innerHTML = '';
 
-                for (const area in directoryData) {
-                    const areaData = directoryData[area];
-                    let membersHTML = '';
-                    areaData.members.forEach(emp => {
-                        membersHTML += `
-                            <div class="employee-contact-card">
-                                <p class="name">${emp.nombre}</p>
-                                <p class="position">${emp.puesto}</p>
-                                <i class="fa-solid fa-envelope"></i>
-                                <a href="mailto:${emp.email}" class="contact-info">${emp.email}</a>
-                                <i class="fa-solid fa-phone"></i>
-                                <a href="tel:${emp.numero}" class="contact-info">${emp.numero}</a>
+                    querySnapshot.forEach(doc => {
+                        const news = doc.data();
+                        const newsId = doc.id;
+
+                        const newsElement = document.createElement('li');
+                        newsElement.className = 'news-item';
+                        newsElement.dataset.newsId = newsId;
+                        newsElement.innerHTML = `
+                            <p><strong>${news.title || ''}</strong> ${news.description || news.content || ''}</p>
+                            <div class="news-footer">
+                                <div class="reactions-summary"></div>
+                                <div class="add-reaction-container">
+                                    <div class="add-reaction-btn" title="Reaccionar"><i class="fa-solid fa-face-smile"></i></div>
+                                    <div class="reaction-picker">
+                                        <button class="picker-btn" data-reaction="👍">👍</button>
+                                        <button class="picker-btn" data-reaction="❤️">❤️</button>
+                                        <button class="picker-btn" data-reaction="🔥">🔥</button>
+                                    </div>
+                                </div>
                             </div>
                         `;
+                        const list = news.category === 'comerciales' ? comercialesList : rrhhList;
+                        list.appendChild(newsElement);
                     });
+                    initializeReactions();
+                }, error => {
+                    console.error("Error al obtener noticias: ", error);
+                });
+            }
 
-                    directoryHTML += `
+
+            // --- LÓGICA DE REACCIONES ---
+            function initializeReactions() {
+                document.querySelectorAll('.news-item').forEach(item => {
+                    const newsId = item.dataset.newsId;
+                    const docRef = db.collection('reactions').doc(newsId);
+                    
+                    docRef.onSnapshot(doc => {
+                        updateReactionSummary(item, doc.exists ? doc.data() : {});
+                    });
+                    
+                    item.querySelectorAll('.picker-btn').forEach(btn => {
+                        btn.addEventListener('click', async () => {
+                            const reaction = btn.dataset.reaction;
+                            const currentReaction = localStorage.getItem(`reaction_${newsId}`);
+                            const increment = firebase.firestore.FieldValue.increment(1);
+                            const decrement = firebase.firestore.FieldValue.increment(-1);
+                            
+                            const batch = db.batch();
+                            
+                            if (currentReaction === reaction) {
+                                batch.set(docRef, { [reaction]: decrement }, { merge: true });
+                                localStorage.removeItem(`reaction_${newsId}`);
+                            } else {
+                                if (currentReaction) {
+                                    batch.set(docRef, { [currentReaction]: decrement }, { merge: true });
+                                }
+                                batch.set(docRef, { [reaction]: increment }, { merge: true });
+                                localStorage.setItem(`reaction_${newsId}`, reaction);
+                            }
+                            await batch.commit();
+                        });
+                    });
+                });
+            }
+
+            function updateReactionSummary(item, data) {
+                const summaryContainer = item.querySelector('.reactions-summary');
+                summaryContainer.innerHTML = '';
+                let totalReactions = 0;
+                const userReaction = localStorage.getItem(`reaction_${item.dataset.newsId}`);
+
+                ['👍', '❤️', '🔥'].forEach(emoji => {
+                    const count = data[emoji] || 0;
+                    if (count > 0) {
+                        totalReactions += count;
+                        const pill = document.createElement('span');
+                        pill.className = 'reaction-display';
+                        pill.innerHTML = `<span class="emoji">${emoji}</span> ${count}`;
+                        if (userReaction === emoji) {
+                           pill.style.backgroundColor = 'var(--accent)';
+                           pill.style.color = 'white';
+                        }
+                        summaryContainer.appendChild(pill);
+                    }
+                });
+                summaryContainer.style.display = totalReactions > 0 ? 'flex' : 'none';
+            }
+
+            // --- LÓGICA DEL DIRECTORIO ---
+            function populateDirectory() {
+                const directoryContainer = document.getElementById('directory-container');
+                if (!directoryContainer) return;
+                directoryContainer.innerHTML = Object.keys(directoryData).map(area => {
+                    const areaData = directoryData[area];
+                    const membersHTML = areaData.members.map(emp => `
+                        <div class="employee-contact-card">
+                            <p class="name">${emp.nombre}</p>
+                            <p class="position">${emp.puesto}</p>
+                            <i class="fa-solid fa-envelope"></i>
+                            <a href="mailto:${emp.email}" class="contact-info">${emp.email}</a>
+                            <i class="fa-solid fa-phone"></i>
+                            <a href="tel:${emp.numero}" class="contact-info">${emp.numero}</a>
+                        </div>
+                    `).join('');
+                    return `
                         <details>
-                            <summary>
-                                <i class="fa-solid ${areaData.icon} area-icon"></i>
-                                ${area}
-                            </summary>
-                            <div class="directory-content">
-                                ${membersHTML}
-                            </div>
+                            <summary><i class="fa-solid ${areaData.icon} area-icon"></i>${area}</summary>
+                            <div class="directory-content">${membersHTML}</div>
                         </details>
                     `;
-                }
-                directoryContainer.innerHTML = directoryHTML;
+                }).join('');
 
-                // --- CÓDIGO COMPLETADO Y AÑADIDO ---
-                // Esta es la lógica para que solo un desplegable esté abierto a la vez.
-                const allDetails = directoryContainer.querySelectorAll('details');
-                allDetails.forEach(details => {
-                    details.addEventListener('toggle', (event) => {
-                        // Si el <details> actual se está abriendo...
+                directoryContainer.querySelectorAll('details').forEach(details => {
+                    details.addEventListener('toggle', () => {
                         if (details.open) {
-                            // ...recorremos todos los demás.
-                            allDetails.forEach(otherDetails => {
-                                // Si no es el que acabamos de abrir y está abierto...
-                                if (otherDetails !== details && otherDetails.open) {
-                                    // ...lo cerramos.
-                                    otherDetails.open = false;
-                                }
+                            directoryContainer.querySelectorAll('details').forEach(other => {
+                                if (other !== details) other.open = false;
                             });
                         }
                     });
                 });
             }
+            
+            // --- LÓGICA DE MODALES GENERALES ---
+            document.getElementById('open-links-modal-btn')?.addEventListener('click', () => {
+                document.getElementById('links-modal').style.display = 'flex';
+            });
+            document.getElementById('close-links-modal-btn')?.addEventListener('click', () => {
+                document.getElementById('links-modal').style.display = 'none';
+            });
+
+            // --- PANEL DE ADMINISTRACIÓN ---
+            const adminModal = document.getElementById('admin-modal');
+            const newsFormModal = document.getElementById('news-form-modal');
+            const newsForm = document.getElementById('news-form');
+            const newsIdField = document.getElementById('news-id-field');
+            const newsTitleField = document.getElementById('news-title-field');
+            const newsDescriptionField = document.getElementById('news-description-field');
+            const newsCategoryField = document.getElementById('news-category-field');
+            const newsFormTitle = document.getElementById('news-form-title');
+            
+            let keySequence = [];
+            const secretCode = ['a', 'd', 'm', 'i', 'n'];
+
+            document.addEventListener('keydown', (e) => {
+                if (!sessionStorage.getItem('vendedorLogueado') || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    keySequence = [];
+                    return;
+                }
+                keySequence.push(e.key.toLowerCase());
+                keySequence = keySequence.slice(-secretCode.length);
+                if (keySequence.join('') === secretCode.join('')) {
+                    populateAdminModal();
+                    adminModal.style.display = 'flex';
+                    keySequence = [];
+                }
+            });
+
+            function openNewsForm(data = {}) {
+                newsForm.reset();
+                newsIdField.value = data.id || '';
+                newsTitleField.value = data.title || '';
+                newsDescriptionField.value = data.description || '';
+                newsCategoryField.value = data.category || 'comerciales';
+                newsFormTitle.textContent = data.id ? 'Editar Noticia' : 'Crear Noticia';
+                newsFormModal.style.display = 'flex';
+            }
+
+            async function populateAdminModal() {
+                const listContainer = document.getElementById('admin-news-list');
+                listContainer.innerHTML = 'Cargando noticias...';
+                
+                const snapshot = await db.collection('news').orderBy('timestamp', 'desc').get();
+                listContainer.innerHTML = '';
+
+                snapshot.forEach(doc => {
+                    const news = { id: doc.id, ...doc.data() };
+                    const item = document.createElement('div');
+                    item.className = 'admin-news-item';
+                    const fullContent = `<strong>${news.title || ''}</strong> ${news.description || news.content || ''}`;
+                    const tooltipText = fullContent.replace(/<[^>]*>?/gm, '');
+
+                    item.innerHTML = `
+                        <div class="admin-news-content" title="${tooltipText}">
+                            <p>${fullContent}</p>
+                            <small>Categoría: ${news.category}</small>
+                        </div>
+                        <div class="admin-news-actions">
+                            <button class="admin-btn edit-btn" data-id="${news.id}"><i class="fa-solid fa-pencil"></i></button>
+                            <button class="admin-btn delete-btn" data-id="${news.id}"><i class="fa-solid fa-trash"></i></button>
+                            <button class="admin-btn reset-btn" data-id="${news.id}"><i class="fa-solid fa-arrows-rotate"></i></button>
+                        </div>
+                    `;
+                    listContainer.appendChild(item);
+                });
+
+                listContainer.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', async e => {
+                        const id = e.currentTarget.dataset.id;
+                        const doc = await db.collection('news').doc(id).get();
+                        const data = doc.data();
+                        // Compatibilidad con noticias antiguas
+                        if (data.content && !data.title && !data.description) {
+                            openNewsForm({ id, title: 'Título General', description: data.content, category: data.category });
+                        } else {
+                            openNewsForm({ id, ...data });
+                        }
+                    });
+                });
+                
+                listContainer.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function handleDelete(e) {
+                        const button = e.currentTarget;
+                        const newsId = button.dataset.id;
+                        
+                        if (button.classList.contains('confirm')) {
+                            db.collection('news').doc(newsId).delete().then(() => {
+                                db.collection('reactions').doc(newsId).delete();
+                                populateAdminModal();
+                            });
+                        } else {
+                            button.textContent = '¿Seguro?';
+                            button.classList.add('confirm');
+                            const revert = () => {
+                                button.innerHTML = '<i class="fa-solid fa-trash"></i>';
+                                button.classList.remove('confirm');
+                                document.removeEventListener('click', checkOutside, true);
+                            };
+                            const checkOutside = (event) => {
+                                if (!button.contains(event.target)) {
+                                   revert();
+                                }
+                            };
+                            setTimeout(() => document.addEventListener('click', checkOutside, true), 0);
+                        }
+                    });
+                });
+
+                listContainer.querySelectorAll('.reset-btn').forEach(btn => {
+                    btn.addEventListener('click', async e => {
+                        const newsId = e.currentTarget.dataset.id;
+                        await db.collection('reactions').doc(newsId).set({ '👍': 0, '❤️': 0, '🔥': 0 });
+                        e.currentTarget.innerHTML = '<i class="fa-solid fa-check"></i>';
+                        setTimeout(() => e.currentTarget.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>', 1500);
+                    });
+                });
+            }
+
+            document.getElementById('add-news-btn').addEventListener('click', () => openNewsForm());
+            document.getElementById('close-admin-modal-btn').addEventListener('click', () => adminModal.style.display = 'none');
+            document.getElementById('close-news-form-modal-btn').addEventListener('click', () => newsFormModal.style.display = 'none');
+
+            newsForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = newsIdField.value;
+                const data = {
+                    title: newsTitleField.value,
+                    description: newsDescriptionField.value,
+                    category: newsCategoryField.value,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                if (id) {
+                    await db.collection('news').doc(id).update(data);
+                } else {
+                    await db.collection('news').add(data);
+                }
+                newsFormModal.style.display = 'none';
+                populateAdminModal();
+            });
         });
     </script>
     <script src="script.js"></script>
 </body>
 </html>
+
