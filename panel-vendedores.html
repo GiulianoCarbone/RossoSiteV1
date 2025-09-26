@@ -140,7 +140,7 @@
             display: none;
         }
         .directory-accordion summary::after {
-            content: '\\f078';
+            content: '⮟';
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             margin-left: auto;
@@ -331,7 +331,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- ¡ACCIÓN REQUERIDA! ---
             const vendedoresAutorizados = [
                 { nombre: "Juan Perez", dni: "12345678" },
                 { nombre: "Maria Garcia", dni: "87654321" },
@@ -382,18 +381,21 @@
                 });
             }
 
-            // --- LÓGICA DEL MODAL DE LINKS ---
             const linksModal = document.getElementById('links-modal');
             const openModalBtn = document.getElementById('open-links-modal-btn');
             const closeModalBtn = document.getElementById('close-links-modal-btn');
 
-            openModalBtn.addEventListener('click', () => {
-                linksModal.style.display = 'flex';
-            });
+            if (openModalBtn) {
+                openModalBtn.addEventListener('click', () => {
+                    linksModal.style.display = 'flex';
+                });
+            }
 
-            closeModalBtn.addEventListener('click', () => {
-                linksModal.style.display = 'none';
-            });
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    linksModal.style.display = 'none';
+                });
+            }
 
             window.addEventListener('click', (event) => {
                 if (event.target == linksModal) {
@@ -416,7 +418,6 @@
                 });
             });
 
-            // --- LÓGICA PARA RENDERIZAR EL DIRECTORIO DESPLEGABLE (NUEVO) ---
             const directoryData = {
                 "Gerencia General": {
                     icon: "fa-user-tie",
@@ -491,37 +492,58 @@
             };
 
             const directoryContainer = document.getElementById('directory-container');
-            let directoryHTML = '';
+            if (directoryContainer) {
+                let directoryHTML = '';
 
-            for (const area in directoryData) {
-                const areaData = directoryData[area];
-                let membersHTML = '';
-                areaData.members.forEach(emp => {
-                    membersHTML += `
-                        <div class="employee-contact-card">
-                            <p class="name">${emp.nombre}</p>
-                            <p class="position">${emp.puesto}</p>
-                            <i class="fa-solid fa-envelope"></i>
-                            <a href="mailto:${emp.email}" class="contact-info">${emp.email}</a>
-                            <i class="fa-solid fa-phone"></i>
-                            <a href="tel:${emp.numero}" class="contact-info">${emp.numero}</a>
-                        </div>
+                for (const area in directoryData) {
+                    const areaData = directoryData[area];
+                    let membersHTML = '';
+                    areaData.members.forEach(emp => {
+                        membersHTML += `
+                            <div class="employee-contact-card">
+                                <p class="name">${emp.nombre}</p>
+                                <p class="position">${emp.puesto}</p>
+                                <i class="fa-solid fa-envelope"></i>
+                                <a href="mailto:${emp.email}" class="contact-info">${emp.email}</a>
+                                <i class="fa-solid fa-phone"></i>
+                                <a href="tel:${emp.numero}" class="contact-info">${emp.numero}</a>
+                            </div>
+                        `;
+                    });
+
+                    directoryHTML += `
+                        <details>
+                            <summary>
+                                <i class="fa-solid ${areaData.icon} area-icon"></i>
+                                ${area}
+                            </summary>
+                            <div class="directory-content">
+                                ${membersHTML}
+                            </div>
+                        </details>
                     `;
-                });
+                }
+                directoryContainer.innerHTML = directoryHTML;
 
-                directoryHTML += `
-                    <details>
-                        <summary>
-                            <i class="fa-solid ${areaData.icon} area-icon"></i>
-                            ${area}
-                        </summary>
-                        <div class="directory-content">
-                            ${membersHTML}
-                        </div>
-                    </details>
-                `;
+                // --- CÓDIGO COMPLETADO Y AÑADIDO ---
+                // Esta es la lógica para que solo un desplegable esté abierto a la vez.
+                const allDetails = directoryContainer.querySelectorAll('details');
+                allDetails.forEach(details => {
+                    details.addEventListener('toggle', (event) => {
+                        // Si el <details> actual se está abriendo...
+                        if (details.open) {
+                            // ...recorremos todos los demás.
+                            allDetails.forEach(otherDetails => {
+                                // Si no es el que acabamos de abrir y está abierto...
+                                if (otherDetails !== details && otherDetails.open) {
+                                    // ...lo cerramos.
+                                    otherDetails.open = false;
+                                }
+                            });
+                        }
+                    });
+                });
             }
-            directoryContainer.innerHTML = directoryHTML;
         });
     </script>
     <script src="script.js"></script>
