@@ -6,7 +6,7 @@
     <title>Panel de Vendedores | Rosso Materiales</title>
     <link href="assets/FAV.png" rel="icon">
     <link href="style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         :root {
             --panel-bg: #f4f7f6;
@@ -95,7 +95,7 @@
             60% { transform: translateY(-4px); }
         }
 
-        /* --- ESTILOS MODAL LINKS ÚTILES (NUEVO) --- */
+        /* --- ESTILOS MODAL LINKS ÚTILES --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 3000; }
         .modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
@@ -107,6 +107,59 @@
         .link-item-info span { font-size: 0.85rem; color: var(--muted); word-break: break-all; }
         .copy-link-btn { padding: 8px 12px; border: none; background: var(--accent); color: white; font-weight: 600; border-radius: 6px; cursor: pointer; white-space: nowrap; }
         .copy-link-btn:active { transform: scale(0.95); }
+
+        /* --- ESTILOS DIRECTORIO DESPLEGABLE --- */
+        .directory-accordion details {
+            background: #fff;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            transition: box-shadow 0.2s ease;
+        }
+        .directory-accordion details[open] {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .directory-accordion summary {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--brand);
+            cursor: pointer;
+            list-style: none;
+        }
+        .directory-accordion summary i.area-icon {
+            color: var(--accent);
+            font-size: 1.5rem;
+            width: 30px;
+            text-align: center;
+        }
+        .directory-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+        .directory-accordion summary::after {
+            content: '\\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-left: auto;
+            transition: transform 0.2s ease-in-out;
+        }
+        .directory-accordion details[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .directory-content {
+            padding: 0 20px 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        .employee-contact-card { display: grid; grid-template-columns: auto 1fr; gap: 10px 15px; align-items: center; background: #f8f9fa; padding: 12px; border-radius: 8px; margin-top: 12px; }
+        .employee-contact-card .name { font-weight: 600; color: var(--brand); grid-column: 1 / -1; }
+        .employee-contact-card .position { font-size: 0.9rem; color: var(--muted); grid-column: 1 / -1; margin-top: -8px; }
+        .employee-contact-card i { color: var(--accent); text-align: center; }
+        .employee-contact-card .contact-info { font-size: 0.9rem; color: var(--ink); word-break: break-all; }
+        .employee-contact-card a.contact-info { text-decoration: none; }
+        .employee-contact-card a.contact-info:hover { text-decoration: underline; }
 
     </style>
 </head>
@@ -216,7 +269,16 @@
                         <p class="employee-title">¡Felicitaciones por ser el vendedor con más ventas este mes!</p>
                     </div>
                 </div>
-            </div>
+
+                <div class="panel-card" style="grid-column: 1 / -1;">
+                    <div class="panel-card-header">
+                        <span class="panel-card-icon"><i class="fa-solid fa-address-book"></i></span>
+                        <h3>Directorio de Contactos</h3>
+                    </div>
+                    <div class="panel-card-body directory-accordion" id="directory-container">
+                        </div>
+                </div>
+                </div>
         </main>
     </div>
 
@@ -320,7 +382,7 @@
                 });
             }
 
-            // --- LÓGICA DEL MODAL DE LINKS (NUEVO) ---
+            // --- LÓGICA DEL MODAL DE LINKS ---
             const linksModal = document.getElementById('links-modal');
             const openModalBtn = document.getElementById('open-links-modal-btn');
             const closeModalBtn = document.getElementById('close-links-modal-btn');
@@ -353,6 +415,113 @@
                     });
                 });
             });
+
+            // --- LÓGICA PARA RENDERIZAR EL DIRECTORIO DESPLEGABLE (NUEVO) ---
+            const directoryData = {
+                "Gerencia General": {
+                    icon: "fa-user-tie",
+                    members: [ { puesto: "Gerencia General", nombre: "Molicia Jose", email: "jmolicia@rossomateriales.com.ar", numero: "+5493814145401" } ]
+                },
+                "Ventas": {
+                    icon: "fa-headset",
+                    members: [
+                        { puesto: "Gerencia Comercial", nombre: "Rosso Andrea", email: "andrea@rossomateriales.com.ar", numero: "+5493815062999" },
+                        { puesto: "Jefe de Ventas Retail", nombre: "Garcia Juan", email: "jgarcia@rossomateriales.com.ar", numero: "+5493863512483" },
+                        { puesto: "Supervisor Retail", nombre: "Almaraz Nahuel", email: "nalmaraz@rossomateriales.com.ar", numero: "+5493814146719" },
+                        { puesto: "Gerente. Suc. Salta", nombre: "Ruano Etel", email: "salta@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" },
+                        { puesto: "Gerente. Suc. Metan", nombre: "Tanquia Nelson", email: "metan@rossomateriales.com.ar", numero: "+5493813539959" },
+                        { puesto: "Gerente. Suc. Tucumán", nombre: "Montenegro Carlos", email: "tucuman@rossomateriales.com.ar", numero: "+5493815153152" },
+                        { puesto: "Gerente. Suc. Manantial", nombre: "Puente Emanuel", email: "manantial@rossomateriales.com.ar", numero: "+5493814147314" },
+                        { puesto: "Gerente. Suc. Monteros", nombre: "Nallen Mauricio", email: "monteros@rossomateriales.com.ar", numero: "+5493814148286" },
+                        { puesto: "Gerente. Suc. Concepción", nombre: "Alí Alberto", email: "concepcion@rossomateriales.com.ar", numero: "+5493814147723" },
+                        { puesto: "Gerente. Suc. Tafi del Valle", nombre: "Cordoba Jonathan", email: "tafidelvalle@rossomateriales.com.ar", numero: "+5493814148083" },
+                        { puesto: "Gerente. Suc. Aguilares", nombre: "Carabajal Damian", email: "aguilares@rossomateriales.com.ar", numero: "+5493814167106" },
+                        { puesto: "Gerente. Suc. Alberdi", nombre: "Oyola Esteban", email: "alberdi@rossomateriales.com.ar", numero: "+5493814147642" },
+                        { puesto: "Gerente. Suc. Famailla", nombre: "Leal Franscisco", email: "famailla@rossomateriales.com.ar", numero: "+5493814145876" }
+                    ]
+                },
+                "Suministro": {
+                    icon: "fa-truck-ramp-box",
+                    members: [
+                        { puesto: "Gerencia", nombre: "Rizzio Constanza", email: "criccio@rossomateriales.com.ar", numero: "+5493815857491" },
+                        { puesto: "Jefe de Compras", nombre: "Amran Eduardo", email: "compras@rossomateriales.com.ar", numero: "+5493863515623" },
+                        { puesto: "Jefe de Logistica", nombre: "Nieva Sergio", email: "snieva@rossomateriales.com.ar", numero: "+5493814145405" }
+                    ]
+                },
+                "Finanzas y Tesorería": {
+                    icon: "fa-chart-pie",
+                    members: [
+                        { puesto: "Gerencia", nombre: "Capalbo Javier", email: "jcapalbo@rossomateriales.com.ar", numero: "+5491140239900" },
+                        { puesto: "Tesorero", nombre: "Jose Brito", email: "jbrito@rossomateriales.com.ar", numero: "+5493813539956" }
+                    ]
+                },
+                "Contabilidad y Auditoría": {
+                    icon: "fa-calculator",
+                    members: [
+                        { puesto: "Gerencia", nombre: "Del Pero Casey Mariana", email: "mdelpaero@rossomateriales.com.ar", numero: "+5493814145515" },
+                        { puesto: "Auditoría", nombre: "Rosso Julieta", email: "auditorias@rossomateriales.com.ar", numero: "+5493815272274" }
+                    ]
+                },
+                "RRHH": {
+                    icon: "fa-users-gear",
+                    members: [
+                        { puesto: "Jefe de RRHH", nombre: "Olea Babich Emilia", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" },
+                        { puesto: "Analista", nombre: "Garcia Etelvina", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" }
+                    ]
+                },
+                "Marketing": {
+                    icon: "fa-bullhorn",
+                    members: [
+                        { puesto: "Jefe de marketing", nombre: "-", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" },
+                        { puesto: "Diseño Gráfico", nombre: "Delgado Cirene", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" }
+                    ]
+                },
+                "Deposito": {
+                    icon: "fa-warehouse",
+                    members: [ { puesto: "Supervisor de Deposito", nombre: "Araoz Walter", email: "comercial@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" } ]
+                },
+                "Obras y Mantenimiento": {
+                    icon: "fa-helmet-safety",
+                    members: [ { puesto: "Jefe de Obras", nombre: "Figueroa Raul", email: "obras@rossomateriales.com.ar", numero: "+5493814146928" } ]
+                },
+                "IT": {
+                    icon: "fa-laptop-code",
+                    members: [ { puesto: "Responsable IT", nombre: "Ahumada Jose", email: "jahumada@rossomateriales.com.ar", numero: "+5493814148584" } ]
+                }
+            };
+
+            const directoryContainer = document.getElementById('directory-container');
+            let directoryHTML = '';
+
+            for (const area in directoryData) {
+                const areaData = directoryData[area];
+                let membersHTML = '';
+                areaData.members.forEach(emp => {
+                    membersHTML += `
+                        <div class="employee-contact-card">
+                            <p class="name">${emp.nombre}</p>
+                            <p class="position">${emp.puesto}</p>
+                            <i class="fa-solid fa-envelope"></i>
+                            <a href="mailto:${emp.email}" class="contact-info">${emp.email}</a>
+                            <i class="fa-solid fa-phone"></i>
+                            <a href="tel:${emp.numero}" class="contact-info">${emp.numero}</a>
+                        </div>
+                    `;
+                });
+
+                directoryHTML += `
+                    <details>
+                        <summary>
+                            <i class="fa-solid ${areaData.icon} area-icon"></i>
+                            ${area}
+                        </summary>
+                        <div class="directory-content">
+                            ${membersHTML}
+                        </div>
+                    </details>
+                `;
+            }
+            directoryContainer.innerHTML = directoryHTML;
         });
     </script>
     <script src="script.js"></script>
