@@ -29,7 +29,7 @@
         .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--muted); }
         .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
         #login-button { width: 100%; padding: 14px; border: none; border-radius: 8px; background-color: var(--accent); color: white; font-size: 1.1rem; font-weight: 700; cursor: pointer; }
-        #login-error, #log-password-error, #admin-password-error { color: #d9534f; margin-top: 15px; font-weight: 600; min-height: 20px; }
+        #login-error, #admin-password-error { color: #d9534f; margin-top: 15px; font-weight: 600; min-height: 20px; }
 
         /* --- ESTILOS PANEL --- */
         #panel-wrapper {
@@ -158,10 +158,10 @@
         .picker-btn:hover { transform: scale(1.2); }
 
         /* --- ESTILOS PANEL DE ADMINISTRACIÓN --- */
-        #admin-controls { margin-bottom: 20px; display: flex; justify-content: flex-end; gap: 10px; }
+        #admin-controls, #admin-controls-trainings, #admin-controls-vendedores { margin-bottom: 20px; display: flex; justify-content: flex-end; gap: 10px; }
         .admin-section-header { font-size: 1.2rem; color: var(--brand); border-bottom: 2px solid var(--accent); padding-bottom: 5px; margin: 20px 0 10px 0; }
         #add-news-btn, #add-training-btn { padding: 8px 16px; font-weight: 700; background-color: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; }
-        #admin-news-list, #admin-trainings-list { display: flex; flex-direction: column; gap: 12px; max-height: 40vh; overflow-y: auto; padding-right: 10px; }
+        .admin-list { display: flex; flex-direction: column; gap: 12px; max-height: 40vh; overflow-y: auto; padding-right: 10px; }
         .admin-item { display: flex; align-items: center; justify-content: space-between; gap: 15px; background: #f8f9fa; padding: 10px 15px; border-radius: 8px; }
         .admin-item-content { font-size: 0.9rem; flex-grow: 1; overflow: hidden; }
         .admin-item-content p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin:0; }
@@ -171,12 +171,11 @@
         .edit-btn { background-color: #007bff; }
         .delete-btn { background-color: #dc3545; }
         .reset-btn { background-color: #6c757d; }
-        .delete-btn.confirm { background-color: #ffc107; color: black; }
         
-        /* Formulario de Noticias/Capacitaciones */
-        #news-form, #training-form, #log-password-form, #admin-password-form { display: flex; flex-direction: column; gap: 15px; }
+        /* Formulario de Contenido */
+        #news-form, #training-form, #admin-password-form { display: flex; flex-direction: column; gap: 15px; }
         #news-form textarea, #training-form input[type="text"] { min-height: 120px; resize: vertical; }
-        #news-form button, #training-form button, #log-password-form button, #admin-password-form button { padding: 12px; background-color: var(--accent); color: white; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; }
+        #news-form button, #training-form button, #admin-password-form button { padding: 12px; background-color: var(--accent); color: white; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; }
 
         /* --- CALENDAR STYLES --- */
         .calendar-container { font-size: 0.9rem; }
@@ -192,14 +191,6 @@
         #event-details { margin-top: 1rem; padding: 1rem; background-color: #f8f9fa; border-radius: 8px; min-height: 50px; }
         #event-details h5 { font-weight: 700; color: var(--brand); }
         #event-details p { margin: 0; color: var(--muted); }
-
-        /* --- LOG STYLES --- */
-        #log-display-view { display: none; }
-        #log-list { list-style: none; padding: 0; margin: 0; max-height: 60vh; overflow-y: auto; }
-        .log-item { padding: 10px 0; border-bottom: 1px solid var(--border-color); }
-        .log-item:last-child { border-bottom: none; }
-        .log-item p { margin: 0; font-size: 0.9rem; }
-        .log-item small { color: var(--muted); font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -345,7 +336,7 @@
         </main>
     </div>
 
-    <!-- MODAL PARA CONTRASEÑA DE ADMIN (NUEVO) -->
+    <!-- MODAL PARA CONTRASEÑA DE ADMIN -->
     <div id="admin-password-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -365,8 +356,7 @@
         </div>
     </div>
 
-
-    <!-- MODALES -->
+    <!-- MODALES DE CONTENIDO -->
     <div id="links-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -386,6 +376,13 @@
                 <button id="close-admin-modal-btn" class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
+                <h5 class="admin-section-header">Gestionar Vendedores</h5>
+                <div id="admin-controls-vendedores">
+                    <a href="carga-masiva.html" target="_blank" id="manage-vendedores-btn" class="admin-btn" style="background-color: #007bff; display: inline-block; text-decoration: none; padding: 8px 16px; width: auto; font-weight: 700; color: white;">
+                        <i class="fa-solid fa-users-cog"></i> Ir a Gestión de Vendedores
+                    </a>
+                </div>
+
                 <h5 class="admin-section-header">Gestionar Noticias</h5>
                 <div id="admin-controls">
                     <button id="add-news-btn"><i class="fa-solid fa-plus"></i> Crear Noticia</button>
@@ -400,7 +397,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="news-form-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -454,31 +451,6 @@
         </div>
     </div>
     
-    <div id="log-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 id="log-modal-title">Registro de Actividad</h4>
-                <button id="close-log-modal-btn" class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="log-password-view">
-                    <form id="log-password-form">
-                        <div class="input-group">
-                            <label for="log-password-field">Contraseña de Administrador</label>
-                            <input type="password" id="log-password-field" required>
-                        </div>
-                        <button type="submit">Ver Registro</button>
-                        <div id="log-password-error"></div>
-                    </form>
-                </div>
-                <div id="log-display-view">
-                    <ul id="log-list"></ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
@@ -497,7 +469,6 @@
         const db = firebase.firestore();
 
         document.addEventListener('DOMContentLoaded', function() {
-            const vendedoresAutorizados = [ { nombre: "Juan Perez", dni: "12345678" }, { nombre: "Maria Garcia", dni: "87654321" }];
             const directoryData = {
                 "Gerencia General": { icon: "fa-user-tie", members: [ { puesto: "Gerencia General", nombre: "Molicia Jose", email: "jmolicia@rossomateriales.com.ar", numero: "+5493814145401" } ] },
                 "Ventas": { icon: "fa-headset", members: [ { puesto: "Gerencia Comercial", nombre: "Rosso Andrea", email: "andrea@rossomateriales.com.ar", numero: "+5493815062999" }, { puesto: "Jefe de Ventas Retail", nombre: "Garcia Juan", email: "jgarcia@rossomateriales.com.ar", numero: "+5493863512483" }, { puesto: "Supervisor Retail", nombre: "Almaraz Nahuel", email: "nalmaraz@rossomateriales.com.ar", numero: "+5493814146719" }, { puesto: "Gerente. Suc. Salta", nombre: "Ruano Etel", email: "salta@rossomateriales.com.ar", numero: "+XXXXXXXXXXX" }, { puesto: "Gerente. Suc. Metan", nombre: "Tanquia Nelson", email: "metan@rossomateriales.com.ar", numero: "+5493813539959" }, { puesto: "Gerente. Suc. Tucumán", nombre: "Montenegro Carlos", email: "tucuman@rossomateriales.com.ar", numero: "+5493815153152" }, { puesto: "Gerente. Suc. Manantial", nombre: "Puente Emanuel", email: "manantial@rossomateriales.com.ar", numero: "+5493814147314" }, { puesto: "Gerente. Suc. Monteros", nombre: "Nallen Mauricio", email: "monteros@rossomateriales.com.ar", numero: "+5493814148286" }, { puesto: "Gerente. Suc. Concepción", nombre: "Alí Alberto", email: "concepcion@rossomateriales.com.ar", numero: "+5493814147723" }, { puesto: "Gerente. Suc. Tafi del Valle", nombre: "Cordoba Jonathan", email: "tafidelvalle@rossomateriales.com.ar", numero: "+5493814148083" }, { puesto: "Gerente. Suc. Aguilares", nombre: "Carabajal Damian", email: "aguilares@rossomateriales.com.ar", numero: "+5493814167106" }, { puesto: "Gerente. Suc. Alberdi", nombre: "Oyola Esteban", email: "alberdi@rossomateriales.com.ar", numero: "+5493814147642" }, { puesto: "Gerente. Suc. Famailla", nombre: "Leal Franscisco", email: "famailla@rossomateriales.com.ar", numero: "+5493814145876" } ] },
@@ -529,13 +500,31 @@
 
             document.getElementById('login-form').addEventListener('submit', async function(event) {
                 event.preventDefault();
-                const user = vendedoresAutorizados.find(v => v.nombre.toLowerCase() === document.getElementById('nombre').value.trim().toLowerCase() && v.dni === document.getElementById('dni').value.trim());
-                if (user) {
-                    sessionStorage.setItem('vendedorLogueado', user.nombre);
-                    await logAction('inició sesión.');
-                    checkLogin();
-                } else {
-                    document.getElementById('login-error').textContent = 'Nombre o DNI incorrecto.';
+                const nombreInput = document.getElementById('nombre').value.trim().toLowerCase();
+                const dniInput = document.getElementById('dni').value.trim();
+                const loginError = document.getElementById('login-error');
+                
+                loginError.textContent = 'Verificando...';
+
+                try {
+                    const snapshot = await db.collection('vendedores').get();
+                    let userFound = false;
+                    snapshot.forEach(doc => {
+                        const vendedor = doc.data();
+                        if (vendedor.nombre.toLowerCase() === nombreInput && vendedor.dni === dniInput) {
+                            userFound = vendedor;
+                        }
+                    });
+
+                    if (userFound) {
+                        sessionStorage.setItem('vendedorLogueado', userFound.nombre);
+                        checkLogin();
+                    } else {
+                        loginError.textContent = 'Nombre o DNI incorrecto.';
+                    }
+                } catch (error) {
+                    console.error("Error al verificar vendedor: ", error);
+                    loginError.textContent = 'Error al conectar. Intente de nuevo.';
                 }
             });
 
@@ -545,7 +534,7 @@
                 location.reload();
             });
 
-            // --- LÓGICA DE NOTICIAS (AHORA CON FIREBASE) ---
+            // --- LÓGICA DE NOTICIAS ---
             function populateNews() {
                 db.collection('news').orderBy('timestamp', 'desc').onSnapshot(querySnapshot => {
                     const comercialesList = document.getElementById('comerciales-news-list');
@@ -563,7 +552,7 @@
                         newsElement.className = 'news-item';
                         newsElement.dataset.newsId = newsId;
                         newsElement.innerHTML = `
-                            <p><strong>${news.title || ''}</strong> ${news.description || news.content || ''}</p>
+                            <p><strong>${news.title || ''}</strong> ${news.description || ''}</p>
                             <div class="news-footer">
                                 <div class="reactions-summary"></div>
                                 <div class="add-reaction-container">
@@ -571,7 +560,7 @@
                                     <div class="reaction-picker">
                                         <button class="picker-btn" data-reaction="👍">👍</button>
                                         <button class="picker-btn" data-reaction="❤️">❤️</button>
-                                        <button class="picker-btn" data-reaction="🔥">🔥</button>
+                                        <button class="picker-btn" data-reaction="🎉">🎉</button>
                                     </div>
                                 </div>
                             </div>
@@ -619,7 +608,6 @@
                         });
                     });
 
-                    // SOLUCIÓN PARA REACCIONES EN MÓVIL
                     const addReactionBtn = item.querySelector('.add-reaction-btn');
                     const reactionContainer = item.querySelector('.add-reaction-container');
 
@@ -631,9 +619,7 @@
                             document.querySelectorAll('.add-reaction-container.show-picker').forEach(openContainer => {
                                 openContainer.classList.remove('show-picker');
                                 const otherPicker = openContainer.querySelector('.reaction-picker');
-                                if (otherPicker) {
-                                    otherPicker.classList.remove('picker-below');
-                                }
+                                if (otherPicker) otherPicker.classList.remove('picker-below');
                             });
 
                             if (!isAlreadyOpen) {
@@ -662,7 +648,7 @@
                 let totalReactions = 0;
                 const userReaction = localStorage.getItem(`reaction_${item.dataset.newsId}`);
 
-                ['👍', '❤️', '🔥'].forEach(emoji => {
+                ['👍', '❤️', '🎉'].forEach(emoji => {
                     const count = data[emoji] || 0;
                     if (count > 0) {
                         totalReactions += count;
@@ -727,9 +713,7 @@
                 if (openPickerContainer && !openPickerContainer.contains(e.target)) {
                     openPickerContainer.classList.remove('show-picker');
                     const picker = openPickerContainer.querySelector('.reaction-picker');
-                    if (picker) {
-                        picker.classList.remove('picker-below');
-                    }
+                    if (picker) picker.classList.remove('picker-below');
                 }
             });
 
@@ -737,9 +721,7 @@
             const adminModal = document.getElementById('admin-modal');
             const newsFormModal = document.getElementById('news-form-modal');
             const trainingFormModal = document.getElementById('training-form-modal');
-            const logModal = document.getElementById('log-modal');
             
-            // --- NUEVO: Elementos y lógica para el modal de contraseña ---
             const adminPasswordModal = document.getElementById('admin-password-modal');
             const adminPasswordForm = document.getElementById('admin-password-form');
             const adminPasswordField = document.getElementById('admin-password-field');
@@ -748,7 +730,6 @@
             
             let keySequence = [];
             const adminSecretCode = 'admin';
-            const logSecretCode = 'log';
 
             document.addEventListener('keydown', (e) => {
                 if (!sessionStorage.getItem('vendedorLogueado') || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
@@ -761,11 +742,6 @@
                 if (currentSequence.endsWith(adminSecretCode)) {
                     adminPasswordModal.style.display = 'flex';
                     adminPasswordField.focus();
-                    keySequence = [];
-                }
-
-                if (currentSequence.endsWith(logSecretCode)) {
-                    logModal.style.display = 'flex';
                     keySequence = [];
                 }
 
@@ -806,8 +782,8 @@
                     const news = { id: doc.id, ...doc.data() };
                     const item = document.createElement('div');
                     item.className = 'admin-item';
-                    const fullContent = `<strong>${news.title || ''}</strong> ${news.description || news.content || ''}`;
-                    item.innerHTML = `<div class="admin-item-content" title="${fullContent.replace(/<[^>]*>?/gm, '')}"><p>${fullContent}</p><small>Categoría: ${news.category}</small></div><div class="admin-item-actions"><button class="admin-btn edit-btn" data-id="${news.id}"><i class="fa-solid fa-pencil"></i></button><button class="admin-btn delete-btn" data-id="${news.id}"><i class="fa-solid fa-trash"></i></button><button class="admin-btn reset-btn" data-id="${news.id}"><i class="fa-solid fa-arrows-rotate"></i></button></div>`;
+                    const fullContent = `<strong>${news.title || ''}</strong> ${news.description || ''}`;
+                    item.innerHTML = `<div class="admin-item-content" title="${fullContent.replace(/<[^>]*>?/gm, '')}"><p>${fullContent}</p><small>Categoría: ${news.category}</small></div><div class="admin-item-actions"><button class="admin-btn edit-btn" data-id="${news.id}"><i class="fa-solid fa-pencil"></i></button><button class="admin-btn delete-btn" data-collection="news" data-id="${news.id}"><i class="fa-solid fa-trash"></i></button><button class="admin-btn reset-btn" data-id="${news.id}"><i class="fa-solid fa-arrows-rotate"></i></button></div>`;
                     newsListContainer.appendChild(item);
                 });
 
@@ -820,7 +796,7 @@
                     const training = { id: doc.id, ...doc.data() };
                     const item = document.createElement('div');
                     item.className = 'admin-item';
-                    item.innerHTML = `<div class="admin-item-content"><p><strong>${training.date}:</strong> ${training.title}</p></div><div class="admin-item-actions"><button class="admin-btn delete-training-btn" data-id="${training.id}"><i class="fa-solid fa-trash"></i></button></div>`;
+                    item.innerHTML = `<div class="admin-item-content"><p><strong>${training.date}:</strong> ${training.title}</p></div><div class="admin-item-actions"><button class="admin-btn delete-btn" data-collection="trainings" data-id="${training.id}"><i class="fa-solid fa-trash"></i></button></div>`;
                     trainingsListContainer.appendChild(item);
                 });
 
@@ -828,43 +804,33 @@
             }
 
             function addAdminEventListeners() {
-                // News Listeners
+                // Universal Delete Listeners
+                document.querySelectorAll('#admin-modal .delete-btn').forEach(btn => btn.onclick = function(e) {
+                    const button = e.currentTarget;
+                    const docId = button.dataset.id;
+                    const collection = button.dataset.collection;
+                    if (confirm(`¿Seguro que querés borrar este item de "${collection}"?`)) {
+                        db.collection(collection).doc(docId).delete().then(() => {
+                            if (collection === 'news') {
+                                db.collection('reactions').doc(docId).delete();
+                            }
+                            populateAdminModal();
+                        });
+                    }
+                });
+                
+                // News-specific listeners
                 document.querySelectorAll('#admin-news-list .edit-btn').forEach(btn => btn.onclick = async e => {
                     const id = e.currentTarget.dataset.id;
                     const doc = await db.collection('news').doc(id).get();
-                    const data = doc.data();
-                    openNewsForm({ id, ...data });
+                    openNewsForm({ id, ...doc.data() });
                 });
                 
-                document.querySelectorAll('#admin-news-list .delete-btn').forEach(btn => btn.onclick = function(e) {
-                    const button = e.currentTarget;
-                    const newsId = button.dataset.id;
-                    if (confirm(`¿Seguro que querés borrar la noticia?`)) {
-                        db.collection('news').doc(newsId).delete().then(() => {
-                            db.collection('reactions').doc(newsId).delete();
-                            logAction(`eliminó la noticia con ID: ${newsId}.`);
-                            populateAdminModal();
-                        });
-                    }
-                });
-
                 document.querySelectorAll('#admin-news-list .reset-btn').forEach(btn => btn.onclick = async e => {
                     const newsId = e.currentTarget.dataset.id;
-                    await db.collection('reactions').doc(newsId).set({ '👍': 0, '❤️': 0, '🔥': 0 });
+                    await db.collection('reactions').doc(newsId).set({ '👍': 0, '❤️': 0, '🎉': 0 });
                     e.currentTarget.innerHTML = '<i class="fa-solid fa-check"></i>';
                     setTimeout(() => e.currentTarget.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>', 1500);
-                });
-
-                // Trainings Listeners
-                document.querySelectorAll('#admin-trainings-list .delete-training-btn').forEach(btn => btn.onclick = function(e) {
-                     const button = e.currentTarget;
-                    const trainingId = button.dataset.id;
-                    if (confirm(`¿Seguro que querés borrar esta capacitación?`)) {
-                        db.collection('trainings').doc(trainingId).delete().then(() => {
-                            logAction(`eliminó la capacitación con ID: ${trainingId}.`);
-                            populateAdminModal();
-                        });
-                    }
                 });
             }
             
@@ -886,6 +852,7 @@
             // Modal Buttons
             document.getElementById('add-news-btn').onclick = () => openNewsForm();
             document.getElementById('add-training-btn').onclick = () => openTrainingForm();
+            
             document.getElementById('close-admin-modal-btn').onclick = () => adminModal.style.display = 'none';
             document.getElementById('close-news-form-modal-btn').onclick = () => newsFormModal.style.display = 'none';
             document.getElementById('close-training-form-modal-btn').onclick = () => trainingFormModal.style.display = 'none';
@@ -904,7 +871,6 @@
                 else await db.collection('news').add(data);
                 newsFormModal.style.display = 'none';
                 populateAdminModal();
-                logAction(id ? `editó la noticia "${data.title}".` : `creó la noticia "${data.title}".`);
             };
             
             document.getElementById('training-form').onsubmit = async (e) => {
@@ -916,72 +882,8 @@
                 await db.collection('trainings').add(data);
                 trainingFormModal.style.display = 'none';
                 populateAdminModal();
-                logAction(`agregó la capacitación "${data.title}".`);
             };
 
-            // --- LOG DE ACTIVIDAD ---
-            const logPasswordView = document.getElementById('log-password-view');
-            const logDisplayView = document.getElementById('log-display-view');
-            const logPasswordForm = document.getElementById('log-password-form');
-            const logPasswordField = document.getElementById('log-password-field');
-            const logPasswordError = document.getElementById('log-password-error');
-            const logList = document.getElementById('log-list');
-            const logPassword = "5351525";
-            
-            logPasswordForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                if (logPasswordField.value === logPassword) {
-                    logPasswordView.style.display = 'none';
-                    logDisplayView.style.display = 'block';
-                    logPasswordError.textContent = '';
-                    await fetchAndDisplayLogs();
-                } else {
-                    logPasswordError.textContent = 'Contraseña incorrecta.';
-                }
-            });
-
-            async function fetchAndDisplayLogs() {
-                logList.innerHTML = '<li>Cargando registros...</li>';
-                const snapshot = await db.collection('logs').orderBy('timestamp', 'desc').limit(100).get();
-                logList.innerHTML = '';
-                if (snapshot.empty) {
-                    logList.innerHTML = '<li>No hay registros de actividad.</li>';
-                    return;
-                }
-                snapshot.forEach(doc => {
-                    const log = doc.data();
-                    const date = log.timestamp ? log.timestamp.toDate().toLocaleString('es-AR') : 'Fecha desconocida';
-                    const li = document.createElement('li');
-                    li.className = 'log-item';
-                    li.innerHTML = `
-                        <p><strong>${log.user || 'Usuario'}</strong> ${log.description || ''}</p>
-                        <small>${date}</small>
-                    `;
-                    logList.appendChild(li);
-                });
-            }
-
-            document.getElementById('close-log-modal-btn').addEventListener('click', () => {
-                logModal.style.display = 'none';
-                logPasswordView.style.display = 'block';
-                logDisplayView.style.display = 'none';
-                logPasswordForm.reset();
-                logPasswordError.textContent = '';
-            });
-
-            async function logAction(description) {
-                const user = sessionStorage.getItem('vendedorLogueado') || 'Sistema';
-                try {
-                    await db.collection('logs').add({
-                        user,
-                        description,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                } catch (error) {
-                    console.error("Error al guardar log:", error);
-                }
-            }
-            
             // --- LÓGICA DEL CALENDARIO ---
             let currentDate = new Date();
             let trainingEvents = {};
