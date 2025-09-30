@@ -144,7 +144,11 @@
         .add-reaction-btn { cursor: pointer; font-size: 1rem; color: #adb5bd; background: transparent; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
         .add-reaction-btn:hover { background-color: #f0f2f5; color: var(--muted); }
         .reaction-picker { position: absolute; bottom: 100%; right: 0; background: white; border-radius: 20px; box-shadow: var(--shadow); padding: 5px; display: flex; gap: 5px; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.2s ease; }
-        .add-reaction-container:hover .reaction-picker { opacity: 1; visibility: visible; transform: translateY(0); }
+        .add-reaction-container.show-picker .reaction-picker {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
         .picker-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; transition: transform 0.1s ease; }
         .picker-btn:hover { transform: scale(1.2); }
 
@@ -523,6 +527,23 @@
                             await batch.commit();
                         });
                     });
+
+                    // SOLUCIÓN PARA REACCIONES EN MÓVIL
+                    const addReactionBtn = item.querySelector('.add-reaction-btn');
+                    const reactionContainer = item.querySelector('.add-reaction-container');
+
+                    if (addReactionBtn && reactionContainer) {
+                        addReactionBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const isAlreadyOpen = reactionContainer.classList.contains('show-picker');
+                            document.querySelectorAll('.add-reaction-container.show-picker').forEach(openContainer => {
+                                openContainer.classList.remove('show-picker');
+                            });
+                            if (!isAlreadyOpen) {
+                                reactionContainer.classList.add('show-picker');
+                            }
+                        });
+                    }
                 });
             }
 
@@ -584,12 +605,19 @@
                 });
             }
             
-            // --- LÓGICA DE MODALES GENERALES ---
+            // --- LÓGICA DE MODALES GENERALES Y CIERRE DE PICKERS ---
             document.getElementById('open-links-modal-btn')?.addEventListener('click', () => {
                 document.getElementById('links-modal').style.display = 'flex';
             });
             document.getElementById('close-links-modal-btn')?.addEventListener('click', () => {
                 document.getElementById('links-modal').style.display = 'none';
+            });
+            
+            document.addEventListener('click', (e) => {
+                const openPicker = document.querySelector('.add-reaction-container.show-picker');
+                if (openPicker && !openPicker.contains(e.target)) {
+                    openPicker.classList.remove('show-picker');
+                }
             });
 
             // --- PANEL DE ADMINISTRACIÓN ---
