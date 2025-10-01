@@ -1372,7 +1372,7 @@
             url: "https://catalogo.rossomateriales.site",
           },
           {
-            title: "Promos vigentes",
+            title: "Promos Vigentes",
             url: "https://rossomateriales.netlify.app",
           },
           { title: "Sucursales", url: "https://rossomateriales.site/sucursales" },
@@ -1756,7 +1756,7 @@
             });
         }
         
-        // --- LÓGICA DEL BUZÓN DE SUGERENCIAS (NUEVO) ---
+        // --- LÓGICA DEL BUZÓN DE SUGERENCIAS (ACTUALIZADO) ---
         const suggestionForm = document.getElementById('suggestion-form');
         const suggestionStatus = document.getElementById('suggestion-status');
         const suggestionBtn = document.getElementById('submit-suggestion-btn');
@@ -1766,10 +1766,17 @@
                 e.preventDefault();
                 const suggestionText = document.getElementById('suggestion-text').value.trim();
                 const originalButtonText = suggestionBtn.textContent;
+                const loggedInUserName = sessionStorage.getItem("vendedorLogueado");
 
                 if (!suggestionText) {
                     suggestionStatus.textContent = "Por favor, escribí una sugerencia.";
-                    suggestionStatus.style.color = '#d9534f'; // Rojo
+                    suggestionStatus.style.color = '#d9534f';
+                    return;
+                }
+                
+                if (!loggedInUserName) {
+                    suggestionStatus.textContent = "Error: No se pudo identificar al usuario. Por favor, reiniciá sesión.";
+                    suggestionStatus.style.color = '#d9534f';
                     return;
                 }
 
@@ -1779,6 +1786,7 @@
                 try {
                     await db.collection('sugerencias').add({
                         sugerencia: suggestionText,
+                        vendedor: loggedInUserName, // <-- CAMBIO PRINCIPAL AQUÍ
                         fecha: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
@@ -1789,7 +1797,7 @@
                 } catch (error) {
                     console.error("Error al enviar sugerencia: ", error);
                     suggestionStatus.textContent = 'Hubo un error al enviar. Intentá de nuevo.';
-                    suggestionStatus.style.color = '#d9534f'; // Rojo
+                    suggestionStatus.style.color = '#d9534f';
                 } finally {
                     setTimeout(() => {
                         suggestionBtn.disabled = false;
