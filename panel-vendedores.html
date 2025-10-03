@@ -1461,7 +1461,7 @@
 
         // --- LÓGICA DE LOGIN Y RENDERIZADO INICIAL ---
         function checkLogin() {
-          const loggedInUserName = sessionStorage.getItem("vendedorLogueado");
+          onst loggedInUserName = localStorage.getItem("vendedorLogueado");
           if (loggedInUserName) {
             document.getElementById("login-overlay").style.display = "none";
             document.getElementById("panel-wrapper").style.display = "block";
