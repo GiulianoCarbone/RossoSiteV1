@@ -1527,7 +1527,7 @@
               });
 
               if (userFound) {
-                sessionStorage.setItem("vendedorLogueado", userFound.nombre);
+               localStorage.setItem("vendedorLogueado", userFound.nombre);
                 checkLogin();
               } else {
                 loginError.textContent = "Nombre o DNI incorrecto.";
@@ -1542,7 +1542,7 @@
         document
           .getElementById("logout-button")
           .addEventListener("click", () => {
-            sessionStorage.removeItem("vendedorLogueado");
+            localStorage.removeItem("vendedorLogueado");
             localStorage.clear();
             location.reload();
           });
@@ -1868,7 +1868,7 @@
                 e.preventDefault();
                 const suggestionText = document.getElementById('suggestion-text').value.trim();
                 const originalButtonText = suggestionBtn.textContent;
-                const loggedInUserName = sessionStorage.getItem("vendedorLogueado");
+                const loggedInUserName = localStorage.getItem("vendedorLogueado");
 
                 if (!suggestionText) {
                     suggestionStatus.textContent = "Por favor, escribí una sugerencia.";
