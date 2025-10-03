@@ -829,7 +829,7 @@
           alt="Rosso Materiales Logo"
           class="logo"
         />
-        <h2>Acceso para Vendedores</h2>
+        <h2>Acceso Corporativo</h2>
         <form id="login-form">
           <div class="input-group">
             <label for="nombre">Nombre y Apellido</label>
@@ -861,7 +861,7 @@
       <main>
         <div class="panel-header">
           <div class="container panel-header-content">
-            <h1 id="welcome-message">Panel de Vendedores</h1>
+            <h1 id="welcome-message">Panel Corporativo</h1>
             <button id="logout-button" class="logout-button">
               <i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesión
             </button>
@@ -1461,7 +1461,8 @@
 
         // --- LÓGICA DE LOGIN Y RENDERIZADO INICIAL ---
         function checkLogin() {
-          onst loggedInUserName = localStorage.getItem("vendedorLogueado");
+          // ***** LÍNEA CORREGIDA *****
+          const loggedInUserName = localStorage.getItem("vendedorLogueado"); 
           if (loggedInUserName) {
             document.getElementById("login-overlay").style.display = "none";
             document.getElementById("panel-wrapper").style.display = "block";
@@ -1479,7 +1480,7 @@
           }
         }
         
-        // --- LÓGICA DE LOGIN MODIFICADA ---
+        // --- LÓGICA DE LOGIN (YA ESTABA BIEN) ---
         document
           .getElementById("login-form")
           .addEventListener("submit", async function (event) {
@@ -1495,14 +1496,13 @@
               let userFound = null;
 
               snapshot.forEach((doc) => {
-                if (userFound) return; // Si ya encontramos al usuario, no seguimos buscando
+                if (userFound) return; 
 
                 const vendedor = doc.data();
-                const dbName = vendedor.nombre.toLowerCase().replace(/,/g, ''); // Normalizamos: quitamos comas y a minúsculas
+                const dbName = vendedor.nombre.toLowerCase().replace(/,/g, ''); 
                 
                 const dbNameParts = dbName.split(' ').filter(Boolean);
                 
-                // Si el nombre en la DB es muy corto, usamos comparación simple
                 if (dbNameParts.length < 2) {
                     if (dbName === nombreInput && vendedor.dni === dniInput) {
                         userFound = vendedor;
@@ -1515,10 +1515,8 @@
 
                 const inputWords = nombreInput.split(' ').filter(Boolean);
                 
-                // Verificamos si el apellido de la DB está en el input del usuario
                 const lastNameMatch = inputWords.includes(dbLastName);
 
-                // Verificamos si AL MENOS UNO de los nombres de la DB está en el input del usuario
                 const firstNameMatch = dbFirstNames.some(firstName => inputWords.includes(firstName));
 
                 if (lastNameMatch && firstNameMatch && vendedor.dni === dniInput) {
@@ -1554,7 +1552,6 @@
             birthdayList.innerHTML = "";
 
             try {
-                // Hacemos la petición al archivo JSON
                 const response = await fetch('cumpleanos.json');
                 if (!response.ok) {
                     throw new Error('No se pudo cargar el archivo de cumpleaños.');
@@ -1770,9 +1767,9 @@
               pill.className = "reaction-display";
               pill.innerHTML = `<span class="emoji">${emoji}</span> ${count}`;
              if (userReaction === emoji) {
-    pill.style.backgroundColor = "#E9ECEF"; // Un gris claro para el fondo
-    pill.style.color = "var(--brand)";      // El color azul de la marca para el texto
-    pill.style.fontWeight = "700";            // Hacemos el número un poco más grueso
+    pill.style.backgroundColor = "#E9ECEF";
+    pill.style.color = "var(--brand)";
+    pill.style.fontWeight = "700";
 }
               summaryContainer.appendChild(pill);
             }
@@ -1888,7 +1885,7 @@
                 try {
                     await db.collection('sugerencias').add({
                         sugerencia: suggestionText,
-                        vendedor: loggedInUserName,
+                        vendedor: "Anónimo", // Se envía como anónimo
                         fecha: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
@@ -1962,8 +1959,9 @@
         const adminSecretCode = "admin";
 
         document.addEventListener("keydown", (e) => {
+          // ***** LÍNEA CORREGIDA *****
           if (
-            !sessionStorage.getItem("vendedorLogueado") ||
+            !localStorage.getItem("vendedorLogueado") || 
             e.target.tagName === "INPUT" ||
             e.target.tagName === "TEXTAREA"
           ) {
@@ -1985,7 +1983,7 @@
         adminPasswordForm.addEventListener("submit", (e) => {
           e.preventDefault();
           const enteredPassword = adminPasswordField.value;
-          const encodedAdminPassword = "NTM1MTUyNQ=="; // Contraseña en Base64
+          const encodedAdminPassword = "NTM1MTUyNQ=="; 
 
           if (btoa(enteredPassword) === encodedAdminPassword) {
             adminPasswordModal.style.display = "none";
@@ -2059,7 +2057,6 @@
         }
 
         function addAdminEventListeners() {
-          // Universal Delete Listeners
           document.querySelectorAll("#admin-modal .delete-btn").forEach(
             (btn) =>
               (btn.onclick = function (e) {
@@ -2084,7 +2081,6 @@
               })
           );
 
-          // News-specific listeners
           document.querySelectorAll("#admin-news-list .edit-btn").forEach(
             (btn) =>
               (btn.onclick = async (e) => {

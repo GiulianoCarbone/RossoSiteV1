@@ -1,6 +1,6 @@
 {
-  "name": "Panel Vendedores Rosso",
-  "short_name": "Panel Rosso",
+  "name": "Rosso Materiales",
+  "short_name": "Rosso Materiales",
   "start_url": "/panel-vendedores.html",
   "display": "standalone",
   "background_color": "#f4f7f6",
