@@ -1,4 +1,4 @@
-const CACHE_NAME = 'panel-vendedores-cache-v1';
+const CACHE_NAME = 'panel-vendedores-cache-v2';
 const urlsToCache = [
   '/panel-vendedores.html',
   '/style.css'
