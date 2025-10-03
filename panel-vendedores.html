@@ -186,6 +186,14 @@
       .panel-card-body {
         padding: 20px;
       }
+      
+      /* --- INICIO: CÓDIGO AÑADIDO PARA CORREGIR REDES SOCIALES --- */
+      .social-embed-wrapper {
+        width: 100%;
+        max-width: 450px; /* Un ancho máximo para que no se estire demasiado en pantallas grandes */
+        margin: 0 auto;
+      }
+       /* --- FIN: CÓDIGO AÑADIDO --- */
 
       .news-container {
         display: grid;
@@ -767,6 +775,49 @@
         margin: 0;
         color: var(--muted);
       }
+
+    /* --- INICIO: ESTILOS PARA TARJETA DE REDES MINIMALISTA --- */
+      .social-preview-card-single {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        text-align: center;
+      }
+      .social-preview-image {
+        width: 100%;
+        display: block;
+      }
+      .social-buttons-container {
+        display: flex;
+        justify-content: space-around; /* O 'center' si prefieres los botones más juntos */
+        padding: 15px 10px;
+        background-color: #f8f9fa;
+        gap: 10px;
+      }
+      .social-preview-button {
+        flex-grow: 1;
+        padding: 8px 16px;
+        border-radius: 20px;
+        color: white;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: opacity 0.2s ease;
+      }
+      .social-preview-button:hover {
+        opacity: 0.9;
+      }
+      .social-preview-button.instagram {
+        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      }
+      .social-preview-button.facebook {
+        background-color: #1877F2;
+      }
+      /* --- FIN: ESTILOS PARA TARJETA --- */
     </style>
   </head>
   <body>
@@ -805,7 +856,7 @@
           </a>
         </nav>
       </header>
-
+<!-- SECCIÓN PANEL DE HERRAMIENTAS-->   
       <main>
         <div class="panel-header">
           <div class="container panel-header-content">
@@ -889,8 +940,6 @@
             </div>
           </div>
 
-      
-
           <div class="panel-card">
             <div class="panel-card-header">
               <div class="panel-card-icon-title">
@@ -918,26 +967,32 @@
             </div>
           </div>
 
-    <div class="panel-card">
-              <div class="panel-card-header">
-                  <div class="panel-card-icon-title">
-                      <span class="panel-card-icon"><i class="fa-solid fa-lightbulb"></i></span>
-                      <h3>Buzón de Sugerencias</h3>
-                  </div>
-              </div>
-              <div class="panel-card-body">
-                  <form id="suggestion-form">
-                      <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 15px;">Tu aporte nos ayuda a mejorar. Tu nombre quedará registrado junto a la sugerencia. ¡Gracias por participar!</p>
-                      <div class="input-group">
-                          <label for="suggestion-text">Tu Mensaje</label>
-                          <textarea id="suggestion-text" rows="5" placeholder="Escribí tu sugerencia, idea o comentario aquí..." required></textarea>
-                      </div>
-                      <button type="submit" id="submit-suggestion-btn">Enviar Sugerencia</button>
-                      <div id="suggestion-status" style="margin-top: 15px; text-align: center; font-weight: 600; min-height: 20px;"></div>
-                  </form>
-              </div>
-          </div>
-          
+<!-- SECCIÓN APOYO EN REDES -->
+       <div class="panel-card">
+  <div class="panel-card-header">
+    <div class="panel-card-icon-title">
+      <span class="panel-card-icon"><i class="fa-solid fa-share-nodes"></i></span>
+      <h3>¡Apoyanos en Redes!</h3>
+    </div>
+  </div>
+  <div class="panel-card-body">
+    <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 20px;">
+      ¡Tu apoyo es clave! Dale Me Gusta y compartí nuestra última publicación para llegar a más clientes.
+    </p>
+    <div class="social-preview-card-single">
+      <img src="https://i.ibb.co/7NbsTTpC/portada-1-Q-octubre.jpg" alt="Previa de la publicación" class="social-preview-image"/>
+      <div class="social-buttons-container">
+        <a href="https://www.instagram.com/p/DPTlPYFDCUY/" target="_blank" class="social-preview-button instagram">
+          <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <a href="https://www.facebook.com/share/p/1BTeu2TSZb/" target="_blank" class="social-preview-button facebook">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SECCIÓN EMPLEADO DEL MES-->        
           <div class="panel-card featured-employee-card">
             <div class="panel-card-header">
               <div class="panel-card-icon-title">
@@ -960,6 +1015,31 @@
             </div>
           </div>
 
+<!-- SECCIÓN BUZÓN DE SUGERENCIAS -->
+          <div class="panel-card">
+              <div class="panel-card-header">
+                  <div class="panel-card-icon-title">
+                      <span class="panel-card-icon"><i class="fa-solid fa-lightbulb"></i></span>
+                      <h3>Buzón de Sugerencias</h3>
+                  </div>
+              </div>
+              <div class="panel-card-body">
+                  <form id="suggestion-form">
+                      <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 15px;">Tu aporte nos ayuda a mejorar. Tu sugerencia será registrada de forma anónima. ¡Gracias por participar!</p>
+                      <div class="input-group">
+                          <label for="suggestion-text">Tu Mensaje</label>
+                          <textarea id="suggestion-text" rows="5" placeholder="Escribí tu sugerencia, idea o comentario aquí..." required></textarea>
+                      </div>
+                      <button type="submit" id="submit-suggestion-btn">Enviar Sugerencia</button>
+                      <div id="suggestion-status" style="margin-top: 15px; text-align: center; font-weight: 600; min-height: 20px;"></div>
+                  </form>
+              </div>
+          </div>
+
+  
+
+
+<!-- SECCIÓN DIRECTORIO DE CONTACTOS -->
           <details
             class="panel-card directory-main-card"
             style="grid-column: 1 / -1"
@@ -1126,6 +1206,10 @@
         </div>
       </div>
     </div>
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v20.0" nonce="ABCDEF"></script>
+    <script async src="//www.instagram.com/embed.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
