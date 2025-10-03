@@ -44,7 +44,7 @@
             max-width: 400px; 
             text-align: center; 
         }
-        #login-container img.logo { max-width: 180px; margin-bottom: 24px; }
+        #login-container img.logo { max-width: 180px; margin-bottom: 24px; margin-inline: auto; }
         #login-container h2 { margin: 0 0 24px 0; color: var(--brand); font-size: 1.5rem; }
         .input-group { margin-bottom: 20px; text-align: left; }
         .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--muted); }
@@ -79,7 +79,7 @@
     <div id="login-overlay">
         <div id="login-container">
             <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales Logo" class="logo">
-            <h2>Acceso al Manual de Productos</h2>
+            <h2>Acceso Corporativo</h2>
             <form id="login-form">
                 <div class="input-group">
                     <label for="nombre">Nombre y Apellido</label>
@@ -110,13 +110,22 @@
         </main>
     </div>
  
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Mismos vendedores que en el panel para consistencia
-        const vendedoresAutorizados = [
-            { nombre: "Juan Perez", dni: "12345678" },
-            { nombre: "Maria Garcia", dni: "87654321" },
-        ];
+        // --- CONEXIÓN A FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+            authDomain: "backend-panel-vendedores.firebaseapp.com",
+            projectId: "backend-panel-vendedores",
+            storageBucket: "backend-panel-vendedores.firebasestorage.app",
+            messagingSenderId: "24873830395",
+            appId: "1:24873830395:web:ea6749407f991ee8226d5e",
+            measurementId: "G-E4Z0Y849KF",
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
         
         const loginOverlay = document.getElementById('login-overlay');
         const manualWrapper = document.getElementById('manual-wrapper');
@@ -124,41 +133,65 @@
 
         // --- Lógica de Acceso Condicional ---
         function checkAccess() {
-            const loggedInUserName = sessionStorage.getItem('vendedorLogueado');
+            const loggedInUserName = localStorage.getItem('vendedorLogueado');
             if (loggedInUserName) {
-                // Si hay una sesión iniciada, muestra el manual y oculta el login
                 loginOverlay.style.display = 'none';
                 manualWrapper.style.display = 'flex';
                 manualWrapper.style.flexDirection = 'column';
                 manualWrapper.style.height = '100vh';
             } else {
-                // Si NO hay sesión, muestra el login
                 loginOverlay.style.display = 'flex';
                 manualWrapper.style.display = 'none';
             }
         }
         
-        // Ejecutar la verificación al cargar la página
         checkAccess();
 
-        // --- Manejo del Formulario de Login ---
+        // --- Manejo del Formulario de Login (CONECTADO A BASE DE DATOS) ---
         if(loginForm) {
-            loginForm.addEventListener('submit', function(event) {
+            loginForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
-                const nombreInput = document.getElementById('nombre').value.trim();
+                const nombreInput = document.getElementById('nombre').value.trim().toLowerCase();
                 const dniInput = document.getElementById('dni').value.trim();
-                const user = vendedoresAutorizados.find(v => 
-                    v.nombre.toLowerCase() === nombreInput.toLowerCase() && 
-                    v.dni === dniInput
-                );
+                const loginError = document.getElementById('login-error');
 
-                if (user) {
-                    // Si las credenciales son correctas, guardamos la sesión
-                    sessionStorage.setItem('vendedorLogueado', user.nombre);
-                    // Volvemos a verificar el acceso (ahora debería mostrar el manual)
-                    checkAccess();
-                } else {
-                    document.getElementById('login-error').textContent = 'Nombre o DNI incorrecto.';
+                loginError.textContent = "Verificando...";
+
+                try {
+                    const snapshot = await db.collection("vendedores").get();
+                    let userFound = null;
+
+                    snapshot.forEach((doc) => {
+                        if (userFound) return;
+                        const vendedor = doc.data();
+                        const dbName = vendedor.nombre.toLowerCase().replace(/,/g, '');
+                        const dbNameParts = dbName.split(' ').filter(Boolean);
+
+                        if (dbNameParts.length < 2) {
+                            if (dbName === nombreInput && vendedor.dni === dniInput) userFound = vendedor;
+                            return;
+                        }
+
+                        const dbLastName = dbNameParts[0];
+                        const dbFirstNames = dbNameParts.slice(1);
+                        const inputWords = nombreInput.split(' ').filter(Boolean);
+                        const lastNameMatch = inputWords.includes(dbLastName);
+                        const firstNameMatch = dbFirstNames.some(firstName => inputWords.includes(firstName));
+
+                        if (lastNameMatch && firstNameMatch && vendedor.dni === dniInput) {
+                            userFound = vendedor;
+                        }
+                    });
+
+                    if (userFound) {
+                        localStorage.setItem('vendedorLogueado', userFound.nombre);
+                        checkAccess();
+                    } else {
+                        loginError.textContent = 'Nombre o DNI incorrecto.';
+                    }
+                } catch (error) {
+                    console.error("Error al verificar vendedor: ", error);
+                    loginError.textContent = "Error al conectar. Intente de nuevo.";
                 }
             });
         }

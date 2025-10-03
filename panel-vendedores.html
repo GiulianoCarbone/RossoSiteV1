@@ -6,7 +6,7 @@
     <title>Panel de Vendedores | Rosso Materiales</title>
     <link href="assets/FAV.png" rel="icon" />
     <link href="style.css" rel="stylesheet" />
-    <link rel="manifest" href="manifest-vendedores.json">
+    <link rel="manifest" href="manifest-vendedores.json" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -15,811 +15,821 @@
       referrerpolicy="no-referrer"
     />
     <style>
-      :root {
-        --panel-bg: #f4f7f6;
-        --card-bg: #ffffff;
-        --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        --border-color: #e5e7eb;
+            :root {
+              --panel-bg: #f4f7f6;
+              --card-bg: #ffffff;
+              --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+              --border-color: #e5e7eb;
+            }
+            body,
+            html {
+              margin: 0;
+              padding: 0;
+              width: 100%;
+              background-color: var(--panel-bg);
+              font-family: "Inter", sans-serif;
+              -webkit-font-smoothing: antialiased;
+            }
+            /* --- ESTILOS LOGIN --- */
+            #login-overlay {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: #f0f2f5;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              z-index: 2000;
+            }
+            #login-container {
+              background: white;
+              padding: 40px;
+              border-radius: 12px;
+              box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+              width: 90%;
+              max-width: 400px;
+              text-align: center;
+            }
+            #login-container img.logo {
+                max-width: 180px;
+        margin-bottom: 24px;
+        margin-inline: auto; /* <-- Agrega esta línea para centrarlo */
       }
-      body,
-      html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        background-color: var(--panel-bg);
-        font-family: "Inter", sans-serif;
-        -webkit-font-smoothing: antialiased;
-      }
-      /* --- ESTILOS LOGIN --- */
-      #login-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #f0f2f5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-      }
-      #login-container {
-        background: white;
-        padding: 40px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        width: 90%;
-        max-width: 400px;
-        text-align: center;
-      }
-      #login-container img.logo {
-          max-width: 180px;
-  margin-bottom: 24px;
-  margin-inline: auto; /* <-- Agrega esta línea para centrarlo */
-}
-      #login-container h2 {
-        margin: 0 0 24px 0;
-        color: var(--brand);
-        font-size: 1.5rem;
-      }
-      .input-group {
-        margin-bottom: 20px;
-        text-align: left;
-      }
-      .input-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: var(--muted);
-      }
-      .input-group input,
-      .input-group textarea,
-      .input-group select {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 1rem;
-        box-sizing: border-box;
-      }
-      #login-button, #submit-suggestion-btn {
-        width: 100%;
-        padding: 14px;
-        border: none;
-        border-radius: 8px;
-        background-color: var(--accent);
-        color: white;
-        font-size: 1.1rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: background-color: 0.2s;
-      }
-      #login-button:hover, #submit-suggestion-btn:hover {
-        background-color: #d95324;
-      }
-      #login-button:disabled, #submit-suggestion-btn:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-      }
-      #login-error,
-      #admin-password-error {
-        color: #d9534f;
-        margin-top: 15px;
-        font-weight: 600;
-        min-height: 20px;
-      }
+            #login-container h2 {
+              margin: 0 0 24px 0;
+              color: var(--brand);
+              font-size: 1.5rem;
+            }
+            .input-group {
+              margin-bottom: 20px;
+              text-align: left;
+            }
+            .input-group label {
+              display: block;
+              margin-bottom: 8px;
+              font-weight: 600;
+              color: var(--muted);
+            }
+            .input-group input,
+            .input-group textarea,
+            .input-group select {
+              width: 100%;
+              padding: 12px;
+              border: 1px solid #ccc;
+              border-radius: 8px;
+              font-size: 1rem;
+              box-sizing: border-box;
+            }
+            #login-button, #submit-suggestion-btn {
+              width: 100%;
+              padding: 14px;
+              border: none;
+              border-radius: 8px;
+              background-color: var(--accent);
+              color: white;
+              font-size: 1.1rem;
+              font-weight: 700;
+              cursor: pointer;
+              transition: background-color: 0.2s;
+            }
+            #login-button:hover, #submit-suggestion-btn:hover {
+              background-color: #d95324;
+            }
+            #login-button:disabled, #submit-suggestion-btn:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+            }
+            #login-error,
+            #admin-password-error {
+              color: #d9534f;
+              margin-top: 15px;
+              font-weight: 600;
+              min-height: 20px;
+            }
 
-      /* --- ESTILOS PANEL --- */
-      #panel-wrapper {
-        display: none; /* Oculto por defecto */
-        padding-top: var(--header-h);
-      }
-      .panel-header {
-        background: var(--card-bg);
-        padding: 20px 0;
-        border-bottom: 1px solid var(--border-color);
-      }
-      .panel-header-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .panel-header-content h1 {
-        font-size: 1.8rem;
-        color: var(--brand);
-        margin: 0;
-      }
-      .panel-user-info {
-        text-align: right;
-      }
-      .panel-user-info span {
-        display: block;
-        font-weight: 600;
-        color: var(--brand);
-        font-size: 1.1rem;
-      }
-      .logout-button {
-        background: none;
-        border: none;
-        font-size: 0.9rem;
-        color: var(--muted);
-        cursor: pointer;
-      }
+            /* --- ESTILOS PANEL --- */
+            #panel-wrapper {
+              display: none; /* Oculto por defecto */
+              padding-top: var(--header-h);
+            }
+            .panel-header {
+              background: var(--card-bg);
+              padding: 20px 0;
+              border-bottom: 1px solid var(--border-color);
+            }
+            .panel-header-content {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            .panel-header-content h1 {
+              font-size: 1.8rem;
+              color: var(--brand);
+              margin: 0;
+            }
+            .panel-user-info {
+              text-align: right;
+            }
+            .panel-user-info span {
+              display: block;
+              font-weight: 600;
+              color: var(--brand);
+              font-size: 1.1rem;
+            }
+            .logout-button {
+              background: none;
+              border: none;
+              font-size: 0.9rem;
+              color: var(--muted);
+              cursor: pointer;
+            }
 
-      .panel-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 30px;
-        padding: 30px 0;
-      }
-      .panel-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        display: flex;
-        flex-direction: column;
-      }
-      .panel-card-header {
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        border-bottom: 1px solid var(--border-color);
-      }
+            .panel-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+              gap: 30px;
+              padding: 30px 0;
+            }
+            .panel-card {
+              background: var(--card-bg);
+              border-radius: 12px;
+              box-shadow: var(--shadow);
+              display: flex;
+              flex-direction: column;
+            }
+            .panel-card-header {
+              padding: 20px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 15px;
+              border-bottom: 1px solid var(--border-color);
+            }
 
-      .panel-card-icon-title {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-      }
+            .panel-card-icon-title {
+              display: flex;
+              align-items: center;
+              gap: 15px;
+            }
 
-      .panel-card-icon {
-        font-size: 1.5rem;
-        color: var(--accent);
-        animation: icon-bounce 2.5s ease-in-out infinite;
-      }
+            .panel-card-icon {
+              font-size: 1.5rem;
+              color: var(--accent);
+              animation: icon-bounce 2.5s ease-in-out infinite;
+            }
 
-      .panel-card-header h3 {
-        font-size: 1.3rem;
-        color: var(--brand);
-        margin: 0;
-      }
-      .panel-card-body {
-        padding: 20px;
-      }
-      
-      /* --- INICIO: CÓDIGO AÑADIDO PARA CORREGIR REDES SOCIALES --- */
-      .social-embed-wrapper {
-        width: 100%;
-        max-width: 450px; /* Un ancho máximo para que no se estire demasiado en pantallas grandes */
-        margin: 0 auto;
-      }
-       /* --- FIN: CÓDIGO AÑADIDO --- */
+            .panel-card-header h3 {
+              font-size: 1.3rem;
+              color: var(--brand);
+              margin: 0;
+            }
+            .panel-card-body {
+              padding: 20px;
+            }
 
-      .news-container {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-      .news-section h4 {
-        color: var(--brand);
-        border-bottom: 2px solid var(--accent);
-        padding-bottom: 8px;
-        margin: 0 0 15px 0;
-      }
-      .news-section ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-      .news-item {
-        position: relative;
-        padding-bottom: 30px;
-        margin-bottom: 10px;
-        border-bottom: 1px solid #f0f0f0;
-      }
-      .news-item p {
-        margin: 0;
-      }
-      .news-item:last-child {
-        border-bottom: none;
-      }
+            /* --- INICIO: CÓDIGO AÑADIDO PARA CORREGIR REDES SOCIALES --- */
+            .social-embed-wrapper {
+              width: 100%;
+              max-width: 450px; /* Un ancho máximo para que no se estire demasiado en pantallas grandes */
+              margin: 0 auto;
+            }
+             /* --- FIN: CÓDIGO AÑADIDO --- */
 
-      .tools-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 15px;
-      }
-      .tool-link {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 10px;
-        font-weight: 600;
-        color: var(--brand);
-        transition: all 0.2s ease;
-        cursor: pointer;
-      }
-      .tool-link i {
-        font-size: 1.5rem;
-        color: var(--accent);
-      }
-      .tool-link:hover {
-        background-color: var(--accent);
-        color: white;
-        transform: translateY(-5px);
-      }
-      .tool-link:hover i {
-        color: white;
-      }
+            .news-container {
+              display: grid;
+              grid-template-columns: 1fr;
+              gap: 20px;
+            }
+            .news-section h4 {
+              color: var(--brand);
+              border-bottom: 2px solid var(--accent);
+              padding-bottom: 8px;
+              margin: 0 0 15px 0;
+            }
+            .news-section ul {
+              list-style: none;
+              padding: 0;
+              margin: 0;
+            }
+            .news-item {
+              position: relative;
+              padding-bottom: 30px;
+              margin-bottom: 10px;
+              border-bottom: 1px solid #f0f0f0;
+            }
+            .news-item p {
+              margin: 0;
+            }
+            .news-item:last-child {
+              border-bottom: none;
+            }
 
-      .featured-employee-card {
-        background: linear-gradient(135deg, var(--brand) 0%, #3e489b 100%);
-        color: white;
-      }
-      .featured-employee-card .panel-card-header h3,
-      .featured-employee-card .panel-card-icon {
-        color: white;
-      }
-      .employee-body {
-        text-align: center;
-        padding: 20px;
-      }
-      .employee-photo {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        border: 4px solid var(--accent);
-        object-fit: cover;
-        margin: 0 auto 15px;
-      }
-      .employee-name {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0;
-      }
-      .employee-title {
-        margin-top: 5px;
-        opacity: 0.9;
-      }
+            .tools-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+              gap: 15px;
+            }
+            .tool-link {
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              background: #f8f9fa;
+              padding: 20px;
+              border-radius: 10px;
+              font-weight: 600;
+              color: var(--brand);
+              transition: all 0.2s ease;
+              cursor: pointer;
+            }
+            .tool-link i {
+              font-size: 1.5rem;
+              color: var(--accent);
+            }
+            .tool-link:hover {
+              background-color: var(--accent);
+              color: white;
+              transform: translateY(-5px);
+            }
+            .tool-link:hover i {
+              color: white;
+            }
 
-      @keyframes icon-bounce {
-        0%,
-        20%,
-        50%,
-        80%,
-        100% {
-          transform: translateY(0);
-        }
-        40% {
-          transform: translateY(-8px);
-        }
-        60% {
-          transform: translateY(-4px);
-        }
-      }
+            .featured-employee-card {
+              background: linear-gradient(135deg, var(--brand) 0%, #3e489b 100%);
+              color: white;
+            }
+            .featured-employee-card .panel-card-header h3,
+            .featured-employee-card .panel-card-icon {
+              color: white;
+            }
+            .employee-body {
+              text-align: center;
+              padding: 20px;
+            }
+            .employee-photo {
+              width: 120px;
+              height: 120px;
+              border-radius: 50%;
+              border: 4px solid var(--accent);
+              object-fit: cover;
+              margin: 0 auto 15px;
+            }
+            .employee-name {
+              font-size: 1.5rem;
+              font-weight: 700;
+              margin: 0;
+            }
+            .employee-title {
+              margin-top: 5px;
+              opacity: 0.9;
+            }
 
-      /* --- ESTILOS MODALES --- */
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 3000;
-      }
-      .modal-content {
-        background: white;
-        padding: 30px;
-        border-radius: 12px;
-        width: 90%;
-        max-width: 600px;
-        max-height: 80vh;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-      }
-      .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 15px;
-        margin-bottom: 20px;
-      }
-      .modal-header h4 {
-        font-size: 1.5rem;
-        color: var(--brand);
-        margin: 0;
-      }
-      .close-modal {
-        background: none;
-        border: none;
-        font-size: 1.8rem;
-        cursor: pointer;
-        color: var(--muted);
-      }
+            @keyframes icon-bounce {
+              0%,
+              20%,
+              50%,
+              80%,
+              100% {
+                transform: translateY(0);
+              }
+              40% {
+                transform: translateY(-8px);
+              }
+              60% {
+                transform: translateY(-4px);
+              }
+            }
 
-      /* Links Útiles */
-      .link-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: #f8f9fa;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 12px;
-      }
-      .link-item-info {
-        display: flex;
-        flex-direction: column;
-      }
-      .link-item-info strong {
-        color: var(--brand);
-      }
-      .link-item-info span {
-        font-size: 0.85rem;
-        color: var(--muted);
-        word-break: break-all;
-      }
-      .copy-link-btn {
-        padding: 8px 12px;
-        border: none;
-        background: var(--accent);
-        color: white;
-        font-weight: 600;
-        border-radius: 6px;
-        cursor: pointer;
-        white-space: nowrap;
-      }
-      .copy-link-btn:active {
-        transform: scale(0.95);
-      }
+            /* --- ESTILOS MODALES --- */
+            .modal-overlay {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(0, 0, 0, 0.6);
+              display: none;
+              justify-content: center;
+              align-items: center;
+              z-index: 3000;
+            }
+            .modal-content {
+              background: white;
+              padding: 30px;
+              border-radius: 12px;
+              width: 90%;
+              max-width: 600px;
+              max-height: 80vh;
+              overflow-y: auto;
+              display: flex;
+              flex-direction: column;
+            }
+            .modal-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              border-bottom: 1px solid var(--border-color);
+              padding-bottom: 15px;
+              margin-bottom: 20px;
+            }
+            .modal-header h4 {
+              font-size: 1.5rem;
+              color: var(--brand);
+              margin: 0;
+            }
+            .close-modal {
+              background: none;
+              border: none;
+              font-size: 1.8rem;
+              cursor: pointer;
+              color: var(--muted);
+            }
 
-      /* --- ESTILOS DIRECTORIO DESPLEGABLE --- */
-      .directory-accordion details {
-        background: #fff;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        border: 1px solid var(--border-color);
-        transition: box-shadow 0.2s ease;
-      }
-      .directory-accordion details[open] {
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-      }
-      .directory-accordion summary {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        padding: 15px;
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: var(--brand);
-        cursor: pointer;
-        list-style: none;
-      }
-      .directory-accordion summary i.area-icon {
-        color: var(--accent);
-        font-size: 1.5rem;
-        width: 30px;
-        text-align: center;
-      }
-      .directory-accordion summary::-webkit-details-marker {
-        display: none;
-      }
-      .directory-accordion summary::after {
-        content: "\f078";
-        font-family: "Font Awesome 6 Free";
-        font-weight: 900;
-        margin-left: auto;
-        transition: transform 0.2s ease-in-out;
-      }
-      .directory-accordion details[open] summary::after {
-        transform: rotate(180deg);
-      }
-      .directory-content {
-        padding: 0 20px 20px;
-        border-top: 1px solid var(--border-color);
-      }
-      .employee-contact-card {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 10px 15px;
-        align-items: center;
-        background: #f8f9fa;
-        padding: 12px;
-        border-radius: 8px;
-        margin-top: 12px;
-      }
-      .employee-contact-card .name {
-        font-weight: 600;
-        color: var(--brand);
-        grid-column: 1 / -1;
-      }
-      .employee-contact-card .position {
-        font-size: 0.9rem;
-        color: var(--muted);
-        grid-column: 1 / -1;
-        margin-top: -8px;
-      }
-      .employee-contact-card i {
-        color: var(--accent);
-        text-align: center;
-      }
-      .employee-contact-card .contact-info {
-        font-size: 0.9rem;
-        color: var(--ink);
-        word-break: break-all;
-      }
-      .employee-contact-card a.contact-info {
-        text-decoration: none;
-      }
-      .employee-contact-card a.contact-info:hover {
-        text-decoration: underline;
-      }
+            /* Links Útiles */
+            .link-item {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              background: #f8f9fa;
+              padding: 12px;
+              border-radius: 8px;
+              margin-bottom: 12px;
+            }
+            .link-item-info {
+              display: flex;
+              flex-direction: column;
+            }
+            .link-item-info strong {
+              color: var(--brand);
+            }
+            .link-item-info span {
+              font-size: 0.85rem;
+              color: var(--muted);
+              word-break: break-all;
+            }
+            .copy-link-btn {
+              padding: 8px 12px;
+              border: none;
+              background: var(--accent);
+              color: white;
+              font-weight: 600;
+              border-radius: 6px;
+              cursor: pointer;
+              white-space: nowrap;
+            }
+            .copy-link-btn:active {
+              transform: scale(0.95);
+            }
 
-      /* --- STYLES FOR COLLAPSIBLE DIRECTORY CARD -- */
-      .directory-main-card {
-        display: block;
-      }
-      .directory-main-card > summary {
-        list-style: none;
-        cursor: pointer;
-      }
-      .directory-main-card > summary::-webkit-details-marker {
-        display: none;
-      }
-      .summary-arrow {
-        color: var(--brand);
-        font-size: 1.2rem;
-        transition: transform 0.2s ease-in-out;
-      }
-      .summary-arrow::before {
-        content: "\f078";
-        font-family: "Font Awesome 6 Free";
-        font-weight: 900;
-      }
-      .directory-main-card[open] > summary .summary-arrow {
-        transform: rotate(180deg);
-      }
+            /* --- ESTILOS DIRECTORIO DESPLEGABLE --- */
+            .directory-accordion details {
+              background: #fff;
+              border-radius: 8px;
+              margin-bottom: 10px;
+              border: 1px solid var(--border-color);
+              transition: box-shadow 0.2s ease;
+            }
+            .directory-accordion details[open] {
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            }
+            .directory-accordion summary {
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              padding: 15px;
+              font-size: 1.2rem;
+              font-weight: 700;
+              color: var(--brand);
+              cursor: pointer;
+              list-style: none;
+            }
+            .directory-accordion summary i.area-icon {
+              color: var(--accent);
+              font-size: 1.5rem;
+              width: 30px;
+              text-align: center;
+            }
+            .directory-accordion summary::-webkit-details-marker {
+              display: none;
+            }
+            .directory-accordion summary::after {
+              content: "\f078";
+              font-family: "Font Awesome 6 Free";
+              font-weight: 900;
+              margin-left: auto;
+              transition: transform 0.2s ease-in-out;
+            }
+            .directory-accordion details[open] summary::after {
+              transform: rotate(180deg);
+            }
+            .directory-content {
+              padding: 0 20px 20px;
+              border-top: 1px solid var(--border-color);
+            }
+            .employee-contact-card {
+              display: grid;
+              grid-template-columns: auto 1fr;
+              gap: 10px 15px;
+              align-items: center;
+              background: #f8f9fa;
+              padding: 12px;
+              border-radius: 8px;
+              margin-top: 12px;
+            }
+            .employee-contact-card .name {
+              font-weight: 600;
+              color: var(--brand);
+              grid-column: 1 / -1;
+            }
+            .employee-contact-card .position {
+              font-size: 0.9rem;
+              color: var(--muted);
+              grid-column: 1 / -1;
+              margin-top: -8px;
+            }
+            .employee-contact-card i {
+              color: var(--accent);
+              text-align: center;
+            }
+            .employee-contact-card .contact-info {
+              font-size: 0.9rem;
+              color: var(--ink);
+              word-break: break-all;
+            }
+            .employee-contact-card a.contact-info {
+              text-decoration: none;
+            }
+            .employee-contact-card a.contact-info:hover {
+              text-decoration: underline;
+            }
 
-      /* --- ESTILOS REACCIONES --- */
-      .news-footer {
-        position: absolute;
-        bottom: 5px;
-        left: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .reactions-summary {
-        display: flex;
-        gap: 4px;
-      }
-      .reaction-display {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        background-color: #f0f2f5;
-        padding: 2px 8px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-      }
-      .reaction-display .emoji {
-        font-size: 0.9rem;
-      }
-      .add-reaction-container {
-        position: relative;
-      }
-      .add-reaction-btn {
-        cursor: pointer;
-        font-size: 1rem;
-        color: #adb5bd;
-        background: transparent;
-        border-radius: 50%;
-        width: 28px;
-        height: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-      }
-      .add-reaction-btn:hover {
-        background-color: #f0f2f5;
-        color: var(--muted);
-      }
-      .reaction-picker {
-        position: absolute;
-        bottom: 100%;
-        right: 50%;
-        transform: translateX(50%);
-        background: white;
-        border-radius: 20px;
-        box-shadow: var(--shadow);
-        padding: 5px;
-        display: flex;
-        gap: 5px;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.2s ease;
-        z-index: 10;
-      }
-      .add-reaction-container.show-picker .reaction-picker {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(50%) translateY(0);
-      }
-      .reaction-picker.picker-below {
-        bottom: auto;
-        top: 100%;
-      }
-      .picker-btn {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        transition: transform 0.1s ease;
-      }
-      .picker-btn:hover {
-        transform: scale(1.2);
-      }
+            /* --- STYLES FOR COLLAPSIBLE DIRECTORY CARD -- */
+            .directory-main-card {
+              display: block;
+            }
+            .directory-main-card > summary {
+              list-style: none;
+              cursor: pointer;
+            }
+            .directory-main-card > summary::-webkit-details-marker {
+              display: none;
+            }
+            .summary-arrow {
+              color: var(--brand);
+              font-size: 1.2rem;
+              transition: transform 0.2s ease-in-out;
+            }
+            .summary-arrow::before {
+              content: "\f078";
+              font-family: "Font Awesome 6 Free";
+              font-weight: 900;
+            }
+            .directory-main-card[open] > summary .summary-arrow {
+              transform: rotate(180deg);
+            }
 
-      /* --- ESTILOS PANEL DE ADMINISTRACIÓN --- */
-      #admin-controls,
-      #admin-controls-trainings,
-      #admin-controls-vendedores {
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-      }
-      .admin-section-header {
-        font-size: 1.2rem;
-        color: var(--brand);
-        border-bottom: 2px solid var(--accent);
-        padding-bottom: 5px;
-        margin: 20px 0 10px 0;
-      }
-      /* --- ESTILOS PARA DESPLEGABLES DE ADMIN --- */
-      .admin-section-details summary {
-        cursor: pointer;
-        list-style: none;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 1.2rem;
-        color: var(--brand);
-        border-bottom: 2px solid var(--accent);
-        padding-bottom: 5px;
-        margin: 20px 0 10px 0;
-      }
-      .admin-section-details summary::-webkit-details-marker {
-          display: none;
-      }
-      .admin-section-details .details-arrow {
-          transition: transform 0.2s ease-in-out;
-      }
-      .admin-section-details[open] .details-arrow {
-          transform: rotate(180deg);
-      }
-      .admin-section-details[open] > div {
-          margin-top: 10px;
-      }
+            /* --- ESTILOS REACCIONES --- */
+            .news-footer {
+              position: absolute;
+              bottom: 5px;
+              left: 0;
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            .reactions-summary {
+              display: flex;
+              gap: 4px;
+            }
+            .reaction-display {
+              display: flex;
+              align-items: center;
+              gap: 4px;
+              background-color: #f0f2f5;
+              padding: 2px 8px;
+              border-radius: 20px;
+              font-size: 0.8rem;
+              font-weight: 500;
+            }
+            .reaction-display .emoji {
+              font-size: 0.9rem;
+            }
+            .add-reaction-container {
+              position: relative;
+            }
+            .add-reaction-btn {
+              cursor: pointer;
+              font-size: 1rem;
+              color: #adb5bd;
+              background: transparent;
+              border-radius: 50%;
+              width: 28px;
+              height: 28px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: all 0.2s ease;
+            }
+            .add-reaction-btn:hover {
+              background-color: #f0f2f5;
+              color: var(--muted);
+            }
+            .reaction-picker {
+              position: absolute;
+              bottom: 100%;
+              right: 50%;
+              transform: translateX(50%);
+              background: white;
+              border-radius: 20px;
+              box-shadow: var(--shadow);
+              padding: 5px;
+              display: flex;
+              gap: 5px;
+              opacity: 0;
+              visibility: hidden;
+              transition: all 0.2s ease;
+              z-index: 10;
+            }
+            .add-reaction-container.show-picker .reaction-picker {
+              opacity: 1;
+              visibility: visible;
+              transform: translateX(50%) translateY(0);
+            }
+            .reaction-picker.picker-below {
+              bottom: auto;
+              top: 100%;
+            }
+            .picker-btn {
+              background: none;
+              border: none;
+              font-size: 1.5rem;
+              cursor: pointer;
+              transition: transform 0.1s ease;
+            }
+            .picker-btn:hover {
+              transform: scale(1.2);
+            }
 
-      #add-news-btn,
-      #add-training-btn {
-        padding: 8px 16px;
-        font-weight: 700;
-        background-color: var(--accent);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-      }
-      .admin-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        max-height: 40vh;
-        overflow-y: auto;
-        padding-right: 10px;
-      }
-      .admin-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        background: #f8f9fa;
-        padding: 10px 15px;
-        border-radius: 8px;
-      }
-      .admin-item-content {
-        font-size: 0.9rem;
-        flex-grow: 1;
-        overflow: hidden;
-      }
-      .admin-item-content p {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin: 0;
-      }
-      .admin-item-content small {
-        display: block;
-        color: var(--muted);
-        font-family: monospace;
-        margin-top: 4px;
-      }
-      .admin-item-actions {
-        display: flex;
-        gap: 8px;
-        flex-shrink: 0;
-      }
-      .admin-btn {
-        padding: 6px 12px;
-        border: none;
-        color: white;
-        font-weight: 600;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-      .edit-btn {
-        background-color: #007bff;
-      }
-      .delete-btn {
-        background-color: #dc3545;
-      }
-      .reset-btn {
-        background-color: #6c757d;
-      }
+            /* --- ESTILOS PANEL DE ADMINISTRACIÓN --- */
+            #admin-controls,
+            #admin-controls-trainings,
+            #admin-controls-vendedores {
+              margin-bottom: 20px;
+              display: flex;
+              justify-content: flex-end;
+              gap: 10px;
+            }
+            .admin-section-header {
+              font-size: 1.2rem;
+              color: var(--brand);
+              border-bottom: 2px solid var(--accent);
+              padding-bottom: 5px;
+              margin: 20px 0 10px 0;
+            }
+            /* --- ESTILOS PARA DESPLEGABLES DE ADMIN --- */
+            .admin-section-details summary {
+              cursor: pointer;
+              list-style: none;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              font-size: 1.2rem;
+              color: var(--brand);
+              border-bottom: 2px solid var(--accent);
+              padding-bottom: 5px;
+              margin: 20px 0 10px 0;
+            }
+            .admin-section-details summary::-webkit-details-marker {
+                display: none;
+            }
+            .admin-section-details .details-arrow {
+                transition: transform 0.2s ease-in-out;
+            }
+            .admin-section-details[open] .details-arrow {
+                transform: rotate(180deg);
+            }
+            .admin-section-details[open] > div {
+                margin-top: 10px;
+            }
 
-      /* Formulario de Contenido */
-      #news-form,
-      #training-form,
-      #admin-password-form,
-      #suggestion-form {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-      #news-form textarea,
-      #training-form input[type="text"] {
-        min-height: 120px;
-        resize: vertical;
-      }
-      #news-form button,
-      #training-form button,
-      #admin-password-form button {
-        padding: 12px;
-        background-color: var(--accent);
-        color: white;
-        font-weight: 700;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-      }
+            #add-news-btn,
+            #add-training-btn {
+              padding: 8px 16px;
+              font-weight: 700;
+              background-color: var(--accent);
+              color: white;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+            }
+            .admin-list {
+              display: flex;
+              flex-direction: column;
+              gap: 12px;
+              max-height: 40vh;
+              overflow-y: auto;
+              padding-right: 10px;
+            }
+            .admin-item {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 15px;
+              background: #f8f9fa;
+              padding: 10px 15px;
+              border-radius: 8px;
+            }
+            .admin-item-content {
+              font-size: 0.9rem;
+              flex-grow: 1;
+              overflow: hidden;
+            }
+            .admin-item-content p {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              margin: 0;
+            }
+            .admin-item-content small {
+              display: block;
+              color: var(--muted);
+              font-family: monospace;
+              margin-top: 4px;
+            }
+            .admin-item-actions {
+              display: flex;
+              gap: 8px;
+              flex-shrink: 0;
+            }
+            .admin-btn {
+              padding: 6px 12px;
+              border: none;
+              color: white;
+              font-weight: 600;
+              border-radius: 6px;
+              cursor: pointer;
+            }
+            .edit-btn {
+              background-color: #007bff;
+            }
+            .delete-btn {
+              background-color: #dc3545;
+            }
+            .reset-btn {
+              background-color: #6c757d;
+            }
 
-      /* --- CALENDAR STYLES --- */
-      .calendar-container {
-        font-size: 0.9rem;
-      }
-      .calendar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-      }
-      #month-year {
-        font-weight: 700;
-        font-size: 1.2rem;
-        color: var(--brand);
-      }
-      .calendar-nav button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0.5rem;
-      }
-      .calendar-grid {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        gap: 5px;
-        text-align: center;
-      }
-      .calendar-day {
-        padding: 0.5rem 0;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: auto;
-      }
-      .day-name {
-        font-weight: 600;
-        color: var(--muted);
-        padding-bottom: 0.5rem;
-      }
-      .is-today {
-        background-color: #fee2e2;
-      }
-      .has-event {
-        background-color: var(--accent);
-        color: white;
-        font-weight: 700;
-        cursor: pointer;
-      }
-      .empty-day {
-        visibility: hidden;
-      }
-      #event-details {
-        margin-top: 1rem;
-        padding: 1rem;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        min-height: 50px;
-      }
-      #event-details h5 {
-        font-weight: 700;
-        color: var(--brand);
-      }
-      #event-details p {
-        margin: 0;
-        color: var(--muted);
-      }
+            /* Formulario de Contenido */
+            #news-form,
+            #training-form,
+            #admin-password-form,
+            #suggestion-form {
+              display: flex;
+              flex-direction: column;
+              gap: 15px;
+            }
+            #news-form textarea,
+            #training-form input[type="text"] {
+              min-height: 120px;
+              resize: vertical;
+            }
+            #news-form button,
+            #training-form button,
+            #admin-password-form button {
+              padding: 12px;
+              background-color: var(--accent);
+              color: white;
+              font-weight: 700;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+            }
 
-    /* --- INICIO: ESTILOS PARA TARJETA DE REDES MINIMALISTA --- */
-      .social-preview-card-single {
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        text-align: center;
-      }
-      .social-preview-image {
-        width: 100%;
-        display: block;
-      }
-      .social-buttons-container {
-        display: flex;
-        justify-content: space-around; /* O 'center' si prefieres los botones más juntos */
-        padding: 15px 10px;
-        background-color: #f8f9fa;
-        gap: 10px;
-      }
-      .social-preview-button {
-        flex-grow: 1;
-        padding: 8px 16px;
-        border-radius: 20px;
-        color: white;
-        font-weight: 600;
-        font-size: 0.9rem;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: opacity 0.2s ease;
-      }
-      .social-preview-button:hover {
-        opacity: 0.9;
-      }
-      .social-preview-button.instagram {
-        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-      }
-      .social-preview-button.facebook {
-        background-color: #1877F2;
-      }
-      /* --- FIN: ESTILOS PARA TARJETA --- */
+            /* --- CALENDAR STYLES --- */
+            .calendar-container {
+              font-size: 0.9rem;
+            }
+            .calendar-header {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 1rem;
+            }
+            #month-year {
+              font-weight: 700;
+              font-size: 1.2rem;
+              color: var(--brand);
+            }
+            .calendar-nav button {
+              background: none;
+              border: none;
+              cursor: pointer;
+              padding: 0.5rem;
+            }
+            .calendar-grid {
+              display: grid;
+              grid-template-columns: repeat(7, 1fr);
+              gap: 5px;
+              text-align: center;
+            }
+            .calendar-day {
+              padding: 0.5rem 0;
+              border-radius: 50%;
+              width: 32px;
+              height: 32px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin: auto;
+            }
+            .day-name {
+              font-weight: 600;
+              color: var(--muted);
+              padding-bottom: 0.5rem;
+            }
+            .is-today {
+              background-color: #fee2e2;
+            }
+            .has-event {
+              background-color: var(--accent);
+              color: white;
+              font-weight: 700;
+              cursor: pointer;
+            }
+            .empty-day {
+              visibility: hidden;
+            }
+            #event-details {
+              margin-top: 1rem;
+              padding: 1rem;
+              background-color: #f8f9fa;
+              border-radius: 8px;
+              min-height: 50px;
+            }
+            #event-details h5 {
+              font-weight: 700;
+              color: var(--brand);
+            }
+            #event-details p {
+              margin: 0;
+              color: var(--muted);
+            }
+
+      /* --- INICIO: ESTILOS PARA TARJETA DE REDES MINIMALISTA (CORREGIDO) --- */
+            .social-preview-card-single {
+              border-radius: 8px;
+              overflow: hidden;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+              text-align: center;
+            }
+            .social-preview-image {
+              width: 100%;
+              display: block;
+            }
+            .social-buttons-container {
+              display: flex;
+              flex-direction: column;
+              align-items: center; /* Centra horizontalmente todo el contenido */
+              padding: 15px 10px;
+              background-color: #f8f9fa;
+              gap: 10px;
+            }
+            .social-buttons-row {
+              display: flex;
+              justify-content: center; /* Centra los botones de la fila */
+              gap: 10px;
+              width: 100%;
+            }
+            .social-preview-button {
+              /* La propiedad flex: 1; fue eliminada para que no se estiren */
+              padding: 8px 24px; /* Un poco más de padding para que no queden tan chicos */
+              border-radius: 20px;
+              color: white;
+              font-weight: 600;
+              font-size: 0.9rem;
+              text-decoration: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+              transition: opacity 0.2s ease;
+            }
+            .social-preview-button:hover {
+              opacity: 0.9;
+            }
+            .social-preview-button.instagram {
+              background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            }
+            .social-preview-button.facebook {
+              background-color: #1877F2;
+            }
+            .social-preview-button.linkedin {
+              background-color: #0A66C2;
+            }
+            /* --- FIN: ESTILOS PARA TARJETA --- */
     </style>
   </head>
   <body>
@@ -858,7 +868,7 @@
           </a>
         </nav>
       </header>
-<!-- SECCIÓN PANEL DE HERRAMIENTAS-->   
+      <!-- SECCIÓN PANEL DE HERRAMIENTAS-->
       <main>
         <div class="panel-header">
           <div class="container panel-header-content">
@@ -918,14 +928,15 @@
                   <i class="fa-solid fa-book-open"></i>
                   <span>Manual de Productos</span>
                 </a>
+                <a href="sucursales.html" target="_blank" class="tool-link">
+                  <i class="fa-solid fa-clock"></i>
+                  <span>Horarios</span>
+                </a>
                 <div id="open-links-modal-btn" class="tool-link">
                   <i class="fa-solid fa-link"></i>
                   <span>Links Útiles</span>
                 </div>
-                <a href="calculadora.html" target="_blank" class="tool-link">
-                  <i class="fa-solid fa-calculator"></i>
-                  <span>Calculadora de M²</span>
-                </a>
+
                 <a
                   href="https://www.youtube.com/playlist?list=PLHdKOri3coqCjTx62kuV39L2PEECS0huQ"
                   target="_blank"
@@ -937,6 +948,10 @@
                 <a href="/argumentarios.html" target="_blank" class="tool-link">
                   <i class="fa-solid fa-comments-dollar"></i>
                   <span>Argumentario de ventas</span>
+                </a>
+                <a href="calculadora.html" target="_blank" class="tool-link">
+                  <i class="fa-solid fa-calculator"></i>
+                  <span>Calculadora de M²</span>
                 </a>
               </div>
             </div>
@@ -969,32 +984,62 @@
             </div>
           </div>
 
-<!-- SECCIÓN APOYO EN REDES -->
-       <div class="panel-card">
-  <div class="panel-card-header">
-    <div class="panel-card-icon-title">
-      <span class="panel-card-icon"><i class="fa-solid fa-share-nodes"></i></span>
-      <h3>¡Apoyanos en Redes!</h3>
-    </div>
-  </div>
-  <div class="panel-card-body">
-    <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 20px;">
-      ¡Tu apoyo es clave! Dale Me Gusta y compartí nuestra última publicación para llegar a más clientes.
-    </p>
-    <div class="social-preview-card-single">
-      <img src="https://i.ibb.co/7NbsTTpC/portada-1-Q-octubre.jpg" alt="Previa de la publicación" class="social-preview-image"/>
-      <div class="social-buttons-container">
-        <a href="https://www.instagram.com/p/DPTlPYFDCUY/" target="_blank" class="social-preview-button instagram">
-          <i class="fab fa-instagram"></i> Instagram
-        </a>
-        <a href="https://www.facebook.com/share/p/1BTeu2TSZb/" target="_blank" class="social-preview-button facebook">
-          <i class="fab fa-facebook-f"></i> Facebook
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- SECCIÓN EMPLEADO DEL MES-->        
+          <!-- SECCIÓN APOYO EN REDES -->
+          <div class="panel-card">
+            <div class="panel-card-header">
+              <div class="panel-card-icon-title">
+                <span class="panel-card-icon"
+                  ><i class="fa-solid fa-share-nodes"></i
+                ></span>
+                <h3>¡Apoyanos en Redes!</h3>
+              </div>
+            </div>
+            <div class="panel-card-body">
+              <p
+                style="
+                  font-size: 0.9rem;
+                  color: var(--muted);
+                  margin-bottom: 20px;
+                "
+              >
+                ¡Tu apoyo es clave! Dale Me Gusta y compartí nuestra última
+                publicación para llegar a más clientes.
+              </p>
+              <div class="social-preview-card-single">
+                <img
+                  src="https://i.ibb.co/7NbsTTpC/portada-1-Q-octubre.jpg"
+                  alt="Previa de la publicación"
+                  class="social-preview-image"
+                />
+                <div class="social-buttons-container">
+                  <div class="social-buttons-row">
+                    <a
+                      href="..."
+                      target="_blank"
+                      class="social-preview-button instagram"
+                    >
+                      <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    <a
+                      href="..."
+                      target="_blank"
+                      class="social-preview-button facebook"
+                    >
+                      <i class="fab fa-facebook-f"></i> Facebook
+                    </a>
+                  </div>
+                  <a
+                    href="..."
+                    target="_blank"
+                    class="social-preview-button linkedin"
+                  >
+                    <i class="fab fa-linkedin-in"></i> LinkedIn
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- SECCIÓN EMPLEADO DEL MES-->
           <div class="panel-card featured-employee-card">
             <div class="panel-card-header">
               <div class="panel-card-icon-title">
@@ -1017,31 +1062,54 @@
             </div>
           </div>
 
-<!-- SECCIÓN BUZÓN DE SUGERENCIAS -->
+          <!-- SECCIÓN BUZÓN DE SUGERENCIAS -->
           <div class="panel-card">
-              <div class="panel-card-header">
-                  <div class="panel-card-icon-title">
-                      <span class="panel-card-icon"><i class="fa-solid fa-lightbulb"></i></span>
-                      <h3>Buzón de Sugerencias</h3>
-                  </div>
+            <div class="panel-card-header">
+              <div class="panel-card-icon-title">
+                <span class="panel-card-icon"
+                  ><i class="fa-solid fa-lightbulb"></i
+                ></span>
+                <h3>Buzón de Sugerencias</h3>
               </div>
-              <div class="panel-card-body">
-                  <form id="suggestion-form">
-                      <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 15px;">Tu aporte nos ayuda a mejorar. Tu sugerencia será registrada de forma anónima. ¡Gracias por participar!</p>
-                      <div class="input-group">
-                          <label for="suggestion-text">Tu Mensaje</label>
-                          <textarea id="suggestion-text" rows="5" placeholder="Escribí tu sugerencia, idea o comentario aquí..." required></textarea>
-                      </div>
-                      <button type="submit" id="submit-suggestion-btn">Enviar Sugerencia</button>
-                      <div id="suggestion-status" style="margin-top: 15px; text-align: center; font-weight: 600; min-height: 20px;"></div>
-                  </form>
-              </div>
+            </div>
+            <div class="panel-card-body">
+              <form id="suggestion-form">
+                <p
+                  style="
+                    font-size: 0.9rem;
+                    color: var(--muted);
+                    margin-bottom: 15px;
+                  "
+                >
+                  Tu aporte nos ayuda a mejorar. Tu sugerencia será registrada
+                  de forma anónima. ¡Gracias por participar!
+                </p>
+                <div class="input-group">
+                  <label for="suggestion-text">Tu Mensaje</label>
+                  <textarea
+                    id="suggestion-text"
+                    rows="5"
+                    placeholder="Escribí tu sugerencia, idea o comentario aquí..."
+                    required
+                  ></textarea>
+                </div>
+                <button type="submit" id="submit-suggestion-btn">
+                  Enviar Sugerencia
+                </button>
+                <div
+                  id="suggestion-status"
+                  style="
+                    margin-top: 15px;
+                    text-align: center;
+                    font-weight: 600;
+                    min-height: 20px;
+                  "
+                ></div>
+              </form>
+            </div>
           </div>
 
-  
-
-
-<!-- SECCIÓN DIRECTORIO DE CONTACTOS -->
+          <!-- SECCIÓN DIRECTORIO DE CONTACTOS -->
           <details
             class="panel-card directory-main-card"
             style="grid-column: 1 / -1"
@@ -1114,21 +1182,35 @@
               <i class="fa-solid fa-chevron-down details-arrow"></i>
             </summary>
             <div id="admin-controls-vendedores">
-                <a href="carga-masiva.html" target="_blank" id="manage-vendedores-btn" class="admin-btn" style="background-color: #007bff; display: inline-block; text-decoration: none; padding: 8px 16px; width: auto; font-weight: 700; color: white;">
-                    <i class="fa-solid fa-users-cog"></i> Ir a Gestión de Vendedores
-                </a>
+              <a
+                href="carga-masiva.html"
+                target="_blank"
+                id="manage-vendedores-btn"
+                class="admin-btn"
+                style="
+                  background-color: #007bff;
+                  display: inline-block;
+                  text-decoration: none;
+                  padding: 8px 16px;
+                  width: auto;
+                  font-weight: 700;
+                  color: white;
+                "
+              >
+                <i class="fa-solid fa-users-cog"></i> Ir a Gestión de Vendedores
+              </a>
             </div>
           </details>
-          
+
           <details class="admin-section-details">
             <summary>
               <span>Gestionar Noticias</span>
               <i class="fa-solid fa-chevron-down details-arrow"></i>
             </summary>
             <div id="admin-controls">
-                <button id="add-news-btn">
-                    <i class="fa-solid fa-plus"></i> Crear Noticia
-                </button>
+              <button id="add-news-btn">
+                <i class="fa-solid fa-plus"></i> Crear Noticia
+              </button>
             </div>
             <div id="admin-news-list" class="admin-list"></div>
           </details>
@@ -1139,13 +1221,12 @@
               <i class="fa-solid fa-chevron-down details-arrow"></i>
             </summary>
             <div id="admin-controls-trainings">
-                <button id="add-training-btn">
-                    <i class="fa-solid fa-plus"></i> Agregar Fecha
-                </button>
+              <button id="add-training-btn">
+                <i class="fa-solid fa-plus"></i> Agregar Fecha
+              </button>
             </div>
             <div id="admin-trainings-list" class="admin-list"></div>
           </details>
-
         </div>
       </div>
     </div>
@@ -1210,7 +1291,13 @@
     </div>
 
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v20.0" nonce="ABCDEF"></script>
+    <script
+      async
+      defer
+      crossorigin="anonymous"
+      src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v20.0"
+      nonce="ABCDEF"
+    ></script>
     <script async src="//www.instagram.com/embed.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -1445,7 +1532,7 @@
             ],
           },
         };
-        
+
         const usefulLinks = [
           {
             title: "Catálogo de Productos",
@@ -1455,15 +1542,18 @@
             title: "Promos vigentes",
             url: "https://rossomateriales.netlify.app",
           },
-          { title: "Sucursales", url: "https://rossomateriales.site/sucursales" },
-           { title: "Web Institucional", url: "https://rossomateriales.site" },
+          {
+            title: "Sucursales",
+            url: "https://rossomateriales.site/sucursales",
+          },
+          { title: "Web Institucional", url: "https://rossomateriales.site" },
           { title: "Ecommerce", url: "https://wa.me/5493814146917" },
         ];
 
         // --- LÓGICA DE LOGIN Y RENDERIZADO INICIAL ---
         function checkLogin() {
           // ***** LÍNEA CORREGIDA *****
-          const loggedInUserName = localStorage.getItem("vendedorLogueado"); 
+          const loggedInUserName = localStorage.getItem("vendedorLogueado");
           if (loggedInUserName) {
             document.getElementById("login-overlay").style.display = "none";
             document.getElementById("panel-wrapper").style.display = "block";
@@ -1480,13 +1570,16 @@
             document.getElementById("panel-wrapper").style.display = "none";
           }
         }
-        
+
         // --- LÓGICA DE LOGIN (YA ESTABA BIEN) ---
         document
           .getElementById("login-form")
           .addEventListener("submit", async function (event) {
             event.preventDefault();
-            const nombreInput = document.getElementById("nombre").value.trim().toLowerCase();
+            const nombreInput = document
+              .getElementById("nombre")
+              .value.trim()
+              .toLowerCase();
             const dniInput = document.getElementById("dni").value.trim();
             const loginError = document.getElementById("login-error");
 
@@ -1497,36 +1590,42 @@
               let userFound = null;
 
               snapshot.forEach((doc) => {
-                if (userFound) return; 
+                if (userFound) return;
 
                 const vendedor = doc.data();
-                const dbName = vendedor.nombre.toLowerCase().replace(/,/g, ''); 
-                
-                const dbNameParts = dbName.split(' ').filter(Boolean);
-                
+                const dbName = vendedor.nombre.toLowerCase().replace(/,/g, "");
+
+                const dbNameParts = dbName.split(" ").filter(Boolean);
+
                 if (dbNameParts.length < 2) {
-                    if (dbName === nombreInput && vendedor.dni === dniInput) {
-                        userFound = vendedor;
-                    }
-                    return; 
+                  if (dbName === nombreInput && vendedor.dni === dniInput) {
+                    userFound = vendedor;
+                  }
+                  return;
                 }
 
                 const dbLastName = dbNameParts[0];
                 const dbFirstNames = dbNameParts.slice(1);
 
-                const inputWords = nombreInput.split(' ').filter(Boolean);
-                
+                const inputWords = nombreInput.split(" ").filter(Boolean);
+
                 const lastNameMatch = inputWords.includes(dbLastName);
 
-                const firstNameMatch = dbFirstNames.some(firstName => inputWords.includes(firstName));
+                const firstNameMatch = dbFirstNames.some((firstName) =>
+                  inputWords.includes(firstName)
+                );
 
-                if (lastNameMatch && firstNameMatch && vendedor.dni === dniInput) {
-                    userFound = vendedor;
+                if (
+                  lastNameMatch &&
+                  firstNameMatch &&
+                  vendedor.dni === dniInput
+                ) {
+                  userFound = vendedor;
                 }
               });
 
               if (userFound) {
-               localStorage.setItem("vendedorLogueado", userFound.nombre);
+                localStorage.setItem("vendedorLogueado", userFound.nombre);
                 checkLogin();
               } else {
                 loginError.textContent = "Nombre o DNI incorrecto.";
@@ -1536,7 +1635,6 @@
               loginError.textContent = "Error al conectar. Intente de nuevo.";
             }
           });
-
 
         document
           .getElementById("logout-button")
@@ -1548,37 +1646,37 @@
 
         // --- LÓGICA DE CUMPLEAÑOS ---
         async function populateBirthdays() {
-            const birthdaySection = document.getElementById("birthday-section");
-            const birthdayList = document.getElementById("birthday-list");
-            birthdayList.innerHTML = "";
+          const birthdaySection = document.getElementById("birthday-section");
+          const birthdayList = document.getElementById("birthday-list");
+          birthdayList.innerHTML = "";
 
-            try {
-                const response = await fetch('cumpleanos.json');
-                if (!response.ok) {
-                    throw new Error('No se pudo cargar el archivo de cumpleaños.');
-                }
-                const employeeBirthdays = await response.json();
+          try {
+            const response = await fetch("cumpleanos.json");
+            if (!response.ok) {
+              throw new Error("No se pudo cargar el archivo de cumpleaños.");
+            }
+            const employeeBirthdays = await response.json();
 
-                const today = new Date();
-                const month = String(today.getMonth() + 1).padStart(2, "0");
-                const day = String(today.getDate()).padStart(2, "0");
-                const todayFormatted = `${month}-${day}`;
-                const year = today.getFullYear();
-                const dateString = `${year}-${month}-${day}`;
+            const today = new Date();
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const day = String(today.getDate()).padStart(2, "0");
+            const todayFormatted = `${month}-${day}`;
+            const year = today.getFullYear();
+            const dateString = `${year}-${month}-${day}`;
 
-                const birthdayEmployees = employeeBirthdays.filter(
-                    (emp) => emp.fecha === todayFormatted
-                );
+            const birthdayEmployees = employeeBirthdays.filter(
+              (emp) => emp.fecha === todayFormatted
+            );
 
-                if (birthdayEmployees.length > 0) {
-                    birthdayEmployees.forEach((emp) => {
-                        const employeeNameId = emp.nombre.replace(/\s+/g, "");
-                        const birthdayId = `bday-${employeeNameId}-${dateString}`;
+            if (birthdayEmployees.length > 0) {
+              birthdayEmployees.forEach((emp) => {
+                const employeeNameId = emp.nombre.replace(/\s+/g, "");
+                const birthdayId = `bday-${employeeNameId}-${dateString}`;
 
-                        const li = document.createElement("li");
-                        li.className = "news-item";
-                        li.dataset.newsId = birthdayId;
-                        li.innerHTML = `
+                const li = document.createElement("li");
+                li.className = "news-item";
+                li.dataset.newsId = birthdayId;
+                li.innerHTML = `
                             <p><strong>¡Feliz cumpleaños, ${emp.nombre}!</strong> 🥳 Que tengas un día excelente.</p>
                             <div class="news-footer">
                                 <div class="reactions-summary"></div>
@@ -1592,19 +1690,18 @@
                                 </div>
                             </div>
                         `;
-                        birthdayList.appendChild(li);
-                    });
-                    birthdaySection.style.display = "block";
-                    initializeReactions();
-                } else {
-                    birthdaySection.style.display = "none";
-                }
-            } catch (error) {
-                console.error("Error al cargar cumpleaños:", error);
-                birthdaySection.style.display = "none";
+                birthdayList.appendChild(li);
+              });
+              birthdaySection.style.display = "block";
+              initializeReactions();
+            } else {
+              birthdaySection.style.display = "none";
             }
+          } catch (error) {
+            console.error("Error al cargar cumpleaños:", error);
+            birthdaySection.style.display = "none";
+          }
         }
-
 
         // --- LÓGICA DE NOTICIAS ---
         function populateNews() {
@@ -1767,11 +1864,11 @@
               const pill = document.createElement("span");
               pill.className = "reaction-display";
               pill.innerHTML = `<span class="emoji">${emoji}</span> ${count}`;
-             if (userReaction === emoji) {
-    pill.style.backgroundColor = "#E9ECEF";
-    pill.style.color = "var(--brand)";
-    pill.style.fontWeight = "700";
-}
+              if (userReaction === emoji) {
+                pill.style.backgroundColor = "#E9ECEF";
+                pill.style.color = "var(--brand)";
+                pill.style.fontWeight = "700";
+              }
               summaryContainer.appendChild(pill);
             }
           });
@@ -1855,59 +1952,63 @@
               });
             });
         }
-        
+
         // --- LÓGICA DEL BUZÓN DE SUGERENCIAS ---
-        const suggestionForm = document.getElementById('suggestion-form');
-        const suggestionStatus = document.getElementById('suggestion-status');
-        const suggestionBtn = document.getElementById('submit-suggestion-btn');
+        const suggestionForm = document.getElementById("suggestion-form");
+        const suggestionStatus = document.getElementById("suggestion-status");
+        const suggestionBtn = document.getElementById("submit-suggestion-btn");
 
         if (suggestionForm) {
-            suggestionForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const suggestionText = document.getElementById('suggestion-text').value.trim();
-                const originalButtonText = suggestionBtn.textContent;
-                const loggedInUserName = localStorage.getItem("vendedorLogueado");
+          suggestionForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const suggestionText = document
+              .getElementById("suggestion-text")
+              .value.trim();
+            const originalButtonText = suggestionBtn.textContent;
+            const loggedInUserName = localStorage.getItem("vendedorLogueado");
 
-                if (!suggestionText) {
-                    suggestionStatus.textContent = "Por favor, escribí una sugerencia.";
-                    suggestionStatus.style.color = '#d9534f';
-                    return;
-                }
-                
-                if (!loggedInUserName) {
-                    suggestionStatus.textContent = "Error: No se pudo identificar al usuario. Por favor, reiniciá sesión.";
-                    suggestionStatus.style.color = '#d9534f';
-                    return;
-                }
+            if (!suggestionText) {
+              suggestionStatus.textContent =
+                "Por favor, escribí una sugerencia.";
+              suggestionStatus.style.color = "#d9534f";
+              return;
+            }
 
-                suggestionBtn.disabled = true;
-                suggestionBtn.textContent = 'Enviando...';
+            if (!loggedInUserName) {
+              suggestionStatus.textContent =
+                "Error: No se pudo identificar al usuario. Por favor, reiniciá sesión.";
+              suggestionStatus.style.color = "#d9534f";
+              return;
+            }
 
-                try {
-                    await db.collection('sugerencias').add({
-                        sugerencia: suggestionText,
-                        vendedor: "Anónimo", // Se envía como anónimo
-                        fecha: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+            suggestionBtn.disabled = true;
+            suggestionBtn.textContent = "Enviando...";
 
-                    suggestionStatus.textContent = '¡Sugerencia enviada con éxito! Gracias.';
-                    suggestionStatus.style.color = 'green';
-                    suggestionForm.reset();
+            try {
+              await db.collection("sugerencias").add({
+                sugerencia: suggestionText,
+                vendedor: "Anónimo", // Se envía como anónimo
+                fecha: firebase.firestore.FieldValue.serverTimestamp(),
+              });
 
-                } catch (error) {
-                    console.error("Error al enviar sugerencia: ", error);
-                    suggestionStatus.textContent = 'Hubo un error al enviar. Intentá de nuevo.';
-                    suggestionStatus.style.color = '#d9534f';
-                } finally {
-                    setTimeout(() => {
-                        suggestionBtn.disabled = false;
-                        suggestionBtn.textContent = originalButtonText;
-                        suggestionStatus.textContent = '';
-                    }, 3000);
-                }
-            });
+              suggestionStatus.textContent =
+                "¡Sugerencia enviada con éxito! Gracias.";
+              suggestionStatus.style.color = "green";
+              suggestionForm.reset();
+            } catch (error) {
+              console.error("Error al enviar sugerencia: ", error);
+              suggestionStatus.textContent =
+                "Hubo un error al enviar. Intentá de nuevo.";
+              suggestionStatus.style.color = "#d9534f";
+            } finally {
+              setTimeout(() => {
+                suggestionBtn.disabled = false;
+                suggestionBtn.textContent = originalButtonText;
+                suggestionStatus.textContent = "";
+              }, 3000);
+            }
+          });
         }
-
 
         // --- LÓGICA DE MODALES GENERALES Y CIERRE DE PICKERS ---
         document
@@ -1962,7 +2063,7 @@
         document.addEventListener("keydown", (e) => {
           // ***** LÍNEA CORREGIDA *****
           if (
-            !localStorage.getItem("vendedorLogueado") || 
+            !localStorage.getItem("vendedorLogueado") ||
             e.target.tagName === "INPUT" ||
             e.target.tagName === "TEXTAREA"
           ) {
@@ -1984,7 +2085,7 @@
         adminPasswordForm.addEventListener("submit", (e) => {
           e.preventDefault();
           const enteredPassword = adminPasswordField.value;
-          const encodedAdminPassword = "NTM1MTUyNQ=="; 
+          const encodedAdminPassword = "NTM1MTUyNQ==";
 
           if (btoa(enteredPassword) === encodedAdminPassword) {
             adminPasswordModal.style.display = "none";
@@ -2262,17 +2363,26 @@
         checkLogin();
       });
     </script>
-    
+
     <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw-vendedores.js').then(registration => {
-        console.log('ServiceWorker del Panel registrado con éxito:', registration.scope);
-      }).catch(error => {
-        console.log('Error en el registro de ServiceWorker del Panel:', error);
-      });
-    });
-  }
-</script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw-vendedores.js")
+            .then((registration) => {
+              console.log(
+                "ServiceWorker del Panel registrado con éxito:",
+                registration.scope
+              );
+            })
+            .catch((error) => {
+              console.log(
+                "Error en el registro de ServiceWorker del Panel:",
+                error
+              );
+            });
+        });
+      }
+    </script>
   </body>
 </html>
