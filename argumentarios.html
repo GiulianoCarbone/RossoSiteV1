@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argumentarios de Venta | Rosso Materiales</title>
+    <link href="assets/FAV.png" rel="icon">
+    <link href="style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        :root {
+            --page-bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.08);
+            --border-color: #e5e7eb;
+        }
+        body {
+            background-color: var(--page-bg);
+        }
+        .main-content {
+            padding-top: var(--header-h);
+        }
+        .page-header {
+            background: var(--card-bg);
+            padding: 25px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: var(--brand);
+            margin: 0;
+        }
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+        .search-container {
+            padding: 25px 0;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
+        .arguments-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Una columna por defecto para móviles */
+            gap: 30px;
+            padding-bottom: 40px;
+        }
+        .argument-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border-top: 5px solid var(--accent);
+        }
+        .product-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .product-image {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .product-title h2 {
+            font-size: 1.8rem;
+            color: var(--brand);
+            margin: 0;
+        }
+        .product-title .pitch {
+            font-style: italic;
+            color: var(--muted);
+        }
+        .argument-body {
+            padding: 0 20px 20px;
+        }
+        .argument-section {
+            margin-bottom: 20px;
+        }
+        .argument-section h4 {
+            font-size: 1.1rem;
+            color: var(--brand);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .argument-section h4 i { color: var(--accent); }
+        .argument-section ul {
+            list-style: none;
+            padding-left: 20px;
+            margin: 0;
+        }
+        .argument-section li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+        }
+        .argument-section li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .objection {
+            background: #fff9f7;
+            border-left: 3px solid var(--accent);
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .objection strong { color: var(--brand); }
+        .upsell-products {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .upsell-tag {
+            background: #e9ecef;
+            color: var(--muted);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .tech-sheet-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (min-width: 992px) {
+            .arguments-grid {
+                grid-template-columns: 1fr 1fr; /* Dos columnas en pantallas grandes */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header" role="banner">
+         <nav class="main-nav container" aria-label="Primaria">
+            <a href="/" class="logo" aria-label="Ir al inicio">
+                <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+            </a>
+         </nav>
+    </header>
+    
+    <main class="main-content">
+        <div class="page-header">
+            <div class="container">
+                <h1>Argumentarios de Venta</h1>
+                <p>La guía definitiva para transformar características en beneficios y cerrar más ventas.</p>
+            </div>
+        </div>
+
+        <div class="container search-container">
+            <input type="text" id="search-bar" class="search-bar" placeholder="Buscar producto o marca (ej: Cemento, Roca)...">
+        </div>
+
+        <div class="container arguments-grid" id="arguments-grid">
+
+             <div class="argument-card" data-search-term="cemento holcim ecoplanet">
+                <div class="product-header">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Holcim_Logotipo.png" alt="Bolsa de Cemento Holcim" class="product-image">
+                    <div class="product-title">
+                        <h2>Cemento Holcim</h2>
+                        <p class="pitch">"No es solo cemento, es la base de un proyecto duradero y responsable."</p>
+                    </div>
+                </div>
+                <div class="argument-body">
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-star"></i> Beneficios Principales para el Cliente</h4>
+                        <ul>
+                            <li><strong>Máxima Resistencia:</strong> Garantiza una construcción sólida y segura que perdura en el tiempo, dándole tranquilidad.</li>
+                            <li><strong>Tecnología ECOPlanet:</strong> Es el único que reduce la huella de carbono. Ideal para clientes que valoran la sostenibilidad.</li>
+                            <li><strong>Rendimiento Superior:</strong> Se necesita menos cantidad para lograr la misma resistencia, lo que optimiza su presupuesto.</li>
+                        </ul>
+                    </div>
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-shield-halved"></i> Manejo de Objeciones</h4>
+                        <div class="objection">
+                            <strong>"Es un poco más caro que otros."</strong>
+                            <p>"Entiendo, pero al necesitar menos cantidad por su mayor rendimiento, el costo final por metro cúbico es muy similar, y te llevás una calidad y durabilidad muy superior."</p>
+                        </div>
+                    </div>
+                     <div class="argument-section">
+                        <h4><i class="fa-solid fa-hand-holding-dollar"></i> Productos Complementarios (Venta Cruzada)</h4>
+                        <div class="upsell-products">
+                            <span class="upsell-tag">Ladrillos</span>
+                            <span class="upsell-tag">Hierros</span>
+                            <span class="upsell-tag">Mallas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="argument-card" data-search-term="griferia fv baños cocina">
+                <div class="product-header">
+                    <img src="https://grupofv.com/assets/img/logo-fv.png" alt="Logo de Grifería FV" class="product-image">
+                    <div class="product-title">
+                        <h2>Grifería FV</h2>
+                        <p class="pitch">"Es una inversión a largo plazo en diseño y cero problemas."</p>
+                    </div>
+                </div>
+                <div class="argument-body">
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-star"></i> Beneficios Principales para el Cliente</h4>
+                        <ul>
+                            <li><strong>Garantía de 5 Años:</strong> Es la única marca que ofrece total tranquilidad. Cualquier problema, tenés el respaldo directo de fábrica.</li>
+                            <li><strong>Cierre Cerámico Duradero:</strong> A diferencia de los cueritos, su sistema de cierre cerámico no gotea y dura toda la vida.</li>
+                            <li><strong>Repuestos Asegurados:</strong> Siempre vas a conseguir repuestos, incluso de modelos antiguos. Es una compra para siempre.</li>
+                        </ul>
+                    </div>
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-shield-halved"></i> Manejo de Objeciones</h4>
+                        <div class="objection">
+                            <strong>"Vi otras marcas más económicas."</strong>
+                            <p>"Es cierto, pero con FV estás pagando por algo que no vas a tener que cambiar en años. El costo de llamar a un plomero por una canilla que gotea ya te termina saliendo más caro."</p>
+                        </div>
+                    </div>
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-hand-holding-dollar"></i> Productos Complementarios (Venta Cruzada)</h4>
+                        <div class="upsell-products">
+                            <span class="upsell-tag">Flexibles de Acero</span>
+                            <span class="upsell-tag">Bachas y Vanitorys</span>
+                            <span class="upsell-tag">Sellador de Silicona</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="argument-card" data-search-term="sanitarios ferrum roca inodoro bidet loza">
+                <div class="product-header">
+                    <img src="https://www.ferrum.com/pub/media/ferrum/images/share.png" alt="Logos de Ferrum y Roca" class="product-image">
+                    <div class="product-title">
+                        <h2>Sanitarios Ferrum / Roca</h2>
+                        <p class="pitch">"La calidad y el diseño que definen un baño para toda la vida."</p>
+                    </div>
+                </div>
+                <div class="argument-body">
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-star"></i> Beneficios Principales</h4>
+                        <ul>
+                            <li><strong>Porcelana Sanitaria de Primera:</strong> No se mancha, no se fisura y es fácil de limpiar. Es la mejor calidad del mercado.</li>
+                            <li><strong>Diseño y Variedad:</strong> Tenemos desde las líneas más clásicas y económicas hasta los diseños más modernos para cada estilo.</li>
+                            <li><strong>Doble Descarga Eficiente:</strong> La mayoría de los modelos vienen con sistema de doble descarga para ahorrar agua, un beneficio clave para el bolsillo y el planeta.</li>
+                        </ul>
+                    </div>
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-shield-halved"></i> Manejo de Objeciones</h4>
+                        <div class="objection">
+                            <strong>"¿Por qué hay tanta diferencia de precio con otras marcas?"</strong>
+                            <p>"La diferencia está en la calidad de la porcelana. Una loza de menor calidad se mancha y se percude con el tiempo. Con Ferrum o Roca, te asegurás un producto que se mantendrá impecable por décadas."</p>
+                        </div>
+                    </div>
+                     <div class="argument-section">
+                        <h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta Cruzada</h4>
+                        <div class="upsell-products">
+                            <span class="upsell-tag">Grifería FV</span>
+                            <span class="upsell-tag">Asientos de inodoro</span>
+                            <span class="upsell-tag">Set de Accesorios</span>
+                            <span class="upsell-tag">Flexibles y Sopapas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="argument-card" data-search-term="viguetas pretensadas losa techo tensolite">
+                <div class="product-header">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Logo-Isologo-Horizontal_tensolite_color.png" alt="Logo de Tensolite" class="product-image">
+                    <div class="product-title">
+                        <h2>Viguetas Tensolite</h2>
+                        <p class="pitch">"La forma más rápida, segura y económica de construir una losa."</p>
+                    </div>
+                </div>
+                <div class="argument-body">
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-star"></i> Beneficios Principales</h4>
+                        <ul>
+                            <li><strong>Ahorro de Tiempo:</strong> Reduce enormemente el tiempo de encofrado y armado de la losa. Se instala rápido y se hormigona antes.</li>
+                            <li><strong>Calidad Certificada:</strong> Cada vigueta tiene un sello de calidad IRAM que garantiza su resistencia y seguridad estructural.</li>
+                            <li><strong>Menor Costo Final:</strong> Al usar menos madera para encofrado, menos mano de obra y menos hormigón, el costo total de la losa es significativamente más bajo.</li>
+                        </ul>
+                    </div>
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-shield-halved"></i> Manejo de Objeciones</h4>
+                        <div class="objection">
+                            <strong>"Un herrero me las puede armar en la obra."</strong>
+                            <p>"Puede ser, pero nunca va a tener la calidad de pretensado y el control de calidad de fábrica. Una vigueta Tensolite asegura que no se fisure y soporte la carga calculada, algo que no se puede garantizar con las armadas en obra."</p>
+                        </div>
+                    </div>
+                     <div class="argument-section">
+                        <h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta Cruzada</h4>
+                        <div class="upsell-products">
+                            <span class="upsell-tag">Ladrillos de Telgopor (EPS)</span>
+                            <span class="upsell-tag">Malla Sima</span>
+                            <span class="upsell-tag">Cemento y áridos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="argument-card" data-search-term="ladrillos retak hcca construccion en seco">
+                <div class="product-header">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXWFSg94VBh0iw7482psE-LaSn4um8twpGEg&s" alt="Logo de Retak" class="product-image">
+                    <div class="product-title">
+                        <h2>Ladrillos Retak (HCCA)</h2>
+                        <p class="pitch">"Construí más rápido, con mejor aislación y ahorrando costos."</p>
+                    </div>
+                </div>
+                <div class="argument-body">
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-star"></i> Beneficios Principales</h4>
+                        <ul>
+                            <li><strong>Aislación Térmica Superior:</strong> Aisla 8 veces más que un ladrillo común. El cliente ahorra hasta un 40% en las facturas de gas y luz de por vida.</li>
+                            <li><strong>Construcción Rápida y Limpia:</strong> Se avanza mucho más rápido que con la mampostería tradicional y se usa un mortero adhesivo que evita el desorden de la mezcla.</li>
+                            <li><strong>Menor Peso, Menos Carga:</strong> Al ser más livianos, reducen la carga sobre la estructura y los cimientos, lo que puede abaratar el costo total de la obra.</li>
+                        </ul>
+                    </div>
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-shield-halved"></i> Manejo de Objeciones</h4>
+                        <div class="objection">
+                            <strong>"El costo por ladrillo es muy alto."</strong>
+                            <p>"Si mirás solo el ladrillo, sí, pero tenés que ver el costo final de la pared. Ahorrás en revoque grueso, en tiempo de mano de obra y, lo más importante, en consumo de energía para siempre. La inversión se paga sola."</p>
+                        </div>
+                    </div>
+                     <div class="argument-section">
+                        <h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta Cruzada</h4>
+                        <div class="upsell-products">
+                            <span class="upsell-tag">Mortero Adhesivo Retak</span>
+                            <span class="upsell-tag">Revoque Plástico Fino</span>
+                            <span class="upsell-tag">Dinteles Retak</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="argument-card" data-search-term="perfiles atrim terminaciones zocalos niveladores piso">
+                <div class="product-header">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeUKxpklNPLiu06LkqsMa3yUeJ6e99NDAcLg&s" alt="Logo de Atrim" class="product-image">
+                    <div class="product-title">
+                        <h2>Terminaciones y Niveladores Atrim</h2>
+                        <p class="pitch">"El detalle que eleva la calidad de cualquier terminación."</p>
+                    </div>
+                </div>
+                <div class="argument-body">
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-star"></i> Beneficios Principales</h4>
+                        <ul>
+                            <li><strong>Acabado Profesional:</strong> Los perfiles y zócalos le dan una terminación perfecta a los pisos y revestimientos, ocultando cortes y protegiendo los bordes.</li>
+                            <li><strong>Colocación Perfecta:</strong> Los niveladores aseguran que no queden "cejas" o desniveles entre las placas de porcelanato, logrando un piso perfectamente plano.</li>
+                            <li><strong>Durabilidad y Diseño:</strong> Hechos de materiales de alta calidad como acero o aluminio, que no se oxidan y vienen en una gran variedad de diseños modernos.</li>
+                        </ul>
+                    </div>
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-shield-halved"></i> Manejo de Objeciones</h4>
+                        <div class="objection">
+                            <strong>"¿Realmente necesito los niveladores?"</strong>
+                            <p>"Para porcelanatos de gran tamaño, son indispensables. Te aseguran que el trabajo del colocador quede perfecto. Es una inversión mínima para garantizar que un piso caro se luzca como debe ser."</p>
+                        </div>
+                    </div>
+                     <div class="argument-section">
+                        <h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta Cruzada</h4>
+                        <div class="upsell-products">
+                            <span class="upsell-tag">Porcelanatos</span>
+                            <span class="upsell-tag">Pegamento para Porcelanato</span>
+                            <span class="upsell-tag">Zócalos EPS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+             <div class="argument-card" data-search-term="weber igol ceresita hidrofugo membrana liquida pasta">
+                <div class="product-header">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOk4rEEFZ9G8kE06ls45n3KPbVwHWo2YUGkg&s" alt="Logo de Weber" class="product-image">
+                    <div class="product-title">
+                        <h2>Impermeabilizantes Weber</h2>
+                        <p class="pitch">"La solución definitiva para proteger la casa de la humedad."</p>
+                    </div>
+                </div>
+                <div class="argument-body">
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-star"></i> Beneficios Principales</h4>
+                        <ul>
+                            <li><strong>Solución para Cada Problema:</strong> Weber tiene un producto específico para cimientos (Ceresita), techos (Membrana líquida) o paredes (Revoque impermeable).</li>
+                            <li><strong>Calidad Líder:</strong> Es la marca que usan los profesionales. Garantiza una barrera duradera contra la humedad y evita problemas a futuro.</li>
+                            <li><strong>Fácil Aplicación:</strong> La mayoría de sus productos están listos para usar o son muy fáciles de preparar, simplificando el trabajo.</li>
+                        </ul>
+                    </div>
+                    <div class="argument-section">
+                        <h4><i class="fa-solid fa-shield-halved"></i> Manejo de Objeciones</h4>
+                        <div class="objection">
+                            <strong>"¿Puedo usar solo cal en la capa aisladora?"</strong>
+                            <p>"La cal no tiene las propiedades hidrófugas del Ceresita. Usar un aditivo específico de Weber en la capa aisladora es la única forma de garantizar que la humedad de los cimientos no suba por las paredes."</p>
+                        </div>
+                    </div>
+                     <div class="argument-section">
+                        <h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta Cruzada</h4>
+                        <div class="upsell-products">
+                            <span class="upsell-tag">Pinceletas y Rodillos</span>
+                            <span class="upsell-tag">Venda Elástica</span>
+                            <span class="upsell-tag">Ladrillos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lógica del buscador
+            const searchBar = document.getElementById('search-bar');
+            const cards = document.querySelectorAll('.argument-card');
+
+            searchBar.addEventListener('keyup', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+
+                cards.forEach(card => {
+                    const cardTerms = card.dataset.searchTerm.toLowerCase();
+                    if (cardTerms.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

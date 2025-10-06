@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculadora de Materiales - Rosso</title>
+    <title>Calculadora de Pisos y Revestimientos por m² - Rosso Materiales</title>
+    <meta name="description" content="Calculá la cantidad exacta de cajas de cerámicos y porcelanatos que necesitás para tu proyecto. Usá nuestra calculadora gratuita y evitá comprar de más o de menos.">
+    ...
+     <link href="assets/FAV.png" rel="icon">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link href="style.css" rel="stylesheet" />
     <style>
         /* Estilos específicos para la calculadora */
         .calculator-section {
             padding: 120px 0 64px 0;
             min-height: 80vh;
+            padding-inline: 25px; /* <-- AÑADÍ ESTA LÍNEA */
         }
         .calculator-container {
             max-width: 700px;
@@ -20,6 +26,7 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             border-top: 5px solid var(--accent);
+             padding-inline: 25px; /* <-- AÑADÍ ESTA LÍNEA */
         }
         .calculator-title {
             text-align: center;
@@ -96,27 +103,55 @@
     </style>
 </head>
 <body>
-    <header class="main-header" role="banner">
-        <nav class="main-nav container" aria-label="Primaria">
-            <a href="index.html" class="logo" aria-label="Ir al inicio">
-                <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
-            </a>
-            <div class="nav-links" id="nav-links">
-                <a href="index.html#promos">Promociones</a>
-                <a href="https://catalogo.rossomateriales.site">Catálogo</a>
-                <a href="sucursales.html">Sucursales</a>
-                <a href="https://wa.me/5493814146917">Presupuesto</a>
-            </div>
-            <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú">
-                <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </nav>
-    </header>
+<header class="main-header" role="banner">
+    <nav class="main-nav container" aria-label="Primaria">
+      <a href="/index.html" class="logo" aria-label="Ir al inicio">
+        <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+        <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+        <a href="/sucursales"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+        <a href="/nosotros"><i class="fa-solid fa-users"></i> Nosotros</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+          <div class="dropdown-menu">
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
+          </div>
+        </div>
+      </div>
+
+      <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false"
+        aria-label="Abrir menú">
+        <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+
+      <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
+        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+        <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+        <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+        <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+          <div class="dropdown-menu">
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
 
     <main>
         <section class="calculator-section">
             <div class="calculator-container">
-                <h2 class="calculator-title">Calculadora de Pisos y Revestimientos</h2>
+                <h1 class="calculator-title">Calculadora de Pisos y Revestimientos</h1>
                 <p class="calculator-subtitle">Ingresá las medidas para saber cuántas cajas necesitás.</p>
                 
                 <form id="calculator-form" onsubmit="return false;">
@@ -175,5 +210,6 @@
             document.getElementById('result').style.display = 'block';
         }
     </script>
+    <script src="script.js"></script>
 </body>
 </html>

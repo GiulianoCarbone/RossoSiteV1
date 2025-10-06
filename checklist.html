@@ -1,91 +1,233 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Checklist de Proyectos - Rosso Materiales</title>
+    <title>Checklist de Materiales de Construcción por Proyecto | Rosso Materiales</title>
+    <meta name="description" content="¡Que no te falte nada en tu obra! Seleccioná tu proyecto (losa, revoque, baño) y obtené una lista completa de los materiales que necesitás.">
+     <link href="assets/FAV.png" rel="icon">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link href="style.css" rel="stylesheet" />
     <style>
-        .checklist-section { padding: 120px 0 64px 0; }
-        .checklist-container { max-width: 800px; margin: 0 auto; }
-        .checklist-header { text-align: center; margin-bottom: 40px; }
-        .checklist-title { font-size: 2.5rem; font-weight: 800; color: var(--brand); }
-        .checklist-subtitle { font-size: 1.1rem; color: var(--muted); max-width: 60ch; margin: 8px auto 0; }
-        .selector-container { display: flex; gap: 16px; margin-bottom: 40px; }
-        .project-selector { flex-grow: 1; padding: 12px 16px; font-size: 1.1rem; border-radius: 8px; border: 1px solid #d1d5db; }
-        .print-button { padding: 12px 24px; background-color: var(--accent); color: #fff; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; white-space: nowrap; }
-        
-        .checklist-result { display: none; background-color: #fff; padding: 32px; border-radius: var(--radius); box-shadow: var(--shadow); }
-        .checklist-result h3 { font-size: 1.5rem; color: var(--brand); margin-bottom: 24px; }
-        .checklist-list { list-style: none; padding: 0; }
-        .checklist-item { display: flex; align-items: center; font-size: 1.1rem; padding: 12px 0; border-bottom: 1px solid #f3f4f6; }
-        .checklist-item:last-child { border-bottom: none; }
-        .checklist-item input { width: 20px; height: 20px; margin-right: 16px; accent-color: var(--accent); }
-        .checklist-item a { color: var(--brand); text-decoration: underline; font-size: 0.9rem; margin-left: auto; }
+        .checklist-section {
+            padding: 120px 0 64px 0;
+        }
+
+        .checklist-container {
+            max-width: 800px;
+            margin: 0 auto;
+             padding-inline: 25px; /* <-- AÑADÍ ESTA LÍNEA */
+        }
+
+        .checklist-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .checklist-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--brand);
+        }
+
+        .checklist-subtitle {
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 60ch;
+            margin: 8px auto 0;
+        }
+
+        .selector-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .project-selector {
+            flex-grow: 1;
+            padding: 12px 16px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+        }
+
+        .print-button {
+            padding: 12px 24px;
+            background-color: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .checklist-result {
+            display: none;
+            background-color: #fff;
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .checklist-result h3 {
+            font-size: 1.5rem;
+            color: var(--brand);
+            margin-bottom: 24px;
+        }
+
+        .checklist-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item input {
+            width: 20px;
+            height: 20px;
+            margin-right: 16px;
+            accent-color: var(--accent);
+        }
+
+        .checklist-item a {
+            color: var(--brand);
+            text-decoration: underline;
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
     </style>
 </head>
+
 <body>
-    <header class="main-header">
-        <nav class="main-nav container" aria-label="Primaria">
-             <a href="index.html" class="logo" aria-label="Ir al inicio"><img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" /></a>
-            <div class="nav-links" id="nav-links">
-                <a href="index.html#promos">Promociones</a>
-                <a href="https://catalogo.rossomateriales.site">Catálogo</a>
-                <a href="sucursales.html">Sucursales</a>
-                <a href="calculadora.html">Calculadora</a>
-                <a href="checklist.html">Checklist</a> <a href="https://wa.me/5493814146917">Presupuesto</a>
-            </div>
-            <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false" aria-label="Abrir menú">
-                <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </nav>
-    </header>
+   <header class="main-header" role="banner">
+    <nav class="main-nav container" aria-label="Primaria">
+      <a href="/index.html" class="logo" aria-label="Ir al inicio">
+        <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+        <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+        <a href="/sucursales"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+        <a href="/nosotros"><i class="fa-solid fa-users"></i> Nosotros</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+          <div class="dropdown-menu">
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
+          </div>
+        </div>
+      </div>
+
+      <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false"
+        aria-label="Abrir menú">
+        <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+
+      <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
+        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+        <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+        <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+        <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+          <div class="dropdown-menu">
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
 
     <main>
         <section class="checklist-section">
             <div class="checklist-container">
                 <div class="checklist-header">
-                    <h2 class="checklist-title">Checklist de Proyectos</h2>
-                    <p class="checklist-subtitle">Seleccioná tu proyecto y te diremos todo lo que necesitás para empezar con el pie derecho. ¡Que no se te olvide nada!</p>
+                    <h1 class="checklist-title">Checklist de Proyectos</h1>
+                    <p class="checklist-subtitle">
+                        Seleccioná tu proyecto y te diremos todo lo que necesitás para
+                        empezar con el pie derecho. ¡Que no se te olvide nada!
+                    </p>
                 </div>
 
                 <div class="selector-container">
                     <select id="project-selector" class="project-selector" onchange="generateChecklist()">
                         <option value="">-- Elegí tu proyecto --</option>
                         <option value="piso">Instalar un piso cerámico</option>
+                        <option value="losa">Hacer una losa</option>
+                        <option value="revoque">Hacer un revoque grueso y fino</option>
+                        <option value="durlock">Instalar una placa de Durlock</option>
+                        <option value="impermeabilizar">Impermeabilizar el techo</option>
+                        <option value="aberturas">Amurar una puerta o ventana</option>
+                        <option value="parrilla">Hacer un asador</option>
+                        <option value="tanque_agua">Instalar un tanque de agua</option>
+                        <option value="cocina">Hacer una cocina</option>
                         <option value="bano">Renovar un baño</option>
-                        <option value="pintura">Pintar una habitación</option>
+
                         <option value="pared">Levantar una pared de ladrillos</option>
                     </select>
-                    <button class="print-button" onclick="window.print()">Imprimir</button>
+                    <button class="print-button" onclick="window.print()">
+                        Imprimir
+                    </button>
                 </div>
 
                 <div id="checklist-result" class="checklist-result">
                     <h3 id="checklist-title-result"></h3>
-                    <ul id="checklist-list" class="checklist-list">
-                        </ul>
+                    <ul id="checklist-list" class="checklist-list"></ul>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="main-footer">
-       </footer>
+  <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
     <script>
         const projectData = {
             piso: {
                 title: "Materiales para instalar un piso cerámico",
                 items: [
-                    { name: "Pisos o Revestimientos", link: "calculadora.html", linkText: "Calcular cantidad" },
-                    { name: "Pegamento para cerámicos" },
-                    { name: "Pastina (lechada)" },
-                    { name: "Nivel de mano o láser" },
-                    { name: "Llana dentada" },
-                    { name: "Cortadora de cerámicos" },
-                    { name: "Crucetas de separación" }
-                ]
+                    { name: "Pisos o Revestimientos Cerámicos", link: "calculadora.html", linkText: "Calcular cantidad" },
+        { name: "Pegamento para cerámicos (adhesivo)" },
+        { name: "Pastina (junta) del color adecuado" },
+        { name: "Crucetas de separación (del espesor deseado)" },
+        
+        // Preparación de la Superficie (Opcionales según el caso)
+        { name: "Niveladores" },
+        { name: "Impermeabilizante (para baños o zonas húmedas)" },
+        
+        // Herramientas y Equipo
+        { name: "Llana dentada (del tamaño adecuado al cerámico)" },
+        { name: "Baldes para mezclar pegamento y pastina" },
+        { name: "Cortadora de cerámicos (manual o eléctrica)" },
+        { name: "Maza de goma (para asentar las piezas)" },
+        { name: "Nivel de mano o nivel láser" },
+        { name: "Espátula de goma (para aplicar la pastina)" },
+        { name: "Esponja y balde con agua (para limpiar el excedente de pastina)" },
+        { name: "Rodilleras y guantes de trabajo (recomendado)" }
+                ],
             },
             bano: {
                 title: "Materiales para renovar un baño",
@@ -93,24 +235,17 @@
                     { name: "Inodoro y Depósito" },
                     { name: "Vanitory o lavamanos" },
                     { name: "Grifería de ducha y lavamanos" },
-                    { name: "Revestimientos para pared y piso", link: "calculadora.html", linkText: "Calcular" },
+                    {
+                        name: "Revestimientos para pared y piso",
+                        link: "calculadora.html",
+                        linkText: "Calcular",
+                    },
                     { name: "Pegamento impermeable" },
                     { name: "Pastina antihongos" },
-                    { name: "Sellador de silicona para juntas" }
-                ]
+                    { name: "Sellador de silicona para juntas" },
+                ],
             },
-            pintura: {
-                title: "Materiales para pintar una habitación",
-                items: [
-                    { name: "Pintura látex (interior)" },
-                    { name: "Enduido para reparar imperfecciones" },
-                    { name: "Lija fina" },
-                    { name: "Cinta de enmascarar" },
-                    { name: "Nylon o cartón para proteger el piso" },
-                    { name: "Rodillo y bandeja" },
-                    { name: "Pincel para recortes" }
-                ]
-            },
+
             pared: {
                 title: "Materiales para levantar una pared",
                 items: [
@@ -120,42 +255,156 @@
                     { name: "Cal" },
                     { name: "Hidrófugo (capa aisladora)" },
                     { name: "Hierros (si corresponde)" },
-                    { name: "Cuchara de albañil y balde" }
+                    { name: "Cuchara de albañil y balde" },
+                ],
+            },
+
+            cocina: {
+                title: "Materiales para renovar la cocina",
+                items: [
+                    { name: "Mesada (granito, mármol o acero)" },
+                    { name: "Bacha de cocina" },
+                    { name: "Grifería" },
+                    {
+                        name: "Cerámicos o porcelanatos para pared/piso",
+                        link: "calculadora.html",
+                        linkText: "Calcular",
+                    },
+                    { name: "Pegamento y pastina" },
+                    { name: "Muebles bajo mesada y alacenas" },
+                    { name: "Sellador de silicona" },
+                ],
+            },
+            revoque: {
+                title: "Materiales para revoque (grueso y fino)",
+                items: [
+                    { name: "Cemento" },
+                    { name: "Cal" },
+                    { name: "Arena fina (para el revoque fino)" },
+                    { name: "Arena gruesa (para el revoque grueso)" },
+                    { name: "Hidrófugo (Ceresita) para la capa aisladora" },
+                    { name: "Cuchara de albañil" },
+                    { name: "Fratacho y/o fieltro" },
+                    { name: "Regla de aluminio" },
+                    { name: "Baldes y carretilla" },
+                ],
+            },
+            losa: {
+                title: "Materiales para hacer una losa",
+                items: [
+                    { name: "Cemento" },
+                    { name: "Arena" },
+                    { name: "Piedra partida" },
+                    { name: "Malla de hierro" },
+                    { name: "Film de polietileno (aislante de humedad)" },
+                    { name: "Tablas para encofrado" },
+                    { name: "Clavos y alambre de fardo" },
+                    { name: "Separadores para la malla de hierro" },
+                    { name: "Hormigonera (alquiler o compra)" },
+                ],
+            },
+            durlock: {
+                title: "Materiales para construir una pared de Durlock",
+                items: [
+                    { name: "Placas de yeso (estándar, antihumedad o ignífugas)" },
+                    { name: "Soleras (perfiles U para piso y techo)" },
+                    { name: "Montantes (perfiles C verticales)" },
+                    { name: "Tornillos T1 (aguja) para unir perfiles" },
+                    { name: "Tornillos T2 (mecha) para fijar placas" },
+                    { name: "Fijaciones (tornillos y tarugos) para piso y paredes" },
+                    { name: "Cinta de papel para juntas" },
+                    { name: "Masilla para juntas" },
+                    { name: "Aislante acústico/térmico (lana de vidrio, opcional)" },
+                ],
+            },
+            impermeabilizar: {
+                title: "Materiales para impermeabilizar un techo",
+                items: [
+                    {
+                        name: "Membrana líquida (pintura para techos) o membrana asfáltica",
+                    },
+                    { name: "Venda o manta elástica (para fisuras)" },
+                    { name: "Sellador de poliuretano para grietas grandes" },
+                    { name: "Imprimación asfáltica (si usas membrana en rollo)" },
+                    { name: "Cepillo de alambre o hidrolavadora para limpiar" },
+                    { name: "Rodillo de pelo largo o pinceleta" },
+                    { name: "Soplete (si usas membrana asfáltica)" },
+                ],
+            },
+            aberturas: {
+                title: "Materiales para amurar una puerta o ventana",
+                items: [
+                    { name: "Puerta o ventana (marco incluido)" },
+                    { name: "Cemento y arena (para el mortero)" },
+                    { name: "Grampas de amure o tornillos y tarugos (fijación en seco)", },
+                    { name: "Nivel de burbuja" },
+                    { name: "Plomada y nivel de mano" },
+                    { name: "Espuma de poliuretano expandido (para rellenar y sellar)", },
+                    { name: "Cuchara de albañil y balde" },
+                    { name: "Maderas o cuñas para aplomar y nivelar" },
+                ],
+            },
+            parrilla: {
+                title: "Materiales para construir una parrilla de ladrillos",
+                items: [
+                    { name: "Ladrillos comunes" },
+                    { name: "Ladrillos refractarios (para el piso y la base del fuego)" },
+                    { name: "Mortero refractario (para los ladrillos refractarios)" },
+                    { name: "Cemento, cal y arena (para el mortero común)" },
+                    { name: "Herrajes para parrilla (mecanismo y rejilla)" },
+                    { name: "Hierros (para la losa o dintel)" },
+                    { name: "Nivel, plomada y cuchara de albañil" },
+                    { name: "Maderas para el encofrado de la losa" }
+                ]
+            },
+            tanque_agua: {
+                title: "Materiales para instalar un tanque de agua",
+                items: [
+                    { name: "Tanque de agua (bicapa o tricapa)" },
+                    { name: "Base para tanque (si es necesaria)" },
+                    { name: "Flotante con su varilla y boya" },
+                    { name: "Colector/Salida de tanque (brida)" },
+                    { name: "Caños de termofusión o roscados para la conexión" },
+                    { name: "Válvula de retención y llaves de paso" },
+                    { name: "Filtro de sedimentos para la entrada de agua" },
+                    { name: "Sellador de teflón o sellarroscas" }
                 ]
             }
         };
 
         function generateChecklist() {
-            const selector = document.getElementById('project-selector');
+            const selector = document.getElementById("project-selector");
             const selectedProject = selector.value;
-            const resultContainer = document.getElementById('checklist-result');
-            const titleEl = document.getElementById('checklist-title-result');
-            const listEl = document.getElementById('checklist-list');
+            const resultContainer = document.getElementById("checklist-result");
+            const titleEl = document.getElementById("checklist-title-result");
+            const listEl = document.getElementById("checklist-list");
 
             if (!selectedProject) {
-                resultContainer.style.display = 'none';
+                resultContainer.style.display = "none";
                 return;
             }
 
             const data = projectData[selectedProject];
             titleEl.innerText = data.title;
-            listEl.innerHTML = ''; // Limpiar la lista anterior
+            listEl.innerHTML = ""; // Limpiar la lista anterior
 
-            data.items.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'checklist-item';
-                
+            data.items.forEach((item) => {
+                const li = document.createElement("li");
+                li.className = "checklist-item";
+
                 let content = `<input type="checkbox"><label>${item.name}</label>`;
                 if (item.link) {
                     content += `<a href="${item.link}">${item.linkText}</a>`;
                 }
-                
+
                 li.innerHTML = content;
                 listEl.appendChild(li);
             });
 
-            resultContainer.style.display = 'block';
+            resultContainer.style.display = "block";
         }
     </script>
+    <script src="script.js"></script>
 </body>
+
 </html>

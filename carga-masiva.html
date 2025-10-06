@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Vendedores</title>
+    <link href="assets/FAV.png" rel="icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body { font-family: "Inter", sans-serif; }
+        /* Style for the details summary arrow */
+        summary::marker {
+            display: none;
+            content: "";
+        }
+        details[open] .details-arrow {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 py-12 px-4">
+
+    <div class="w-full max-w-4xl mx-auto space-y-12">
+        
+        <!-- SECCIÓN DE CARGA MASIVA -->
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <div class="flex flex-col items-center">
+                <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales Logo" class="w-48 mb-4">
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Carga Masiva de Vendedores</h1>
+                <p class="text-gray-600 text-center mb-6">Pegá la lista de vendedores en formato JSON y hacé clic en "Cargar Vendedores".</p>
+            </div>
+
+            <div class="mb-4">
+                <label for="vendedores-json" class="block text-sm font-medium text-gray-700 mb-2">
+                    Datos de Vendedores (formato JSON):
+                </label>
+                <textarea id="vendedores-json" rows="10" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder='[
+    {
+        "nombre": "Juan Perez",
+        "dni": "12345678"
+    },
+    {
+        "nombre": "Maria Garcia",
+        "dni": "87654321"
+    }
+]'></textarea>
+                <p class="text-xs text-gray-500 mt-1">Asegurate de que el formato sea exactamente como en el ejemplo.</p>
+            </div>
+
+            <button id="upload-button" class="w-full bg-orange-600 text-white font-bold py-3 px-4 rounded-md hover:bg-orange-700 transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-upload"></i>
+                Cargar Vendedores a la Base de Datos
+            </button>
+
+            <div id="status" class="mt-6 text-sm text-gray-700 bg-gray-50 rounded-md p-4 max-h-48 overflow-y-auto">
+                <p>Esperando datos para cargar...</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE GESTIÓN DE VENDEDORES -->
+        <div class="bg-white rounded-xl shadow-lg p-8">
+             <details>
+                <summary class="text-2xl font-bold text-gray-800 text-center cursor-pointer list-none">
+                    <div class="flex items-center justify-center hover:text-orange-600">
+                        <span>Vendedores Actuales</span>
+                        <svg class="w-5 h-5 ml-2 transition-transform transform details-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                </summary>
+                <div id="vendedores-list" class="space-y-3 mt-6">
+                    <p class="text-center text-gray-500">Cargando vendedores...</p>
+                </div>
+            </details>
+        </div>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+            authDomain: "backend-panel-vendedores.firebaseapp.com",
+            projectId: "backend-panel-vendedores",
+            storageBucket: "backend-panel-vendedores.firebasestorage.app",
+            messagingSenderId: "24873830395",
+            appId: "1:24873830395:web:ea6749407f991ee8226d5e",
+            measurementId: "G-E4Z0Y849KF"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        const vendedoresListDiv = document.getElementById('vendedores-list');
+        const statusDiv = document.getElementById('status');
+        const uploadButton = document.getElementById('upload-button');
+
+        // --- FUNCIÓN PARA MOSTRAR VENDEDORES ---
+        const displayVendedores = async () => {
+            vendedoresListDiv.innerHTML = '<p class="text-center text-gray-500">Cargando vendedores...</p>';
+            try {
+                const snapshot = await db.collection('vendedores').orderBy('nombre').get();
+                if (snapshot.empty) {
+                    vendedoresListDiv.innerHTML = '<p class="text-center text-gray-500">No hay vendedores cargados.</p>';
+                    return;
+                }
+                
+                vendedoresListDiv.innerHTML = ''; // Limpiar antes de llenar
+                snapshot.forEach(doc => {
+                    const vendedor = doc.data();
+                    const vendedorEl = document.createElement('div');
+                    vendedorEl.className = 'bg-gray-50 p-3 rounded-md border';
+                    vendedorEl.dataset.id = doc.id;
+
+                    vendedorEl.innerHTML = `
+                        <!-- View Mode -->
+                        <div class="view-mode flex items-center justify-between">
+                            <div>
+                                <p class="font-semibold text-gray-800">${vendedor.nombre}</p>
+                                <p class="text-sm text-gray-500">DNI: ${vendedor.dni}</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button class="edit-btn text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-100" title="Editar">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+                                <button class="delete-btn text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-100" title="Eliminar">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Edit Mode (Hidden by default) -->
+                        <div class="edit-mode hidden space-y-2 mt-2">
+                            <input type="text" value="${vendedor.nombre}" class="edit-nombre w-full p-2 border border-gray-300 rounded-md" placeholder="Nombre completo">
+                            <input type="text" value="${vendedor.dni}" class="edit-dni w-full p-2 border border-gray-300 rounded-md" placeholder="DNI">
+                            <div class="flex justify-end gap-2 mt-2">
+                                <button class="cancel-btn bg-gray-200 text-gray-700 font-semibold py-1 px-3 rounded-md hover:bg-gray-300">Cancelar</button>
+                                <button class="save-btn bg-green-500 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-600">Guardar</button>
+                            </div>
+                        </div>
+                    `;
+                    vendedoresListDiv.appendChild(vendedorEl);
+                });
+
+            } catch (error) {
+                vendedoresListDiv.innerHTML = '<p class="text-center text-red-500">Error al cargar los vendedores.</p>';
+                console.error("Error fetching vendedores: ", error);
+            }
+        };
+
+        // --- DELEGACIÓN DE EVENTOS PARA EDITAR Y ELIMINAR ---
+        vendedoresListDiv.addEventListener('click', async (e) => {
+            const vendedorItem = e.target.closest('[data-id]');
+            if (!vendedorItem) return;
+            
+            const docId = vendedorItem.dataset.id;
+            const viewMode = vendedorItem.querySelector('.view-mode');
+            const editMode = vendedorItem.querySelector('.edit-mode');
+
+            // Handle Delete
+            if (e.target.closest('.delete-btn')) {
+                if (confirm('¿Estás seguro de que querés eliminar a este vendedor?')) {
+                    try {
+                        await db.collection('vendedores').doc(docId).delete();
+                        displayVendedores(); // Refrescar la lista
+                    } catch (error) {
+                        alert('Error al eliminar el vendedor.');
+                        console.error("Error deleting document: ", error);
+                    }
+                }
+            }
+
+            // Handle Edit
+            if (e.target.closest('.edit-btn')) {
+                viewMode.classList.add('hidden');
+                editMode.classList.remove('hidden');
+            }
+
+            // Handle Cancel
+            if (e.target.closest('.cancel-btn')) {
+                viewMode.classList.remove('hidden');
+                editMode.classList.add('hidden');
+            }
+
+            // Handle Save
+            if (e.target.closest('.save-btn')) {
+                const newNombre = vendedorItem.querySelector('.edit-nombre').value.trim();
+                const newDni = vendedorItem.querySelector('.edit-dni').value.trim();
+
+                if (!newNombre || !newDni) {
+                    alert('El nombre y el DNI no pueden estar vacíos.');
+                    return;
+                }
+
+                const saveButton = e.target.closest('.save-btn');
+                saveButton.disabled = true;
+                saveButton.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i>';
+
+                try {
+                    await db.collection('vendedores').doc(docId).update({
+                        nombre: newNombre,
+                        dni: newDni
+                    });
+                    displayVendedores(); // Refresh the list
+                } catch (error) {
+                    alert('Error al guardar los cambios.');
+                    console.error("Error updating document: ", error);
+                    saveButton.disabled = false;
+                    saveButton.textContent = 'Guardar';
+                }
+            }
+        });
+
+
+        // --- LÓGICA DE CARGA MASIVA ---
+        uploadButton.addEventListener('click', async () => {
+            const jsonText = document.getElementById('vendedores-json').value;
+            
+            if (!jsonText) {
+                statusDiv.innerHTML = '<p class="text-red-600 font-semibold">El campo de datos está vacío.</p>';
+                return;
+            }
+
+            let vendedores;
+            try {
+                vendedores = JSON.parse(jsonText);
+                if (!Array.isArray(vendedores)) {
+                    throw new Error("El JSON debe ser un array (una lista) de vendedores.");
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<p class="text-red-600 font-semibold">Error en el formato JSON:</p><p class="text-red-500">${error.message}</p>`;
+                return;
+            }
+
+            uploadButton.disabled = true;
+            uploadButton.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Cargando...';
+            statusDiv.innerHTML = '';
+
+            let successCount = 0;
+            let errorCount = 0;
+
+            for (const vendedor of vendedores) {
+                if (!vendedor.nombre || !vendedor.dni) {
+                    statusDiv.innerHTML += `<p class="text-red-500">Saltando registro inválido: ${JSON.stringify(vendedor)}</p>`;
+                    errorCount++;
+                    continue;
+                }
+
+                try {
+                    // Evitar duplicados por DNI
+                    const existing = await db.collection('vendedores').where('dni', '==', vendedor.dni).get();
+                    if (!existing.empty) {
+                        statusDiv.innerHTML += `<p class="text-yellow-600">! Vendedor con DNI ${vendedor.dni} ya existe. Saltando.</p>`;
+                        errorCount++;
+                        continue;
+                    }
+
+                    await db.collection('vendedores').add({
+                        nombre: vendedor.nombre,
+                        dni: vendedor.dni
+                    });
+                    statusDiv.innerHTML += `<p class="text-green-600">✓ Vendedor "${vendedor.nombre}" cargado con éxito.</p>`;
+                    successCount++;
+                } catch (error) {
+                    statusDiv.innerHTML += `<p class="text-red-500">✗ Error al cargar a "${vendedor.nombre}": ${error.message}</p>`;
+                    errorCount++;
+                }
+            }
+
+            statusDiv.innerHTML += `<hr class="my-2"><p class="font-bold">Proceso finalizado. ${successCount} cargados, ${errorCount} errores.</p>`;
+            uploadButton.disabled = false;
+            uploadButton.innerHTML = '<i class="fa-solid fa-upload"></i> Cargar Vendedores a la Base de Datos';
+            
+            displayVendedores();
+            document.getElementById('vendedores-json').value = '';
+        });
+
+        // --- CARGA INICIAL DE VENDEDORES ---
+        document.addEventListener('DOMContentLoaded', displayVendedores);
+    </script>
+</body>
+</html>
+

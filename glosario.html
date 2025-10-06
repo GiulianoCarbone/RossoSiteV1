@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Enciclopedia de Construcción - Rosso Materiales</title>
+ <title>Glosario de Construcción: ¿Qué es Revoque, Losa y Más? - Rosso Materiales</title>
+    <meta name="description" content="¿No sabés qué es una carpeta, un contrapiso o una viga? Nuestro glosario de construcción te explica los términos más importantes de una obra de forma fácil y clara.">
+     <link href="assets/FAV.png" rel="icon">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link href="style.css" rel="stylesheet" />
     <style>
         .glossary-section { padding: 120px 0 64px 0; }
-        .glossary-container { max-width: 900px; margin: 0 auto; padding-inline: 25px; /* <-- AÑADE ESTA LÍNEA */}
+        .glossary-container { max-width: 900px; margin: 0 auto; padding-inline: 25px; }
         .glossary-header { text-align: center; margin-bottom: 40px; }
         .glossary-title { font-size: 2.5rem; font-weight: 800; color: var(--brand); }
         .glossary-subtitle { font-size: 1.1rem; color: var(--muted); max-width: 60ch; margin: 8px auto 0; }
@@ -37,40 +41,119 @@
     </style>
 </head>
 <body>
-    <header class="main-header"> </header>
+   <header class="main-header" role="banner">
+    <nav class="main-nav container" aria-label="Primaria">
+      <a href="index.html" class="logo" aria-label="Ir al inicio">
+        <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+        <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+        <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+        <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+          <div class="dropdown-menu">
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
+          </div>
+        </div>
+      </div>
+
+      <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false"
+        aria-label="Abrir menú">
+        <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+
+      <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
+        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+        <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+        <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+        <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+          <div class="dropdown-menu">
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
 
     <main>
         <section class="glossary-section">
             <div class="glossary-container">
                 <div class="glossary-header">
-                    <h2 class="glossary-title">Enciclopedia de Construcción</h2>
+                    <h1 class="glossary-title">Enciclopedia de Construcción</h1>
                     <p class="glossary-subtitle">Navegá, buscá y aprendé. La guía definitiva para entender cada etapa de tu obra.</p>
                 </div>
-
                 <div class="glossary-controls">
                     <input type="text" id="search-bar" class="search-bar" placeholder="Buscá un término (ej: 'revoque')">
-                    <nav class="filter-nav" id="category-filters">
-                        </nav>
+                    <nav class="filter-nav" id="category-filters"></nav>
                 </div>
-
-                <dl id="glossary-list">
-                    </dl>
+                <dl id="glossary-list"></dl>
             </div>
         </section>
     </main>
 
-    <footer class="main-footer"> </footer>
+<footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Volver arriba">
+    <i class="fa-solid fa-arrow-up"></i>
+  </a>
 
     <script>
         const terms = [
-            { id: 'aditivo', term: 'Aditivo', definition: 'Sustancia que se añade en pequeñas cantidades a materiales como el hormigón o el mortero para modificar sus propiedades, como el tiempo de secado (fraguado), la impermeabilidad o la resistencia.', category: 'Obra Gruesa', image: 'https://i.ibb.co/3cH3N3S/aditivo.jpg', related: ['fraguado', 'hidrofugo'] },
-            { id: 'carpeta', term: 'Carpeta', definition: 'Capa de mortero de cemento y arena que se aplica sobre el contrapiso para crear una superficie perfectamente lisa, nivelada y lista para recibir el revestimiento final.', category: 'Terminaciones', image: 'https://i.ibb.co/L8yP5y8/ceramicos.jpg', related: ['contrapiso', 'revoque'] },
-            { id: 'contrapiso', term: 'Contrapiso', definition: 'Es la primera capa sólida que se coloca sobre el terreno. Se hace con hormigón pobre y su función es nivelar el suelo y servir de base para la carpeta y el piso final.', category: 'Obra Gruesa', image: 'https://i.ibb.co/mH0JzTg/obra-gruesa.jpg', related: ['carpeta', 'viga'] },
-            { id: 'fraguado', term: 'Fraguado', definition: 'Proceso químico de endurecimiento de materiales como el cemento o yeso tras ser mezclados con agua. Es crucial para alcanzar la resistencia final del material.', category: 'Obra Gruesa', image: 'https://i.ibb.co/yQn7L2j/cemento.jpg', related: ['aditivo'] },
-            { id: 'hidrofugo', term: 'Hidrófugo', definition: 'Aditivo impermeabilizante que se mezcla con el mortero para crear una barrera contra la humedad. Es fundamental en cimientos y paredes.', category: 'Obra Gruesa', image: 'https://i.ibb.co/WcWhV5G/hidrofugo.jpg', related: ['aditivo', 'revoque'] },
-            { id: 'pastina', term: 'Pastina', definition: 'Mortero fino y con color que se utiliza para rellenar las juntas entre las piezas de cerámicos o porcelanatos, dándoles una terminación estética y protegiéndolas.', category: 'Terminaciones', image: 'https://i.ibb.co/dJtB1Pb/pastina.jpg', related: ['carpeta'] },
-            { id: 'revoque', term: 'Revoque', definition: 'Revestimiento de mortero que se aplica a las paredes. Se divide en "grueso" para enderezar, y "fino" para dar la terminación lisa final antes de la pintura.', category: 'Terminaciones', image: 'https://i.ibb.co/K2C94k9/revoque.jpg', related: ['hidrofugo', 'carpeta'] },
-            { id: 'viga', term: 'Viga', definition: 'Elemento estructural horizontal, de hormigón armado o acero, diseñado para soportar cargas y transmitirlas a los apoyos verticales como columnas o muros.', category: 'Obra Gruesa', image: 'https://i.ibb.co/L1j63zX/viga.jpg', related: ['contrapiso'] }
+            // Listado completo de términos anteriores
+            { id: 'aditivo', term: 'Aditivo', definition: 'Sustancia que se añade en pequeñas cantidades a materiales como el hormigón o el mortero para modificar sus propiedades, como el tiempo de secado (fraguado), la impermeabilidad o la resistencia.', category: 'Obra Gruesa', image: 'https://emcisa.com.ar/wp-content/uploads/2021/08/P156837.jpg', related: ['fraguado', 'hidrofugo'] },
+            { id: 'carpeta', term: 'Carpeta', definition: 'Capa de mortero de cemento y arena que se aplica sobre el contrapiso para crear una superficie perfectamente lisa, nivelada y lista para recibir el revestimiento final.', category: 'Terminaciones', image: 'https://http2.mlstatic.com/D_NQ_NP_733168-MLA29797940790_032019-O.webp', related: ['contrapiso', 'revoque'] },
+            { id: 'contrapiso', term: 'Contrapiso', definition: 'Es la primera capa sólida que se coloca sobre el terreno. Se hace con hormigón pobre y su función es nivelar el suelo y servir de base para la carpeta y el piso final.', category: 'Obra Gruesa', image: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9f7ip6Jio-7GPu6Q64QIGzU4_KhEsfI73Lsvcgb3mMsVs4WKOcJlzuvEptimjubLP-If45uGR354YBQNj2vvzvIinLzFdxwLI-Q_01paLtzHfJgm3S1IKUpg2OHX8LdsRsvnxQ0JAxB0/s1600/Gr%25C3%25A1fico1.jpg', related: ['carpeta', 'viga', 'hormigon'] },
+            { id: 'fraguado', term: 'Fraguado', definition: 'Proceso químico de endurecimiento de materiales como el cemento o yeso tras ser mezclados con agua. Es crucial para alcanzar la resistencia final del material.', category: 'Obra Gruesa', image: 'https://cementostorices.com/assets/images/jpg/construccion/fraguados/fraguado-del-concreto_01.jpg', related: ['aditivo', 'hormigon'] },
+            { id: 'hidrofugo', term: 'Hidrófugo', definition: 'Aditivo impermeabilizante que se mezcla con el mortero para crear una barrera contra la humedad. Es fundamental en cimientos y paredes.', category: 'Obra Gruesa', image: 'https://www.ar.weber/files/ar/styles/768x768_resize/public/pictures/2024-03/weber_ceresita_x_10kg_7C8A0857EA5A4A84BD509807105FF538.jpg?itok=KlTS1Bs5', related: ['aditivo', 'revoque', 'membrana'] },
+            { id: 'pastina', term: 'Pastina', definition: 'Mortero fino y con color que se utiliza para rellenar las juntas entre las piezas de cerámicos o porcelanatos, dándoles una terminación estética y protegiéndolas.', category: 'Terminaciones', image: 'https://www.ar.weber/files/ar/styles/768x768_resize/public/pictures/2024-03/pack-weber-classic-2kg_798A79DECA384DD6AEB7FCA76BA26E8C.jpg?itok=_6OfQS67', related: ['carpeta', 'zocalo'] },
+            { id: 'revoque', term: 'Revoque', definition: 'Revestimiento de mortero que se aplica a las paredes. Se divide en "grueso" para enderezar, y "fino" para dar la terminación lisa final antes de la pintura.', category: 'Terminaciones', image: 'https://www.mndelgolfo.com/blog/wp-content/uploads/2021/12/Que-es-y-como-se-prepara-un-revoque-grueso1.jpg', related: ['hidrofugo', 'carpeta', 'enduido'] },
+            { id: 'viga', term: 'Viga', definition: 'Elemento estructural horizontal, de hormigón armado o acero, diseñado para soportar cargas y transmitirlas a los apoyos verticales como columnas o muros.', category: 'Obra Gruesa', image: 'https://i.ytimg.com/vi/NvscUmKCqtk/maxresdefault.jpg', related: ['contrapiso', 'encadenado', 'losa'] },
+            { id: 'encadenado', term: 'Encadenado', definition: 'Estructura de hormigón armado (vigas o columnas) que se construye en los muros para "atar" la construcción, dándole mayor rigidez y resistencia.', category: 'Obra Gruesa', image: 'https://d3c8f33475.cbaul-cdnwnd.com/5d631eaf094a36d242e5a5881560ccd9/system_preview_detail_200000047-4fac850a59-public/columnas-de-hierro-encadenados-zapatas-pilotes-10-8-6-4_MLA-O-61601135_4661.jpg', related: ['viga', 'losa', 'malla'] },
+            { id: 'losa', term: 'Losa', definition: 'Estructura plana horizontal de hormigón armado que conforma los techos y entrepisos de una edificación. Reparte las cargas hacia las vigas y columnas.', category: 'Obra Gruesa', image: 'https://aceroscrea.com/wp-content/uploads/2023/07/emparrillado-para-construccion-de-losa-maciza-de-concreto-armado.jpg', related: ['viga', 'hormigon', 'malla'] },
+            { id: 'hormigon', term: 'Hormigón', definition: 'Material de construcción formado por la mezcla de cemento, arena, piedra partida (grava) y agua. Al fraguar, adquiere una gran resistencia y durabilidad.', category: 'Obra Gruesa', image: 'https://www.byond.es/cmsAdmin/uploads/o_1gmti7pq68gr16ogck11msbtqia.png', related: ['aditivo', 'fraguado', 'contrapiso'] },
+            { id: 'malla', term: 'Malla Sima', definition: 'Red de barras de acero soldadas entre sí que se utiliza como armadura en losas, plateas y contrapisos para controlar la fisuración y aumentar la resistencia.', category: 'Obra Gruesa', image: 'https://merlinosrl.vtexassets.com/arquivos/ids/164731/Malla-Sima-Q131-Acerbrag-15x15cm-Hierro-5mm-3x240mt-1.jpg?v=637684611605100000', related: ['contrapiso', 'losa', 'encadenado'] },
+            { id: 'enduido', term: 'Enduido', definition: 'Pasta similar a la masilla que se aplica en capas finas sobre el revoque para corregir pequeñas imperfecciones y lograr una superficie perfectamente lisa antes de pintar.', category: 'Terminaciones', image: 'https://servidor03.arqmat.com.ar/2544/enduido-interior-20-lts-durlock-arqmat-concordia.jpg', related: ['revoque', 'llana', 'durlock'] },
+            { id: 'durlock', term: 'Durlock / Placa de Yeso', definition: 'Sistema de construcción en seco que utiliza placas de yeso atornilladas a una estructura de perfiles metálicos. Ideal para crear paredes divisorias y cielorrasos.', category: 'Terminaciones', image: 'https://santiano.com.ar/files/2018-10/placa-yeso-novoplack.jpg?46767b19fa', related: ['solera', 'montante', 'enduido', 'lana_vidrio'] },
+            { id: 'zocalo', term: 'Zócalo', definition: 'Moldura o listón que se coloca en la base de las paredes, en la unión con el piso. Sirve para proteger la pared de golpes y para dar una terminación estética.', category: 'Terminaciones', image: 'https://syriaceramicos.com.ar/wp-content/uploads/2022/08/Atrim-Zocalo-2340-Eps-Curves-Blanco-80mmx25m.png', related: ['carpeta', 'pastina'] },
+            { id: 'solera', term: 'Solera', definition: 'Perfil de acero galvanizado en forma de "U" que se fija al piso y al techo para armar la estructura de una pared de Durlock. Sirve de guía para los montantes.', category: 'Perfiles y Herramientas', image: 'https://www.axima.com.ar/storage/2019/12/Perfil-Solera1.jpg', related: ['montante', 'durlock'] },
+            { id: 'montante', term: 'Montante', definition: 'Perfil de acero galvanizado en forma de "C" que se coloca verticalmente dentro de las soleras para formar el esqueleto de una pared de Durlock.', category: 'Perfiles y Herramientas', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShOUkIrZd72zT7tqDX9Z_LfOTiKBYb6LgbNA&s', related: ['solera', 'durlock'] },
+            { id: 'llana', term: 'Llana', definition: 'Herramienta manual con una base plana y un mango. Se utiliza para alisar, extender o aplicar materiales como el revoque, el enduido o el pegamento.', category: 'Perfiles y Herramientas', image: 'https://http2.mlstatic.com/D_NQ_NP_726372-MLU75118226233_032024-O.webp', related: ['revoque', 'carpeta', 'enduido', 'fratacho'] },
+            { id: 'fratacho', term: 'Fratacho', definition: 'Herramienta similar a la llana, pero generalmente de madera o plástico. Se usa para dar la primera terminación (alisado rústico) al revoque grueso.', category: 'Perfiles y Herramientas', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTps_0vlU8NJvcyhezEJeZ24KB5ZMRuswB4vQ&s', related: ['revoque', 'llana'] },
+            { id: 'ladrillo_hueco', term: 'Ladrillo Hueco', definition: 'Ladrillo cerámico con perforaciones horizontales que lo hacen más liviano y mejoran su capacidad de aislación térmica y acústica. Muy usado en tabiquería.', category: 'Materiales y Aislaciones', image: 'https://grupocanarias.com.ar/wp-content/uploads/2021/02/H129T.jpg', related: ['ladrillo_comun', 'dintel'] },
+            { id: 'ladrillo_comun', term: 'Ladrillo Común', definition: 'Bloque macizo de arcilla cocida, de forma rectangular. Es el ladrillo tradicional, utilizado para construir muros portantes y paredes robustas.', category: 'Materiales y Aislaciones', image: 'https://merlinosrl.vtexassets.com/arquivos/ids/167564/LAD-COMUN.jpg?v=637838145264600000', related: ['ladrillo_hueco', 'revoque'] },
+            { id: 'membrana', term: 'Membrana', definition: 'Capa o lámina impermeable, generalmente asfáltica o acrílica, que se aplica en techos, terrazas y cimientos para proteger la estructura de filtraciones de agua.', category: 'Materiales y Aislaciones', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFjIo_aFakBWdI3XvXfL40P1bPmfaV_QuGvQ&s', related: ['hidrofugo', 'sellador'] },
+            { id: 'lana_vidrio', term: 'Lana de Vidrio', definition: 'Material aislante fabricado con finas fibras de vidrio. Se presenta en rollos o paneles y se usa para la aislación térmica y acústica en techos, muros y cielorrasos.', category: 'Materiales y Aislaciones', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnvoeTatn0_mvYJJzW4QI3S7vb-wBMZDkFFw&s', related: ['durlock', 'telgopor'] },
+            { id: 'telgopor', term: 'Telgopor (EPS)', definition: 'Nombre comercial del Poliestireno Expandido (EPS). Es una espuma plástica muy liviana, usada como aislante térmico en contrapisos, losas y muros.', category: 'Materiales y Aislaciones', image: 'https://acdn-us.mitiendanube.com/stores/004/232/142/products/telgopor-cee7133d3ec2fa984717375496513272-1024-1024.jpg', related: ['lana_vidrio', 'contrapiso'] },
+            { id: 'zapata', term: 'Zapata', definition: 'Tipo de cimentación superficial de hormigón armado, ubicada bajo las columnas. Su función es ensanchar la base para transmitir la carga de la estructura al terreno.', category: 'Obra Gruesa', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbocFQB2O7lffocUZQZMvbRHw_G9Otxb59TQ&s', related: ['viga', 'encadenado'] },
+            { id: 'dintel', term: 'Dintel', definition: 'Elemento estructural, generalmente una viga pequeña de hormigón, que se coloca horizontalmente sobre el hueco de una puerta o ventana para soportar el peso del muro superior.', category: 'Obra Gruesa', image: 'https://thumbs.dreamstime.com/b/dintel-concreto-dintel-concreto-de-la-ventana-o-de-la-puerta-en-la-construcci%C3%B3n-inacabada-de-la-casa-del-ladrillo-82866620.jpg', related: ['viga', 'ladrillo_hueco'] },
+            { id: 'sellador', term: 'Sellador', definition: 'Material pastoso (silicona, poliuretano, etc.) que se aplica para rellenar y sellar juntas o grietas, impidiendo el paso de agua o aire. Es elástico y flexible.', category: 'Terminaciones', image: 'https://dcdn-us.mitiendanube.com/stores/001/782/910/products/pack-weber-flexpu-300ml_051c2b88abad4f89ab5cd584868270c31-7b68feaf8f2e68790516313927108507-640-0.jpg', related: ['pastina', 'membrana'] },
+
+            // --- TANDA 4: NUEVOS TÉRMINOS INTEGRADOS ---
+
+            // Instalaciones y Techos (Nueva Categoría)
+            { id: 'termofusion', term: 'Termofusión', definition: 'Sistema para unir caños de agua o gas, donde se calientan las piezas con una herramienta (termofusora) hasta que el plástico se fusiona, creando una unión única y segura.', category: 'Instalaciones y Techos', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2MR3qPqZUmYhXp_UIjEfNaMuhvmxG8FzCvA&s', related: ['llave_paso'] },
+            { id: 'llave_paso', term: 'Llave de Paso', definition: 'Válvula manual que se instala en las cañerías para permitir o cortar completamente el flujo de un fluido (agua o gas). Esencial para reparaciones y seguridad.', category: 'Instalaciones y Techos', image: 'https://http2.mlstatic.com/D_NQ_NP_865595-MLA50745100623_072022-O.webp', related: ['termofusion'] },
+            { id: 'caja_luz', term: 'Caja de Luz', definition: 'Caja metálica o plástica que se amura en la pared o techo para alojar las conexiones eléctricas, como tomas de corriente, interruptores o portalámparas.', category: 'Instalaciones y Techos', image: 'https://www.electromisiones.com.ar/40051-home_default/caja_rectangular_sistelectric_embutir_plastica_10x5x43cm.jpg', related: ['cano_corrugado'] },
+            { id: 'cano_corrugado', term: 'Caño Corrugado', definition: 'Tubo flexible de plástico, generalmente naranja, que se instala dentro de las paredes para proteger y guiar los cables de la instalación eléctrica.', category: 'Instalaciones y Techos', image: 'https://celtasrl.com.ar/wp-content/uploads/2023/11/CANOS-CORRUGADOS.jpg', related: ['caja_luz'] },
+            { id: 'tirante', term: 'Tirante', definition: 'Viga de madera o metal que forma parte de la estructura principal de un techo inclinado. Se apoya en las paredes o vigas principales y soporta el machimbre y la cubierta.', category: 'Instalaciones y Techos', image: 'https://http2.mlstatic.com/D_816929-MLA80274280051_102024-C.jpg', related: ['machimbre', 'cabreada'] },
+            { id: 'machimbre', term: 'Machimbre', definition: 'Sistema de tablas de madera cepillada con encastres en sus cantos (macho y hembra) que permiten unirlas firmemente. Se usa para cielorrasos, pisos o revestimientos.', category: 'Terminaciones', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM-clzKQXG67G98cCmz_DMKc64WOw-iRH_jw&s', related: ['tirante', 'zocalo'] },
+            { id: 'cabreada', term: 'Cabreada / Cabriada', definition: 'Estructura reticular con forma triangular, construida con madera o metal. Se usa para salvar grandes luces en techos, optimizando el uso de material y soportando el peso de la cubierta.', category: 'Instalaciones y Techos', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpG0S93EDgMRnIplxrdwBVEeqU005qwlZOxg&s', related: ['tirante', 'viga'] },
+            { id: 'zingueria', term: 'Zinguería', definition: 'Conjunto de elementos de chapa galvanizada (canaletas, babetas, cumbreras) que se instalan en los techos para conducir el agua de lluvia y evitar filtraciones.', category: 'Instalaciones y Techos', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7vhKFULMwOQefIUqtNxQN0clmC-kkj8k-SA&s', related: ['membrana', 'sellador'] }
         ];
 
         const glossaryList = document.getElementById('glossary-list');
@@ -95,6 +178,8 @@
                 return;
             }
 
+            filteredTerms.sort((a, b) => a.term.localeCompare(b.term));
+
             const grouped = filteredTerms.reduce((groups, term) => {
                 const letter = term.term[0].toUpperCase();
                 groups[letter] = groups[letter] || [];
@@ -110,7 +195,10 @@
                 grouped[letter].forEach(term => {
                     const relatedLinks = term.related.map(id => {
                         const relatedTerm = getTermById(id);
-                        return `<a href="#${relatedTerm.id}">${relatedTerm.term}</a>`;
+                        if (relatedTerm) { 
+                           return `<a href="#${relatedTerm.id}">${relatedTerm.term}</a>`;
+                        }
+                        return '';
                     }).join(', ');
 
                     html += `
@@ -137,7 +225,7 @@
         }
 
         function renderCategoryFilters() {
-            const categories = ['all', ...new Set(terms.map(t => t.category))];
+            const categories = ['all', ...new Set(terms.map(t => t.category).sort())];
             categories.forEach(cat => {
                 const button = document.createElement('button');
                 button.className = 'filter-button';
@@ -160,5 +248,6 @@
         renderCategoryFilters();
         renderGlossary();
     </script>
+    <script src="script.js"></script>
 </body>
 </html>

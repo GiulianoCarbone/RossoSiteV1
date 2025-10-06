@@ -1,0 +1,794 @@
+[
+  {
+    "nombre": "Adelmo Fernandez",
+    "fecha": "05-09"
+  },
+  {
+    "nombre": "Adolfo Carrizo",
+    "fecha": "02-08"
+  },
+  {
+    "nombre": "Adolfo Lamas",
+    "fecha": "10-05"
+  },
+  {
+    "nombre": "Agustin Chaju",
+    "fecha": "12-05"
+  },
+  {
+    "nombre": "Agustina Rosso",
+    "fecha": "10-03"
+  },
+  {
+    "nombre": "Alberto Ali",
+    "fecha": "07-20"
+  },
+  {
+    "nombre": "Alberto Urbano",
+    "fecha": "02-13"
+  },
+  {
+    "nombre": "Alejandro Roman",
+    "fecha": "12-11"
+  },
+  {
+    "nombre": "Alvaro Rosso",
+    "fecha": "01-06"
+  },
+  {
+    "nombre": "Analia Carrizo",
+    "fecha": "12-31"
+  },
+  {
+    "nombre": "Andrea Rosso",
+    "fecha": "08-07"
+  },
+  {
+    "nombre": "Andres Jerez",
+    "fecha": "10-22"
+  },
+  {
+    "nombre": "Angel Moreno",
+    "fecha": "03-13"
+  },
+  {
+    "nombre": "Angel Soria",
+    "fecha": "07-31"
+  },
+  {
+    "nombre": "Antonio Diaz",
+    "fecha": "08-27"
+  },
+  {
+    "nombre": "Antonio Zamorano",
+    "fecha": "09-27"
+  },
+  {
+    "nombre": "Ariel Gonzalez",
+    "fecha": "05-29"
+  },
+  {
+    "nombre": "Babich Olea",
+    "fecha": "07-14"
+  },
+  {
+    "nombre": "Bruno Beltran",
+    "fecha": "02-28"
+  },
+  {
+    "nombre": "Bruno Quinteros",
+    "fecha": "05-23"
+  },
+  {
+    "nombre": "Carla Rosso",
+    "fecha": "12-26"
+  },
+  {
+    "nombre": "Carlos Acosta",
+    "fecha": "01-27"
+  },
+  {
+    "nombre": "Carlos Alvarenga",
+    "fecha": "02-26"
+  },
+  {
+    "nombre": "Carlos Britos",
+    "fecha": "11-08"
+  },
+  {
+    "nombre": "Carlos Brizuela",
+    "fecha": "12-25"
+  },
+  {
+    "nombre": "Carlos Cordoba",
+    "fecha": "09-27"
+  },
+  {
+    "nombre": "Carlos Espeche",
+    "fecha": "11-12"
+  },
+  {
+    "nombre": "Carlos Espinosa",
+    "fecha": "12-26"
+  },
+  {
+    "nombre": "Carlos Gimenez",
+    "fecha": "06-30"
+  },
+  {
+    "nombre": "Carlos Gomez",
+    "fecha": "11-16"
+  },
+  {
+    "nombre": "Carlos Mamani",
+    "fecha": "08-26"
+  },
+  {
+    "nombre": "Carlos Montenegro",
+    "fecha": "02-02"
+  },
+  {
+    "nombre": "Carlos Quinteros",
+    "fecha": "11-22"
+  },
+  {
+    "nombre": "Carlos Soria",
+    "fecha": "01-21"
+  },
+  {
+    "nombre": "Cesar Figueroa",
+    "fecha": "11-29"
+  },
+  {
+    "nombre": "Cesar Soria",
+    "fecha": "02-29"
+  },
+  {
+    "nombre": "Christian Gomez",
+    "fecha": "01-08"
+  },
+  {
+    "nombre": "Cirene Delgado",
+    "fecha": "12-10"
+  },
+  {
+    "nombre": "Claudio Pacheco",
+    "fecha": "02-07"
+  },
+  {
+    "nombre": "Crespi Fernandez",
+    "fecha": "10-09"
+  },
+  {
+    "nombre": "Cristian Chavarria",
+    "fecha": "10-16"
+  },
+  {
+    "nombre": "Cristian Monasterio",
+    "fecha": "01-17"
+  },
+  {
+    "nombre": "Cristian Vega",
+    "fecha": "01-08"
+  },
+  {
+    "nombre": "Cynthia Cabral",
+    "fecha": "12-20"
+  },
+  {
+    "nombre": "Daniel Amran",
+    "fecha": "01-29"
+  },
+  {
+    "nombre": "Daniel Bredice",
+    "fecha": "10-10"
+  },
+  {
+    "nombre": "Daniel Villagra",
+    "fecha": "07-18"
+  },
+  {
+    "nombre": "Dario Barboza",
+    "fecha": "04-19"
+  },
+  {
+    "nombre": "Dario Collante",
+    "fecha": "11-19"
+  },
+  {
+    "nombre": "Dario Ponce",
+    "fecha": "11-08"
+  },
+  {
+    "nombre": "Delia Isasmendi",
+    "fecha": "09-02"
+  },
+  {
+    "nombre": "Diego Alvarez",
+    "fecha": "08-22"
+  },
+  {
+    "nombre": "Edgardo Ledesma",
+    "fecha": "09-11"
+  },
+  {
+    "nombre": "Elsa Frias",
+    "fecha": "12-07"
+  },
+  {
+    "nombre": "Elvio Gambarte",
+    "fecha": "08-05"
+  },
+  {
+    "nombre": "Emanuel Maidana",
+    "fecha": "03-20"
+  },
+  {
+    "nombre": "Enrique Guerra",
+    "fecha": "12-12"
+  },
+  {
+    "nombre": "Esteban Oyola",
+    "fecha": "07-29"
+  },
+  {
+    "nombre": "Etel Ruano",
+    "fecha": "09-19"
+  },
+  {
+    "nombre": "Etelvina Garcia",
+    "fecha": "04-17"
+  },
+  {
+    "nombre": "Evelin Galvan",
+    "fecha": "07-04"
+  },
+  {
+    "nombre": "Fabiana Avila",
+    "fecha": "01-31"
+  },
+  {
+    "nombre": "Facundo Fernandez",
+    "fecha": "07-13"
+  },
+  {
+    "nombre": "Farfan Santucho",
+    "fecha": "01-15"
+  },
+  {
+    "nombre": "Felipe Aybar",
+    "fecha": "05-29"
+  },
+  {
+    "nombre": "Fernando Astorga",
+    "fecha": "04-28"
+  },
+  {
+    "nombre": "Fernando Lazarte",
+    "fecha": "04-21"
+  },
+  {
+    "nombre": "Fernando Ramirez",
+    "fecha": "09-11"
+  },
+  {
+    "nombre": "Francisco Ariza",
+    "fecha": "01-29"
+  },
+  {
+    "nombre": "Franco Cajal",
+    "fecha": "04-08"
+  },
+  {
+    "nombre": "Franco Castillo",
+    "fecha": "09-07"
+  },
+  {
+    "nombre": "Franco Herrera",
+    "fecha": "12-17"
+  },
+  {
+    "nombre": "Gabriel Almaraz",
+    "fecha": "06-21"
+  },
+  {
+    "nombre": "Gabriel Alvarez",
+    "fecha": "08-04"
+  },
+  {
+    "nombre": "Georgina Lazarte",
+    "fecha": "12-19"
+  },
+  {
+    "nombre": "Gerardo Diaz",
+    "fecha": "04-09"
+  },
+  {
+    "nombre": "Giuliano Carbone",
+    "fecha": "05-19"
+  },
+  {
+    "nombre": "Gonzalo Moreno",
+    "fecha": "11-26"
+  },
+  {
+    "nombre": "Gonzalo Vallejo",
+    "fecha": "07-31"
+  },
+  {
+    "nombre": "Gonzalo Yglesias",
+    "fecha": "11-01"
+  },
+  {
+    "nombre": "Guillermo Parada",
+    "fecha": "04-01"
+  },
+  {
+    "nombre": "Gunther Chaile",
+    "fecha": "07-02"
+  },
+  {
+    "nombre": "Gustavo Fernandez",
+    "fecha": "05-06"
+  },
+  {
+    "nombre": "Gutierrez Diaz",
+    "fecha": "03-26"
+  },
+  {
+    "nombre": "Hector Cruz",
+    "fecha": "03-31"
+  },
+  {
+    "nombre": "Hector Leal",
+    "fecha": "10-15"
+  },
+  {
+    "nombre": "Hernan Valdiviezo",
+    "fecha": "07-04"
+  },
+  {
+    "nombre": "Hugo Asis",
+    "fecha": "09-12"
+  },
+  {
+    "nombre": "Ibañez Alderete",
+    "fecha": "03-15"
+  },
+  {
+    "nombre": "Ignacio Castro",
+    "fecha": "10-29"
+  },
+  {
+    "nombre": "Isaac Racedo",
+    "fecha": "07-03"
+  },
+  {
+    "nombre": "Janet Lopez",
+    "fecha": "11-05"
+  },
+  {
+    "nombre": "Javier Capalbo",
+    "fecha": "06-11"
+  },
+  {
+    "nombre": "Javier Carrizo",
+    "fecha": "03-15"
+  },
+  {
+    "nombre": "Jesus Salas",
+    "fecha": "11-24"
+  },
+  {
+    "nombre": "Jonathan Cordoba",
+    "fecha": "05-14"
+  },
+  {
+    "nombre": "Jonathan Villa",
+    "fecha": "08-09"
+  },
+  {
+    "nombre": "Jorge Ali",
+    "fecha": "11-23"
+  },
+  {
+    "nombre": "Jorge Carrizo",
+    "fecha": "04-17"
+  },
+  {
+    "nombre": "Jorge Fenoglio",
+    "fecha": "05-23"
+  },
+  {
+    "nombre": "Jorge Llanos",
+    "fecha": "12-20"
+  },
+  {
+    "nombre": "Jorge Ponce",
+    "fecha": "01-19"
+  },
+  {
+    "nombre": "Jose Ahumada",
+    "fecha": "08-02"
+  },
+  {
+    "nombre": "Jose Aragon",
+    "fecha": "06-14"
+  },
+  {
+    "nombre": "Jose Aragon",
+    "fecha": "12-28"
+  },
+  {
+    "nombre": "Jose Brito",
+    "fecha": "04-30"
+  },
+  {
+    "nombre": "Jose Diaz",
+    "fecha": "12-24"
+  },
+  {
+    "nombre": "Jose Figueroa",
+    "fecha": "09-20"
+  },
+  {
+    "nombre": "Jose Juarez",
+    "fecha": "02-02"
+  },
+  {
+    "nombre": "Jose Medina",
+    "fecha": "12-18"
+  },
+  {
+    "nombre": "Jose Molicia",
+    "fecha": "06-02"
+  },
+  {
+    "nombre": "Jose Moran",
+    "fecha": "12-24"
+  },
+  {
+    "nombre": "Jose Murru",
+    "fecha": "04-30"
+  },
+  {
+    "nombre": "Jose Palacio",
+    "fecha": "11-02"
+  },
+  {
+    "nombre": "Jose Sanz",
+    "fecha": "08-07"
+  },
+  {
+    "nombre": "Josue Robles",
+    "fecha": "10-19"
+  },
+  {
+    "nombre": "Juan Diaz",
+    "fecha": "10-02"
+  },
+  {
+    "nombre": "Juan Garcia",
+    "fecha": "11-12"
+  },
+  {
+    "nombre": "Juarez Delgado",
+    "fecha": "11-21"
+  },
+  {
+    "nombre": "Julieta Rosso",
+    "fecha": "06-27"
+  },
+  {
+    "nombre": "Julio Alonso",
+    "fecha": "07-07"
+  },
+  {
+    "nombre": "Julio Gomez",
+    "fecha": "11-01"
+  },
+  {
+    "nombre": "Julio Villalba",
+    "fecha": "05-19"
+  },
+  {
+    "nombre": "Karim Jorge",
+    "fecha": "09-26"
+  },
+  {
+    "nombre": "Keila Fernandez",
+    "fecha": "09-24"
+  },
+  {
+    "nombre": "Lucas Diaz",
+    "fecha": "09-06"
+  },
+  {
+    "nombre": "Luciana Llorens",
+    "fecha": "02-24"
+  },
+  {
+    "nombre": "Luis Acosta",
+    "fecha": "03-13"
+  },
+  {
+    "nombre": "Luis Barrionuevo",
+    "fecha": "02-15"
+  },
+  {
+    "nombre": "Luis Lopez",
+    "fecha": "12-09"
+  },
+  {
+    "nombre": "Luis Nallen",
+    "fecha": "07-04"
+  },
+  {
+    "nombre": "Mabel Ibañez",
+    "fecha": "10-26"
+  },
+  {
+    "nombre": "Manuel Medina",
+    "fecha": "10-02"
+  },
+  {
+    "nombre": "Marcelo Cajal",
+    "fecha": "08-25"
+  },
+  {
+    "nombre": "Marcelo Iñigo",
+    "fecha": "01-30"
+  },
+  {
+    "nombre": "Marcelo Mamonte",
+    "fecha": "02-18"
+  },
+  {
+    "nombre": "Marcos Castro",
+    "fecha": "03-27"
+  },
+  {
+    "nombre": "Marcos Delgado",
+    "fecha": "01-10"
+  },
+  {
+    "nombre": "Maria Paz",
+    "fecha": "12-06"
+  },
+  {
+    "nombre": "Maria Riccio",
+    "fecha": "05-28"
+  },
+  {
+    "nombre": "Marianela Quiroga",
+    "fecha": "10-28"
+  },
+  {
+    "nombre": "Mario Bustamante",
+    "fecha": "06-13"
+  },
+  {
+    "nombre": "Mario Medina",
+    "fecha": "08-04"
+  },
+  {
+    "nombre": "Marisa Pedraza",
+    "fecha": "02-22"
+  },
+  {
+    "nombre": "Martin Rodriguez",
+    "fecha": "04-09"
+  },
+  {
+    "nombre": "Matias Maxzud",
+    "fecha": "12-28"
+  },
+  {
+    "nombre": "Matias Yapura",
+    "fecha": "03-15"
+  },
+  {
+    "nombre": "Mauricio Chavarria",
+    "fecha": "07-14"
+  },
+  {
+    "nombre": "Mauricio Ybarra",
+    "fecha": "05-26"
+  },
+  {
+    "nombre": "Mauro Vargas",
+    "fecha": "10-19"
+  },
+  {
+    "nombre": "Maximiliano Molicia",
+    "fecha": "06-14"
+  },
+  {
+    "nombre": "Maximo Torres",
+    "fecha": "06-12"
+  },
+  {
+    "nombre": "Miguel Avellaneda",
+    "fecha": "11-29"
+  },
+  {
+    "nombre": "Miguel Avendaño",
+    "fecha": "07-21"
+  },
+  {
+    "nombre": "Miguel Avila",
+    "fecha": "09-08"
+  },
+  {
+    "nombre": "Miguel Molina",
+    "fecha": "01-30"
+  },
+  {
+    "nombre": "Miguel Norry",
+    "fecha": "09-28"
+  },
+  {
+    "nombre": "Miguel Paez",
+    "fecha": "03-01"
+  },
+  {
+    "nombre": "Nelson Rivadeneira",
+    "fecha": "09-05"
+  },
+  {
+    "nombre": "Nestor Chumba",
+    "fecha": "07-06"
+  },
+  {
+    "nombre": "Nestor Paez",
+    "fecha": "04-24"
+  },
+  {
+    "nombre": "Nicolas Aranda",
+    "fecha": "09-22"
+  },
+  {
+    "nombre": "Nicolas Soria",
+    "fecha": "07-13"
+  },
+  {
+    "nombre": "Pablo Brito",
+    "fecha": "10-03"
+  },
+  {
+    "nombre": "Pablo Lara",
+    "fecha": "07-25"
+  },
+  {
+    "nombre": "Palacio Paliza",
+    "fecha": "09-20"
+  },
+  {
+    "nombre": "Pascual Lera",
+    "fecha": "04-04"
+  },
+  {
+    "nombre": "Pedro Lucena",
+    "fecha": "08-18"
+  },
+  {
+    "nombre": "Perez Cortes",
+    "fecha": "07-31"
+  },
+  {
+    "nombre": "Pero Del",
+    "fecha": "01-29"
+  },
+  {
+    "nombre": "Ramon Gomez",
+    "fecha": "11-25"
+  },
+  {
+    "nombre": "Ramon Lopez",
+    "fecha": "05-28"
+  },
+  {
+    "nombre": "Ramon Rodriguez",
+    "fecha": "08-09"
+  },
+  {
+    "nombre": "Ramon Sotelo",
+    "fecha": "04-13"
+  },
+  {
+    "nombre": "Raul Rosso",
+    "fecha": "05-02"
+  },
+  {
+    "nombre": "Raul Rosso",
+    "fecha": "03-02"
+  },
+  {
+    "nombre": "Rene Bordon",
+    "fecha": "03-26"
+  },
+  {
+    "nombre": "Ricardo Almaraz",
+    "fecha": "11-16"
+  },
+  {
+    "nombre": "Ricardo Carabajal",
+    "fecha": "05-16"
+  },
+  {
+    "nombre": "Roberto Vallejos",
+    "fecha": "11-07"
+  },
+  {
+    "nombre": "Rodrigo Cabezas",
+    "fecha": "08-17"
+  },
+  {
+    "nombre": "Rodrigo Carrizo",
+    "fecha": "10-10"
+  },
+  {
+    "nombre": "Rojas Condori",
+    "fecha": "08-27"
+  },
+  {
+    "nombre": "Roldan Rodriguez",
+    "fecha": "09-18"
+  },
+  {
+    "nombre": "Roman Rojas",
+    "fecha": "06-23"
+  },
+  {
+    "nombre": "Saldias Mamani",
+    "fecha": "07-31"
+  },
+  {
+    "nombre": "Sergio Ledesma",
+    "fecha": "08-05"
+  },
+  {
+    "nombre": "Sergio Nieva",
+    "fecha": "11-26"
+  },
+  {
+    "nombre": "Sergio Reynoso",
+    "fecha": "05-05"
+  },
+  {
+    "nombre": "Silvia Flores",
+    "fecha": "09-15"
+  },
+  {
+    "nombre": "Vanesa Santana",
+    "fecha": "12-19"
+  },
+  {
+    "nombre": "Vicente Mansilla",
+    "fecha": "03-22"
+  },
+  {
+    "nombre": "Victor Nuñez",
+    "fecha": "04-18"
+  },
+  {
+    "nombre": "Victor Perez",
+    "fecha": "01-04"
+  },
+  {
+    "nombre": "Villalba Mamani",
+    "fecha": "11-15"
+  },
+  {
+    "nombre": "Walter Barrientos",
+    "fecha": "05-10"
+  },
+  {
+    "nombre": "Walter Barrientos",
+    "fecha": "05-10"
+  },
+  {
+    "nombre": "Walter Soloa",
+    "fecha": "05-29"
+  }
+]

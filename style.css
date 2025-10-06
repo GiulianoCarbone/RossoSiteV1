@@ -22,9 +22,13 @@ html:focus-within {
 body {
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
     Arial, sans-serif;
-  background: var(--bg);
+  background: var(--surface); /* <--- CAMBIO AQUÍ */
   color: var(--ink);
   overflow-x: hidden;
+  /* --- AÑADE ESTAS TRES LÍNEAS --- */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 img {
   max-width: 100%;
@@ -41,6 +45,9 @@ a {
 }
 
 /* Header */
+main {
+  flex-grow: 1; /* <-- AÑADE ESTA LÍNEA */
+}
 .main-header {
   position: fixed;
   inset-inline: 0;
@@ -65,13 +72,29 @@ a {
 .nav-links {
   display: none;
   gap: 24px;
+  
 }
 .nav-links a {
-  color: #374151;
+  color: #272e68;
   font-weight: 500;
+  /* --- AÑADE ESTAS TRES LÍNEAS --- */
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre el icono y el texto */
 }
+/* Color para los iconos del menú (NUEVO) */
+.nav-links a i {
+  color: var(--accent); /* Usamos la variable de color naranja que ya tienes definida */
+  transition: transform 0.3s ease; /* <-- AÑADE ESTA LÍNEA */
+}
+.nav-links a:hover i {
+  transform: translateY(-3px) scale(1.1); /* Mueve el icono 3px hacia arriba y lo agranda un 10% */
+}
+
+
 .nav-links a:hover {
   color: var(--accent);
+  
 }
 
 .mobile-menu-btn {
@@ -114,16 +137,16 @@ a {
 
 /* Slider */
 .slider-section {
+  margin-top: var(--header-h); /* <-- UNA SOLA VEZ */
   position: relative;
   isolation: isolate;
-  height: 60vh;
-  margin-top: var(--header-h);
+  height: 70vh;
   overflow: hidden;
   display: grid;
 }
 @media (min-width: 768px) {
   .slider-section {
-    height: 80vh;
+    height: 50vh;
   }
 }
 .slides-container {
@@ -148,7 +171,7 @@ a {
 .slide-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.35));
+  
   display: grid;
   place-items: center;
   padding: 16px;
@@ -207,8 +230,10 @@ a {
 .dots {
   position: absolute;
   bottom: 12px;
+  left: 50%; /* Coloca el inicio del elemento en la mitad horizontal */
+  transform: translateX(-50%); /* Mueve el elemento hacia la izquierda la mitad de su propio ancho */
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Esto ya no es estrictamente necesario, pero no molesta */
   gap: 10px;
   z-index: 10;
 }
@@ -235,7 +260,8 @@ a {
 
 /* Sections */
 .main-sections {
-  padding-block: 64px;
+  padding-top: 70px;
+  padding-bottom: 30px;
   background: var(--surface);
 }
 .cards-grid {
@@ -269,6 +295,7 @@ a {
   display: flex;
   flex-direction: column;
   text-align: center;
+  
 }
 .card-image-container {
   display: grid;
@@ -281,6 +308,7 @@ a {
   max-height: 190px;
   aspect-ratio: 16/10;
   object-fit: contain;
+  margin: 6px;
 }
 .card-content {
   background: var(--card);
@@ -288,12 +316,10 @@ a {
   box-shadow: var(--shadow);
   padding: 24px;
   padding-top: 96px;
-  transition: box-shadow 0.3s;
-  flex-grow: 1; /* <-- Agregá esta línea */
+  /* transition: box-shadow 0.3s; */ /* <-- ELIMINA O COMENTA ESTA LÍNEA */
+  flex-grow: 1; 
 }
-.card-link:hover .card-content {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
+
 .card-content h3 {
   font-size: 1.25rem;
   font-weight: 800;
@@ -306,8 +332,8 @@ a {
 
 /* Footer */
 .main-footer {
-  background: #19294d;
-  color: #fff;
+  background:var(--bg);
+  color: var(--brand-600);
   padding: 24px 0;
 }
 .main-footer .container {
@@ -319,7 +345,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
+  /* Se elimina la línea "background-color: #fff;" */
 }
 
 .slide.split-layout .slide-split-text {
@@ -546,7 +572,8 @@ a {
 
 /* ===== SECCIÓN DE LOGOS (NUEVO CÓDIGO) ===== */
 .partners-section {
-  padding-block: 64px;
+  padding-top:  0px;
+  padding-bottom:  50px;
   text-align: center;
 }
 
@@ -561,7 +588,7 @@ a {
   color: var(--muted);
   max-width: 50ch;
   margin-inline: auto;
-  margin-bottom: 48px;
+  margin-bottom: 8px;
 }
 
 .logo-ticker {
@@ -590,7 +617,7 @@ a {
   gap: 48px; /* Espacio entre logos */
   width: max-content;
   align-items: center;
-  animation: scroll 25s linear infinite;
+  animation: scroll 75s linear infinite;
 }
 
 .logo-track:hover {
@@ -601,7 +628,9 @@ a {
   height: 60px; /* Tamaño de los logos */
   max-width: 170px;
   object-fit: contain;
-   /* Logos en blanco y negro */
+   
+  /* Logos en blanco y negro */
+  /* filter: grayscale(100%); */
   opacity: 1;
   transition: all 0.3s ease;
 }
@@ -621,4 +650,467 @@ a {
     /* Mueve el carrusel la mitad de su ancho total */
     transform: translateX(calc(-50% - 24px)); /* 24px es la mitad del gap */
   }
+}
+
+.aaa {   /* DEGRADE BLANCO A LOS COSTADOS DEL WIDGGET DE INSTA */
+ 
+  /* Efecto de desvanecido en los bordes */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    white 20%,
+    white 80%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    white 20%,
+    white 80%,
+    transparent
+  );
+}
+
+@media (min-width: 1024px) {
+  .container-wide {
+    width: 95%; /* Aumentamos el ancho del 90% al 95% para reducir los márgenes */
+    max-width: 1400px; /* Opcional: aumentamos el ancho máximo para pantallas grandes */
+  }
+}
+
+/* ===== ANIMACIONES DUALES PARA SLIDER (NUEVO CÓDIGO) ===== */
+
+/* 1. Definimos la animación de entrada desde la izquierda */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 2. Definimos la animación de entrada desde la derecha */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px); /* Empieza 30px a la derecha */
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0); /* Termina en su posición original */
+  }
+}
+
+/* 3. Ocultamos ambos bloques si el slide no está activo */
+.slide:not(.active) .slide-split-text,
+.slide:not(.active) .slide-split-image {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* 4. Aplicamos las animaciones cuando el slide se activa */
+.slide.active .slide-split-text {
+  visibility: visible;
+  animation: fadeInLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.slide.active .slide-split-image {
+  visibility: visible;
+  animation: fadeInRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+/* ===== AJUSTE DE PADDING PARA SLIDER EN VERSIÓN WEB (NUEVO CÓDIGO) ===== */
+@media (min-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    /* Se elimina max-width y margin-inline para que ocupe todo el contenedor */
+  }
+
+  .card-image {
+    max-height: 210px;
+  }
+}
+
+
+/* ===== ANIMACIÓN DE ZOOM PARA IMÁGENES DE TARJETAS (NUEVO CÓDIGO) ===== */
+
+/* Hacemos que la imagen tenga una transición suave */
+.card-image {
+  transition: transform 0.4s ease;
+}
+
+/* Le decimos al contenedor de la imagen que oculte lo que se desborde */
+.card-image-container {
+  overflow: hidden;
+}
+
+/* Aplicamos el efecto de escala (zoom) cuando el mouse está sobre el link */
+.card-link:hover .card-image {
+  transform: scale(1.1); /* Aumentamos la escala de la imagen en un 10% */
+}
+/* ====== Estilos para Menú Desplegable (NUEVO) ====== */
+
+/* Contenedor principal del menú */
+.dropdown {
+  position: relative; /* Clave para que el menú se posicione correctamente */
+  display: inline-block;
+}
+
+/* Estilo para el botón "Utilidades" */
+.dropdown-toggle {
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer; /* Cambia el cursor para que parezca un botón */
+}
+
+/* Contenedor de los enlaces del submenú (oculto por defecto) */
+.dropdown-menu {
+  display: none; /* Oculto hasta que pasemos el mouse por encima */
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 100;
+  border-radius: 8px;
+  overflow: hidden; /* Para que los bordes redondeados se apliquen a los links */
+}
+
+/* Estilo para los enlaces dentro del menú */
+.dropdown-menu a {
+  color: #1f2937;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Cambia el color del enlace al pasar el mouse por encima */
+.dropdown-menu a:hover {
+  background-color: #f1f1f1;
+  color: var(--accent); /* Usa el color de acento de tu marca */
+}
+
+/* Muestra el menú desplegable cuando se pasa el mouse sobre el contenedor */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+/* ====== Estilos para Menú Desplegable Móvil (NUEVO) ====== */
+
+/* Aseguramos que el contenedor del dropdown ocupe todo el ancho */
+#mobile-menu .dropdown {
+  width: 100%;
+}
+
+/* Hacemos que el botón "Utilidades" se vea igual que los otros links del menú */
+#mobile-menu .dropdown-toggle {
+  display: block;
+  padding: 12px 20px;
+  color: #1f244f;
+  text-align: right;
+  width: 100%;
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: none;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+#mobile-menu .dropdown-toggle:hover {
+  background: #f3f4f6;
+}
+
+/* El submenú en móvil no debe ser flotante */
+#mobile-menu .dropdown-menu {
+  position: static; /* No es absoluto como en desktop */
+  display: none; /* Oculto por defecto */
+  box-shadow: none;
+  border-radius: 0;
+  min-width: unset;
+  background-color: #f9fafb; /* Un color de fondo ligeramente diferente */
+}
+
+/* Estilo para los links del submenú */
+#mobile-menu .dropdown-menu a {
+  padding-right: 30px; /* Un poco más de padding para que se vea anidado */
+  font-size: 0.9em; /* Letra un poco más pequeña */
+}
+
+/* Cuando el dropdown esté abierto, muestra el menú */
+#mobile-menu .dropdown.open .dropdown-menu {
+  display: block;
+}
+/* ====== Estilos para Página Nosotros (ACTUALIZADO) ====== */
+
+.about-section {
+  /* Hacemos que la sección ocupe al menos toda la altura de la pantalla */
+  min-height: calc(100vh - 180px); /* 100% de la altura de la vista - la altura del header y footer */
+  
+  /* Centramos el contenido vertical y horizontalmente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  padding: 40px 0; /* Espaciado interno */
+}
+
+.about-container {
+  max-width: 900px; /* Aumentamos el ancho máximo para que el video sea más grande */
+  width: 90%; /* Aseguramos que se vea bien en pantallas más pequeñas */
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--brand);
+  margin-bottom: 16px;
+}
+
+.about-subtitle {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-bottom: 40px;
+  max-width: 60ch; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.video-responsive {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; 
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.video-responsive iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+/* ====== Estilos específicos para la página Nosotros (NUEVO) ====== */
+
+/* Le decimos al body de la página "Nosotros" que sea flexible */
+.page-nosotros {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Hacemos que el main de "Nosotros" crezca para ocupar el espacio */
+.page-nosotros main {
+  flex-grow: 1;
+  display: flex; /* Añadimos flex para poder centrar la sección */
+}
+
+/* Y ahora centramos la sección .about-section dentro del main */
+.page-nosotros .about-section {
+  width: 100%; /* Ocupa todo el ancho del main */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* ===== Botón Volver Arriba (Back to Top) ===== */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 80px; /* Mantenemos la altura para que no se superponga */
+  right: 25px;
+  display: none; /* Oculto por defecto */
+  width: 40px;
+  height: 40px;
+  background-color: var(--accent); /* Fondo azul de tu marca */
+  color: #fff; /* Flecha blanca */
+  border: none; /* Quitamos el borde */
+  border-radius: 50%;
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.back-to-top-btn.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.back-to-top-btn:hover {
+  background-color: var(--brand); /* Cambia a naranja al pasar el mouse */
+  cursor: pointer;
+}
+
+.mobile-menu a {
+  display: flex;
+  justify-content: flex-end; /* Alinea el contenido a la derecha */
+  align-items: center;     /* Centra verticalmente el ícono y el texto */
+  gap: 8px;                /* Crea un espacio entre el ícono y el texto */
+}
+
+#mobile-menu a i {
+  color: var(--accent); /* Pinta el ícono con el color naranja de tu marca */
+}
+/* ===== Color para el ícono del menú hamburguesa ===== */
+.mobile-menu-btn .menu-icon {
+  color: var(--accent); /* Pinta el ícono con el color naranja de tu marca */
+}
+
+/* ===== ESTILOS PARA SLIDER CON DESPLAZAMIENTO HORIZONTAL ===== */
+#horizontal-slider {
+  position: relative;
+  overflow: hidden; /* Oculta los slides que están fuera de la vista */
+}
+
+.horizontal-slider-container {
+  display: flex; /* Pone las imágenes en fila */
+  transition: transform 0.5s ease-in-out; /* La animación del desplazamiento */
+}
+
+.horizontal-slide {
+  flex: 0 0 100%; /* Cada slide ocupa el 100% del ancho */
+  min-width: 100%;
+}
+
+/* ===== AJUSTE DE FONDO PARA SECCIÓN INSTAGRAM (NUEVO) ===== */
+.instagram-container {
+  background-color: var(--surface);
+  padding-top: 20px; /* Le da un poco de aire arriba */
+}
+
+/* ===== ESTILOS PARA NEWSLETTER (NUEVO) ===== */
+.newsletter-section {
+  background-color: var(--brand); /* Usamos el azul de tu marca */
+  color: #fff;
+  padding: 24px 0;
+  border-top: 1px solid #e5e7eb; /* Línea separadora sutil */
+}
+
+.newsletter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.newsletter-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.newsletter-form {
+  display: flex;
+  min-width: 350px; /* Ancho mínimo para el formulario */
+}
+
+.newsletter-form input {
+  flex-grow: 1; /* El input ocupa el espacio disponible */
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px 0 0 8px; /* Bordes redondeados solo a la izquierda */
+  font-size: 1rem;
+  outline: none;
+}
+
+.newsletter-form button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 0 8px 8px 0; /* Bordes redondeados solo a la derecha */
+  background-color: #fff;
+  color: var(--brand);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.newsletter-form button:hover {
+  background-color: #f3f4f6;
+}
+
+/* --- Estilos para la versión móvil --- */
+@media (max-width: 768px) {
+  .newsletter-container {
+    flex-direction: column; /* Apilamos los elementos */
+    text-align: center;
+  }
+  .newsletter-form {
+    min-width: 100%; /* El formulario ocupa todo el ancho */
+  }
+}
+
+/* ===== ESTILOS PARA MENSAJE DE NEWSLETTER (NUEVO) ===== */
+.newsletter-message {
+  display: none; /* Oculto por defecto */
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+}
+
+.newsletter-message.success {
+  background-color: #d4edda; /* Un verde suave, como el de tu imagen */
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+  
+/* ===== ESTILOS PARA ANIMACIÓN DE EMOJIS (VERSIÓN 1 CON PAUSA) ===== */
+
+/* Hacemos que los spans se puedan animar correctamente */
+.newsletter-title .emoji-envelope,
+.newsletter-title .emoji-fire {
+  display: inline-block; 
+}
+
+/* 1. Animación para el sobre (se balancea y luego pausa) */
+.emoji-envelope {
+  animation: shake-and-rest 4s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+  transform-origin: bottom center;
+}
+
+/* Definimos la secuencia de movimiento y la pausa */
+@keyframes shake-and-rest {
+  /* Movimiento (primeros 2 segundos) */
+  2.5%, 22.5% { transform: rotate(-3deg); }
+  5%, 20% { transform: rotate(3deg); }
+  7.5%, 12.5%, 17.5% { transform: rotate(-5deg); }
+  10%, 15% { transform: rotate(5deg); }
+  /* Pausa (últimos 2 segundos) */
+  25%, 100% { transform: rotate(0); }
+}
+
+/* 2. Animación original para el fuego (late/pulsa) */
+.emoji-fire {
+  animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+/* Definimos el efecto de pulso */
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
+/* Solución para contenido tapado por el header fijo */
+.contenido-principal {
+  padding-top: 50px; /* Usa la variable de la altura del header (110px) */
 }
