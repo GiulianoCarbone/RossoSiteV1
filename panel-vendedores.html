@@ -120,7 +120,33 @@
               font-weight: 600;
               min-height: 20px;
             }
+/* --- ESTILOS BOTÓN BACK TO TOP --- */
+#back-to-top-btn {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1000;
+  border: none;
+  outline: none;
+  background-color: var(--accent);
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 50%;
+  /* font-size: 1.2rem; */
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  line-height: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s, transform 0.3s;
+}
 
+#back-to-top-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-3px);
+}
             /* --- ESTILOS PANEL --- */
             #panel-wrapper {
               display: none; /* Oculto por defecto */
@@ -936,12 +962,12 @@
             </div>
             <div class="panel-card-body">
               <div class="tools-grid">
-                <a href="manualdeproductos.html" class="tool-link">
+                <a href="pdf/manualdeproductos.html" class="tool-link">
                   <i class="fa-solid fa-book-open"></i>
                   <span>Manual de Productos</span>
                 </a>
                 <a
-                  href="Laventapasoapaso.html"
+                  href="pdf/Laventapasoapaso.html"
                   target="_blank"
                   class="tool-link"
                 >
@@ -1347,7 +1373,7 @@
               },
             ],
           },
-          Ventas: {
+         "Comerciales": {
             icon: "fa-headset",
             members: [
               {
@@ -2378,6 +2404,26 @@
 
         // -- INICIALIZACIÓN FINAL --
         checkLogin();
+//         // --- LÓGICA DEL BOTÓN BACK TO TOP ---
+// const backToTopButton = document.getElementById("back-to-top-btn");
+
+// // Mostrar el botón cuando el usuario baja 150px
+// window.onscroll = function() {
+//   if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+//     backToTopButton.style.display = "block";
+//   } else {
+//     backToTopButton.style.display = "none";
+//   }
+// };
+
+// // Al hacer clic, volver suavemente arriba
+// backToTopButton.addEventListener("click", function(e) {
+//   e.preventDefault();
+//   window.scrollTo({
+//     top: 0,
+//     behavior: 'smooth'
+//   });
+// });
       });
     </script>
 
@@ -2401,5 +2447,6 @@
         });
       }
     </script>
+    <!-- <a id="back-to-top-btn" title="Volver arriba"><i class="fa-solid fa-arrow-up"></i></a> -->
   </body>
 </html>
