@@ -132,15 +132,22 @@
   background-color: var(--accent);
   color: white;
   cursor: pointer;
-  padding: 15px;
+  padding: 0; /* Quitamos el padding para controlar el tamaño exacto */
   border-radius: 50%;
-  /* font-size: 1.2rem; */
-  width: 35px;
-  height: 35px;
-  text-align: center;
-  line-height: 20px;
+  width: 50px; /* Ancho del círculo */
+  height: 50px; /* Alto del círculo */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: opacity 0.3s, transform 0.3s;
+  /* Centramos el ícono dentro del círculo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+#back-to-top-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-3px); /* Efecto sutil al pasar el mouse */
 }
 
 #back-to-top-btn:hover {
@@ -984,15 +991,15 @@
                   <span>Links Útiles</span>
                 </div>
 <a
-                  href="https://rossomateriales.netlify.app/"
+                  href="https://drive.google.com/drive/folders/1KU9v7Y3N0pKAGuEVwh_jR4myxRrmvTbF?usp=sharing"
                   target="_blank"
                   class="tool-link"
                 >
                   <i class="fa-solid fa-photo-film"></i>
-                  <span>Contenido Multimedia</span>
+                  <span>Contenido Promocional</span>
                 </a>
                 <a
-                  href="#"
+                  href="https://drive.google.com/drive/folders/1Ep7UcuJvFPhtaqlKQqtIKVgfkcT3KDN-?usp=sharing"
                   target="_blank"
                   class="tool-link"
                 >
@@ -1070,21 +1077,21 @@
               </p>
               <div class="social-preview-card-single">
                 <img
-                  src="https://i.ibb.co/7NbsTTpC/portada-1-Q-octubre.jpg"
+                  src="https://scontent.faep24-1.fna.fbcdn.net/v/t39.30808-6/565707039_1248446670643725_2689590925149971508_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=wTc5_8rZmowQ7kNvwFvspbp&_nc_oc=AdkX59PPIEuPB1_ybY16wIpd6cRdQO2R3R2a6uG4DO2fMyUBBi2mqBmNuClQTmQfuSY&_nc_zt=23&_nc_ht=scontent.faep24-1.fna&_nc_gid=I8iDZC-EzbF5HtAXL1mt0A&oh=00_AfecNZK7nH3cjmHyPiRnFwxzGlR_rHKkRqfEGRkP6ytpyA&oe=68F7001C"
                   alt="Previa de la publicación"
                   class="social-preview-image"
                 />
                 <div class="social-buttons-container">
                   <div class="social-buttons-row">
                     <a
-                      href="..."
+                      href="https://www.instagram.com/rossomateriales/p/DP3uDIhjCbo/"
                       target="_blank"
                       class="social-preview-button instagram"
                     >
                       <i class="fab fa-instagram"></i> Instagram
                     </a>
                     <a
-                      href="..."
+                      href="https://www.facebook.com/share/p/17TbbZMTgR/"
                       target="_blank"
                       class="social-preview-button facebook"
                     >
@@ -2466,7 +2473,44 @@
             grid.appendChild(dayEl);
           }
         }
+// --- LÓGICA DEL BOTÓN BACK TO TOP (CORREGIDA) ---
+const backToTopButton = document.getElementById("back-to-top-btn");
 
+if (backToTopButton) {
+  function toggleBackToTopButton() {
+    const scrollBuffer = 15; // Un pequeño margen para que se active justo antes del final
+    
+    // Comprueba si la página es más alta que la ventana (es decir, si se puede hacer scroll)
+    const isScrollable = document.documentElement.scrollHeight > document.documentElement.clientHeight;
+    
+    // Comprueba si estás al final de la página
+    const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - scrollBuffer;
+
+    // El botón solo se muestra si la página es desplazable Y estás al final
+    if (isScrollable && isAtBottom) {
+      backToTopButton.style.display = "flex"; 
+    } else {
+      backToTopButton.style.display = "none";
+    }
+  }
+
+  // Escuchamos los eventos de scroll y cambio de tamaño de la ventana
+  window.addEventListener("scroll", toggleBackToTopButton);
+  window.addEventListener("resize", toggleBackToTopButton);
+  
+  // Hacemos una comprobación inicial medio segundo después de que cargue la página.
+  // Esto da tiempo a que el contenido dinámico (como las noticias) se cargue y la altura de la página sea definitiva.
+  setTimeout(toggleBackToTopButton, 500);
+
+  // Al hacer clic, volver suavemente arriba
+  backToTopButton.addEventListener("click", (e) => {
+    e.preventDefault(); 
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+}
         // -- INICIALIZACIÓN FINAL --
         checkLogin();
 //         // --- LÓGICA DEL BOTÓN BACK TO TOP ---
@@ -2512,6 +2556,6 @@
         });
       }
     </script>
-    <!-- <a id="back-to-top-btn" title="Volver arriba"><i class="fa-solid fa-arrow-up"></i></a> -->
+    <a id="back-to-top-btn" title="Volver arriba"><i class="fa-solid fa-arrow-up"></i></a>
   </body>
 </html>

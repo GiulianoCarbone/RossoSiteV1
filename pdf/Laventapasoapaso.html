@@ -24,41 +24,13 @@
             display: flex;
             flex-direction: column;
             background-color: #f4f7f6; /* Fondo consistente con el panel */
-        }
-        
-        /* --- Estilos del Login --- */
-        #login-overlay { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-color: #f0f2f5; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            z-index: 2000; 
-        }
-        #login-container { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
-            width: 90%; 
-            max-width: 400px; 
-            text-align: center; 
-        }
-        #login-container img.logo { max-width: 180px; margin-bottom: 24px; margin-inline: auto; }
-        #login-container h2 { margin: 0 0 24px 0; color: var(--brand); font-size: 1.5rem; }
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--muted); }
-        .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
-        #login-button { width: 100%; padding: 14px; border: none; border-radius: 8px; background-color: var(--accent); color: white; font-size: 1.1rem; font-weight: 700; cursor: pointer; }
-        #login-error { color: #d9534f; margin-top: 15px; font-weight: 600; height: 20px; }
+        }       
 
         /* Contenedor del Manual (Iframe) */
         #manual-wrapper {
-            display: none; /* Oculto por defecto */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
             flex-grow: 1; 
             padding-top: var(--header-height); /* Usamos la variable para el espacio */
             box-sizing: border-box;
@@ -124,25 +96,6 @@
     </style>
 </head>
 <body>
-    <div id="login-overlay">
-        <div id="login-container">
-            <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales Logo" class="logo">
-            <h2>Acceso Corporativo</h2>
-            <form id="login-form">
-                <div class="input-group">
-                    <label for="nombre">Nombre y Apellido</label>
-                    <input type="text" id="nombre" required>
-                </div>
-                <div class="input-group">
-                    <label for="dni">Documento</label>
-                    <input type="password" id="dni" required>
-                </div>
-                <button type="submit" id="login-button">Ingresar</button>
-                <div id="login-error"></div>
-            </form>
-        </div>
-    </div>
-
     <div id="manual-wrapper">
         <header class="main-header" role="banner">
             <nav class="main-nav" aria-label="Primaria">
@@ -163,93 +116,6 @@
         </main>
     </div>
  
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // --- CONEXIÓN A FIREBASE ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
-            authDomain: "backend-panel-vendedores.firebaseapp.com",
-            projectId: "backend-panel-vendedores",
-            storageBucket: "backend-panel-vendedores.firebasestorage.app",
-            messagingSenderId: "24873830395",
-            appId: "1:24873830395:web:ea6749407f991ee8226d5e",
-            measurementId: "G-E4Z0Y849KF",
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        
-        const loginOverlay = document.getElementById('login-overlay');
-        const manualWrapper = document.getElementById('manual-wrapper');
-        const loginForm = document.getElementById('login-form');
-
-        // --- Lógica de Acceso Condicional ---
-        function checkAccess() {
-            const loggedInUserName = localStorage.getItem('vendedorLogueado');
-            if (loggedInUserName) {
-                loginOverlay.style.display = 'none';
-                manualWrapper.style.display = 'flex';
-                manualWrapper.style.flexDirection = 'column';
-                manualWrapper.style.height = '100vh';
-            } else {
-                loginOverlay.style.display = 'flex';
-                manualWrapper.style.display = 'none';
-            }
-        }
-        
-        checkAccess();
-
-        // --- Manejo del Formulario de Login (CONECTADO A BASE DE DATOS) ---
-        if(loginForm) {
-            loginForm.addEventListener('submit', async function(event) {
-                event.preventDefault();
-                const nombreInput = document.getElementById('nombre').value.trim().toLowerCase();
-                const dniInput = document.getElementById('dni').value.trim();
-                const loginError = document.getElementById('login-error');
-
-                loginError.textContent = "Verificando...";
-
-                try {
-                    const snapshot = await db.collection("vendedores").get();
-                    let userFound = null;
-
-                    snapshot.forEach((doc) => {
-                        if (userFound) return;
-                        const vendedor = doc.data();
-                        const dbName = vendedor.nombre.toLowerCase().replace(/,/g, '');
-                        const dbNameParts = dbName.split(' ').filter(Boolean);
-
-                        if (dbNameParts.length < 2) {
-                            if (dbName === nombreInput && vendedor.dni === dniInput) userFound = vendedor;
-                            return;
-                        }
-
-                        const dbLastName = dbNameParts[0];
-                        const dbFirstNames = dbNameParts.slice(1);
-                        const inputWords = nombreInput.split(' ').filter(Boolean);
-                        const lastNameMatch = inputWords.includes(dbLastName);
-                        const firstNameMatch = dbFirstNames.some(firstName => inputWords.includes(firstName));
-
-                        if (lastNameMatch && firstNameMatch && vendedor.dni === dniInput) {
-                            userFound = vendedor;
-                        }
-                    });
-
-                    if (userFound) {
-                        localStorage.setItem('vendedorLogueado', userFound.nombre);
-                        checkAccess();
-                    } else {
-                        loginError.textContent = 'Nombre o DNI incorrecto.';
-                    }
-                } catch (error) {
-                    console.error("Error al verificar vendedor: ", error);
-                    loginError.textContent = "Error al conectar. Intente de nuevo.";
-                }
-            });
-        }
-    });
-    </script>
     <script src="script.js"></script>
 </body>
 </html>
