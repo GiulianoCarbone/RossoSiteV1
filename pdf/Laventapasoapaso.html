@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
     <style>
+        :root {
+            --header-height: 70px; /* Definimos una altura para el header */
+        }
+
         body, html {
             margin: 0;
             padding: 0;
@@ -56,7 +60,7 @@
         #manual-wrapper {
             display: none; /* Oculto por defecto */
             flex-grow: 1; 
-            padding-top: var(--header-h); 
+            padding-top: var(--header-height); /* Usamos la variable para el espacio */
             box-sizing: border-box;
             overflow: auto; 
             -webkit-overflow-scrolling: touch;
@@ -73,6 +77,49 @@
             border: none;
             display: block;
         }
+
+        /* --- ESTILOS DEL HEADER --- */
+        .main-header {
+            position: fixed; /* Lo deja fijo arriba */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height); /* Altura controlada */
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* <-- ESTA LÍNEA ES CLAVE */
+            width: 100%;
+            padding: 0 20px; 
+            box-sizing: border-box;
+        }
+
+        .logo-image {
+            max-height: 50px; 
+            width: auto;
+        }
+
+        /* --- ESTILOS NUEVOS PARA EL BOTÓN "VOLVER" --- */
+        .back-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Espacio entre el ícono y el texto */
+        }
+        .back-link:hover {
+            color: #0056b3;
+        }
+
     </style>
 </head>
 <body>
@@ -97,11 +144,16 @@
 
     <div id="manual-wrapper">
         <header class="main-header" role="banner">
-            <nav class="main-nav container" aria-label="Primaria">
+            <nav class="main-nav" aria-label="Primaria">
+                
+                <a href="/panel-vendedores.html" class="back-link">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span>Volver</span>
+                </a>
+                
                 <a href="index.html" class="logo" aria-label="Ir al inicio">
                     <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
                 </a>
-                
             </nav>
         </header>
         

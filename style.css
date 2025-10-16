@@ -9,7 +9,7 @@
   --card: #ffffff;
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --radius: 12px;
-  --header-h: 110px;
+  --header-h: 80px; /* Default for mobile */
 }
 * {
   box-sizing: border-box;
