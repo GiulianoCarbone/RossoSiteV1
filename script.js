@@ -87,23 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: .15 });
   cards.forEach(c => io.observe(c));
 
-  // ====== NUEVO CÓDIGO PARA TAPAR LA MARCA DE AGUA ======
-  const coverElfsightWatermark = () => {
-    const elfsightLink = document.querySelector('.elfsight-app-c5df1215-bda9-4bd4-bd0d-a9af02f21dbe a[href*="elfsight"]');
-    const coverDiv = document.getElementById('watermark-cover');
-    if (elfsightLink && coverDiv) {
-      const linkRect = elfsightLink.getBoundingClientRect();
-      coverDiv.style.position = 'fixed';
-      coverDiv.style.top = `${linkRect.top}px`;
-      coverDiv.style.left = `${linkRect.left}px`;
-      coverDiv.style.width = `${linkRect.width}px`;
-      coverDiv.style.height = `${linkRect.height}px`;
-      coverDiv.style.backgroundColor = 'white';
-      coverDiv.style.zIndex = '99999';
-    }
-  };
-  setInterval(coverElfsightWatermark, 100);
-  window.addEventListener('resize', coverElfsightWatermark);
+  // El código ineficiente para tapar la marca de agua fue eliminado para mejorar el rendimiento.
 
   // ====== Dropdown en menú móvil (NUEVO) ======
   const mobileDropdownToggles = document.querySelectorAll('#mobile-menu .dropdown-toggle');
