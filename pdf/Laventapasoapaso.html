@@ -30,12 +30,10 @@
         #manual-wrapper {
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            flex-grow: 1; 
+            height: 100%; /* Ocupa la altura del body */
             padding-top: var(--header-height); /* Usamos la variable para el espacio */
             box-sizing: border-box;
-            overflow: auto; 
-            -webkit-overflow-scrolling: touch;
+            overflow: hidden; /* Evita scrolls no deseados */
         }
         
         .flipbook-container {

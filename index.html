@@ -351,6 +351,79 @@
           &#10095;
         </button>
       </section>
+      <!-- ===== NUEVA SECCIÓN: UTILIDADES ===== -->
+      <section class="utilities-section" style="padding: 40px 0; background-color: var(--surface);">
+        <style>
+            .utility-card {
+                background-color: var(--card);
+                border-radius: var(--radius);
+                padding: 30px;
+                text-align: center;
+                box-shadow: var(--shadow);
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .utility-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            .utility-card .icon {
+                font-size: 3rem;
+                color: var(--accent);
+                margin-bottom: 20px;
+                transition: color 0.3s ease;
+            }
+            .utility-card:hover .icon {
+                color: var(--brand);
+            }
+            .utility-card h3 {
+                font-size: 1.3rem;
+                font-weight: 700;
+                color: var(--brand);
+                margin-bottom: 8px;
+            }
+            .utility-card p {
+                color: var(--muted);
+                line-height: 1.6;
+            }
+        </style>
+        <div class="container">
+            <h2 class="section-title" style="text-align: center; margin-bottom: 40px;">Herramientas para tu Proyecto</h2>
+            <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <a href="visualizador-ia.html" class="card-link is-visible">
+                    <div class="utility-card">
+                        <div class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h3>Visualizador de Ambientes</h3>
+                        <p>Subí una foto de tu espacio y mirá cómo quedaría con nuestros productos.</p>
+                    </div>
+                </a>
+                 <a href="calculadora.html" class="card-link is-visible">
+                    <div class="utility-card">
+                        <div class="icon"><i class="fa-solid fa-calculator"></i></div>
+                        <h3>Calculadora de M²</h3>
+                        <p>Calculá la cantidad exacta de cajas que necesitás para tu piso o pared.</p>
+                    </div>
+                </a>
+                 <a href="checklist.html" class="card-link is-visible">
+                    <div class="utility-card">
+                        <div class="icon"><i class="fa-solid fa-list-check"></i></div>
+                        <h3>Checklist de Obra</h3>
+                        <p>Listas de materiales por proyecto para que no te olvides de nada.</p>
+                    </div>
+                </a>
+                 <a href="glosario.html" class="card-link is-visible">
+                    <div class="utility-card">
+                        <div class="icon"><i class="fa-solid fa-book-atlas"></i></div>
+                        <h3>Glosario de Construcción</h3>
+                        <p>¿No entendés un término? Te lo explicamos de forma sencilla.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+      </section>
+      <!-- ===== FIN DE LA NUEVA SECCIÓN ===== -->
 
       <section class="partners-section">
         <div class="">
@@ -608,7 +681,6 @@
     >
       <i class="fa-solid fa-arrow-up"></i>
     </a>
-
     <script src="script.js"></script>
   </body>
 </html>
