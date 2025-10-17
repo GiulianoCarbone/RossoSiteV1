@@ -10,9 +10,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link href="style.css" rel="stylesheet" />
   <style>
-    /* Evitar scroll horizontal global si algo se desborda */
-    html, body { overflow-x: clip; }
-
     .visualizer-section { padding: 120px 20px 64px; background-color: #f0f2f5; }
     .visualizer-container { max-width: 1200px; margin: 0 auto; }
     .section-header { text-align: center; margin-bottom: 50px; }
@@ -37,8 +34,6 @@
     /* --- Carrusel de productos (corregido) --- */
     .product-slider-container {
       position: relative;
-      max-width: calc(5 * 110px + 4 * 12px + 2 * 8px); /* 5 items + 4 gaps + padding */
-      margin: 0 auto; /* Centra el carrusel si el espacio es mayor */
     }
     .product-gallery {
       display: flex;
@@ -111,8 +106,159 @@
     #send-request-btn:disabled { opacity: 0.7; cursor: not-allowed; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+    /* --- Botón de selección de producto --- */
+    .select-product-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background-color: var(--brand);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      margin-bottom: 15px; /* Espacio antes de la vista previa */
+    }
+    .select-product-btn:hover {
+      background-color: var(--brand-600);
+    }
+
+    /* --- Vista previa del producto seleccionado --- */
+    #selected-product-preview {
+      display: none; /* Oculto por defecto */
+      align-items: center;
+      gap: 15px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid #e5e7eb;
+    }
+    #selected-product-preview img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    #selected-product-preview p {
+      margin: 0;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* ===== ESTILOS DEL MODAL DE PRODUCTOS ===== */
+    .product-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+    }
+
+    .product-modal-content {
+      background: #fff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transform: scale(0.95);
+      opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .product-modal-overlay[style*="display: flex"] .product-modal-content {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    .product-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      border-bottom: 1px solid #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    .product-modal-header h4 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .close-modal-btn {
+      background: #f3f4f6;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--muted);
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .close-modal-btn:hover {
+        background-color: #e5e7eb;
+        color: var(--ink);
+    }
+
+    .product-modal-body {
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .product-modal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 20px;
+    }
+
+    .product-modal-grid .product-item {
+        width: auto;
+        height: auto;
+        border: 2px solid #eee;
+        transition: all 0.2s ease;
+    }
+    .product-modal-grid .product-item img {
+        height: 100px;
+    }
+    .product-modal-grid .product-item .product-name {
+        opacity: 1;
+        position: static;
+        background: transparent;
+        color: var(--ink);
+        font-size: 0.8rem;
+        padding: 8px 4px;
+        text-align: center;
+        height: 40px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .product-modal-grid .product-item:hover {
+        border-color: var(--brand);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow);
+    }
+    .product-modal-grid .product-item.selected {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent);
+        transform: translateY(-4px);
+    }
+
     @media (max-width: 900px) { .visualizer-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 480px){ .product-gallery{ padding:10px 40px; } }
   </style>
 </head>
 <body>
@@ -181,12 +327,10 @@
 
             <div class="step-card">
               <div class="step-header"><div class="step-number">2</div><h2 class="step-title">Elegí el Revestimiento</h2></div>
-              <div class="product-slider-container">
-                <div class="product-gallery">
-                  <!-- Los productos se cargarán aquí desde JS -->
-                </div>
-                <button class="slider-nav prev" aria-label="Anterior">&lt;</button>
-                <button class="slider-nav next" aria-label="Siguiente">&gt;</button>
+              <button id="open-product-modal-btn" class="select-product-btn">Seleccionar Revestimiento</button>
+              <div id="selected-product-preview">
+                <img id="selected-product-img" src="" alt="Producto seleccionado">
+                <p id="selected-product-name"></p>
               </div>
             </div>
 
@@ -231,6 +375,21 @@
       </div>
     </section>
   </main>
+
+  <!-- ===== NUEVO: MODAL DE PRODUCTOS ===== -->
+  <div id="product-modal" class="product-modal-overlay">
+    <div class="product-modal-content">
+      <div class="product-modal-header">
+        <h4>Seleccioná un Revestimiento</h4>
+        <button id="close-product-modal-btn" class="close-modal-btn">&times;</button>
+      </div>
+      <div class="product-modal-body">
+        <div id="product-modal-grid" class="product-modal-grid">
+          <!-- La grilla de productos se renderizará aquí con JS -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <footer class="main-footer">
     <div class="container"><p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p></div>
@@ -376,8 +535,27 @@
       });
     });
 
-    // --- PASO 2: RENDER DE PRODUCTOS ---
-    const productGallery = document.querySelector('.product-gallery');
+    // --- PASO 2: LÓGICA DEL MODAL DE PRODUCTOS ---
+    const productModal = document.getElementById('product-modal');
+    const openModalBtn = document.getElementById('open-product-modal-btn');
+    const closeModalBtn = document.getElementById('close-product-modal-btn');
+    const productGrid = document.getElementById('product-modal-grid');
+    const selectedProductPreview = document.getElementById('selected-product-preview');
+    const selectedProductImg = document.getElementById('selected-product-img');
+    const selectedProductName = document.getElementById('selected-product-name');
+
+    openModalBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Previene cualquier comportamiento por defecto del botón
+        productModal.style.display = 'flex';
+    });
+    closeModalBtn.addEventListener('click', () => productModal.style.display = 'none');
+    productModal.addEventListener('click', (e) => {
+      if (e.target === productModal) {
+        productModal.style.display = 'none';
+      }
+    });
+
+    // Renderizar productos dentro del modal
     productos.forEach(product => {
       const itemHTML = `
         <div class="product-item" data-product-sku="${product.sku}">
@@ -386,36 +564,22 @@
                onerror="this.src='https://placehold.co/100x100/EFEFEF/333333?text=Rosso';">
           <div class="product-name">${product.nombre}</div>
         </div>`;
-      productGallery.insertAdjacentHTML('beforeend', itemHTML);
+      productGrid.insertAdjacentHTML('beforeend', itemHTML);
     });
 
-    // --- LÓGICA DEL CARRUSEL (corregida) ---
-    const slider = document.querySelector('.product-gallery');
-    const prevBtn = document.querySelector('.slider-nav.prev');
-    const nextBtn = document.querySelector('.slider-nav.next');
-
-    function getScrollAmount(multiplier = 3){ // 3 ítems por click
-      const firstItem = slider.querySelector('.product-item');
-      if(!firstItem) return 300;
-      const itemRect = firstItem.getBoundingClientRect();
-      const styles = getComputedStyle(slider);
-      const gap = parseFloat(styles.gap || styles.columnGap || 0) || 0;
-      const itemWidth = Math.round(itemRect.width);
-      return Math.max(1, Math.round((itemWidth + gap) * multiplier));
-    }
-
-    prevBtn.addEventListener('click', () => {
-      slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-    });
-    nextBtn.addEventListener('click', () => {
-      slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-    });
-
-    document.querySelectorAll('.product-item').forEach(item => {
+    // Evento para seleccionar un producto desde el modal
+    productGrid.querySelectorAll('.product-item').forEach(item => {
       item.addEventListener('click', () => {
-        document.querySelectorAll('.product-item').forEach(p => p.classList.remove('selected'));
-        item.classList.add('selected');
         selectedProductId = item.dataset.productSku;
+        const selectedProduct = productos.find(p => p.sku === selectedProductId);
+
+        // Actualizar la vista previa en la página principal
+        selectedProductImg.src = selectedProduct.imagen || 'https://placehold.co/100x100/EFEFEF/333333?text=Rosso';
+        selectedProductName.textContent = selectedProduct.nombre;
+        selectedProductPreview.style.display = 'flex';
+
+        // Cerrar el modal
+        productModal.style.display = 'none';
       });
     });
 
@@ -517,10 +681,11 @@
 
     // --- LIMPIAR ---
     document.getElementById('clear-btn').addEventListener('click', () => {
-      document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
       clearImage();
       selectedSurface = null;
       selectedProductId = null;
+      selectedProductPreview.style.display = 'none';
+      document.querySelectorAll('.surface-option.selected').forEach(el => el.classList.remove('selected'));
       document.getElementById('user-name').value = '';
       document.getElementById('user-email').value = '';
     });
