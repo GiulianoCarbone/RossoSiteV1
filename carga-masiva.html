@@ -23,6 +23,28 @@
 <body class="bg-gray-100 py-12 px-4">
 
     <div class="w-full max-w-4xl mx-auto space-y-12">
+
+        <!-- SECCIÓN DE AÑADIR VENDEDOR INDIVIDUAL -->
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-xl font-bold text-gray-700 mb-4">Agregar Nuevo Vendedor</h2>
+            <form id="add-vendedor-form" class="grid md:grid-cols-3 gap-4 items-end">
+                <div class="md:col-span-1">
+                    <label for="new-vendedor-nombre" class="block text-sm font-medium text-gray-700">Nombre y Apellido</label>
+                    <input type="text" id="new-vendedor-nombre" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
+                </div>
+                <div class="md:col-span-1">
+                    <label for="new-vendedor-dni" class="block text-sm font-medium text-gray-700">DNI</label>
+                    <input type="text" id="new-vendedor-dni" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
+                </div>
+                <div class="md:col-span-1">
+                    <button type="submit" id="add-vendedor-btn" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Guardar Vendedor</span>
+                    </button>
+                </div>
+            </form>
+            <div id="add-vendedor-status" class="mt-3 text-sm min-h-[20px]"></div>
+        </div>
         
         <!-- SECCIÓN DE CARGA MASIVA -->
         <div class="bg-white rounded-xl shadow-lg p-8">
@@ -61,15 +83,28 @@
 
         <!-- SECCIÓN DE GESTIÓN DE VENDEDORES -->
         <div class="bg-white rounded-xl shadow-lg p-8">
-             <details>
+             <details open>
                 <summary class="text-2xl font-bold text-gray-800 text-center cursor-pointer list-none">
                     <div class="flex items-center justify-center hover:text-orange-600">
                         <span>Vendedores Actuales</span>
                         <svg class="w-5 h-5 ml-2 transition-transform transform details-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                     </div>
                 </summary>
-                <div id="vendedores-list" class="space-y-3 mt-6">
-                    <p class="text-center text-gray-500">Cargando vendedores...</p>
+                <div class="mt-6 border-t pt-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+                        <div class="relative w-full md:w-1/2">
+                            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="search-vendedores" placeholder="Buscar por nombre o DNI..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <p id="vendedor-count" class="text-sm text-gray-600 font-medium w-full md:w-auto text-left md:text-right"></p>
+                            <button id="export-csv-btn" class="bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition-colors flex items-center justify-center gap-2 text-sm" title="Exportar lista a CSV">
+                                <i class="fa-solid fa-file-csv"></i> Exportar</button>
+                        </div>
+                    </div>
+                    <div id="vendedores-list" class="space-y-3 mt-6 max-h-[50vh] overflow-y-auto pr-2">
+                        <p class="text-center text-gray-500">Cargando vendedores...</p>
+                    </div>
                 </div>
             </details>
         </div>
@@ -95,10 +130,17 @@
         const vendedoresListDiv = document.getElementById('vendedores-list');
         const statusDiv = document.getElementById('status');
         const uploadButton = document.getElementById('upload-button');
+        const searchInput = document.getElementById('search-vendedores');
+        const countSpan = document.getElementById('vendedor-count');
+        const addVendedorForm = document.getElementById('add-vendedor-form');
+        const addVendedorBtn = document.getElementById('add-vendedor-btn');
+        const addVendedorStatus = document.getElementById('add-vendedor-status');
+        const exportCsvBtn = document.getElementById('export-csv-btn');
+
+        let allVendedores = []; // Cache para los vendedores
 
         // --- FUNCIÓN PARA MOSTRAR VENDEDORES ---
-        const displayVendedores = async () => {
-            vendedoresListDiv.innerHTML = '<p class="text-center text-gray-500">Cargando vendedores...</p>';
+        const fetchAndDisplayVendedores = async () => {
             try {
                 const snapshot = await db.collection('vendedores').orderBy('nombre').get();
                 if (snapshot.empty) {
@@ -106,12 +148,29 @@
                     return;
                 }
                 
-                vendedoresListDiv.innerHTML = ''; // Limpiar antes de llenar
-                snapshot.forEach(doc => {
-                    const vendedor = doc.data();
+                allVendedores = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderVendedores(allVendedores);
+
+            } catch (error) {
+                vendedoresListDiv.innerHTML = '<p class="text-center text-red-500">Error al cargar los vendedores.</p>';
+                console.error("Error fetching vendedores: ", error);
+            }
+        };
+
+        // --- FUNCIÓN PARA RENDERIZAR LA LISTA DE VENDEDORES ---
+        const renderVendedores = (vendedores) => {
+            vendedoresListDiv.innerHTML = '';
+            countSpan.textContent = `Mostrando ${vendedores.length} de ${allVendedores.length} vendedores.`;
+
+            if (vendedores.length === 0) {
+                vendedoresListDiv.innerHTML = '<p class="text-center text-gray-500">No se encontraron vendedores que coincidan con la búsqueda.</p>';
+                return;
+            }
+
+            vendedores.forEach(vendedor => {
                     const vendedorEl = document.createElement('div');
                     vendedorEl.className = 'bg-gray-50 p-3 rounded-md border';
-                    vendedorEl.dataset.id = doc.id;
+                    vendedorEl.dataset.id = vendedor.id;
 
                     vendedorEl.innerHTML = `
                         <!-- View Mode -->
@@ -140,13 +199,89 @@
                         </div>
                     `;
                     vendedoresListDiv.appendChild(vendedorEl);
-                });
+            });
+        }
+
+        // --- EVENTO PARA EL BUSCADOR ---
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            const filtered = allVendedores.filter(v => 
+                v.nombre.toLowerCase().includes(query) || v.dni.includes(query)
+            );
+            renderVendedores(filtered);
+        });
+
+        // --- LÓGICA PARA AÑADIR VENDEDOR INDIVIDUAL ---
+        addVendedorForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nombreInput = document.getElementById('new-vendedor-nombre');
+            const dniInput = document.getElementById('new-vendedor-dni');
+            const nombre = nombreInput.value.trim();
+            const dni = dniInput.value.trim();
+
+            if (!nombre || !dni) {
+                addVendedorStatus.textContent = 'Por favor, complete ambos campos.';
+                addVendedorStatus.className = 'mt-3 text-sm text-red-600';
+                return;
+            }
+
+            addVendedorBtn.disabled = true;
+            addVendedorBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> <span>Guardando...</span>';
+            addVendedorStatus.textContent = '';
+
+            try {
+                // Verificar si el DNI ya existe
+                const existing = await db.collection('vendedores').where('dni', '==', dni).get();
+                if (!existing.empty) {
+                    throw new Error(`El DNI ${dni} ya está registrado.`);
+                }
+
+                await db.collection('vendedores').add({ nombre, dni });
+
+                addVendedorStatus.textContent = `Vendedor "${nombre}" agregado con éxito.`;
+                addVendedorStatus.className = 'mt-3 text-sm text-green-600';
+                addVendedorForm.reset();
+                fetchAndDisplayVendedores(); // Recargar la lista
 
             } catch (error) {
-                vendedoresListDiv.innerHTML = '<p class="text-center text-red-500">Error al cargar los vendedores.</p>';
-                console.error("Error fetching vendedores: ", error);
+                addVendedorStatus.textContent = `Error: ${error.message}`;
+                addVendedorStatus.className = 'mt-3 text-sm text-red-600';
+            } finally {
+                addVendedorBtn.disabled = false;
+                addVendedorBtn.innerHTML = '<i class="fa-solid fa-user-plus"></i> <span>Guardar Vendedor</span>';
+                setTimeout(() => addVendedorStatus.textContent = '', 4000);
             }
-        };
+        });
+
+        // --- LÓGICA PARA EXPORTAR A CSV ---
+        exportCsvBtn.addEventListener('click', () => {
+            if (allVendedores.length === 0) {
+                alert('No hay vendedores para exportar.');
+                return;
+            }
+
+            // Crear el contenido del CSV
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Nombre,DNI\n"; // Encabezados
+
+            allVendedores.forEach(vendedor => {
+                const row = `"${vendedor.nombre}","${vendedor.dni}"`;
+                csvContent += row + "\n";
+            });
+
+            // Crear y descargar el archivo
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            
+            const date = new Date().toISOString().slice(0, 10);
+            link.setAttribute("download", `lista_vendedores_${date}.csv`);
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
 
         // --- DELEGACIÓN DE EVENTOS PARA EDITAR Y ELIMINAR ---
         vendedoresListDiv.addEventListener('click', async (e) => {
@@ -162,7 +297,7 @@
                 if (confirm('¿Estás seguro de que querés eliminar a este vendedor?')) {
                     try {
                         await db.collection('vendedores').doc(docId).delete();
-                        displayVendedores(); // Refrescar la lista
+                        fetchAndDisplayVendedores(); // Refrescar la lista
                     } catch (error) {
                         alert('Error al eliminar el vendedor.');
                         console.error("Error deleting document: ", error);
@@ -201,7 +336,7 @@
                         nombre: newNombre,
                         dni: newDni
                     });
-                    displayVendedores(); // Refresh the list
+                    fetchAndDisplayVendedores(); // Refresh the list
                 } catch (error) {
                     alert('Error al guardar los cambios.');
                     console.error("Error updating document: ", error);
@@ -271,13 +406,12 @@
             uploadButton.disabled = false;
             uploadButton.innerHTML = '<i class="fa-solid fa-upload"></i> Cargar Vendedores a la Base de Datos';
             
-            displayVendedores();
+            fetchAndDisplayVendedores();
             document.getElementById('vendedores-json').value = '';
         });
 
         // --- CARGA INICIAL DE VENDEDORES ---
-        document.addEventListener('DOMContentLoaded', displayVendedores);
+        document.addEventListener('DOMContentLoaded', fetchAndDisplayVendedores);
     </script>
 </body>
 </html>
-

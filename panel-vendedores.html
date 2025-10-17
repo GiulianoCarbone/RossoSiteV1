@@ -698,6 +698,10 @@
               text-overflow: ellipsis;
               margin: 0;
             }
+            .admin-item-content p.request-details {
+              text-overflow: ellipsis;
+              margin: 0;
+            }
             .admin-item-content small {
               display: block;
               color: var(--muted);
@@ -720,11 +724,17 @@
             .edit-btn {
               background-color: #007bff;
             }
+            .view-btn {
+              background-color: #17a2b8;
+            }
             .delete-btn {
               background-color: #dc3545;
             }
             .reset-btn {
               background-color: #6c757d;
+            }
+            .complete-btn {
+                background-color: #28a745;
             }
 
             /* Formulario de Contenido */
@@ -1294,6 +1304,15 @@
             </div>
             <div id="admin-trainings-list" class="admin-list"></div>
           </details>
+
+          <details class="admin-section-details">
+            <summary>
+              <span>Gestionar Solicitudes de Diseño</span>
+              <i class="fa-solid fa-chevron-down details-arrow"></i>
+            </summary>
+            <div id="admin-visualizer-list" class="admin-list"></div>
+          </details>
+
         </div>
       </div>
     </div>
@@ -2270,6 +2289,41 @@
             trainingsListContainer.appendChild(item);
           });
 
+          // Populate Visualizer Requests
+          const visualizerListContainer = document.getElementById("admin-visualizer-list");
+          visualizerListContainer.innerHTML = "Cargando solicitudes...";
+          const visualizerSnapshot = await db.collection("visualizer_requests").orderBy("timestamp", "desc").get();
+          visualizerListContainer.innerHTML = "";
+          if (visualizerSnapshot.empty) {
+              visualizerListContainer.innerHTML = "<p>No hay solicitudes de diseño pendientes.</p>";
+          } else {
+              visualizerSnapshot.forEach((doc) => {
+                  const request = { id: doc.id, ...doc.data() };
+                  const item = document.createElement("div");
+                  item.className = "admin-item";
+                  const requestDate = request.timestamp ? request.timestamp.toDate().toLocaleString('es-AR') : 'Fecha no disponible';
+                  const isCompleted = request.status === 'completed';
+
+                  item.style.opacity = isCompleted ? '0.6' : '1';
+
+                  item.innerHTML = `
+                      <div class="admin-item-content" style="width: 100%;">
+                          <p class="request-details" style="white-space: normal;">
+                              <strong>Cliente:</strong> ${request.userName} (${request.userEmail})<br>
+                              <strong>Producto:</strong> ${request.productName} (${request.surface})
+                          </p>
+                          <small>Recibido: ${requestDate}</small>
+                      </div>
+                      <div class="admin-item-actions">
+                          <a href="${request.imageUrl}" target="_blank" class="admin-btn view-btn" title="Ver Imagen"><i class="fa-solid fa-image"></i></a>
+                          <button class="admin-btn complete-btn" data-collection="visualizer_requests" data-id="${request.id}" title="Marcar como Completado" ${isCompleted ? 'disabled' : ''}>
+                              <i class="fa-solid ${isCompleted ? 'fa-check-double' : 'fa-check'}"></i>
+                          </button>
+                      </div>`;
+                  visualizerListContainer.appendChild(item);
+              });
+          }
+
           addAdminEventListeners();
         }
 
@@ -2324,6 +2378,23 @@
                 );
               })
           );
+
+          document.querySelectorAll("#admin-visualizer-list .complete-btn").forEach(
+            (btn) =>
+              (btn.onclick = async function (e) {
+                const button = e.currentTarget;
+                const docId = button.dataset.id;
+                if (confirm(`¿Marcar esta solicitud como completada?`)) {
+                  await db.collection("visualizer_requests").doc(docId).update({
+                      status: 'completed'
+                  });
+                  button.disabled = true;
+                  button.innerHTML = '<i class="fa-solid fa-check-double"></i>';
+                  button.closest('.admin-item').style.opacity = '0.6';
+                }
+              })
+          );
+
         }
 
         function openNewsForm(data = {}) {

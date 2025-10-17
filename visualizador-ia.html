@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Visualizador IA Funcional - Rosso Materiales</title>
+    <title>Visualizador de Ambientes | Solicitá tu Diseño - Rosso Materiales</title>
     <link href="assets/FAV.png" rel="icon">
+    <meta name="description" content="Subí una foto de tu ambiente, elegí el revestimiento que te gusta y recibí un diseño personalizado hecho por nuestros expertos. ¡Visualizá tu proyecto con Rosso Materiales!">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link href="style.css" rel="stylesheet" />
@@ -12,7 +13,7 @@
         .visualizer-section { padding: 120px 20px 64px; background-color: #f0f2f5; }
         .visualizer-container { max-width: 1200px; margin: 0 auto; }
         .section-header { text-align: center; margin-bottom: 50px; }
-        .section-title { font-size: 2.8rem; font-weight: 800; color: var(--brand); }
+        .section-title { font-size: 2.5rem; font-weight: 800; color: var(--brand); }
         .section-subtitle { font-size: 1.2rem; color: var(--muted); max-width: 65ch; margin: 10px auto 0; }
         .visualizer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .config-column, .result-column { display: flex; flex-direction: column; gap: 30px; }
@@ -20,31 +21,53 @@
         .step-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
         .step-number { background: var(--brand); color: #fff; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 1.5rem; font-weight: 700; }
         .step-title { font-size: 1.4rem; font-weight: 700; color: var(--brand); margin: 0; }
+        
+        /* --- INICIO: NUEVOS ESTILOS PARA SELECCIÓN DE SUPERFICIE --- */
         .surface-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .surface-option { border: 2px solid #e5e7eb; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
-        .surface-option svg { width: 48px; height: 48px; }
-        .surface-option span { font-weight: 600; font-size: 1.1rem; }
+        .surface-option { position: relative; height: 120px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; overflow: hidden; display: grid; place-items: center; border: 3px solid transparent; background-size: cover; background-position: center; }
+        .surface-option::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.4); transition: background 0.2s; }
+        .surface-option span { position: relative; z-index: 2; font-weight: 700; font-size: 1.3rem; color: #fff; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
         .surface-option:hover { border-color: var(--brand); }
-        .surface-option.selected { border-color: var(--accent); background-color: #fef5f2; box-shadow: 0 0 0 2px rgba(236, 100, 52, 0.3); }
-        .product-gallery { max-height: 250px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; padding: 5px; }
-        .product-item { border: 2px solid transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; overflow: hidden; }
-        .product-item img{ display:block; width:100%; }
-        .product-item.selected { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(236, 100, 52, 0.3); }
-        #image-preview-container { text-align: center; }
-        #image-preview { max-width: 100%; max-height: 200px; border-radius: 8px; margin-top: 15px; }
-        #results-gallery { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .result-card { background: #fff; border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
-        .result-card img { width: 100%; display: block; }
-        .result-info { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #f9fafb; }
-        .result-info p { font-weight: 600; color: var(--brand); margin: 0; }
-        .result-card .quote-button { padding: 8px 12px; font-size: 0.9rem; background: var(--accent); color:#fff; border-radius: 8px; font-weight:600; text-decoration: none; }
+        .surface-option.selected { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent); }
+        .surface-option.selected::before { background: rgba(236, 100, 52, 0.3); }
+        /* --- FIN: NUEVOS ESTILOS PARA SELECCIÓN DE SUPERFICIE --- */
+
+        /* --- INICIO: NUEVOS ESTILOS PARA SLIDER DE PRODUCTOS --- */
+        .product-slider-container { position: relative; }
+        .product-gallery { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px; scrollbar-width: none; /* Firefox */ }
+        .product-gallery::-webkit-scrollbar { display: none; /* Chrome, Safari, Opera */ }
+        .product-item { flex: 0 0 110px; scroll-snap-align: start; border: 3px solid transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; overflow: hidden; position: relative; }
+        .slider-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: 1px solid #e5e7eb; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; z-index: 10; display: grid; place-items: center; }
+        .slider-nav:hover { background: #fff; }
+        .slider-nav.prev { left: -18px; }
+        .slider-nav.next { right: -18px; }
+        /* --- FIN: NUEVOS ESTILOS PARA SLIDER DE PRODUCTOS --- */
+
+        .product-item img{ display:block; width:100%; height: 100px; object-fit: cover; }
+        .product-item .product-name { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: #fff; font-size: 0.75rem; padding: 4px; text-align: center; opacity: 0; transition: opacity 0.2s; }
+        .product-item:hover .product-name { opacity: 1; }
+        .product-item.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+        .upload-area { border: 2px dashed #d1d5db; border-radius: 8px; padding: 30px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+        .upload-area p { color: var(--muted); font-weight: 500; }
+        #image-preview-container { text-align: center; position: relative; }
+        #image-preview { max-width: 100%; max-height: 200px; border-radius: 8px; margin-top: 15px; border: 1px solid #e5e7eb; }
+        #remove-image-btn { position: absolute; top: 20px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; display: none; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: 600; color: var(--muted); margin-bottom: 6px; font-size: 0.9rem; }
+        .input-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+        #confirmation-card { display: none; text-align: center; padding: 40px 20px; }
+        #confirmation-card .fa-check-circle { font-size: 4rem; color: #28a745; margin-bottom: 20px; }
+        #confirmation-card h3 { font-size: 1.8rem; color: var(--brand); margin-bottom: 10px; }
+        #confirmation-card p { color: var(--muted); line-height: 1.6; }
+        #confirmation-card .back-home-btn { display: inline-block; margin-top: 25px; background: var(--brand); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; }
         .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
-        #generate-btn { flex-grow: 1; display: flex; justify-content: center; align-items: center; gap: 10px; background-color: var(--brand); color:#fff; }
-        #clear-btn { background: #6c757d; color:#fff; padding: 0 20px; }
-        #generate-btn .fa-spinner { display: none; }
-        #generate-btn.loading .fa-spinner { display: inline-block; animation: spin 1s linear infinite; }
-        #generate-btn.loading .btn-text { margin-left: -15px; }
-        #generate-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .generate-button { flex-grow: 1; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 14px; font-size: 1.1rem; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        #send-request-btn { background-color: var(--accent); color:#fff; }
+        #clear-btn { background: #e5e7eb; color: var(--muted); padding: 0 20px; }
+        #send-request-btn .fa-spinner { display: none; }
+        #send-request-btn.loading .fa-spinner { display: inline-block; animation: spin 1s linear infinite; }
+        #send-request-btn.loading .btn-text { display: none; }
+        #send-request-btn:disabled { opacity: 0.7; cursor: not-allowed; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @media (max-width: 900px) { .visualizer-grid { grid-template-columns: 1fr; } }
     </style>
@@ -57,9 +80,9 @@
 <main>
 <section class="visualizer-section">
     <div class="visualizer-container">
-        <div class="section-header">
-            <h1 class="section-title">Visualizador IA</h1>
-            <p class="section-subtitle">Tu proyecto, hecho realidad. Seguí estos 4 simples pasos y creá el diseño perfecto para tu hogar.</p>
+        <div class="section-header" id="main-header">
+            <h1 class="section-title">Visualizá tu Ambiente</h1>
+            <p class="section-subtitle">¿No te decidís? Subí una foto de tu espacio, elegí el revestimiento y te enviamos un diseño personalizado hecho por nuestros expertos.</p>
         </div>
 
         <div class="visualizer-grid">
@@ -67,42 +90,56 @@
                 <div class="step-card">
                     <div class="step-header"><div class="step-number">1</div><h2 class="step-title">¿Qué querés renovar?</h2></div>
                     <div class="surface-selector">
-                        <div class="surface-option" data-surface="floor">
-                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 54L2 24H62L56 54H8Z" stroke="#EC6434" stroke-width="3"/><path d="M32 24V54" stroke="#EC6434" stroke-width="2.5"/><path d="M17 24L25 54" stroke="#EC6434" stroke-width="2.5"/><path d="M47 24L39 54" stroke="#EC6434" stroke-width="2.5"/><path d="M4 39H60" stroke="#EC6434" stroke-width="2.5"/></svg>
+                        <div class="surface-option" data-surface="floor" style="background-image: url('https://images.unsplash.com/photo-1585079542413-959ed2a448fd?auto=format&fit=crop&w=800&q=80');">
                             <span>Piso</span>
                         </div>
-                        <div class="surface-option" data-surface="wall">
-                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10" width="54" height="44" stroke="#EC6434" stroke-width="3"/><line x1="5" y1="28" x2="59" y2="28" stroke="#EC6434" stroke-width="2.5"/><line x1="5" y1="42" x2="59" y2="42" stroke="#EC6434" stroke-width="2.5"/><line x1="32" y1="10" x2="32" y2="28" stroke="#EC6434" stroke-width="2.5"/><line x1="18" y1="28" x2="18" y2="42" stroke="#EC6434" stroke-width="2.5"/><line x1="46" y1="28" x2="46" y2="42" stroke="#EC6434" stroke-width="2.5"/><line x1="32" y1="42" x2="32" y2="54" stroke="#EC6434" stroke-width="2.5"/></svg>
+                        <div class="surface-option" data-surface="wall" style="background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80');">
                             <span>Pared</span>
                         </div>
                     </div>
                 </div>
                 <div class="step-card">
                     <div class="step-header"><div class="step-number">2</div><h2 class="step-title">Elegí el Revestimiento</h2></div>
-                    <div class="product-gallery">
-                        <div class="product-item" data-product-id="calacata"><img src="assets/bilboanatural51x51caraweb.jpg" alt="Calacata Gold"></div>
-                        <div class="product-item" data-product-id="madera"><img src="assets/bilboanatural51x51caraweb.jpg" alt="Símil Madera"></div>
+                    <div class="product-slider-container">
+                        <div class="product-gallery">
+                            <!-- Los productos se cargarán aquí desde JS -->
+                        </div>
+                        <button class="slider-nav prev" aria-label="Anterior">&lt;</button>
+                        <button class="slider-nav next" aria-label="Siguiente">&gt;</button>
                     </div>
                 </div>
                 <div class="step-card">
                     <div class="step-header"><div class="step-number">3</div><h2 class="step-title">Subí tu Foto</h2></div>
                     <div id="upload-area" class="upload-area"><p>Arrastrá y soltá una imagen o hacé clic</p><input type="file" id="image-upload" hidden accept="image/*"></div>
-                    <div id="image-preview-container"><img id="image-preview" src="#" alt="Vista previa" style="display: none;" /></div>
+                    <div id="image-preview-container">
+                        <img id="image-preview" src="#" alt="Vista previa" style="display: none;" />
+                        <button id="remove-image-btn" title="Quitar imagen">&times;</button>
+                    </div>
                 </div>
             </div>
             <div class="result-column">
                 <div class="step-card">
-                    <div class="step-header"><div class="step-number">4</div><h2 class="step-title">¡Creá y Compará!</h2></div>
-                    <p>Hacé clic en "Generar Diseño" para ver la magia. Podés crear varias versiones con distintos productos.</p>
+                    <div class="step-header"><div class="step-number">4</div><h2 class="step-title">Tus Datos</h2></div>
+                    <p>Completá tus datos para que podamos enviarte el diseño terminado a tu correo.</p>
+                    <div class="input-group">
+                        <label for="user-name">Nombre y Apellido</label>
+                        <input type="text" id="user-name" placeholder="Ej: Juan Pérez" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="user-email">Email</label>
+                        <input type="email" id="user-email" placeholder="Ej: juan.perez@email.com" required>
+                    </div>
                     <div class="action-buttons">
-                        <button id="generate-btn" class="generate-button"><i class="fas fa-spinner"></i><span class="btn-text">Generar Diseño</span></button>
+                        <button id="send-request-btn" class="generate-button"><i class="fas fa-spinner"></i><span class="btn-text">Enviar Solicitud</span></button>
                         <button id="clear-btn" class="generate-button" title="Empezar de nuevo"><i class="fa-solid fa-eraser"></i></button>
                     </div>
                 </div>
-                 <div class="step-card">
-                    <div class="step-header"><h2 class="step-title">Mis Diseños</h2></div>
-                    <div id="results-gallery">
-                        <p id="results-placeholder">Tus diseños generados aparecerán aquí.</p>
+                 <div class="step-card" id="confirmation-card">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>¡Solicitud Enviada!</h3>
+                    <p>Recibimos tus datos correctamente. Nuestro equipo de diseño se pondrá a trabajar y te enviaremos el resultado a tu correo a la brevedad. ¡Gracias por confiar en Rosso Materiales!</p>
+                    <div>
+                        <a href="/" class="back-home-btn">Volver al Inicio</a>
                     </div>
                 </div>
             </div>
@@ -112,17 +149,38 @@
 </main>
 <footer class="main-footer"><div class="container"><p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p></div></footer>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Base de datos de productos (puedes ampliarla)
+    const firebaseConfig = {
+        apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+        authDomain: "backend-panel-vendedores.firebaseapp.com",
+        projectId: "backend-panel-vendedores",
+        storageBucket: "backend-panel-vendedores.appspot.com",
+        messagingSenderId: "24873830395",
+        appId: "1:24873830395:web:ea6749407f991ee8226d5e",
+        measurementId: "G-E4Z0Y849KF",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
     const productsData = {
-        'calacata': { name: 'Porcelanato Calacata Gold', image: 'assets/SLIDER2/revestimientos2.jpg' },
-        'madera': { name: 'Cerámica Símil Madera', image: 'assets/SLIDER2/revestimientos.jpg' }
+        'bariloche-gris': { name: 'Bariloche Gris', image: 'https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_68e2dccf-9d0b-44c9-bca7-8193775e16c2.jpg?s=small&f=webp' },
+        'portland-negro': { name: 'Portland Negro', image: 'https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9d364664-5d26-4634-9bdc-cb09d4be7c9a.jpg?s=small&f=webp' },
+        'biloba-intenso': { name: 'Biloba Intenso', image: 'https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_8cf9729d-9a6d-4eac-b479-49e251abe26a.jpg?s=small&f=webp' },
+        'parquet-fresno': { name: 'Parquet Fresno', image: 'https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_27232656-d504-4607-84c9-9a6630721148.jpg?s=small&f=webp' },
+        'marmol-calacata': { name: 'Mármol Calacata', image: 'https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_89417522-a9e2-45f1-bf47-dab94e0d3877.jpg?s=small&f=webp' },
+        'roble-canela': { name: 'Roble Canela', image: 'https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_6f8eaa97-4b27-402b-8daa-e9b9cf07f62f.jpg?s=small&f=webp' }
     };
 
     let selectedSurface = null;
     let selectedProductId = null;
-    let userImageFile = null; // Guardaremos el archivo de imagen
+    let userImageFile = null;
 
     // --- PASO 1: SELECCIÓN DE SUPERFICIE ---
     document.querySelectorAll('.surface-option').forEach(option => {
@@ -134,6 +192,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- PASO 2: SELECCIÓN DE PRODUCTO ---
+    const productGallery = document.querySelector('.product-gallery');
+    Object.keys(productsData).forEach(productId => {
+        const product = productsData[productId];
+        const itemHTML = `
+            <div class="product-item" data-product-id="${productId}">
+                <img src="${product.image}" alt="${product.name}" loading="lazy">
+                <div class="product-name">${product.name}</div>
+            </div>`;
+        productGallery.insertAdjacentHTML('beforeend', itemHTML);
+    });
+
+    // --- LÓGICA DEL SLIDER DE PRODUCTOS ---
+    const slider = document.querySelector('.product-gallery');
+    const prevBtn = document.querySelector('.slider-nav.prev');
+    const nextBtn = document.querySelector('.slider-nav.next');
+    const scrollAmount = 244; // Ancho de 2 items + gap
+
+    prevBtn.addEventListener('click', () => {
+        slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+        slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+
     document.querySelectorAll('.product-item').forEach(item => {
         item.addEventListener('click', () => {
             document.querySelectorAll('.product-item').forEach(p => p.classList.remove('selected'));
@@ -146,6 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadArea = document.getElementById('upload-area');
     const fileInput = document.getElementById('image-upload');
     const imagePreview = document.getElementById('image-preview');
+    const removeImageBtn = document.getElementById('remove-image-btn');
 
     uploadArea.addEventListener('click', () => fileInput.click());
     
@@ -162,14 +246,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
 
+    removeImageBtn.addEventListener('click', clearImage);
+
     function handleFile(file) {
         if (file && file.type.startsWith('image/')) {
-            userImageFile = file; // Guardamos el archivo
+            userImageFile = file;
             const reader = new FileReader();
             reader.onload = e => {
                 imagePreview.src = e.target.result;
                 imagePreview.style.display = 'block';
                 uploadArea.querySelector('p').style.display = 'none';
+                removeImageBtn.style.display = 'block';
             }
             reader.readAsDataURL(file);
         } else {
@@ -178,74 +265,75 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- PASO 4: GENERAR Y MOSTRAR RESULTADOS ---
-    const generateBtn = document.getElementById('generate-btn');
-    const resultsGallery = document.getElementById('results-gallery');
+    function clearImage() {
+        userImageFile = null;
+        fileInput.value = '';
+        imagePreview.src = '#';
+        imagePreview.style.display = 'none';
+        uploadArea.querySelector('p').style.display = 'block';
+        removeImageBtn.style.display = 'none';
+    }
 
-    generateBtn.addEventListener('click', () => {
+    // --- PASO 4: ENVIAR SOLICITUD ---
+    const sendRequestBtn = document.getElementById('send-request-btn');
+
+    sendRequestBtn.addEventListener('click', async () => {
+        const userName = document.getElementById('user-name').value.trim();
+        const userEmail = document.getElementById('user-email').value.trim();
+
         if (!selectedSurface) { alert('Paso 1: Por favor, elegí si vas a renovar un piso o una pared.'); return; }
         if (!selectedProductId) { alert('Paso 2: No te olvides de seleccionar un revestimiento.'); return; }
         if (!userImageFile) { alert('Paso 3: ¡Falta la foto de tu ambiente!'); return; }
+        if (!userName || !userEmail) { alert('Paso 4: Por favor, completá tu nombre y email.'); return; }
 
-        generateBtn.classList.add('loading');
-        generateBtn.disabled = true;
-        generateBtn.querySelector('.btn-text').textContent = 'Procesando...';
+        sendRequestBtn.classList.add('loading');
+        sendRequestBtn.disabled = true;
 
-        const formData = new FormData();
-        formData.append('userImageFile', userImageFile);
-        formData.append('productId', selectedProductId);
-        formData.append('surfaceType', selectedSurface);
+        try {
+            // 1. Subir imagen a Firebase Storage
+            const fileExtension = userImageFile.name.split('.').pop();
+            const fileName = `visualizer_uploads/${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExtension}`;
+            const storageRef = storage.ref(fileName);
+            const uploadTask = await storageRef.put(userImageFile);
+            const imageUrl = await uploadTask.ref.getDownloadURL();
 
-        const API_ENDPOINT = "http://127.0.0.1:5000/generate-design";
+            // 2. Guardar datos en Firestore
+            await db.collection('visualizer_requests').add({
+                userName: userName,
+                userEmail: userEmail,
+                surface: selectedSurface,
+                productId: selectedProductId,
+                productName: productsData[selectedProductId].name,
+                imageUrl: imageUrl,
+                status: 'pending', // 'pending', 'completed'
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
 
-        fetch(API_ENDPOINT, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(err => { throw new Error(err.error || 'Error desconocido del servidor.') });
-            }
-            return response.json();
-        })
-        .then(data => {
-            const product = productsData[selectedProductId];
-            const resultImageUrl = data.result_url; 
-            
-            const placeholder = document.getElementById('results-placeholder');
-            if (placeholder) { placeholder.style.display = 'none'; }
-            
-            const resultCardHTML = `
-                <div class="result-card">
-                    <img src="${resultImageUrl}" alt="Diseño con ${product.name}">
-                    <div class="result-info">
-                        <p>Diseño con: <strong>${product.name}</strong></p>
-                        <a href="https://wa.me/5493814146917?text=Hola,%20quisiera%20un%20presupuesto%20para%20este%20diseño%20con%20el%20producto%20${product.name}" target="_blank" class="quote-button">Pedir Presupuesto</a>
-                    </div>
-                </div>`;
-            resultsGallery.insertAdjacentHTML('beforeend', resultCardHTML);
-        })
-        .catch(error => {
-            console.error('Error en la llamada a la IA:', error);
-            alert(`Hubo un problema al generar el diseño: ${error.message}`);
-        })
-        .finally(() => {
-            generateBtn.classList.remove('loading');
-            generateBtn.disabled = false;
-            generateBtn.querySelector('.btn-text').textContent = 'Generar Diseño';
-        });
+            // 2.5. Resetear el botón antes de mostrar la confirmación
+            sendRequestBtn.classList.remove('loading');
+            sendRequestBtn.disabled = false;
+
+            // 3. Mostrar confirmación
+            document.querySelector('.visualizer-grid').style.display = 'none';
+            document.getElementById('main-header').style.display = 'none';
+            document.getElementById('confirmation-card').style.display = 'block';
+        } catch (error) {
+            console.error("Error al enviar la solicitud: ", error);
+            alert("Hubo un problema al enviar tu solicitud. Por favor, intentá de nuevo más tarde.");
+        } finally {
+            sendRequestBtn.classList.remove('loading');
+            sendRequestBtn.disabled = false;
+        }
     });
 
     // --- BOTÓN LIMPIAR ---
     document.getElementById('clear-btn').addEventListener('click', () => {
+        document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+        clearImage();
         selectedSurface = null;
         selectedProductId = null;
-        userImageFile = null;
-        document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
-        imagePreview.style.display = 'none';
-        uploadArea.querySelector('p').style.display = 'block';
-        fileInput.value = '';
-        resultsGallery.innerHTML = '<p id="results-placeholder">Tus diseños generados aparecerán aquí.</p>';
+        document.getElementById('user-name').value = '';
+        document.getElementById('user-email').value = '';
     });
 });
 </script>
