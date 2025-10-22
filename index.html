@@ -37,6 +37,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
+   
   </head>
 
   <body>
@@ -214,6 +215,9 @@
           aria-label="Paginación del slider"
         ></div>
       </section>
+
+      
+
       <h1 class="section-title" style="text-align: center; margin-top: 40px">
         Materiales para la Construcción en Tucumán y Salta
       </h1>
@@ -311,7 +315,23 @@
           </div>
         </div>
       </section>
-
+<!-- ===== NUEVA SECCIÓN DE BÚSQUEDA ===== -->
+      <section class="home-search-section">
+        <div class="home-search-container">
+          <h2 class="section-title" style="text-align: center; margin-bottom: 20px;">
+            ¿Qué producto estás buscando?
+          </h2>
+          <input
+            type="text"
+            id="home-search-input"
+            autocomplete="off"
+            placeholder="Griferías, Juegos de baño, Puertas.."
+          />
+          <div id="home-results-container">
+            <!-- Los resultados aparecerán aquí -->
+          </div>
+        </div>
+      </section>
       <section
         id="horizontal-slider"
         class="slider-section"
@@ -681,6 +701,84 @@
     >
       <i class="fa-solid fa-arrow-up"></i>
     </a>
+    <script src="todos_los_productos.js"></script>
     <script src="script.js"></script>
+    <script>
+      // --- LÓGICA DEL BUSCADOR PARA LA PÁGINA DE INICIO ---
+      window.addEventListener('load', () => {
+        const searchInput = document.getElementById("home-search-input");
+        const resultsContainer = document.getElementById("home-results-container");
+
+        if (!searchInput) return;
+
+        function displayResults(results, query) {
+          resultsContainer.innerHTML = ""; 
+
+          if (query.length < 2) {
+            resultsContainer.style.display = 'none';
+            return;
+          }
+
+          if (results.length === 0) {
+            resultsContainer.innerHTML = `<div id="home-status-message"><p>No se encontraron productos para "<strong>${query}</strong>".</p></div>`;
+            resultsContainer.style.display = 'block';
+            return;
+          }
+
+          resultsContainer.style.display = 'block';
+
+          results.forEach((producto) => {
+            const item = document.createElement("a");
+            item.className = "result-item";
+            item.href = producto["URL del Producto"] || producto.url; // Compatible con ambas estructuras
+            item.target = "_blank";
+            item.innerHTML = `
+              <img src="${producto.imagen || 'https://placehold.co/100x100/EFEFEF/333333?text=Rosso'}" alt="${producto["Nombre del Producto"] || producto.nombre}" onerror="this.src='https://placehold.co/100x100/EFEFEF/333333?text=Rosso';">
+              <div class="info">
+                  <div class="nombre">${producto["Nombre del Producto"] || producto.nombre}</div>
+                  
+                  <div class="sku">${producto.categoria || ''}</div>
+              </div>
+            `;
+            resultsContainer.appendChild(item);
+          });
+        }
+
+        function performSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+
+            if (query.length < 2) {
+                resultsContainer.innerHTML = "";
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            const filteredProducts = productos.filter(
+                (p) =>
+                (p.nombre || p["Nombre del Producto"]).toLowerCase().includes(query) ||
+                (p.sku || p.SKU).toLowerCase().includes(query) ||
+                (p.categoria && p.categoria.toLowerCase().includes(query))
+            );
+
+            displayResults(filteredProducts, query);
+        }
+        
+        searchInput.addEventListener("keyup", performSearch);
+
+        // Ocultar resultados si se hace clic fuera del buscador
+        document.addEventListener('click', (e) => {
+          const searchContainer = document.querySelector('.home-search-container');
+          if (!searchContainer.contains(e.target)) {
+            resultsContainer.style.display = 'none';
+          }
+        });
+
+        // Evitar que el clic dentro del input oculte los resultados
+        searchInput.addEventListener('click', (e) => {
+          e.stopPropagation();
+          performSearch(); // Opcional: mostrar resultados si ya hay texto
+        });
+      });
+    </script>
   </body>
 </html>
