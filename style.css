@@ -260,7 +260,7 @@ main {
 
 /* Sections */
 .main-sections {
-  padding-top: 70px;
+  padding-top: 40px;
   padding-bottom: 30px;
   background: var(--surface);
 }
@@ -464,6 +464,11 @@ main {
   }
 }
 
+/* Ocultar título principal en mobile */
+.desktop-only-title {
+    display: none;
+}
+
 /* === ESTILOS PARA LA NAVEGACIÓN EN DESKTOP === */
 @media (min-width: 768px) {
   .mobile-menu-btn {
@@ -471,6 +476,9 @@ main {
   }
   .nav-links {
     display: flex;
+  }
+  .desktop-only-title {
+    display: block;
   }
 }
 
@@ -1117,7 +1125,7 @@ main {
 
   /* Estilos para la nueva sección de búsqueda */
       .home-search-section {
-        padding: 30px 20px;
+        padding: 10px 10px;
         background-color: var(--surface);
       }
       .home-search-container {
