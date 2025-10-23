@@ -336,6 +336,7 @@
 
             <div class="step-card">
               <div class="step-header"><div class="step-number">3</div><h2 class="step-title">Subí tu Foto</h2></div>
+              <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 15px;">Para un mejor resultado, intentá que la foto sea lo más frontal posible y con la menor cantidad de muebles u objetos.</p>
               <div id="upload-area" class="upload-area"><p>Arrastrá y soltá una imagen o hacé clic</p><input type="file" id="image-upload" hidden accept="image/*"></div>
               <div id="image-preview-container">
                 <img id="image-preview" src="#" alt="Vista previa" style="display: none;" />
@@ -365,9 +366,9 @@
             <div class="step-card" id="confirmation-card">
               <i class="fas fa-check-circle"></i>
               <h3>¡Solicitud Enviada!</h3>
-              <p>Recibimos tus datos correctamente. Nuestro equipo de diseño se pondrá a trabajar y te enviaremos el resultado a tu correo a la brevedad. ¡Gracias por confiar en Rosso Materiales!</p>
+              <p>Recibimos tus datos correctamente. Nuestro equipo de diseño se pondrá a trabajar y te enviaremos el resultado a tu correo en las próximas <strong>48 horas hábiles</strong>. ¡Gracias por confiar en Rosso Materiales!</p>
               <div>
-                <a href="/" class="back-home-btn">Volver al Inicio</a>
+                <a href="visualizador-ia.html" class="back-home-btn">Hacer otra consulta</a>
               </div>
             </div>
           </div>
@@ -613,7 +614,8 @@
 
     // --- PASO 4: ENVIAR ---
     const sendRequestBtn = document.getElementById('send-request-btn');
-    sendRequestBtn.addEventListener('click', async () => {
+    sendRequestBtn.addEventListener('click', async (e) => {
+      e.preventDefault(); // <-- ¡ESTA ES LA LÍNEA CLAVE! Evita que la página se recargue.
       const userName = document.getElementById('user-name').value.trim();
       const userEmail = document.getElementById('user-email').value.trim();
 
@@ -628,10 +630,9 @@
       try {
         // 1) Subir imagen a ImgBB
         const imgbbFormData = new FormData();
-        imgbbFormData.append('key', IMGBB_API_KEY); // <-- AÑADIR ESTA LÍNEA
         imgbbFormData.append('image', userImageFile);
 
-        const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload`, { // <-- QUITAR LA KEY DE LA URL
+        const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
           method: 'POST',
           body: imgbbFormData,
         });
@@ -665,10 +666,10 @@
           throw new Error('Error al enviar el formulario a Formspree.');
         }
 
-         // 3) Mostrar confirmación
-          document.querySelector('.visualizer-grid').style.display = 'none';
-          document.getElementById('main-header').style.display = 'none';
-          document.getElementById('confirmation-card').style.display = 'block';
+        // 3) Mostrar alerta de confirmación y refrescar la página
+        alert('¡Solicitud enviada! En las próximas 48 horas hábiles recibirás el diseño en tu correo electrónico.');
+        location.reload();
+
       } catch (error) {
         console.error("Error al enviar la solicitud: ", error);
         alert(`Hubo un problema al enviar tu solicitud: ${error.message}. Por favor, intentá de nuevo más tarde.`);
