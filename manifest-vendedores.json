@@ -1,7 +1,7 @@
 {
   "name": "Rosso Materiales",
   "short_name": "Rosso Materiales",
-  "start_url": "/panel-vendedores.html",
+  "start_url": "/panel-corporativo.html",
   "display": "standalone",
   "background_color": "#f4f7f6",
   "theme_color": "#ec6434",

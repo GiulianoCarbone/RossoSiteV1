@@ -4,7 +4,7 @@ importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
 const CACHE_NAME = 'panel-vendedores-cache-v2';
 const urlsToCache = [
-  '/panel-vendedores.html',
+  '/panel-corporativo.html', // <-- CAMBIO AQUÍ
   '/style.css'
 ];
 
