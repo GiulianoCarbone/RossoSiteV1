@@ -32,12 +32,12 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link href="style.css" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
-   
+    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="style.css"></noscript>
+
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
+   <link rel="preload" href="assets/SLIDER/MEJOR.webp" as="image">
   </head>
 
   <body>
@@ -118,6 +118,8 @@
                 src="assets/SLIDER/MEJOR.webp"
                 alt="Somos la mejor opción para tu proyecto"
                 class="slide-image"
+                width="1440" 
+            height="720"
               />
             </picture>
           </div>
@@ -132,6 +134,9 @@
                 src="assets/SLIDER/banner canal wsp 3.webp"
                 alt="Variedad y stock permanente"
                 class="slide-image"
+                loading="lazy"
+            width="1440" 
+            height="720"
               />
             </picture>
           </div>
@@ -146,6 +151,9 @@
                 src="assets/SLIDER/detalles.webp"
                 alt="Materiales de obra gruesa hasta terminaciones de diseño"
                 class="slide-image"
+                loading="lazy"
+            width="1440" 
+            height="720"
               />
             </picture>
           </div>
@@ -160,6 +168,9 @@
                 src="assets/SLIDER/marcas.webp"
                 alt="Respaldo de grandes marcas"
                 class="slide-image"
+                loading="lazy"
+            width="1440" 
+            height="720"
               />
             </picture>
           </div>
@@ -174,6 +185,9 @@
                 src="assets/SLIDER/banner_canal_wsp.webp"
                 alt="Promoción"
                 class="slide-image"
+                loading="lazy"
+            width="1440" 
+            height="720"
               />
             </picture>
           </div>
