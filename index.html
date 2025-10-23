@@ -41,7 +41,7 @@
   </head>
 
   <body>
-    <header class="main-header" role="banner">
+    <header class="main-header" role="banner" id="main-header">
       <nav class="main-nav container" aria-label="Primaria">
         <a href="/" class="logo" aria-label="Ir al inicio">
           <img
@@ -49,28 +49,31 @@
             alt="Rosso Materiales"
             class="logo-image"
           />
+          <!-- FIN: Logo -->
         </a>
-        <div class="nav-links" id="nav-links">
+        <div class="nav-links-wrapper" id="nav-links-wrapper">
+          <div class="nav-links" id="nav-links">
           <a href="https://rossomateriales.netlify.app"
             ><i class="fa-solid fa-tags"></i> Promociones</a
           >
           <a href="https://catalogo.rossomateriales.site"
             ><i class="fa-solid fa-book-open"></i> Catálogo</a
           >
-          <a href="/sucursales"
+          <a href="sucursales.html"
             ><i class="fa-solid fa-map-location-dot"></i> Sucursales</a
           >
-          <a href="/nosotros"><i class="fa-solid fa-users"></i> Nosotros</a>
+          <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
           <div class="dropdown">
             <a href="#" class="dropdown-toggle"
               ><i class="fa-solid fa-wrench"></i> Utilidades</a
             >
             <div class="dropdown-menu">
-              <a href="/calculadora">Calculá los m²</a>
-              <a href="/checklist">Checklist de Materiales</a>
-              <a href="/glosario">Glosario</a>
+              <a href="calculadora.html">Calculá los m²</a>
+              <a href="checklist.html">Checklist de Materiales</a>
+              <a href="glosario.html">Glosario</a>
             </div>
           </div>
+        </div>
         </div>
 
         <button
@@ -97,34 +100,6 @@
           </svg>
         </button>
 
-        <div
-          id="mobile-menu"
-          class="mobile-menu"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Menú"
-        >
-          <a href="https://rossomateriales.netlify.app"
-            ><i class="fa-solid fa-tags"></i> Promociones</a
-          >
-          <a href="https://catalogo.rossomateriales.site"
-            ><i class="fa-solid fa-book-open"></i> Catálogo</a
-          >
-          <a href="sucursales.html"
-            ><i class="fa-solid fa-map-location-dot"></i> Sucursales</a
-          >
-          <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
-          <div class="dropdown">
-            <a href="#" class="dropdown-toggle"
-              ><i class="fa-solid fa-wrench"></i> Utilidades</a
-            >
-            <div class="dropdown-menu">
-              <a href="calculadora.html">Calculá los m²</a>
-              <a href="checklist.html">Checklist de Materiales</a>
-              <a href="glosario.html">Glosario</a>
-            </div>
-          </div>
-        </div>
       </nav>
     </header>
 
@@ -224,9 +199,9 @@
       <!-- ===== NUEVA SECCIÓN DE BÚSQUEDA ===== -->
       <section class="home-search-section">
         <div class="home-search-container">
-          <h3 class="section-title" style="text-align: center; margin-bottom: 20px;">
+          <p class="section-title" style="text-align: center; margin-bottom: 20px;">
             ¿Qué producto estás buscando?
-          </h3>
+          </p>
           <input
             type="text"
             id="home-search-input"

@@ -69,10 +69,10 @@ main {
   width: auto;
 }
 
-.nav-links {
-  display: none;
+.nav-links-wrapper {
+  display: flex; /* Por defecto para escritorio */
+  align-items: center;
   gap: 24px;
-  
 }
 .nav-links a {
   color: #272e68;
@@ -81,6 +81,11 @@ main {
   display: flex;
   align-items: center;
   gap: 8px; /* Espacio entre el icono y el texto */
+}
+.nav-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
 }
 /* Color para los iconos del menú (NUEVO) */
 .nav-links a i {
@@ -112,27 +117,6 @@ main {
 .menu-icon {
   width: 28px;
   height: 28px;
-}
-
-.mobile-menu {
-  position: absolute;
-  inset-inline: 0;
-  top: var(--header-h);
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
-  display: none;
-}
-.mobile-menu.show {
-  display: block;
-}
-.mobile-menu a {
-  display: block;
-  padding: 12px 20px;
-  color: #1f244f;
-  text-align: right;
-}
-.mobile-menu a:hover {
-  background: #f3f4f6;
 }
 
 /* Slider */
@@ -464,6 +448,41 @@ main {
   }
 }
 
+/* === ESTILOS PARA NAVEGACIÓN MÓVIL (UNIFICADO) === */
+@media (max-width: 767px) {
+  .nav-links-wrapper {
+    position: absolute;
+    inset-inline: 0;
+    top: var(--header-h);
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    
+    /* Oculto por defecto y controlado por JS */
+    display: none; 
+    flex-direction: column;
+    align-items: flex-end; /* Alinea los items a la derecha */
+    padding: 16px 0;
+  }
+
+  .nav-links-wrapper.show {
+    display: flex; /* Muestra el menú */
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+  }
+
+  .nav-links a {
+    padding: 12px 20px;
+    width: 100%;
+    justify-content: flex-end; /* Icono y texto a la derecha */
+  }
+  .nav-links a:hover {
+    background: #f3f4f6;
+  }
+}
 /* Ocultar título principal en mobile */
 .desktop-only-title {
     display: none;
@@ -474,7 +493,7 @@ main {
   .mobile-menu-btn {
     display: none;
   }
-  .nav-links {
+  .nav-links-wrapper {
     display: flex;
   }
   .desktop-only-title {
@@ -804,43 +823,6 @@ main {
 .dropdown:hover .dropdown-menu {
   display: block;
 }
-/* ====== Estilos para Menú Desplegable Móvil (NUEVO) ====== */
-
-/* Aseguramos que el contenedor del dropdown ocupe todo el ancho */
-#mobile-menu .dropdown {
-  width: 100%;
-}
-
-/* Hacemos que el botón "Utilidades" se vea igual que los otros links del menú */
-#mobile-menu .dropdown-toggle {
-  display: block;
-  padding: 12px 20px;
-  color: #1f244f;
-  text-align: right;
-  width: 100%;
-  box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: none;
-  border: none;
-  font-size: inherit;
-  font-family: inherit;
-}
-
-#mobile-menu .dropdown-toggle:hover {
-  background: #f3f4f6;
-}
-
-/* El submenú en móvil no debe ser flotante */
-#mobile-menu .dropdown-menu {
-  position: static; /* No es absoluto como en desktop */
-  display: none; /* Oculto por defecto */
-  box-shadow: none;
-  border-radius: 0;
-  min-width: unset;
-  background-color: #f9fafb; /* Un color de fondo ligeramente diferente */
-}
 
 /* Estilo para los links del submenú */
 #mobile-menu .dropdown-menu a {
@@ -957,18 +939,6 @@ main {
   align-items: center;
   opacity: 1;
   transform: translateY(0);
-}
-
-.back-to-top-btn:hover {
-  background-color: var(--brand); /* Cambia a naranja al pasar el mouse */
-  cursor: pointer;
-}
-
-.mobile-menu a {
-  display: flex;
-  justify-content: flex-end; /* Alinea el contenido a la derecha */
-  align-items: center;     /* Centra verticalmente el ícono y el texto */
-  gap: 8px;                /* Crea un espacio entre el ícono y el texto */
 }
 
 #mobile-menu a i {
