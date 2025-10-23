@@ -434,55 +434,43 @@ main {
   }
 }
 
-/* === ESTILOS PARA CENTRAR EL LOGO EN MOBILE === */
-@media (max-width: 768px) {
-  .main-nav {
-    justify-content: center;
+/* === ESTILOS PARA NAVEGACIÓN MÓVIL (UNIFICADO) === */
+@media (max-width: 767px) {
+  .nav-links {
+    display: none; /* Oculta los links de escritorio en mobile */
   }
 
   .mobile-menu-btn {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    display: flex; /* Muestra el botón de hamburguesa en mobile */
   }
-}
 
-/* === ESTILOS PARA NAVEGACIÓN MÓVIL (UNIFICADO) === */
-@media (max-width: 767px) {
-  .nav-links-wrapper {
+  #mobile-menu {
+    display: none; /* Oculto por defecto */
     position: absolute;
     inset-inline: 0;
     top: var(--header-h);
     background: #fff;
     border-bottom: 1px solid #e5e7eb;
-    
-    /* Oculto por defecto y controlado por JS */
-    display: none; 
     flex-direction: column;
-    align-items: flex-end; /* Alinea los items a la derecha */
+    align-items: flex-start;
     padding: 16px 0;
   }
 
-  .nav-links-wrapper.show {
+  #mobile-menu.show {
     display: flex; /* Muestra el menú */
   }
 
-  .nav-links {
-    flex-direction: column;
-    align-items: flex-end;
-    width: 100%;
-  }
-
-  .nav-links a {
+  #mobile-menu a {
     padding: 12px 20px;
     width: 100%;
-    justify-content: flex-end; /* Icono y texto a la derecha */
+    justify-content: flex-start;
   }
-  .nav-links a:hover {
+
+  #mobile-menu a:hover {
     background: #f3f4f6;
   }
 }
+
 /* Ocultar título principal en mobile */
 .desktop-only-title {
     display: none;
@@ -493,9 +481,15 @@ main {
   .mobile-menu-btn {
     display: none;
   }
-  .nav-links-wrapper {
-    display: flex;
+  
+  #mobile-menu { 
+    display: none !important; /* Oculta el menú móvil en desktop */
   }
+
+  .nav-links {
+    display: flex; 
+  }
+
   .desktop-only-title {
     display: block;
   }
