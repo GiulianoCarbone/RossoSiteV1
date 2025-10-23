@@ -644,51 +644,31 @@
 
         // 2) Preparar y enviar datos a Formspree
         const selectedProduct = productos.find(p => p.sku === selectedProductId);
-        const formspreeData = new FormData();
-        formspreeData.append('Nombre', userName);
-        formspreeData.append('Email', userEmail);
-        formspreeData.append('Superficie a renovar', selectedSurface);
-        formspreeData.append('Producto Elegido', `${selectedProduct.nombre} (SKU: ${selectedProduct.sku})`);
-        formspreeData.append('Link del Producto', selectedProduct.url);
-        formspreeData.append('Imagen del Ambiente', imageUrl);
-        formspreeData.append('_subject', `Nueva Solicitud de Visualizador IA - ${userName}`);
-        const payload = {
-            nombre: userName,
-            email: userEmail,
-            superficie: selectedSurface,
-            producto: `${selectedProduct.nombre} (SKU: ${selectedProduct.sku})`,
-            linkProducto: selectedProduct.url,
-            imagenUrl: imageUrl,
-        };
+        const formData = new FormData();
+        formData.append('Nombre', userName);
+        formData.append('Email', userEmail);
+        formData.append('Superficie a renovar', selectedSurface);
+        formData.append('Producto Elegido', `${selectedProduct.nombre} (SKU: ${selectedProduct.sku})`);
+        formData.append('Link del Producto', selectedProduct.url);
+        formData.append('Imagen del Ambiente', imageUrl);
+        formData.append('_subject', `Nueva Solicitud de Visualizador IA - ${userName}`);
 
         const formspreeResponse = await fetch(FORMSPREE_ENDPOINT, {
-        // Apuntamos a nuestro nuevo script PHP
-        const response = await fetch('send-email.php', {
           method: 'POST',
-          body: formspreeData,
-          headers: { 'Accept': 'application/json' }
+          body: formData,
           headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
+            'Accept': 'application/json'
+          }
         });
 
         if (!formspreeResponse.ok) {
-            throw new Error('Error al enviar el formulario a Formspree.');
-        if (!response.ok) {
-            throw new Error('Error al enviar el formulario al servidor.');
+          throw new Error('Error al enviar el formulario a Formspree.');
         }
 
          // 3) Mostrar confirmación
           document.querySelector('.visualizer-grid').style.display = 'none';
           document.getElementById('main-header').style.display = 'none';
           document.getElementById('confirmation-card').style.display = 'block';
-
-          // Opcional: Mensaje adicional
-          const confirmationMessage = document.createElement('p');
-          confirmationMessage.textContent = '¡Solicitud enviada! En las próximas 24 horas recibirás el diseño en tu correo electrónico.';
-          confirmationMessage.style.marginTop = '20px';
-          document.getElementById('confirmation-card').appendChild(confirmationMessage);
       } catch (error) {
         console.error("Error al enviar la solicitud: ", error);
         alert(`Hubo un problema al enviar tu solicitud: ${error.message}. Por favor, intentá de nuevo más tarde.`);
