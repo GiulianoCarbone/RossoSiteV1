@@ -1000,22 +1000,14 @@
                   <i class="fa-solid fa-link"></i>
                   <span>Links Útiles</span>
                 </div>
-<a
-                  href="https://drive.google.com/drive/folders/1KU9v7Y3N0pKAGuEVwh_jR4myxRrmvTbF?usp=sharing"
-                  target="_blank"
-                  class="tool-link"
-                >
+                <div id="open-promo-modal-btn" class="tool-link" style="cursor: pointer;">
                   <i class="fa-solid fa-photo-film"></i>
                   <span>Contenido Promocional</span>
-                </a>
-                <a
-                  href="https://drive.google.com/drive/folders/1Ep7UcuJvFPhtaqlKQqtIKVgfkcT3KDN-?usp=sharing"
-                  target="_blank"
-                  class="tool-link"
-                >
+                </div>
+                <div id="open-photos-modal-btn" class="tool-link" style="cursor: pointer;">
                   <i class="fa-solid fa-camera-retro"></i>
                   <span>Fotos de Productos</span>
-                </a>
+                </div>
                 <a
                   href="https://drive.google.com/drive/folders/1ZRM-7tjpNzbfoOMEZgGZK1-1Tqynn2OP?usp=sharing"
                   target="_blank"
@@ -1243,6 +1235,75 @@
         <div class="modal-body" id="links-modal-body"></div>
       </div>
     </div>
+
+    <!-- INICIO: Modal de Contenido Promocional -->
+    <div id="promo-modal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Contenido Promocional</h4>
+          <button id="close-promo-modal-btn" class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="text-align: center; color: var(--muted); margin-bottom: 20px;">
+            Seleccioná la unidad de negocio para ver el contenido disponible.
+          </p>
+          <div class="tools-grid" style="grid-template-columns: 1fr;">
+            <a href="https://drive.google.com/drive/folders/1qyuNbA91lnUbF7pND3WdBYGNuecincL_?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
+              <img 
+                src="https://scontent.ffdo24-3.fna.fbcdn.net/v/t39.30808-6/391618712_745978567557207_2458085058780650835_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=UsKzQCg-xmMQ7kNvwHmRZ-W&_nc_oc=Adk8lTgFvzqiKbwYV2ZOG8WeiicnAmTcM1Tf1uogfSeHojOymz7PV2E-Hc4IgjcUEjQ&_nc_zt=23&_nc_ht=scontent.ffdo24-3.fna&_nc_gid=OYWSib8BnQz_xVbLzPA6MA&oh=00_AffNPMmAXCTh4KZDOxObBym4r1WsJ18gXvbzFwqGxkvIqg&oe=69059FA0" 
+                alt="Logo Rosso" 
+                style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+              <span>Rosso Materiales</span>
+            </a>
+            <a href="https://drive.google.com/drive/folders/1CguouD9sPqGGjdQy-w7mT7Y5o-0jMA8s?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
+              <img 
+                src="https://scontent.faep24-1.fna.fbcdn.net/v/t39.30808-6/369899767_708310554626977_4315876856746933057_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=9vOjkRGMQqMQ7kNvwF-hb7l&_nc_oc=AdlmMF_kGQVVqfguWNUEh7DCZ47YQKsgEmZTUKM9FLQO69jDHwkvRABfBfQOQO_GjrQ&_nc_zt=23&_nc_ht=scontent.faep24-1.fna&_nc_gid=-jKMVwrDy1YV3qIoilKMbw&oh=00_AffYmWrJ1pEAFTnafSktdHiJF_KsZK-u60ZtuYac4ZsZeQ&oe=6905782A" 
+                alt="Logo Rossomix" 
+                style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+              <span>RossoMix</span>
+            </a>
+            <a href="https://drive.google.com/drive/folders/1p1pE8xiAm3hPhMdyzP3vu9fAoKdmFb9d?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
+              <img 
+                src="https://scontent.faep24-2.fna.fbcdn.net/v/t39.30808-6/301361756_434352202053908_482034628495522669_n.png?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=AFbX1_Qi8B0Q7kNvwE1U6gY&_nc_oc=AdmaXypusZ7gZpnoEeXzq6JOSvIaKgYefXhrYri2B7FSmZ7LP0uA28R6xe7q3_Ol4LQ&_nc_zt=23&_nc_ht=scontent.faep24-2.fna&_nc_gid=JodpKsUIKu2qWFiRJbzxBg&oh=00_AfezrhMGesRJQsXT_xtvnRSGtWieqjsn4sEMAlPAmb55aQ&oe=6905897C" 
+                alt="Logo Punto Caño" 
+                style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+              <span>Punto Caño</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FIN: Modal de Contenido Promocional -->
+
+    <!-- INICIO: Modal de Fotos de Productos -->
+    <div id="photos-modal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Fotos de Productos</h4>
+          <button id="close-photos-modal-btn" class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="text-align: center; color: var(--muted); margin-bottom: 20px;">
+            Seleccioná la unidad de negocio para ver las fotos disponibles.
+          </p>
+          <div class="tools-grid" style="grid-template-columns: 1fr;">
+            <a href="https://drive.google.com/drive/folders/1Ep7UcuJvFPhtaqlKQqtIKVgfkcT3KDN-?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
+              <img src="https://scontent.ffdo24-3.fna.fbcdn.net/v/t39.30808-6/391618712_745978567557207_2458085058780650835_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=UsKzQCg-xmMQ7kNvwHmRZ-W&_nc_oc=Adk8lTgFvzqiKbwYV2ZOG8WeiicnAmTcM1Tf1uogfSeHojOymz7PV2E-Hc4IgjcUEjQ&_nc_zt=23&_nc_ht=scontent.ffdo24-3.fna&_nc_gid=OYWSib8BnQz_xVbLzPA6MA&oh=00_AffNPMmAXCTh4KZDOxObBym4r1WsJ18gXvbzFwqGxkvIqg&oe=69059FA0" alt="Logo Rosso" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+              <span>Rosso Materiales</span>
+            </a>
+            <a href="https://drive.google.com/drive/folders/1HZyHhAYQjUOnhJQE5GzvNOiRmktr4HK7?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
+              <img src="https://scontent.faep24-1.fna.fbcdn.net/v/t39.30808-6/369899767_708310554626977_4315876856746933057_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=9vOjkRGMQqMQ7kNvwF-hb7l&_nc_oc=AdlmMF_kGQVVqfguWNUEh7DCZ47YQKsgEmZTUKM9FLQO69jDHwkvRABfBfQOQO_GjrQ&_nc_zt=23&_nc_ht=scontent.faep24-1.fna&_nc_gid=-jKMVwrDy1YV3qIoilKMbw&oh=00_AffYmWrJ1pEAFTnafSktdHiJF_KsZK-u60ZtuYac4ZsZeQ&oe=6905782A" alt="Logo Rossomix" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+              <span>Rossomix</span>
+            </a>
+            <a href="https://drive.google.com/drive/folders/1Q8YgRmVuGmuuEc0XSGeGcN3BJtfiw98Q?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
+              <img src="https://scontent.faep24-2.fna.fbcdn.net/v/t39.30808-6/301361756_434352202053908_482034628495522669_n.png?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=AFbX1_Qi8B0Q7kNvwE1U6gY&_nc_oc=AdmaXypusZ7gZpnoEeXzq6JOSvIaKgYefXhrYri2B7FSmZ7LP0uA28R6xe7q3_Ol4LQ&_nc_zt=23&_nc_ht=scontent.faep24-2.fna&_nc_gid=JodpKsUIKu2qWFiRJbzxBg&oh=00_AfezrhMGesRJQsXT_xtvnRSGtWieqjsn4sEMAlPAmb55aQ&oe=6905897C" alt="Logo Punto Caño" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+              <span>Punto Caño</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FIN: Modal de Fotos de Productos -->
 
     <div id="admin-modal" class="modal-overlay">
       <div class="modal-content">
@@ -1703,6 +1764,36 @@
             document.getElementById("login-overlay").style.display = "flex";
             document.getElementById("panel-wrapper").style.display = "none";
           }
+        }
+
+        // --- LÓGICA DEL MODAL DE CONTENIDO PROMOCIONAL ---
+        const promoModal = document.getElementById("promo-modal");
+        if (promoModal) {
+            document.getElementById("open-promo-modal-btn")?.addEventListener("click", () => {
+                promoModal.style.display = "flex";
+            });
+            document.getElementById("close-promo-modal-btn")?.addEventListener("click", () => {
+                promoModal.style.display = "none";
+            });
+            // Cierra el modal si se hace clic fuera del contenido
+            promoModal.addEventListener('click', (e) => {
+                if (e.target === promoModal) promoModal.style.display = 'none';
+            });
+        }
+
+        // --- LÓGICA DEL MODAL DE FOTOS DE PRODUCTOS ---
+        const photosModal = document.getElementById("photos-modal");
+        if (photosModal) {
+            document.getElementById("open-photos-modal-btn")?.addEventListener("click", () => {
+                photosModal.style.display = "flex";
+            });
+            document.getElementById("close-photos-modal-btn")?.addEventListener("click", () => {
+                photosModal.style.display = "none";
+            });
+            // Cierra el modal si se hace clic fuera del contenido
+            photosModal.addEventListener('click', (e) => {
+                if (e.target === photosModal) photosModal.style.display = 'none';
+            });
         }
 
         // --- LÓGICA DE LOGIN (YA ESTABA BIEN) ---
