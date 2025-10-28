@@ -1942,8 +1942,8 @@ const productos = [
     "sku": "37805",
     "categoria": "Porcelanatos",
     "url": "https://catalogo.rossomateriales.site/products/60d7e278-ed80-4a31-b2c7-54ea371a4b02?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_de72aef2-92fb-499e-a6e4-dc0bdfbf41da.jpg?s=small&f=webp"
-  },
+    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_11fd5774-e927-4173-9a0c-9050bb77a14d.jpg?s=small&f=webp"
+    },
   {
     "nombre": "Wood Forest Mate 19X118 - Tendenza",
     "sku": "37756",
@@ -1956,14 +1956,16 @@ const productos = [
     "sku": "37755",
     "categoria": "Porcelanatos",
     "url": "https://catalogo.rossomateriales.site/products/c5c74473-82a8-435f-b4bb-f404d4fa543a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a44364d1-f285-45d7-a261-9664648059d4.jpg?s=small&f=webp"
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_de72aef2-92fb-499e-a6e4-dc0bdfbf41da.jpg?s=small&f=webp"
+
+    
   },
   {
     "nombre": "Golden Pulido 57.5X57.5 - Tendenza",
     "sku": "37754",
     "categoria": "Porcelanatos",
     "url": "https://catalogo.rossomateriales.site/products/d969cba6-a8bb-423d-bcf8-2b80106f2a70?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_11fd5774-e927-4173-9a0c-9050bb77a14d.jpg?s=small&f=webp"
+    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_21aa8a96-0bbd-492d-b208-736a22931836.jpg?s=medium&f=webp"
   },
   {
     "nombre": "Ice Pulido 57.5X57,5 - Tendenza",
