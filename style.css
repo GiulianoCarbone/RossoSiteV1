@@ -258,11 +258,6 @@ main {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media (min-width: 1024px) {
-  .cards-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
 
 .card-link {
   display: block;
@@ -289,7 +284,7 @@ main {
   z-index: 1;
 }
 .card-image {
-  max-height: 190px;
+  max-height: 210px;
   aspect-ratio: 16/10;
   object-fit: contain;
   margin: 6px;
