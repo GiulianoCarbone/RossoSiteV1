@@ -660,6 +660,44 @@
                 margin-top: 10px;
             }
 
+            /* --- ESTILOS PARA CONTADOR DE USUARIOS ACTIVOS --- */
+            #active-users-display {
+                background-color: #eef2ff;
+                border: 1px solid #c7d2fe;
+                border-radius: 8px;
+                padding: 16px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-size: 1.1rem;
+            }
+            #active-users-display .fa-users {
+                color: #4f46e5;
+            }
+            #active-users-count {
+                font-weight: 800;
+                color: #4f46e5;
+            }
+            #active-users-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-top: 12px;
+                padding-top: 12px;
+                border-top: 1px solid #e5e7eb;
+            }
+            .user-tag {
+                background-color: #e0e7ff;
+                color: #3730a3;
+                padding: 4px 10px;
+                border-radius: 16px;
+                font-size: 0.85rem;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
             #add-news-btn,
             #add-training-btn {
               padding: 8px 16px;
@@ -1316,12 +1354,28 @@
         <div class="modal-body">
           <details class="admin-section-details">
             <summary>
+              <span>Actividad en Tiempo Real</span>
+              <i class="fa-solid fa-chevron-down details-arrow"></i>
+            </summary>
+            <div>
+              <div id="active-users-display">
+                <i class="fa-solid fa-users"></i>
+                <span>Usuarios Activos: </span>
+                <strong id="active-users-count">Cargando...</strong>
+              </div>
+              <div id="active-users-list">
+                <!-- Los nombres de los usuarios activos aparecerán aquí -->
+              </div>
+            </div>
+          </details>
+          <details class="admin-section-details">
+            <summary>
               <span>Gestionar Vendedores</span>
               <i class="fa-solid fa-chevron-down details-arrow"></i>
             </summary>
             <div id="admin-controls-vendedores">
               <a
-                href="panel-corporativo.html"
+                href="carga-masiva.html"
                 target="_blank"
                 id="manage-vendedores-btn"
                 class="admin-btn"
@@ -1364,14 +1418,6 @@
               </button>
             </div>
             <div id="admin-trainings-list" class="admin-list"></div>
-          </details>
-
-          <details class="admin-section-details">
-            <summary>
-              <span>Gestionar Solicitudes de Diseño</span>
-              <i class="fa-solid fa-chevron-down details-arrow"></i>
-            </summary>
-            <div id="admin-visualizer-list" class="admin-list"></div>
           </details>
 
         </div>
@@ -1760,6 +1806,13 @@
             populateDirectory();
             populateUsefulLinks();
             initializeCalendar();
+
+            // Inicia la lógica del contador de usuarios
+            updateUserSession(); // Registra la sesión al cargar
+            listenToActiveUsers(); // Empieza a contar
+            
+            // Mantiene la sesión activa actualizando el timestamp cada 30 segundos
+            setInterval(updateUserSession, 30000);
           } else {
             document.getElementById("login-overlay").style.display = "flex";
             document.getElementById("panel-wrapper").style.display = "none";
@@ -1853,6 +1906,7 @@
                 localStorage.setItem("vendedorLogueado", userFound.nombre);
                 checkLogin();
               } else {
+                // Si el usuario no se encuentra, se limpia el contador de sesión por si acaso
                 loginError.textContent = "Nombre o DNI incorrecto.";
               }
             } catch (error) {
@@ -1860,6 +1914,79 @@
               loginError.textContent = "Error al conectar. Intente de nuevo.";
             }
           });
+
+        // =================================================================
+        // === LÓGICA DEL CONTADOR DE USUARIOS ACTIVOS =====================
+        // =================================================================
+        
+        // Función para registrar o actualizar la sesión del usuario
+        async function updateUserSession() {
+            const loggedInUserName = localStorage.getItem("vendedorLogueado");
+            if (!loggedInUserName) return;
+
+            // Usamos el nombre del vendedor como ID único para su sesión.
+            // Esto previene que un mismo vendedor abra múltiples sesiones contables.
+            currentUserSessionId = loggedInUserName.replace(/\s+/g, '-').toLowerCase();
+
+            try {
+                const sessionRef = db.collection('active_sessions').doc(currentUserSessionId);
+                await sessionRef.set({
+                    userName: loggedInUserName,
+                    last_seen: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch (error) {
+                console.error("Error al actualizar la sesión de usuario:", error);
+            }
+        }
+
+        // Función para eliminar la sesión del usuario al salir
+        async function removeUserSession() {
+            if (currentUserSessionId) {
+                try {
+                    await db.collection('active_sessions').doc(currentUserSessionId).delete();
+                } catch (error) {
+                    console.error("Error al eliminar la sesión de usuario:", error);
+                }
+            }
+        }
+
+        // Escucha los cambios en la colección de sesiones activas
+        function listenToActiveUsers() {
+            const activeUsersCountEl = document.getElementById('active-users-count');
+            const activeUsersListEl = document.getElementById('active-users-list');
+            const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
+
+            db.collection('active_sessions')
+              .where('last_seen', '>', twoMinutesAgo) // Solo contamos usuarios vistos en los últimos 2 minutos
+              .onSnapshot(snapshot => {
+                  const activeCount = snapshot.size;
+                  const activeUsers = [];
+                  snapshot.forEach(doc => {
+                      activeUsers.push(doc.data().userName);
+                  });
+
+                  if (activeUsersListEl) {
+                      if (activeUsers.length > 0) {
+                          activeUsersListEl.innerHTML = activeUsers.map(name => `<span class="user-tag"><i class="fa-solid fa-circle fa-2xs" style="color: #22c55e;"></i>${name}</span>`).join('');
+                      } else {
+                          activeUsersListEl.innerHTML = `<p class="text-sm text-gray-500">Nadie conectado en este momento.</p>`;
+                      }
+                  }
+
+                  if (activeUsersCountEl) {
+                      activeUsersCountEl.textContent = activeCount;
+                  }
+              }, error => {
+                  console.error("Error al escuchar usuarios activos:", error);
+                  if (activeUsersCountEl) {
+                      activeUsersCountEl.textContent = 'Error';
+                  }
+              });
+        }
+
+        // Se activa cuando el usuario cierra la pestaña o el navegador
+        window.addEventListener('beforeunload', removeUserSession);
+
 
         document
           .getElementById("logout-button")
@@ -2281,6 +2408,9 @@
         const closeAdminPasswordModalBtn = document.getElementById(
           "close-admin-password-modal-btn"
         );
+        
+        // Variables para el contador de usuarios
+        let currentUserSessionId = null;
 
         let keySequence = [];
         const adminSecretCode = "admin";
@@ -2376,44 +2506,9 @@
             const training = { id: doc.id, ...doc.data() };
             const item = document.createElement("div");
             item.className = "admin-item";
-            item.innerHTML = `<div class="admin-item-content"><p><strong>${training.date}:</strong> ${training.title}</p></div><div class="admin-item-actions"><button class="admin-btn delete-btn" data-collection="trainings" data-id="${training.id}"><i class="fa-solid fa-trash"></i></button></div>`;
+            item.innerHTML = `<div class="admin-item-content"><p><strong>${training.date}:</strong> ${training.title}</p></div><div class="admin-item-actions"><button class="admin-btn edit-btn" data-collection="trainings" data-id="${training.id}"><i class="fa-solid fa-pencil"></i></button><button class="admin-btn delete-btn" data-collection="trainings" data-id="${training.id}"><i class="fa-solid fa-trash"></i></button></div>`;
             trainingsListContainer.appendChild(item);
           });
-
-          // Populate Visualizer Requests
-          const visualizerListContainer = document.getElementById("admin-visualizer-list");
-          visualizerListContainer.innerHTML = "Cargando solicitudes...";
-          const visualizerSnapshot = await db.collection("visualizer_requests").orderBy("timestamp", "desc").get();
-          visualizerListContainer.innerHTML = "";
-          if (visualizerSnapshot.empty) {
-              visualizerListContainer.innerHTML = "<p>No hay solicitudes de diseño pendientes.</p>";
-          } else {
-              visualizerSnapshot.forEach((doc) => {
-                  const request = { id: doc.id, ...doc.data() };
-                  const item = document.createElement("div");
-                  item.className = "admin-item";
-                  const requestDate = request.timestamp ? request.timestamp.toDate().toLocaleString('es-AR') : 'Fecha no disponible';
-                  const isCompleted = request.status === 'completed';
-
-                  item.style.opacity = isCompleted ? '0.6' : '1';
-
-                  item.innerHTML = `
-                      <div class="admin-item-content" style="width: 100%;">
-                          <p class="request-details" style="white-space: normal;">
-                              <strong>Cliente:</strong> ${request.userName} (${request.userEmail})<br>
-                              <strong>Producto:</strong> ${request.productName} (${request.surface})
-                          </p>
-                          <small>Recibido: ${requestDate}</small>
-                      </div>
-                      <div class="admin-item-actions">
-                          <a href="${request.imageUrl}" target="_blank" class="admin-btn view-btn" title="Ver Imagen"><i class="fa-solid fa-image"></i></a>
-                          <button class="admin-btn complete-btn" data-collection="visualizer_requests" data-id="${request.id}" title="Marcar como Completado" ${isCompleted ? 'disabled' : ''}>
-                              <i class="fa-solid ${isCompleted ? 'fa-check-double' : 'fa-check'}"></i>
-                          </button>
-                      </div>`;
-                  visualizerListContainer.appendChild(item);
-              });
-          }
 
           addAdminEventListeners();
         }
@@ -2470,19 +2565,13 @@
               })
           );
 
-          document.querySelectorAll("#admin-visualizer-list .complete-btn").forEach(
+          // Delegación de eventos para editar capacitaciones
+          document.querySelectorAll("#admin-trainings-list .edit-btn").forEach(
             (btn) =>
               (btn.onclick = async function (e) {
-                const button = e.currentTarget;
-                const docId = button.dataset.id;
-                if (confirm(`¿Marcar esta solicitud como completada?`)) {
-                  await db.collection("visualizer_requests").doc(docId).update({
-                      status: 'completed'
-                  });
-                  button.disabled = true;
-                  button.innerHTML = '<i class="fa-solid fa-check-double"></i>';
-                  button.closest('.admin-item').style.opacity = '0.6';
-                }
+                const id = e.currentTarget.dataset.id;
+                const doc = await db.collection("trainings").doc(id).get();
+                openTrainingForm({ id, ...doc.data() });
               })
           );
 
@@ -2502,8 +2591,12 @@
           newsFormModal.style.display = "flex";
         }
 
-        function openTrainingForm() {
+        function openTrainingForm(data = {}) {
           document.getElementById("training-form").reset();
+          document.getElementById("training-id-field").value = data.id || "";
+          document.getElementById("training-date-field").value = data.date || "";
+          document.getElementById("training-title-field").value = data.title || "";
+          document.getElementById("training-form-title").textContent = data.id ? "Editar Capacitación" : "Agregar Capacitación";
           trainingFormModal.style.display = "flex";
         }
 
@@ -2538,11 +2631,13 @@
 
         document.getElementById("training-form").onsubmit = async (e) => {
           e.preventDefault();
+          const id = document.getElementById("training-id-field").value;
           const data = {
             date: document.getElementById("training-date-field").value,
             title: document.getElementById("training-title-field").value,
           };
-          await db.collection("trainings").add(data);
+          if (id) await db.collection("trainings").doc(id).update(data);
+          else await db.collection("trainings").add(data);
           trainingFormModal.style.display = "none";
           populateAdminModal();
         };
