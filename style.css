@@ -743,56 +743,6 @@ main {
   animation: fadeInRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-/* ===== MARQUESINA DE PROMOCIONES (NUEVO) ===== */
-.promo-marquee {
-  background-color: var(--brand); /* Color naranja de acento */
-  color: #fff;
-  padding: 10px 0;
-  overflow: hidden;
-  white-space: nowrap;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 101; /* Más alto que el header */
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.marquee-content {
-  display: inline-block;
-
-  animation: marquee 80s linear infinite;
-}
-
-.marquee-content span {
-  margin-right: 50px; /* Espacio entre mensajes */
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%); /* Mueve solo la mitad del contenido para un bucle perfecto */
-  }
-}
-
-/* Ajuste para que el header no quede debajo de la marquesina */
-.main-header {
-  top: 40px; /* Altura aproximada de la marquesina */
-}
-/* ===== AJUSTE DE PADDING PARA SLIDER EN VERSIÓN WEB (NUEVO CÓDIGO) ===== */
-@media (min-width: 1024px) {
-  .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-    /* Se elimina max-width y margin-inline para que ocupe todo el contenedor */
-  }
-
-  .card-image {
-    max-height: 210px;
-  }
-}
 
 
 /* ===== ANIMACIÓN DE ZOOM PARA IMÁGENES DE TARJETAS (NUEVO CÓDIGO) ===== */
