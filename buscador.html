@@ -63,6 +63,7 @@
       .promo-carousel-header {
         display: flex;
         justify-content: center; /* Centra el contenido */
+        justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
         position: relative; /* Necesario para posicionar los botones */
@@ -105,11 +106,25 @@
         gap: 20px;
         transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
-      .promo-card {
+     .promo-card {
+  /* Nuevo: Ahora muestra ~2 tarjetas en móvil/tablet. */
+  flex: 0 0 calc(45% - 10px); /* 45% del ancho para dos tarjetas con gap de 20px */
+  min-width: 0;
+  position: relative;
+}
+
+/* Media query para restablecer a 4 tarjetas en desktop */
+@media (min-width: 1024px) {
+    .promo-card {
         flex: 0 0 calc(25% - 15px); /* 4 tarjetas con gap de 20px */
-        min-width: 0;
-        position: relative; /* Necesario para el parche de descuento */
-      }
+    }
+}
+/* Opcional: Si quieres 3 tarjetas en tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .promo-card {
+        flex: 0 0 calc(33.333% - 13.333px); /* 3 tarjetas con gap de 20px */
+    }
+}
       /* --- INICIO: ESTILOS PARA PARCHE DE DESCUENTO --- */
       .discount-badge {
         position: absolute;
@@ -167,6 +182,15 @@
         font-size: 1.1rem;
         padding: 20px;
       }
+      .promo-carousel-container {
+  overflow-x: auto; /* Permitir el scroll horizontal */
+  /* Opcional: Ocultar la barra de scroll en navegadores que lo permitan */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.promo-carousel-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
     </style>
   </head>
 
@@ -263,6 +287,7 @@
         <div class="search-container">
           <div class="search-header">
             <h1 class="search-title">¿Viste un producto en el salón?</h1>
+            
             <p class="search-subtitle">
               Ingresá el nombre o código del producto que viste para
               ver más detalles en nuestro catálogo online.
@@ -998,11 +1023,12 @@
 
         const productosEnOferta = productos.filter(p => productosEnOfertaSKUs.includes(p.sku));
 
+        // 1. Renderizar las tarjetas
         productosEnOferta.forEach(producto => {
             const card = document.createElement('a');
             card.href = producto.url;
             card.target = '_blank';
-            card.className = 'card-link promo-card is-visible'; // Reutilizamos clases existentes
+            card.className = 'card-link promo-card is-visible';
             card.innerHTML = `
               <div class="card">
                 <div class="discount-badge">25% OFF</div>
@@ -1018,41 +1044,48 @@
             track.appendChild(card);
         });
 
+        // 2. Lógica de Carrusel (Botones y Responsive)
         const prevBtn = document.getElementById('promo-prev-btn');
         const nextBtn = document.getElementById('promo-next-btn');
         let currentIndex = 0;
-        let itemsPerPage = getItemsPerPage();
-
-        function getItemsPerPage() {
-            if (window.innerWidth >= 1024) return 4;
-            if (window.innerWidth >= 768) return 3;
-            if (window.innerWidth >= 640) return 2;
-            return 1;
-        }
-
+        
         function updateCarousel() {
-            const cardWidth = track.querySelector('.promo-card').offsetWidth;
-            const gap = 20;
-            const totalWidth = cardWidth + gap;
-            track.style.transform = `translateX(-${currentIndex * totalWidth}px)`;
-            updateNavButtons();
+            // Lógica para Escritorio (usando Transform y Botones)
+            if (window.innerWidth >= 1024) {
+                document.querySelector('.promo-carousel-nav').style.display = 'flex';
+                const cardWidth = track.querySelector('.promo-card').offsetWidth;
+                const gap = 20;
+                const totalWidth = cardWidth + gap;
+                track.style.transform = `translateX(-${currentIndex * totalWidth}px)`;
+                updateNavButtons();
+            } else {
+                // Lógica para Móvil/Tablet (usando Scroll nativo del CSS)
+                document.querySelector('.promo-carousel-nav').style.display = 'none'; // Ocultar botones
+                track.style.transform = 'translateX(0)'; // Asegurar que no haya transform residual
+            }
         }
 
         function updateNavButtons() {
-            const maxIndex = productosEnOferta.length - itemsPerPage;
+            if (window.innerWidth < 1024) return;
+            // itemsPerPage fijo a 4 en desktop
+            const currentItemsPerPage = 4;
+            const maxIndex = productosEnOferta.length - currentItemsPerPage;
             prevBtn.disabled = currentIndex === 0;
             nextBtn.disabled = currentIndex >= maxIndex;
         }
 
         nextBtn.addEventListener('click', () => {
-            const maxIndex = productosEnOferta.length - itemsPerPage;
+            if (window.innerWidth < 1024) return;
+            const currentItemsPerPage = 4;
+            const maxIndex = productosEnOferta.length - currentItemsPerPage;
             if (currentIndex < maxIndex) {
-                currentIndex++;
+                currentIndex = Math.min(currentIndex + 1, maxIndex);
                 updateCarousel();
             }
         });
 
         prevBtn.addEventListener('click', () => {
+            if (window.innerWidth < 1024) return;
             if (currentIndex > 0) {
                 currentIndex--;
                 updateCarousel();
@@ -1060,31 +1093,16 @@
         });
 
         window.addEventListener('resize', () => {
-            const newItemsPerPage = getItemsPerPage();
-            if (newItemsPerPage !== itemsPerPage) {
-                itemsPerPage = newItemsPerPage;
-                // Ajustar el índice si se sale de los límites
-                const maxIndex = productosEnOferta.length - itemsPerPage;
-                if (currentIndex > maxIndex) {
-                    currentIndex = maxIndex;
-                }
-                updateCarousel();
+            if (window.innerWidth < 1024) {
+                 currentIndex = 0;
             }
+            updateCarousel();
         });
 
-        // Inicializar
+        // 3. Inicializar
         updateCarousel();
-
-        // Para el drag/swipe en mobile
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
-        track.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; });
-        track.addEventListener('mouseleave', () => { isDown = false; });
-        track.addEventListener('mouseup', () => { isDown = false; });
-        track.addEventListener('mousemove', (e) => { if(!isDown) return; e.preventDefault(); const x = e.pageX - track.offsetLeft; const walk = (x - startX) * 2; track.scrollLeft = scrollLeft - walk; });
-      });
+        
+      }); // <--- ¡Asegúrate de que esta llave cierre el addEventListener!
 
       // --- ANIMACIÓN PARA EMOJI DE FUEGO ---
       const style = document.createElement('style');
@@ -1097,7 +1115,10 @@
         }`;
       document.head.appendChild(style);
       // Y aplicamos la nueva animación
-      document.querySelector('.fire-emoji').style.animation = 'shake 2s ease-in-out infinite';
+      const fireEmoji = document.querySelector('.fire-emoji');
+      if (fireEmoji) {
+        fireEmoji.style.animation = 'shake 2s ease-in-out infinite';
+      }
 
     </script>
     <script src="script.js"></script>
