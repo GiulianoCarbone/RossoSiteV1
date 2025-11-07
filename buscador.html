@@ -50,7 +50,7 @@
         font-size: 1.2rem;
         border-radius: 12px;
         border: 1px solid #d1d5db;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
       }
       #search-input:focus {
         outline: 2px solid var(--accent);
@@ -62,8 +62,7 @@
       }
       .promo-carousel-header {
         display: flex;
-        justify-content: center; /* Centra el contenido */
-        justify-content: space-between;
+        justify-content: center; /* Centra el contenido del header */
         align-items: center;
         margin-bottom: 20px;
         position: relative; /* Necesario para posicionar los botones */
@@ -299,6 +298,7 @@
             id="search-input"
             placeholder="Ej: Bariloche Gris o 36618"
           />
+          <div id="results-container"></div>
            <div id="status-message">
               <p>Ingresá al menos 3 caracteres para comenzar la búsqueda.</p>
           </div>
@@ -307,7 +307,7 @@
           <div class="promo-carousel-section">
             <div class="promo-carousel-header">
               <h2>
-                Ofertas Destacadas<span class="fire-emoji">🔥</span>
+               <span class="fire-emoji">🔥</span>Ofertas Destacadas<span class="fire-emoji">🔥</span>
               </h2>
               <div class="promo-carousel-nav">
                 <button id="promo-prev-btn" aria-label="Anterior">
@@ -323,7 +323,7 @@
             </div>
           </div>
           <!-- FIN: CARRUSEL DE OFERTAS -->
-          <div id="results-container"></div>
+          
          
         </div>
       </section>
