@@ -50,11 +50,94 @@
         font-size: 1.2rem;
         border-radius: 12px;
         border: 1px solid #d1d5db;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
       }
       #search-input:focus {
         outline: 2px solid var(--accent);
         border-color: transparent;
+      }
+      /* --- INICIO: ESTILOS PARA CARRUSEL DE OFERTAS --- */
+      .promo-carousel-section {
+        margin-bottom: 40px;
+      }
+      .promo-carousel-header {
+        display: flex;
+        justify-content: center; /* Centra el contenido del header */
+        align-items: center;
+        margin-bottom: 20px;
+        position: relative; /* Necesario para posicionar los botones */
+      }
+      .promo-carousel-header h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--brand);
+        display: flex; /* Para alinear el emoji */
+        align-items: center;
+        gap: 10px; /* Espacio entre texto y emoji */
+      }
+      .promo-carousel-header h2 .fire-emoji {
+        display: inline-block;
+        animation: pulse 1.5s ease-in-out infinite alternate;
+      }
+      .promo-carousel-nav {
+        position: absolute; /* Posiciona los botones a la derecha */
+        right: 0;
+      }
+      .promo-carousel-nav button {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .promo-carousel-nav button:hover {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+      }
+      .promo-carousel-container {
+        overflow: hidden;
+      }
+      .promo-carousel-track {
+        display: flex;
+        gap: 20px;
+        transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+     .promo-card {
+  /* Nuevo: Ahora muestra ~2 tarjetas en móvil/tablet. */
+  flex: 0 0 calc(45% - 10px); /* 45% del ancho para dos tarjetas con gap de 20px */
+  min-width: 0;
+  position: relative;
+}
+
+/* Media query para restablecer a 4 tarjetas en desktop */
+@media (min-width: 1024px) {
+    .promo-card {
+        flex: 0 0 calc(25% - 15px); /* 4 tarjetas con gap de 20px */
+    }
+}
+/* Opcional: Si quieres 3 tarjetas en tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .promo-card {
+        flex: 0 0 calc(33.333% - 13.333px); /* 3 tarjetas con gap de 20px */
+    }
+}
+      /* --- INICIO: ESTILOS PARA PARCHE DE DESCUENTO --- */
+      .discount-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background-color: var(--accent);
+        color: white;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        z-index: 2;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        transform: rotate(5deg);
       }
       /* Estilos para los resultados con imágenes */
       #results-container .result-item {
@@ -98,6 +181,15 @@
         font-size: 1.1rem;
         padding: 20px;
       }
+      .promo-carousel-container {
+  overflow-x: auto; /* Permitir el scroll horizontal */
+  /* Opcional: Ocultar la barra de scroll en navegadores que lo permitan */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.promo-carousel-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}
     </style>
   </head>
 
@@ -193,9 +285,10 @@
       <section class="search-section">
         <div class="search-container">
           <div class="search-header">
-            <h1 class="search-title">Buscador de Revestimientos</h1>
+            <h1 class="search-title">¿Viste un producto en el salón?</h1>
+            
             <p class="search-subtitle">
-              Ingresá el nombre o código del producto que viste en el salón para
+              Ingresá el nombre o código del producto que viste para
               ver más detalles en nuestro catálogo online.
             </p>
           </div>
@@ -205,11 +298,33 @@
             id="search-input"
             placeholder="Ej: Bariloche Gris o 36618"
           />
-
           <div id="results-container"></div>
-          <div id="status-message">
+           <div id="status-message">
               <p>Ingresá al menos 3 caracteres para comenzar la búsqueda.</p>
           </div>
+
+          <!-- INICIO: CARRUSEL DE OFERTAS -->
+          <div class="promo-carousel-section">
+            <div class="promo-carousel-header">
+              <h2>
+               <span class="fire-emoji">🔥</span>Ofertas Destacadas<span class="fire-emoji">🔥</span>
+              </h2>
+              <div class="promo-carousel-nav">
+                <button id="promo-prev-btn" aria-label="Anterior">
+                  <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button id="promo-next-btn" aria-label="Siguiente">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+            <div class="promo-carousel-container">
+              <div class="promo-carousel-track" id="promo-carousel-track"></div>
+            </div>
+          </div>
+          <!-- FIN: CARRUSEL DE OFERTAS -->
+          
+         
         </div>
       </section>
     </main>
@@ -899,6 +1014,112 @@
       
       // Mensaje inicial al cargar la página.
       statusMessage.innerHTML = "<p>Ingresá al menos 3 caracteres para comenzar la búsqueda.</p>";
+
+      // --- LÓGICA PARA EL CARRUSEL DE OFERTAS ---
+      document.addEventListener('DOMContentLoaded', () => {
+        const productosEnOfertaSKUs = ["36618", "32698", "34006", "33835", "37970", "37769", "37712", "37151"];
+        const track = document.getElementById('promo-carousel-track');
+        
+        if (!track) return;
+
+        const productosEnOferta = productos.filter(p => productosEnOfertaSKUs.includes(p.sku));
+
+        // 1. Renderizar las tarjetas
+        productosEnOferta.forEach(producto => {
+            const card = document.createElement('a');
+            card.href = producto.url;
+            card.target = '_blank';
+            card.className = 'card-link promo-card is-visible';
+            card.innerHTML = `
+              <div class="card">
+                <div class="discount-badge">25% OFF</div>
+                <div class="card-image-container">
+                  <img class="card-image" src="${producto.imagen}" alt="${producto.nombre}" loading="lazy" onerror="this.src='https://placehold.co/200x200/EFEFEF/333333?text=Rosso';">
+                </div>
+                <div class="card-content" style="padding-top: 90px;">
+                  <h3 style="font-size: 1rem;">${producto.nombre}</h3>
+                  <p style="font-size: 0.8rem;">Cód: ${producto.sku}</p>
+                </div>
+              </div>
+            `;
+            track.appendChild(card);
+        });
+
+        // 2. Lógica de Carrusel (Botones y Responsive)
+        const prevBtn = document.getElementById('promo-prev-btn');
+        const nextBtn = document.getElementById('promo-next-btn');
+        let currentIndex = 0;
+        
+        function updateCarousel() {
+            // Lógica para Escritorio (usando Transform y Botones)
+            if (window.innerWidth >= 1024) {
+                document.querySelector('.promo-carousel-nav').style.display = 'flex';
+                const cardWidth = track.querySelector('.promo-card').offsetWidth;
+                const gap = 20;
+                const totalWidth = cardWidth + gap;
+                track.style.transform = `translateX(-${currentIndex * totalWidth}px)`;
+                updateNavButtons();
+            } else {
+                // Lógica para Móvil/Tablet (usando Scroll nativo del CSS)
+                document.querySelector('.promo-carousel-nav').style.display = 'none'; // Ocultar botones
+                track.style.transform = 'translateX(0)'; // Asegurar que no haya transform residual
+            }
+        }
+
+        function updateNavButtons() {
+            if (window.innerWidth < 1024) return;
+            // itemsPerPage fijo a 4 en desktop
+            const currentItemsPerPage = 4;
+            const maxIndex = productosEnOferta.length - currentItemsPerPage;
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex >= maxIndex;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (window.innerWidth < 1024) return;
+            const currentItemsPerPage = 4;
+            const maxIndex = productosEnOferta.length - currentItemsPerPage;
+            if (currentIndex < maxIndex) {
+                currentIndex = Math.min(currentIndex + 1, maxIndex);
+                updateCarousel();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (window.innerWidth < 1024) return;
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth < 1024) {
+                 currentIndex = 0;
+            }
+            updateCarousel();
+        });
+
+        // 3. Inicializar
+        updateCarousel();
+        
+      }); // <--- ¡Asegúrate de que esta llave cierre el addEventListener!
+
+      // --- ANIMACIÓN PARA EMOJI DE FUEGO ---
+      const style = document.createElement('style');
+      style.innerHTML = `
+        @keyframes shake {
+          0%, 100% { transform: rotate(0deg) scale(1); }
+          25% { transform: rotate(5deg) scale(1.1); }
+          50% { transform: rotate(-5deg) scale(1.1); }
+          75% { transform: rotate(3deg) scale(1); }
+        }`;
+      document.head.appendChild(style);
+      // Y aplicamos la nueva animación
+      const fireEmoji = document.querySelector('.fire-emoji');
+      if (fireEmoji) {
+        fireEmoji.style.animation = 'shake 2s ease-in-out infinite';
+      }
 
     </script>
     <script src="script.js"></script>
