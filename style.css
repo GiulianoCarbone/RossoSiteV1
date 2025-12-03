@@ -9,20 +9,60 @@
   --card: #ffffff;
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --radius: 12px;
-  --header-h: 80px; /* Default for mobile */
+  --header-h: 120px;
+  /* Aumentado para incluir el marquee */
 }
+
+/* Marquee Styles */
+.promo-marquee {
+  background-color: var(--brand);
+  color: #ffffff;
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 51;
+}
+
+.marquee-content {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee-content span {
+  padding-right: 50px;
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 html:focus-within {
   scroll-behavior: smooth;
 }
+
 body {
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
-    Arial, sans-serif;
-  background: var(--surface); /* <--- CAMBIO AQUÍ */
+    Arial,
+    sans-serif;
+  background: var(--surface);
+  /* <--- CAMBIO AQUÍ */
   color: var(--ink);
   overflow-x: hidden;
   /* --- AÑADE ESTAS TRES LÍNEAS --- */
@@ -30,24 +70,30 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+
 img {
   max-width: 100%;
   display: block;
 }
+
 a {
   color: inherit;
   text-decoration: none;
 }
+
 .container {
   width: 90%;
   max-width: 1200px;
   margin-inline: auto;
 }
 
+}
+
 /* Header */
 main {
-  flex-grow: 1; /* <-- AÑADE ESTA LÍNEA */
+  flex-grow: 1;
 }
+
 .main-header {
   position: fixed;
   inset-inline: 0;
@@ -56,50 +102,64 @@ main {
   box-shadow: var(--shadow);
   z-index: 50;
   height: var(--header-h);
+  display: flex;
+  flex-direction: column;
 }
+
 .main-nav {
-  height: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
+
 .logo-image {
-  height: 100px;
+  height: 70px;
+  /* Ajustado para encajar en el nuevo header */
   width: auto;
 }
 
 .nav-links-wrapper {
-  display: flex; /* Por defecto para escritorio */
+  display: flex;
+  /* Por defecto para escritorio */
   align-items: center;
   gap: 24px;
 }
+
 .nav-links a {
   color: #272e68;
   font-weight: 500;
   /* --- AÑADE ESTAS TRES LÍNEAS --- */
   display: flex;
   align-items: center;
-  gap: 8px; /* Espacio entre el icono y el texto */
+  gap: 8px;
+  /* Espacio entre el icono y el texto */
 }
+
 .nav-links {
   display: flex;
   gap: 24px;
   align-items: center;
 }
+
 /* Color para los iconos del menú (NUEVO) */
 .nav-links a i {
-  color: var(--accent); /* Usamos la variable de color naranja que ya tienes definida */
-  transition: transform 0.3s ease; /* <-- AÑADE ESTA LÍNEA */
+  color: var(--accent);
+  /* Usamos la variable de color naranja que ya tienes definida */
+  transition: transform 0.3s ease;
+  /* <-- AÑADE ESTA LÍNEA */
 }
+
 .nav-links a:hover i {
-  transform: translateY(-3px) scale(1.1); /* Mueve el icono 3px hacia arriba y lo agranda un 10% */
+  transform: translateY(-3px) scale(1.1);
+  /* Mueve el icono 3px hacia arriba y lo agranda un 10% */
 }
 
 
 .nav-links a:hover {
   color: var(--accent);
-  
+
 }
 
 .mobile-menu-btn {
@@ -111,9 +171,11 @@ main {
   padding: 8px;
   border-radius: 10px;
 }
+
 .mobile-menu-btn:focus-visible {
   outline: 2px solid var(--brand);
 }
+
 .menu-icon {
   width: 28px;
   height: 28px;
@@ -121,59 +183,70 @@ main {
 
 /* Slider */
 .slider-section {
-  margin-top: var(--header-h); /* <-- UNA SOLA VEZ */
+  margin-top: var(--header-h);
+  /* <-- UNA SOLA VEZ */
   position: relative;
   isolation: isolate;
   height: 70vh;
   overflow: hidden;
   display: grid;
 }
+
 @media (min-width: 768px) {
   .slider-section {
     height: 50vh;
   }
 }
+
 .slides-container {
   position: relative;
   width: 100%;
   height: 100%;
 }
+
 .slide {
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity 600ms ease;
 }
+
 .slide.active {
   opacity: 1;
 }
+
 .slide-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .slide-overlay {
   position: absolute;
   inset: 0;
-  
+
   display: grid;
   place-items: center;
   padding: 16px;
 }
+
 .slide-content {
   color: #fff;
   text-align: center;
   max-width: 64ch;
 }
+
 .slide-content h2 {
   font-size: clamp(1.75rem, 3.5vw, 3.25rem);
   font-weight: 800;
   margin-bottom: 0.5rem;
 }
+
 .slide-content p {
   font-size: clamp(1rem, 1.6vw, 1.25rem);
   margin-bottom: 1.25rem;
 }
+
 .slide-button {
   display: inline-block;
   background: var(--brand);
@@ -185,6 +258,7 @@ main {
   position: relative;
   margin-bottom: 6%;
 }
+
 .slide-button:hover {
   background: var(--brand-600);
 }
@@ -201,12 +275,15 @@ main {
   cursor: pointer;
   z-index: 10;
 }
+
 .slider-control:hover {
   background: rgba(0, 0, 0, 0.55);
 }
+
 .slider-control.prev {
   inset-inline-start: 8px;
 }
+
 .slider-control.next {
   inset-inline-end: 8px;
 }
@@ -214,13 +291,17 @@ main {
 .dots {
   position: absolute;
   bottom: 12px;
-  left: 50%; /* Coloca el inicio del elemento en la mitad horizontal */
-  transform: translateX(-50%); /* Mueve el elemento hacia la izquierda la mitad de su propio ancho */
+  left: 50%;
+  /* Coloca el inicio del elemento en la mitad horizontal */
+  transform: translateX(-50%);
+  /* Mueve el elemento hacia la izquierda la mitad de su propio ancho */
   display: flex;
-  justify-content: center; /* Esto ya no es estrictamente necesario, pero no molesta */
+  justify-content: center;
+  /* Esto ya no es estrictamente necesario, pero no molesta */
   gap: 10px;
   z-index: 10;
 }
+
 .dot {
   width: 10px;
   height: 10px;
@@ -228,6 +309,7 @@ main {
   background: rgba(255, 255, 255, 0.55);
   border: 0;
 }
+
 .dot[aria-current="true"],
 .dot:hover {
   background: #fff;
@@ -237,6 +319,7 @@ main {
   .slide {
     transition: none;
   }
+
   html {
     scroll-behavior: auto;
   }
@@ -248,11 +331,13 @@ main {
   padding-bottom: 30px;
   background: var(--surface);
 }
+
 .cards-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 32px;
 }
+
 @media (min-width: 768px) {
   .cards-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -265,17 +350,20 @@ main {
   transform: translateY(40px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
+
 .card-link.is-visible {
   opacity: 1;
   transform: none;
 }
+
 .card {
   height: 100%;
   display: flex;
   flex-direction: column;
   text-align: center;
-  
+
 }
+
 .card-image-container {
   display: grid;
   place-items: center;
@@ -283,20 +371,23 @@ main {
   position: relative;
   z-index: 1;
 }
+
 .card-image {
   max-height: 210px;
   aspect-ratio: 16/10;
   object-fit: contain;
   margin: 6px;
 }
+
 .card-content {
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 24px;
   padding-top: 96px;
-  /* transition: box-shadow 0.3s; */ /* <-- ELIMINA O COMENTA ESTA LÍNEA */
-  flex-grow: 1; 
+  /* transition: box-shadow 0.3s; */
+  /* <-- ELIMINA O COMENTA ESTA LÍNEA */
+  flex-grow: 1;
 }
 
 .card-content h3 {
@@ -305,16 +396,18 @@ main {
   margin-bottom: 0.35rem;
   color: var(--brand);
 }
+
 .card-content p {
   color: var(--muted);
 }
 
 /* Footer */
 .main-footer {
-  background:var(--bg);
+  background: var(--bg);
   color: var(--brand-600);
   padding: 24px 0;
 }
+
 .main-footer .container {
   text-align: center;
 }
@@ -386,6 +479,7 @@ main {
   0% {
     transform: translateY(0);
   }
+
   100% {
     transform: translateY(-10px);
   }
@@ -403,12 +497,15 @@ main {
     padding-top: 24px;
     padding-bottom: 24px;
   }
+
   .slide-split-text {
     order: 2;
   }
+
   .slide-split-image {
     order: 1;
   }
+
   .slide-split-text p {
     margin-inline: auto;
   }
@@ -432,15 +529,18 @@ main {
 /* === ESTILOS PARA NAVEGACIÓN MÓVIL (UNIFICADO) === */
 @media (max-width: 767px) {
   .nav-links {
-    display: none; /* Oculta los links de escritorio en mobile */
+    display: none;
+    /* Oculta los links de escritorio en mobile */
   }
 
   .mobile-menu-btn {
-    display: flex; /* Muestra el botón de hamburguesa en mobile */
+    display: flex;
+    /* Muestra el botón de hamburguesa en mobile */
   }
 
   #mobile-menu {
-    display: none; /* Oculto por defecto */
+    display: none;
+    /* Oculto por defecto */
     position: absolute;
     inset-inline: 0;
     top: var(--header-h);
@@ -452,7 +552,8 @@ main {
   }
 
   #mobile-menu.show {
-    display: flex; /* Muestra el menú */
+    display: flex;
+    /* Muestra el menú */
   }
 
   #mobile-menu a {
@@ -468,7 +569,7 @@ main {
 
 /* Ocultar título principal en mobile */
 .desktop-only-title {
-    display: none;
+  display: none;
 }
 
 /* === ESTILOS PARA LA NAVEGACIÓN EN DESKTOP === */
@@ -476,13 +577,14 @@ main {
   .mobile-menu-btn {
     display: none;
   }
-  
-  #mobile-menu { 
-    display: none !important; /* Oculta el menú móvil en desktop */
+
+  #mobile-menu {
+    display: none !important;
+    /* Oculta el menú móvil en desktop */
   }
 
   .nav-links {
-    display: flex; 
+    display: flex;
   }
 
   .desktop-only-title {
@@ -508,10 +610,13 @@ main {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 40px; /* Altura de la barra blanca que tapará la marca */
-  background: white; /* Color de la barra */
+  height: 40px;
+  /* Altura de la barra blanca que tapará la marca */
+  background: white;
+  /* Color de la barra */
   z-index: 999;
 }
+
 /* ===== Botón Flotante de WhatsApp ===== */
 .whatsapp-flotante {
   position: fixed;
@@ -519,13 +624,15 @@ main {
   height: auto;
   bottom: 25px;
   right: 25px;
-  background-color: #25d366; /* Color verde de WhatsApp */
+  background-color: #25d366;
+  /* Color verde de WhatsApp */
   color: #fff;
   border-radius: 50px;
   padding: 12px 22px;
   display: flex;
   align-items: center;
-  gap: 10px; /* Espacio entre el ícono y el texto */
+  gap: 10px;
+  /* Espacio entre el ícono y el texto */
   font-size: 16px;
   font-weight: 600;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
@@ -535,13 +642,15 @@ main {
 }
 
 .whatsapp-flotante:hover {
-  transform: scale(1.05); /* Agranda un poco el botón al pasar el mouse */
+  transform: scale(1.05);
+  /* Agranda un poco el botón al pasar el mouse */
 }
 
 .whatsapp-icono {
   width: 24px;
   height: 24px;
-  fill: white; /* Pinta el ícono SVG de blanco */
+  fill: white;
+  /* Pinta el ícono SVG de blanco */
 }
 
 /* ===== Animación para el emoji de la mano 👋 ===== */
@@ -549,47 +658,62 @@ main {
   0% {
     transform: rotate(0deg);
   }
+
   10% {
     transform: rotate(14deg);
-  } /* Mueve la mano hacia arriba */
+  }
+
+  /* Mueve la mano hacia arriba */
   20% {
     transform: rotate(-8deg);
-  } /* Mueve la mano hacia abajo */
+  }
+
+  /* Mueve la mano hacia abajo */
   30% {
     transform: rotate(14deg);
   }
+
   40% {
     transform: rotate(-4deg);
   }
+
   50% {
     transform: rotate(10deg);
   }
+
   60% {
     transform: rotate(0deg);
-  } /* Vuelve a la posición original */
+  }
+
+  /* Vuelve a la posición original */
   100% {
     transform: rotate(0deg);
   }
 }
 
 .whatsapp-flotante span {
-  display: flex; /* Para poder alinear el texto y el emoji */
+  display: flex;
+  /* Para poder alinear el texto y el emoji */
   align-items: center;
-  gap: 5px; /* Espacio entre ¡Hola! y el emoji */
+  gap: 5px;
+  /* Espacio entre ¡Hola! y el emoji */
 }
 
 /* Aplica la animación al emoji dentro del botón */
 .whatsapp-flotante span .emoji-wave {
-  display: inline-block; /* Necesario para que la transformación funcione */
-  animation: wave-animation 2.5s infinite; /* Aplica la animación, dura 2.5s y se repite infinitamente */
-  transform-origin: 70% 70%; /* El punto desde donde rota el emoji */
+  display: inline-block;
+  /* Necesario para que la transformación funcione */
+  animation: wave-animation 2.5s infinite;
+  /* Aplica la animación, dura 2.5s y se repite infinitamente */
+  transform-origin: 70% 70%;
+  /* El punto desde donde rota el emoji */
 }
 
 
 /* ===== SECCIÓN DE LOGOS (NUEVO CÓDIGO) ===== */
 .partners-section {
-  padding-top:  0px;
-  padding-bottom:  50px;
+  padding-top: 0px;
+  padding-bottom: 50px;
   text-align: center;
 }
 
@@ -612,39 +736,38 @@ main {
   overflow: hidden;
   position: relative;
   /* Efecto de desvanecido en los bordes */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    white 20%,
-    white 80%,
-    transparent
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    white 20%,
-    white 80%,
-    transparent
-  );
+  -webkit-mask-image: linear-gradient(to right,
+      transparent,
+      white 20%,
+      white 80%,
+      transparent);
+  mask-image: linear-gradient(to right,
+      transparent,
+      white 20%,
+      white 80%,
+      transparent);
 }
 
 .logo-track {
   display: flex;
-  gap: 48px; /* Espacio entre logos */
+  gap: 48px;
+  /* Espacio entre logos */
   width: max-content;
   align-items: center;
   animation: scroll 75s linear infinite;
 }
 
 .logo-track:hover {
-  animation-play-state: paused; /* Pausa la animación al pasar el mouse */
+  animation-play-state: paused;
+  /* Pausa la animación al pasar el mouse */
 }
 
 .logo-track img {
-  height: 60px; /* Tamaño de los logos */
+  height: 60px;
+  /* Tamaño de los logos */
   max-width: 170px;
   object-fit: contain;
-   
+
   /* Logos en blanco y negro */
   /* filter: grayscale(100%); */
   opacity: 1;
@@ -652,7 +775,8 @@ main {
 }
 
 .logo-track img:hover {
-  filter: grayscale(0%); /* Logos a color al pasar el mouse */
+  filter: grayscale(0%);
+  /* Logos a color al pasar el mouse */
   opacity: 1;
   transform: scale(1.1);
 }
@@ -662,35 +786,36 @@ main {
   0% {
     transform: translateX(0);
   }
+
   100% {
     /* Mueve el carrusel la mitad de su ancho total */
-    transform: translateX(calc(-50% - 24px)); /* 24px es la mitad del gap */
+    transform: translateX(calc(-50% - 24px));
+    /* 24px es la mitad del gap */
   }
 }
 
-.aaa {   /* DEGRADE BLANCO A LOS COSTADOS DEL WIDGGET DE INSTA */
- 
+.aaa {
+  /* DEGRADE BLANCO A LOS COSTADOS DEL WIDGGET DE INSTA */
+
   /* Efecto de desvanecido en los bordes */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    white 20%,
-    white 80%,
-    transparent
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    white 20%,
-    white 80%,
-    transparent
-  );
+  -webkit-mask-image: linear-gradient(to right,
+      transparent,
+      white 20%,
+      white 80%,
+      transparent);
+  mask-image: linear-gradient(to right,
+      transparent,
+      white 20%,
+      white 80%,
+      transparent);
 }
 
 @media (min-width: 1024px) {
   .container-wide {
-    width: 95%; /* Aumentamos el ancho del 90% al 95% para reducir los márgenes */
-    max-width: 1400px; /* Opcional: aumentamos el ancho máximo para pantallas grandes */
+    width: 95%;
+    /* Aumentamos el ancho del 90% al 95% para reducir los márgenes */
+    max-width: 1400px;
+    /* Opcional: aumentamos el ancho máximo para pantallas grandes */
   }
 }
 
@@ -702,6 +827,7 @@ main {
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -712,11 +838,14 @@ main {
 @keyframes fadeInRight {
   from {
     opacity: 0;
-    transform: translateX(30px); /* Empieza 30px a la derecha */
+    transform: translateX(30px);
+    /* Empieza 30px a la derecha */
   }
+
   to {
     opacity: 1;
-    transform: translateX(0); /* Termina en su posición original */
+    transform: translateX(0);
+    /* Termina en su posición original */
   }
 }
 
@@ -754,13 +883,16 @@ main {
 
 /* Aplicamos el efecto de escala (zoom) cuando el mouse está sobre el link */
 .card-link:hover .card-image {
-  transform: scale(1.1); /* Aumentamos la escala de la imagen en un 10% */
+  transform: scale(1.1);
+  /* Aumentamos la escala de la imagen en un 10% */
 }
+
 /* ====== Estilos para Menú Desplegable (NUEVO) ====== */
 
 /* Contenedor principal del menú */
 .dropdown {
-  position: relative; /* Clave para que el menú se posicione correctamente */
+  position: relative;
+  /* Clave para que el menú se posicione correctamente */
   display: inline-block;
 }
 
@@ -768,19 +900,22 @@ main {
 .dropdown-toggle {
   color: #374151;
   font-weight: 500;
-  cursor: pointer; /* Cambia el cursor para que parezca un botón */
+  cursor: pointer;
+  /* Cambia el cursor para que parezca un botón */
 }
 
 /* Contenedor de los enlaces del submenú (oculto por defecto) */
 .dropdown-menu {
-  display: none; /* Oculto hasta que pasemos el mouse por encima */
+  display: none;
+  /* Oculto hasta que pasemos el mouse por encima */
   position: absolute;
   background-color: #ffffff;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 100;
   border-radius: 8px;
-  overflow: hidden; /* Para que los bordes redondeados se apliquen a los links */
+  overflow: hidden;
+  /* Para que los bordes redondeados se apliquen a los links */
 }
 
 /* Estilo para los enlaces dentro del menú */
@@ -795,7 +930,8 @@ main {
 /* Cambia el color del enlace al pasar el mouse por encima */
 .dropdown-menu a:hover {
   background-color: #f1f1f1;
-  color: var(--accent); /* Usa el color de acento de tu marca */
+  color: var(--accent);
+  /* Usa el color de acento de tu marca */
 }
 
 /* Muestra el menú desplegable cuando se pasa el mouse sobre el contenedor */
@@ -805,31 +941,38 @@ main {
 
 /* Estilo para los links del submenú */
 #mobile-menu .dropdown-menu a {
-  padding-right: 30px; /* Un poco más de padding para que se vea anidado */
-  font-size: 0.9em; /* Letra un poco más pequeña */
+  padding-right: 30px;
+  /* Un poco más de padding para que se vea anidado */
+  font-size: 0.9em;
+  /* Letra un poco más pequeña */
 }
 
 /* Cuando el dropdown esté abierto, muestra el menú */
 #mobile-menu .dropdown.open .dropdown-menu {
   display: block;
 }
+
 /* ====== Estilos para Página Nosotros (ACTUALIZADO) ====== */
 
 .about-section {
   /* Hacemos que la sección ocupe al menos toda la altura de la pantalla */
-  min-height: calc(100vh - 180px); /* 100% de la altura de la vista - la altura del header y footer */
-  
+  min-height: calc(100vh - 180px);
+  /* 100% de la altura de la vista - la altura del header y footer */
+
   /* Centramos el contenido vertical y horizontalmente */
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  padding: 40px 0; /* Espaciado interno */
+
+  padding: 40px 0;
+  /* Espaciado interno */
 }
 
 .about-container {
-  max-width: 900px; /* Aumentamos el ancho máximo para que el video sea más grande */
-  width: 90%; /* Aseguramos que se vea bien en pantallas más pequeñas */
+  max-width: 900px;
+  /* Aumentamos el ancho máximo para que el video sea más grande */
+  width: 90%;
+  /* Aseguramos que se vea bien en pantallas más pequeñas */
   margin: 0 auto;
   text-align: center;
 }
@@ -845,7 +988,7 @@ main {
   font-size: 1.1rem;
   color: var(--muted);
   margin-bottom: 40px;
-  max-width: 60ch; 
+  max-width: 60ch;
   margin-left: auto;
   margin-right: auto;
 }
@@ -854,7 +997,7 @@ main {
   position: relative;
   overflow: hidden;
   width: 100%;
-  padding-top: 56.25%; 
+  padding-top: 56.25%;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -868,6 +1011,7 @@ main {
   width: 100%;
   height: 100%;
 }
+
 /* ====== Estilos específicos para la página Nosotros (NUEVO) ====== */
 
 /* Le decimos al body de la página "Nosotros" que sea flexible */
@@ -880,12 +1024,14 @@ main {
 /* Hacemos que el main de "Nosotros" crezca para ocupar el espacio */
 .page-nosotros main {
   flex-grow: 1;
-  display: flex; /* Añadimos flex para poder centrar la sección */
+  display: flex;
+  /* Añadimos flex para poder centrar la sección */
 }
 
 /* Y ahora centramos la sección .about-section dentro del main */
 .page-nosotros .about-section {
-  width: 100%; /* Ocupa todo el ancho del main */
+  width: 100%;
+  /* Ocupa todo el ancho del main */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -897,14 +1043,19 @@ main {
 /* ===== Botón Volver Arriba (Back to Top) ===== */
 .back-to-top-btn {
   position: fixed;
-  bottom: 80px; /* Mantenemos la altura para que no se superponga */
+  bottom: 80px;
+  /* Mantenemos la altura para que no se superponga */
   right: 25px;
-  display: none; /* Oculto por defecto */
+  display: none;
+  /* Oculto por defecto */
   width: 40px;
   height: 40px;
-  background-color: var(--accent); /* Fondo azul de tu marca */
-  color: #fff; /* Flecha blanca */
-  border: none; /* Quitamos el borde */
+  background-color: var(--accent);
+  /* Fondo azul de tu marca */
+  color: #fff;
+  /* Flecha blanca */
+  border: none;
+  /* Quitamos el borde */
   border-radius: 50%;
   z-index: 1000;
   transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
@@ -921,41 +1072,51 @@ main {
 }
 
 #mobile-menu a i {
-  color: var(--accent); /* Pinta el ícono con el color naranja de tu marca */
+  color: var(--accent);
+  /* Pinta el ícono con el color naranja de tu marca */
 }
+
 /* ===== Color para el ícono del menú hamburguesa ===== */
 .mobile-menu-btn .menu-icon {
-  color: var(--accent); /* Pinta el ícono con el color naranja de tu marca */
+  color: var(--accent);
+  /* Pinta el ícono con el color naranja de tu marca */
 }
 
 /* ===== ESTILOS PARA SLIDER CON DESPLAZAMIENTO HORIZONTAL ===== */
 #horizontal-slider {
   position: relative;
-  overflow: hidden; /* Oculta los slides que están fuera de la vista */
+  overflow: hidden;
+  /* Oculta los slides que están fuera de la vista */
 }
 
 .horizontal-slider-container {
-  display: flex; /* Pone las imágenes en fila */
-  transition: transform 0.5s ease-in-out; /* La animación del desplazamiento */
+  display: flex;
+  /* Pone las imágenes en fila */
+  transition: transform 0.5s ease-in-out;
+  /* La animación del desplazamiento */
 }
 
 .horizontal-slide {
-  flex: 0 0 100%; /* Cada slide ocupa el 100% del ancho */
+  flex: 0 0 100%;
+  /* Cada slide ocupa el 100% del ancho */
   min-width: 100%;
 }
 
 /* ===== AJUSTE DE FONDO PARA SECCIÓN INSTAGRAM (NUEVO) ===== */
 .instagram-container {
   background-color: var(--surface);
-  padding-top: 20px; /* Le da un poco de aire arriba */
+  padding-top: 20px;
+  /* Le da un poco de aire arriba */
 }
 
 /* ===== ESTILOS PARA NEWSLETTER (NUEVO) ===== */
 .newsletter-section {
-  background-color: var(--brand); /* Usamos el azul de tu marca */
+  background-color: var(--brand);
+  /* Usamos el azul de tu marca */
   color: #fff;
   padding: 24px 0;
-  border-top: 1px solid #e5e7eb; /* Línea separadora sutil */
+  border-top: 1px solid #e5e7eb;
+  /* Línea separadora sutil */
 }
 
 .newsletter-container {
@@ -973,14 +1134,17 @@ main {
 
 .newsletter-form {
   display: flex;
-  min-width: 350px; /* Ancho mínimo para el formulario */
+  min-width: 350px;
+  /* Ancho mínimo para el formulario */
 }
 
 .newsletter-form input {
-  flex-grow: 1; /* El input ocupa el espacio disponible */
+  flex-grow: 1;
+  /* El input ocupa el espacio disponible */
   padding: 10px 14px;
   border: 1px solid #d1d5db;
-  border-radius: 8px 0 0 8px; /* Bordes redondeados solo a la izquierda */
+  border-radius: 8px 0 0 8px;
+  /* Bordes redondeados solo a la izquierda */
   font-size: 1rem;
   outline: none;
 }
@@ -988,7 +1152,8 @@ main {
 .newsletter-form button {
   padding: 10px 24px;
   border: none;
-  border-radius: 0 8px 8px 0; /* Bordes redondeados solo a la derecha */
+  border-radius: 0 8px 8px 0;
+  /* Bordes redondeados solo a la derecha */
   background-color: #fff;
   color: var(--brand);
   font-weight: 700;
@@ -1003,17 +1168,21 @@ main {
 /* --- Estilos para la versión móvil --- */
 @media (max-width: 768px) {
   .newsletter-container {
-    flex-direction: column; /* Apilamos los elementos */
+    flex-direction: column;
+    /* Apilamos los elementos */
     text-align: center;
   }
+
   .newsletter-form {
-    min-width: 100%; /* El formulario ocupa todo el ancho */
+    min-width: 100%;
+    /* El formulario ocupa todo el ancho */
   }
 }
 
 /* ===== ESTILOS PARA MENSAJE DE NEWSLETTER (NUEVO) ===== */
 .newsletter-message {
-  display: none; /* Oculto por defecto */
+  display: none;
+  /* Oculto por defecto */
   padding: 15px 20px;
   border-radius: 8px;
   font-weight: 500;
@@ -1022,18 +1191,19 @@ main {
 }
 
 .newsletter-message.success {
-  background-color: #d4edda; /* Un verde suave, como el de tu imagen */
+  background-color: #d4edda;
+  /* Un verde suave, como el de tu imagen */
   color: #155724;
   border: 1px solid #c3e6cb;
 }
 
-  
+
 /* ===== ESTILOS PARA ANIMACIÓN DE EMOJIS (VERSIÓN 1 CON PAUSA) ===== */
 
 /* Hacemos que los spans se puedan animar correctamente */
 .newsletter-title .emoji-envelope,
 .newsletter-title .emoji-fire {
-  display: inline-block; 
+  display: inline-block;
 }
 
 /* 1. Animación para el sobre (se balancea y luego pausa) */
@@ -1044,13 +1214,34 @@ main {
 
 /* Definimos la secuencia de movimiento y la pausa */
 @keyframes shake-and-rest {
+
   /* Movimiento (primeros 2 segundos) */
-  2.5%, 22.5% { transform: rotate(-3deg); }
-  5%, 20% { transform: rotate(3deg); }
-  7.5%, 12.5%, 17.5% { transform: rotate(-5deg); }
-  10%, 15% { transform: rotate(5deg); }
+  2.5%,
+  22.5% {
+    transform: rotate(-3deg);
+  }
+
+  5%,
+  20% {
+    transform: rotate(3deg);
+  }
+
+  7.5%,
+  12.5%,
+  17.5% {
+    transform: rotate(-5deg);
+  }
+
+  10%,
+  15% {
+    transform: rotate(5deg);
+  }
+
   /* Pausa (últimos 2 segundos) */
-  25%, 100% { transform: rotate(0); }
+  25%,
+  100% {
+    transform: rotate(0);
+  }
 }
 
 /* 2. Animación original para el fuego (late/pulsa) */
@@ -1063,59 +1254,95 @@ main {
   from {
     transform: scale(1);
   }
+
   to {
     transform: scale(1.2);
   }
 }
+
 /* Solución para contenido tapado por el header fijo */
 .contenido-principal {
-  padding-top: 50px; /* Usa la variable de la altura del header (110px) */
+  padding-top: 50px;
+  /* Usa la variable de la altura del header (110px) */
 }
 
-  /* Estilos para la nueva sección de búsqueda */
-      .home-search-section {
-        padding: 10px 10px;
-        background-color: var(--surface);
-      }
-      .home-search-container {
-        max-width: 800px;
-        margin: 0 auto;
-        position: relative;
-      }
-      #home-search-input {
-        width: 100%;
-        padding: 15px 20px;
-        font-size: 1.2rem;
-        border-radius: 12px;
-        border: 1px solid #d1d5db;
-        margin-bottom: 10px;
-      }
-      #home-search-input:focus {
-        outline: 2px solid var(--accent);
-        border-color: transparent;
-      }
-      #home-results-container {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: var(--shadow);
-        z-index: 10;
-        max-height: 400px;
-        overflow-y: auto;
-      }
-      #home-results-container .result-item {
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        border-bottom: 1px solid #f3f4f6;
-      }
-      #home-results-container .result-item:last-child { border-bottom: none; }
-      #home-results-container .result-item:hover { background-color: #f9fafb; }
-      .result-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 15px; background-color: #f3f4f6; }
-      .result-item .info .nombre { font-weight: 600; color: var(--brand); }
-      .result-item .info .sku { font-size: 0.9rem; color: var(--muted); }
-      #home-status-message { text-align: center; color: var(--muted); font-size: 1rem; padding: 15px; }
+/* Estilos para la nueva sección de búsqueda */
+.home-search-section {
+  padding: 10px 10px;
+  background-color: var(--surface);
+}
+
+.home-search-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+#home-search-input {
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 10px;
+}
+
+#home-search-input:focus {
+  outline: 2px solid var(--accent);
+  border-color: transparent;
+}
+
+#home-results-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  z-index: 10;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#home-results-container .result-item {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+#home-results-container .result-item:last-child {
+  border-bottom: none;
+}
+
+#home-results-container .result-item:hover {
+  background-color: #f9fafb;
+}
+
+.result-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
+  background-color: #f3f4f6;
+}
+
+.result-item .info .nombre {
+  font-weight: 600;
+  color: var(--brand);
+}
+
+.result-item .info .sku {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+#home-status-message {
+  text-align: center;
+  color: var(--muted);
+  font-size: 1rem;
+  padding: 15px;
+}
