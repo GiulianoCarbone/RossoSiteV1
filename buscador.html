@@ -328,7 +328,26 @@
         </div>
       </section>
     </main>
+ <section class="newsletter-section">
+    <div class="container newsletter-container">
+      <h3 class="newsletter-title">
+        Suscribite y no te pierdas nuestras mejores ofertas y novedades
+        <span class="emoji-envelope">📩</span>
+        <span class="emoji-fire">🔥</span>
+      </h3>
 
+      <form id="newsletter-form-ajax" class="newsletter-form"
+        action="https://rossomateriales1.ipzmarketing.com/f/OdA2AtykkcQ" method="post">
+        <input type="text" name="anotheremail" id="anotheremail" style="position: absolute; left: -5000px" tabindex="-1"
+          autocomplete="off" />
+
+        <input id="newsletter-email" type="email" name="subscriber[email]" placeholder="Ingresá tu email" required />
+        <button id="newsletter-button" type="submit">ENVIAR</button>
+      </form>
+
+      <div id="newsletter-message" class="newsletter-message"></div>
+    </div>
+  </section>
     <footer class="main-footer">
       <div class="container">
         <p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p>
