@@ -770,201 +770,137 @@ const productos = [
 
     // ---PRODUCTOS ABERTURAS--
   {
-    "nombre": "Línea Presta Plus - Modelo 3710 Grafito - Oblak",
-    "sku": "33985",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/f7bad702-3606-45d9-a350-93813abc9c55?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_31df4ddd-80f7-4526-8e7b-753ff52eb9c0.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Línea Presta Plus - Modelo 3710 Blanca - Oblak",
-    "sku": "33985",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/6a54abaa-b270-4201-9b7c-eac81bbbde4a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_f3359c97-2274-416d-aa65-da4ea8d509be.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Línea Presta Plus - Modelo 3707 Grafito - Oblak",
-    "sku": "33578",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/bb32cee6-6555-4ea0-8e41-4319291b6017?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_958b03d8-9265-4aa5-b041-56aa565d54e0.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Línea Presta Plus - Modelo 3707 Blanca - Oblak",
-    "sku": "33578",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/95ff5659-2033-4ed8-995e-6b143ff0eb32?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_5dbe4e96-95ea-42be-95b8-e3b910f14794.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Línea Prima Plus -Modelo 1788 Grafito - Oblak",
-    "sku": "28760",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/43326d4a-9223-4bfb-9195-d9a860c432a6?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_77f544f9-e9da-4645-9ea7-35aaae0b07ce.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Línea Prima Plus- Modelo 1709 Grafito - Oblak",
-    "sku": "31330",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/fb36dca1-da97-4996-afc2-9b4501604e1b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e8cb8f20-9e2a-40b7-aba6-22eabe2165cf.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Puerta Aluminio ciega acanalada - Derecha/Izquierda",
-    "sku": "RR0258",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/9325f8c0-b8b1-4c3a-b52b-a08021dde679?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_63678220-6cc1-4465-9a3b-fc00d31b2594.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Puerta Aluminio 1/2 vidrio acanalada 80 - Izquierda/Derecha",
-    "sku": "RR0257",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/cb2e449c-b218-4bc1-9e38-0c845d9d5508?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_f3c778f2-2060-4ba4-8e16-944d063155f3.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Puerta Aluminio 1/4 vidrio acanalada 80 - Iquierda/Derecha",
-    "sku": "RR0259",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/78fe510b-4aa6-4396-8a1e-b5ee94b432a8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_8a015fa4-bdc8-4cb9-8f18-ac29922c9e24.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana De Aluminio Blanco 100 X 110 Con Vidrio. Con Reja",
-    "sku": "25137",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/9bcaca5c-a772-44e3-af30-1a52550a0ca6?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d92adf16-8042-43d0-8688-cdad075f7e10.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana de Aluminio 100x100 Cm",
-    "sku": "28266",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/def91b5f-9672-49fa-a236-7a7bdf3b671c?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_bc423196-52e8-4011-a0a0-9804e46ccd51.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana Aluminio Vidrio Entero 150x100 Cm",
-    "sku": "28268",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/a5dec698-43aa-4893-9782-5d8f1e372ed5?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b8a1b5fc-675c-48cb-8449-4d5f67c92f74.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana Corrediza Vidrio Entero 200x200 Cm",
-    "sku": "29420",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/a320d5e5-aafa-4d87-a070-4615362c423d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_efe313c8-6137-48de-ae8e-3fd0d4e9bfb3.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana Corrediza Vidrio Entero 150x200 Cm",
-    "sku": "29418",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/b762cdec-b026-42ab-934b-7f50dadb3234?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_c6d2827e-11c2-4b19-9dde-65b556120268.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana Corrediza Vidrio Entero 120x100 Cm",
-    "sku": "28267",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/b3a1d0a0-929e-49fa-bffe-a149ed1995c2?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_5ba9aa43-3b73-4ce9-8385-f22cf011d958.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana Aluminio Vidrio Entero 150x150 Cm",
-    "sku": "32944",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/a1a9387a-b234-4d0c-b738-a2043ec1fce0?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e96f8739-770f-46b3-916d-615ff38f2ae5.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana Aluminio Vidrio Entero 60x40 Cm",
-    "sku": "35826",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/92e94afb-bf89-4087-a8e3-29a247db9d9d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9bbd84db-cfad-4c3f-bc63-e8010a7043a8.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Aireador Ventiluz de Aluminio 40x26 Cm",
-    "sku": "35831",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/a5f057f6-2734-47f2-a67a-98083ceab117?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_94dd2c0d-c54c-486f-a2d0-ba7590564860.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Aireador, Ventiluz de Aluminio, 60x26 Cm",
-    "sku": "35833",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/7fcdb084-0262-48e9-8ca4-96739a3affb8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_3737c697-d6c1-402d-b533-e102317733fe.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Aireador Ventiluz de Aluminio 60x36 Cm",
-    "sku": "35834",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/0bf8a7a4-1601-451d-a209-6f62af9ff167?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_c277c76f-af42-41a5-ac81-c3038e0bc343.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana Corrediza Simple Vidrio Repartido 150x150 Cm",
-    "sku": "32945",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/418eaa68-72a7-4e8c-b1ac-cf2b89fb931e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_10e8a60c-0f4f-4fdc-8ac3-9a2a86752a4a.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Raja Vidrio Entero 050x100 Cm",
-    "sku": "35828",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/e590ab2b-2e57-4290-9701-014b47780bc6?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b3bbb571-8ebc-4c15-b949-47f3ac5e687d.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana De Aluminio Blanco 150x150 Cm. Con Vidrio. Con Reja",
-    "sku": "RR0262",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/e54c355e-1356-4d48-b698-9ef30c8e9c11?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b2f5797b-afc9-489a-bec5-99cd37f43d63.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Puerta Placa De Pino Marco Madera 80x200 Cm. Derecha/Izquierda",
-    "sku": "36839",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/7516b91b-5f76-4189-8510-dcbae22c76d8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a1fcdb5f-7d63-4461-9f64-61142c25b55b.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Puerta Placa De Pino Marco Madera 70x200 Cm. Derecha/Izquierda",
-    "sku": "36837",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/49f929a4-3430-47b8-9879-77347eac30e8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_90fc5f34-3391-4182-bf7c-5d89bb8515ad.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Puerta Placa Pino. Marco Aluminio 080x200 Cm. Derecha/Izquierda",
-    "sku": "RR0256",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/17b686c8-3abb-41cf-ab9f-a2cbd1aabcad?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_4c2e1262-3c4f-4d73-9840-f37962683ef5.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ventana 100x90 Cm. Corrediza Standard Blanca Con Reja",
-    "sku": "25135",
-    "categoria": "Ventanas",
-    "url": "https://catalogo.rossomateriales.site/products/5aed5c80-7569-45a5-8149-cc89378aaa10?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d748dc2e-8e1d-4a73-b1f3-3b4afd4c1323.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Puerta Placa Pino. Marco Aluminio 070x200 Cm. Derecha/ Izquierda",
-    "sku": "RR0255",
-    "categoria": "Puertas",
-    "url": "https://catalogo.rossomateriales.site/products/5330c613-8671-4c3e-9985-766b02dc1459?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e26029dc-1eb8-404e-8c24-ba958ac6a7ef.jpg?s=small&f=webp"
-  },
+        "nombre": "Línea Presta Plus - Modelo 3710 Grafito - Oblak",
+        "sku": "33985",
+        "url": "https://catalogo.rossomateriales.site/products/f7bad702-3606-45d9-a350-93813abc9c55?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_31df4ddd-80f7-4526-8e7b-753ff52eb9c0.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Línea Presta Plus - Modelo 3710 Blanca - Oblak",
+        "sku": "33985",
+        "url": "https://catalogo.rossomateriales.site/products/6a54abaa-b270-4201-9b7c-eac81bbbde4a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_f3359c97-2274-416d-aa65-da4ea8d509be.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Línea Presta Plus - Modelo 3707 Grafito - Oblak",
+        "sku": "33578",
+        "url": "https://catalogo.rossomateriales.site/products/bb32cee6-6555-4ea0-8e41-4319291b6017?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_958b03d8-9265-4aa5-b041-56aa565d54e0.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Línea Presta Plus - Modelo 3707 Blanca - Oblak",
+        "sku": "33578",
+        "url": "https://catalogo.rossomateriales.site/products/95ff5659-2033-4ed8-995e-6b143ff0eb32?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_5dbe4e96-95ea-42be-95b8-e3b910f14794.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Línea Prima Plus -Modelo 1788 Grafito - Oblak",
+        "sku": "28760",
+        "url": "https://catalogo.rossomateriales.site/products/43326d4a-9223-4bfb-9195-d9a860c432a6?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_77f544f9-e9da-4645-9ea7-35aaae0b07ce.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Línea Prima Plus- Modelo 1709 Grafito - Oblak",
+        "sku": "31330",
+        "url": "https://catalogo.rossomateriales.site/products/fb36dca1-da97-4996-afc2-9b4501604e1b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e8cb8f20-9e2a-40b7-aba6-22eabe2165cf.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana Vidrio. Con De Reja Aluminio Blanco 100 X 110 Con",
+        "sku": "25137",
+        "url": "https://catalogo.rossomateriales.site/products/9bcaca5c-a772-44e3-af30-1a52550a0ca6?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d92adf16-8042-43d0-8688-cdad075f7e10.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana de Aluminio 100x100 Cm",
+        "sku": "28266",
+        "url": "https://catalogo.rossomateriales.site/products/def91b5f-9672-49fa-a236-7a7bdf3b671c?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_bc423196-52e8-4011-a0a0-9804e46ccd51.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana Aluminio Vidrio Entero 150x100 Cm",
+        "sku": "28268",
+        "url": "https://catalogo.rossomateriales.site/products/a5dec698-43aa-4893-9782-5d8f1e372ed5?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b8a1b5fc-675c-48cb-8449-4d5f67c92f74.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana Corrediza Vidrio Entero 200x200 Cm",
+        "sku": "29420",
+        "url": "https://catalogo.rossomateriales.site/products/a320d5e5-aafa-4d87-a070-4615362c423d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_efe313c8-6137-48de-ae8e-3fd0d4e9bfb3.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana Corrediza Vidrio Entero 150x200 Cm",
+        "sku": "29418",
+        "url": "https://catalogo.rossomateriales.site/products/b762cdec-b026-42ab-934b-7f50dadb3234?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_c6d2827e-11c2-4b19-9dde-65b556120268.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana Corrediza Vidrio Entero 120x100 Cm",
+        "sku": "28267",
+        "url": "https://catalogo.rossomateriales.site/products/b3a1d0a0-929e-49fa-bffe-a149ed1995c2?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_5ba9aa43-3b73-4ce9-8385-f22cf011d958.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana Aluminio Vidrio Entero 150x150 Cm",
+        "sku": "32944",
+        "url": "https://catalogo.rossomateriales.site/products/a1a9387a-b234-4d0c-b738-a2043ec1fce0?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e96f8739-770f-46b3-916d-615ff38f2ae5.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana Aluminio Vidrio Entero 60x40 Cm",
+        "sku": "35826",
+        "url": "https://catalogo.rossomateriales.site/products/92e94afb-bf89-4087-a8e3-29a247db9d9d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9bbd84db-cfad-4c3f-bc63-e8010a7043a8.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Aireador Ventiluz de Aluminio 40x26 Cm",
+        "sku": "35831",
+        "url": "https://catalogo.rossomateriales.site/products/a5f057f6-2734-47f2-a67a-98083ceab117?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_94dd2c0d-c54c-486f-a2d0-ba7590564860.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Aireador, Ventiluz de Aluminio, 60x26 Cm",
+        "sku": "35833",
+        "url": "https://catalogo.rossomateriales.site/products/7fcdb084-0262-48e9-8ca4-96739a3affb8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_3737c697-d6c1-402d-b533-e102317733fe.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Aireador Ventiluz de Aluminio 60x36 Cm",
+        "sku": "35834",
+        "url": "https://catalogo.rossomateriales.site/products/0bf8a7a4-1601-451d-a209-6f62af9ff167?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_c277c76f-af42-41a5-ac81-c3038e0bc343.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana 150x150 Cm Corrediza Simple Vidrio Repartido",
+        "sku": "32945",
+        "url": "https://catalogo.rossomateriales.site/products/418eaa68-72a7-4e8c-b1ac-cf2b89fb931e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_10e8a60c-0f4f-4fdc-8ac3-9a2a86752a4a.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Raja Vidrio Entero 050x100 Cm",
+        "sku": "35828",
+        "url": "https://catalogo.rossomateriales.site/products/e590ab2b-2e57-4290-9701-014b47780bc6?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b3bbb571-8ebc-4c15-b949-47f3ac5e687d.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Puerta Cm. Derecha/Izquierda Placa De Pino Marco Madera 80x200",
+        "sku": "36839",
+        "url": "https://catalogo.rossomateriales.site/products/7516b91b-5f76-4189-8510-dcbae22c76d8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a1fcdb5f-7d63-4461-9f64-61142c25b55b.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Puerta Cm. Derecha/Izquierda Placa De Pino Marco Madera 70x200",
+        "sku": "36837",
+        "url": "https://catalogo.rossomateriales.site/products/49f929a4-3430-47b8-9879-77347eac30e8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_90fc5f34-3391-4182-bf7c-5d89bb8515ad.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ventana Blanca Con 100x90 Reja Cm. Corrediza Standard",
+        "sku": "25135",
+        "url": "https://catalogo.rossomateriales.site/products/5aed5c80-7569-45a5-8149-cc89378aaa10?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d748dc2e-8e1d-4a73-b1f3-3b4afd4c1323.jpg?s=small&f=webp"
+    },
 
   // --- PRODUCTOS GRIFERÍAS ---
 
