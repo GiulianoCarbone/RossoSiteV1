@@ -1180,812 +1180,771 @@ const productos = [
   },
 
   // --- REVESTIMIENTOS (la lista que ya teníamos) ---
-  
-  {
-    "nombre": "Bariloche Gris 43x43 - Cañuelas",
-    "sku": "36618",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/4f7b5008-6efa-47d0-87c5-11f4b3643662?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_68e2dccf-9d0b-44c9-bca7-8193775e16c2.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Niza Beige 43x43 - Cañuelas",
-    "sku": "36616",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/f944fd44-a8b5-420c-a097-6fe4b028c696?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_05d0af80-c60f-4838-be38-6f01a9587530.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Portland Negro 51x51 - C. Alberdi",
-    "sku": "32698",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/dfe8a5d4-2b91-4786-bcfe-8abd59914f3b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9d364664-5d26-4634-9bdc-cb09d4be7c9a.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Potenza Negra 50x50 - Cañuelas",
-    "sku": "36601",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/428643c5-a2d5-465c-9618-44c0d58691d6?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_eade6819-644f-455f-bcc7-110d0dc8bda6.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Portland Steel 50x50 - C. Cortines",
-    "sku": "33982",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/8ccc402f-3663-4463-ba12-55fb6323b788?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_1cafc453-5a9e-4699-bc11-77bb70144451.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "California Gris 51x51 - C. Alberdi",
-    "sku": "34934",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/5656d875-760f-431f-8dc6-0dc013f25c2c?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_702d68b2-3b76-48de-a41c-28ba494c5fed.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Bologna Beige 50x50- Cañuelas",
-    "sku": "36595",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/52d52774-fdf5-466e-a25f-1994ebe222f5?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_33be17f6-629d-4775-8d59-11e0bf239178.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Biloba Intenso 51x51- C. Alberdi",
-    "sku": "34006",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/b96a8853-2b3b-4e15-914d-12362b8d3579?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_8cf9729d-9a6d-4eac-b479-49e251abe26a.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Bologna Gris 50x50 - Cañuelas",
-    "sku": "36596",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/8b5a4717-e493-4f4c-9632-726833e87a6c?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_8b99bef9-7c43-49f9-8fd9-bcdd592bc14c.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Urbino Mate 61,5x61,5 - Cañuelas",
-    "sku": "36928",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/8153bf9a-18bf-4ca0-87d5-019ceb629b7f?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0f992548-137d-40cc-afcf-0f562d520053.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Parquet Fresno 35x60 - C. Cortines",
-    "sku": "33835",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/f776e5ec-99bc-4079-b86a-9e01f1ed6fb9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_27232656-d504-4607-84c9-9a6630721148.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Veneto Intenso 34x51 - C. Alberdi",
-    "sku": "34028",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/3242bd90-201b-4eb9-ae4b-dbe00da2087e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_131e2cdc-48bd-4dad-956e-fec56179d41e.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Veneto Gris 34x51 - C. Alberdi",
-    "sku": "34029",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/e32388cb-32f3-4367-a418-0820a7da55ae?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_886bfcfd-beca-4e09-935e-4b70e85c70a7.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Malaga Beige 32x47- Cañuelas",
-    "sku": "36600",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/150a0701-fd57-4b2b-9093-ca2505144295?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_44fefcb2-96e8-4f2c-aaf3-9812fdad16d1.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Tivoli 20X62 - Cañuelas",
-    "sku": "36707",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/75971f96-b35e-4488-aba3-07017f818d89?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_1a44085a-012d-4472-ac6d-670d14e2637f.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Bianco Satinado 25x35 - C. Lourdes",
-    "sku": "27223",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/73eeacf2-3bfd-4c70-9e12-fb827a84524e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_31bbf58a-e913-4658-af0b-e11499b37a05.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Umbrio 20x62 - Cañuelas",
-    "sku": "36708",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/761a94ef-5166-49c4-9aa5-c0bb3c6ceb1d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0493f230-4744-4421-9807-9689840f96c1.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Puglia 20x62 - Cañuelas",
-    "sku": "36706",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/c78f8c25-3688-4082-94df-ba670ba2ed51?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_47d24b4c-494e-4c73-9fc4-a5b62383faad.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Malaga Gris 32x47 - Cañuelas",
-    "sku": "36599",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/cedfa618-30a1-44b9-9c2b-13748fdc09a9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_2966b6af-77a5-4e57-a06c-f56b4e415bc3.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Cannes 60x60 - Cañuelas",
-    "sku": "37057",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/bb2bae0f-1484-4e69-8fdd-3381049e398e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e64b5d95-1c66-4921-a8c2-0e698dfebd62.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Parquet Cerezo 35x60 - C. Cortines",
-    "sku": "32200",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/bcf05726-95d7-48d1-b1c4-a038a4379833?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_429f10cc-6cb7-487f-8c73-eca4a2007f22.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Guijon Microvenecita 32x47 - Cañuelas",
-    "sku": "36597",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/52ad86db-0ae6-4a8f-88a0-244485fe1b29?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_3b4cce79-b7aa-4ce0-8158-5d237aecce9a.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Glaciar Tramado 32x47 - Cañuelas",
-    "sku": "36598",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/c5307d9a-0930-4427-9779-95e378cfc57e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_79b979f3-64ec-4d34-b2ea-ed297e6c7767.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Piedra Basalto Acero 35x60 - C. Cortines",
-    "sku": "32482",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/7b67b10a-5a04-4f71-81ab-d67e90fe96fe?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_56107040-2b0c-4df9-80d1-f70856667890.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Alessandria 20x62 - Cañuelas",
-    "sku": "36705",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/cfa1c25b-01d2-487f-a0bb-3e336001be3d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_aefb1858-4239-461e-98a2-0b7a846b839a.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Lille 60x60 - Cañuelas",
-    "sku": "37055",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/efc8cb92-7f85-4ad9-9883-8f5fe2808d77?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_68276f9c-ee0d-4e31-a055-501a753bc7f7.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Bologna Tiza 51x51 - Cañuelas",
-    "sku": "36594",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/61b031d0-1db2-4577-947d-e2bb583f6560?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_fc847a06-1628-40ec-a10a-7680ddb7c232.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Liguria Mate 61,5x61,5 - Cañuelas",
-    "sku": "36927",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/8efcb415-6b6a-48c0-81bc-2af3f52bbde9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_de0f8d46-7435-4d92-807b-88a2005389db.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Nantes 60x60 - Cañuelas",
-    "sku": "37056",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/abc73ca6-56b1-4417-9f30-a6fa1348d2b5?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0f39b897-08f0-43ea-9f01-39fce9c9fa3e.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Niza Gris - Cañuelas",
-    "sku": "36617",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/84fc43d6-7b53-4805-b8bf-c2ef51d912f9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_80817530-1b84-4ba7-9e81-ea3b81fbde9b.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Azul Ibiza 32x47 - Cañuelas",
-    "sku": "36873",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/fccd4601-c392-436d-bdf8-b41537eba415?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b14cda16-7ae4-4ecb-8a9c-6b527febe7e8.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Acuario br. 25x35 - C. Lourdes",
-    "sku": "27221",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/bf6bb7bb-0f16-4995-a63e-3a814ff23a6f?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_bbab792a-90af-4b25-afd6-73931bfb4681.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Portland Grey 50x50 - C. Cortines",
-    "sku": "37971",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/12b5a260-4974-4a53-850b-809a005cecb3?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b32e250b-4c6a-4e80-bef4-02cb3f5653f2.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Marmol Calacata 50x50 - C. Cortines",
-    "sku": "37970",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/a8c6f804-7c3f-42ab-abf0-ef7d8697de04?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_89417522-a9e2-45f1-bf47-dab94e0d3877.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Benﬁca Marﬁl 36x36 - Cerámica Alberdi",
-    "sku": "33553",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/37d57046-d39e-4f78-9977-19038788867a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_26bfaeb9-f704-40c9-9d2e-74a1558de338.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "California Beige 36x36- Cerámica Alberdi",
-    "sku": "33566",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/d45dfd2b-1ac9-450e-943f-42b778a8d4d9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_fd8af0a8-cb9a-418d-ac3a-6f446f33c220.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Gema Diamante 36x36- Cerámica Alberdi",
-    "sku": "33552",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/c9132992-5555-4933-ab59-129efa6a9b03?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a07db7bb-1034-40d1-87c9-1cd7237402a7.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Parquet Viraro 36x36- Cerámica Alberdi",
-    "sku": "33555",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/fb469cfe-cef1-463a-9bfd-55e306dbb408?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_262df743-b00a-4ac1-86f5-08891f49e7d9.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Lenga Rojizo 36x36- Cerámica Alberdi",
-    "sku": "33549",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/c8514666-c141-4dbe-b4eb-75af0e246436?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_63121f10-fd28-4d0f-87c7-4ea4637d262b.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Alpes Beige 36x36 - Cerámica Alberdi",
-    "sku": "33563",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/0ff775d4-a5ae-43af-9497-2bba32549dd4?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ff9d8f71-748a-4b5f-833b-6eb70c49bcdc.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Alicura 36x36 - Cerámica Alberdi",
-    "sku": "33556",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/a7622ad4-9bc6-4270-b09e-de53b0f6ff11?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a594971e-c6b0-4739-a9d5-31444d1a58de.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Gema Zaﬁro 36x36 - Cerámica Alberdi",
-    "sku": "33551",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/35326154-5c83-4d2c-b335-3591d562d249?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e277aa92-ad39-46df-a20b-0e1d097f7de6.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Garden 36x36 - Cerámica Alberdi",
-    "sku": "33554",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/8b943b87-cd00-4ed3-b6b2-b03b5e3dc838?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_86057208-c920-4c72-a3de-1f5f6b830c63.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Barcelos Azul 36x36- Cerámica Alberdi",
-    "sku": "33561",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/6a4aad23-5ae5-4e96-bd00-d911d50501a3?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_f36624be-1bd4-4747-ab82-3448591d278d.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Azabache 36x36 - Cerámica Alberdi",
-    "sku": "36247",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/5027c22d-63c0-41f3-80b2-d9b9abc08f34?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a8682bd9-331d-48a6-bd95-802af200cd75.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Textil Marﬁl 36x36 - Cerámica Alberdi",
-    "sku": "33562",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/d81ad567-b076-4841-a71f-948a21ef0c0a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_90d62cbd-a6e5-498f-995d-d8af2e736fe8.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Barcelos Rojo 36x36- Cerámica Alberdi",
-    "sku": "34931",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/2e8b8e5a-618b-4962-8a4c-6572ddaf3526?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_abac65e2-f360-4bbb-940c-bd55fc085263.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Tafí Beige 36x36- Cerámica Alberdi",
-    "sku": "34986",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/363e68ec-cf1e-44e7-bccf-d5aa096dfea8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ed40536e-b968-437d-bc08-71b36b17ce33.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Gema Esmeralda 36x36- Cerámica Alberdi",
-    "sku": "33558",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/57100d3b-efeb-43b6-8e1c-9efa6ff8b344?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d324c08f-ae9a-4def-a9af-988e77fe735a.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Cedro 36x36 - Cerámica Alberdi",
-    "sku": "33564",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/9a859388-97f7-4d3f-a676-8586baf4b83a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ea9ac952-d005-451e-bfb2-1d94849fb0e0.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Aquarium Intense 57,1x57,1 - Cerámica Alberdi",
-    "sku": "32845",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/da4b7f06-c732-4a59-a911-11f54d34f8b8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_16e241b7-d739-47c9-b395-f9bd8e31f16c.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Blanco Plus 35x35- Cerámica Lourdes",
-    "sku": "28014",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/cadb5181-d90d-41e2-aba7-b7efd757acc9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9727b4fd-9460-4980-861a-c2e602f1b628.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Negro Plus 35x35- Cerámica Lourdes",
-    "sku": "28633",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/9f1b42c9-35c6-4cae-a112-6e4d647f5c6e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_42076a8f-1c53-42d8-89ed-8596c8a63235.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Taﬁ Marrón 35x35 - Cerámica Lourdes",
-    "sku": "35018",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/591dd45b-5b29-495c-b16e-4d3664a4b80f?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_56c8e37d-97ea-4697-b4d1-dacca61e3e11.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Travertino Gris HD Plus 35x35 - Cerámica",
-    "sku": "27177",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/178d9a7a-28ef-4296-954b-097e4c9bdd35?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9d1b4800-33bf-496b-afcf-90ff9e41736f.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Victoria Beige 35x35 - Cerámica Lourdes",
-    "sku": "31375",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/072f579f-2b72-4a45-8929-0480453f317b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_4e10d998-e08b-4df6-8fbc-22862c97fd6a.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Graﬁato Marrón HD 35x35 - Cerámica Lourdes",
-    "sku": "35161",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/562db327-ab09-4afe-a836-57e562be0e61?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ce94d179-934f-4d23-9476-d0e4198a4524.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Graﬁato Marﬁl 35x35 - Cerámica Lourdes",
-    "sku": "27149",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/79a03a8e-87fe-4503-b472-27849bca52d0?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_233d429e-1d99-4571-b609-8e9af7d2a382.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Travertino Marrón HD Plus 40x40- Cerámica",
-    "sku": "27178",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/88505ec1-92c0-486c-a432-c34a61fc889a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_98cec345-77f1-444c-8c19-f0448eab03aa.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Victoria Gris 35x35 - Cerámica Lourdes",
-    "sku": "31376",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/63ea7b59-e943-42f2-819e-d573db66a35a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_cb304c9f-94f0-4768-9145-1f7eaa92c842.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Calera Beige 36x36 - Cerámica Alberdi",
-    "sku": "33557",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/8c9aae76-5f4f-4d0a-a540-215f1caed096?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_5be4c4b6-466a-4812-8c67-c03ab9412ada.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "California Gris 36x36- Cerámica Lourdes",
-    "sku": "35704",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/996269d1-fee2-4538-a34f-e28f785c30ed?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_85acb1ac-1204-4951-a0af-fb034f784668.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "California Gris Claro 36x36 - Cerámica Alberdi",
-    "sku": "34736",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/7ed668c8-fabb-4866-9964-11f4cf236895?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_79927a48-96a4-4909-8e45-689dcb985fd3.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Porﬁdo HD Marrón 35x35 - Cerámica Lourdes",
-    "sku": "34158",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/cde064c1-a83e-4036-b1fe-203e0e5d75e4?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0595b991-c358-4f05-bc94-2adb86baa6c4.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Cotto Cortines 45x45 - Cerámica Cortines",
-    "sku": "36896",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/6df86e92-7bcb-4ba2-b560-8a9391007262?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_644dc162-8475-4fc6-9c52-a70bc577cee0.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Cordillera Cobre 45x45 - Cerámica Cortines",
-    "sku": "36853",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/9d025232-b127-40fd-8ed5-79d7240d2119?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_59b01736-fbfb-4494-a306-fcfc46e95fb7.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Cuzco Beige 46x46 - Cerámica Alberdi",
-    "sku": "33774",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/63408f3e-0cb2-4e16-88f1-a0638bb0db9a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_cd492baa-34e0-452c-bafb-496f1adba370.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Piedra Amalﬁ 46x46 - Cerámica Allpa",
-    "sku": "37239",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/38bf4096-ffea-4308-801a-2f104441b238?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_2dfd9f54-0529-449c-8c77-1da8adb9c5c6.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Barcelo Beige 46x46 - Cerámica Alberdi",
-    "sku": "33776",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/d94aabb2-3716-48fa-816d-7f3dc5a7dbbe?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_91936bd8-9192-40c2-afdf-a91106aad9e1.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Ibiza Blanco 51x51 - Cerámica Alberdi",
-    "sku": "34213",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/4356aca9-de35-445f-9685-b0c917bfd608?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_4984970d-46c3-4bb0-b2bb-5b6fe8a0e57f.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Stage Gris 51x51 - Cerámica Alberdi",
-    "sku": "32700",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/2e652364-4b74-49f0-9b45-061645d779ad?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9f25917d-a93e-408a-8bb5-6a8dae57fdb2.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Portland Gris 51x51 - Cerámica Alberdi",
-    "sku": "32697",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/ffe090d7-83e0-4959-8f2e-92f5f25fd7ee?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_4f29e883-cce4-4733-9093-306ca41bcc21.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Bianco 20x60 - Cerámica Alberdi",
-    "sku": "32704",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/ab8169a3-c00f-4383-8028-db624ceef855?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_00c1950a-d3d2-4fcf-aa0f-de83b558dc67.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Paris 34x51 - Cerámica Allpa",
-    "sku": "37240",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/521548af-36b8-4054-bb2d-bd976e5ea70b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_27629ba1-502c-41c5-b34b-02bd7860b3b4.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Axella Blanco 34x51 - Cerámica Allpa",
-    "sku": "37241",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/d4b3d4ee-5df7-435a-8061-af290400edeb?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_8297b53a-530e-4223-9b16-10e0fa34e526.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Murete Crayon Neon 30x45 - Cerámica",
-    "sku": "32501",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/407dd2c2-90fb-44b3-8067-be74bab28ad3?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_dfdc5ea7-2870-465b-ad9d-9cc7139247cb.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Bianco Mate 32x47 - Cerámica Cañuelas",
-    "sku": "37236",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/d26363c9-a09d-48aa-8d2e-75acf657fcf8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0ba88bbd-f850-4785-a7c2-b48af03b60ab.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Marmol Calacatta Br. 32x47 - Cerámica",
-    "sku": "37235",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/e566d7ad-5cfc-4328-a532-d3d3d0a0f487?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_59ae1208-3c86-48c0-bb84-902f4ff545d0.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Snow 34x51 - Cerámica Allpa",
-    "sku": "36620",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/fe3554b8-75cb-417f-ab59-37ab9970d0b8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0da5cd04-92f1-4032-b3a7-d71bea107286.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Legno Lenga 30x45 - Cerámica Cortines",
-    "sku": "27673",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/10b05f13-5b32-4384-a91b-2ab9d8189a8b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b56d1b3f-f074-4056-b1ec-545ceba82974.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Murete Crayon 30x45 - Cerámica Cortines",
-    "sku": "28089",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/b87aaaaf-b3c3-4356-8533-e90f588be28e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ec4337ab-5162-4d5d-a4bd-4d345fd8b84b.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Madera Mix 57,1x57,1 - Cerámica Alberdi",
-    "sku": "34171",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/29cb9bdb-8c04-4c3d-b52b-3d3de0a85430?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_c420e310-f7c0-4087-8b3c-7c57c2d78ac2.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Portland Sand Cortines 50x50cm - Ceramica",
-    "sku": "35670",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/27f5efe8-da56-428c-878c-3e110a88cf0d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_07e82da8-a284-4375-85b4-d77ee180dd9f.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Toledo Beige 50x50 - Cerámica Cortines",
-    "sku": "37605",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/305c78d9-6560-4b37-b98d-b6bbe6d4ac84?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b69b2be6-b318-4378-a261-965012ede6dc.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Rubi 36x36 - Cerámica Alberdi",
-    "sku": "36497",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/592e3bee-0b25-4520-9b91-1452805a87a5?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d9c5ed27-0afd-47dc-9322-795c54706e9e.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Statuario Blanco 45x45 - Cerámica Cortines",
-    "sku": "37611",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/2e061de1-02a3-453d-b3da-f0407e9696ed?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_40a72bff-e101-453b-9bbd-70626dbed6f9.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Parquet Castaño 45x45 - Cerámica Cortines",
-    "sku": "36854",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/256bf691-295a-4ea0-bd11-51b72baa50de?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b82281dc-990d-43fc-a42c-f946474c7f5d.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Cairo Beige 45x45 - Cerámica Cortines",
-    "sku": "37609",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/2cd77a90-2a22-4109-8bcf-ec9eaee12204?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_00366f05-5956-4da1-a438-796ce2c39b0c.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Sierra Gris 50x50 cm - Cerámica Cortines",
-    "sku": "37606",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/30e51e58-34bf-4c1e-a16a-2bd47b014213?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_96c5ea57-e7ca-4e90-9246-106cdf94e0ba.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Parquet Alamo 45X45 - Cerámica Cortines",
-    "sku": "36855",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/f36f5747-55bb-4f21-8af7-f7875e94727f?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_68b746ff-b632-436c-9444-7bfcdf4b316f.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Sierra Beige 50x50 - Cerámica Cortines",
-    "sku": "37608",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/90658c6d-09ba-489a-aff3-77a0986df719?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_83f49c28-8f65-4488-b77f-26cafef02a77.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Toledo negro 50 x 50 - Cerámica Cortines",
-    "sku": "37607",
-    "categoria": "Cerámicos",
-    "url": "https://catalogo.rossomateriales.site/products/58176c97-896b-443c-92a6-83f3fe099d37?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0256204a-cef5-41e8-b7b3-407a76b46275.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Century Calcio 60x60 - Cerámica Alberdi",
-    "sku": "37154",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/74a14897-7511-465c-a9a6-c30df9717dbc?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_db179464-7285-40f7-b0bc-7e2b057ffd11.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Obsidian Mate 60x60 - Tendenza",
-    "sku": "37751",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/e2852774-0b3b-4df2-99ae-70fc93b1e819?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_5ce0b3e3-a689-4e3e-a3f0-b658e9022936.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Rocks Smoke Mate 60X60 - Tendenza",
-    "sku": "37750",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/cee160da-3840-4ca4-9f4b-d4b93a8eb229?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_390148b9-f8d5-4091-8896-c0e73091fc48.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Metropolitan Grey 57,1x57,1 - Alberdi",
-    "sku": "37152",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/f9f4b7b4-f481-47b6-9ca0-9bbaa925a614?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_1209e292-e3d0-4b79-a47e-2ed40cb84489.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Manhattan White 60x60- Cerámica Alberdi",
-    "sku": "37149",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/01f50a74-a180-47f3-863c-9e2fe218b376?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_6f8eaa97-4b27-402b-8daa-e9b9cf07f62f.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Planet 20x119 - Eliane",
-    "sku": "36228",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/50949dd1-7bf8-429f-8381-e7b382142a70?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_4b2cf01a-281e-4520-9a80-c1832007bc3b.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Manhattan Nigth 60x60 - Cerámica Alberdi",
-    "sku": "37151",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/7789f324-11e9-40cb-8d3d-27c6107918e9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d5649d8d-d687-4634-82fc-eece24b184ba.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Manhattan Dark 60x60 - Cerámica Alberdi",
-    "sku": "37153",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/43d76bb7-045b-496a-a29d-70637e2da471?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_818f00e8-fc96-4f9b-99d4-de57db6ddc8e.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Roble Canela 19.4x118.2 - Eliane",
-    "sku": "37767",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/5d4388a8-ba71-41df-b5ca-3d7494ced660?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_06f5f17f-c640-4314-9b4e-c6cd4140c42a.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Graywood 20x119 - Eliane",
-    "sku": "36132",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/b1d4fde3-7195-4e44-825d-e523888a232c?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_79827eac-6533-45d3-b059-5b31ba29dbd6.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Madison Brown 20x120 - Cerámica Alberdi",
-    "sku": "37155",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/04697243-c546-4461-98a5-7b9fb3102d47?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_f08e1ee4-8a19-47d8-b48e-d297b8a505da.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Onix Cristal 60x120 - Eliane",
-    "sku": "37769",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/a76b4679-fca1-4119-a94b-746c7a39d5de?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_1c3eda06-9b91-4391-970e-c06320bc21ef.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Atlántica Canela 19,7x120 - Elinae",
-    "sku": "37766",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/da3194f3-ad9c-471a-a9a8-2274d005926e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e2e2eef1-81bd-4a89-8832-d6821b412e1c.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Stelar Black 60x120 - Eliane",
-    "sku": "37712",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/3cd695e5-d548-4706-a878-0a058ccd628b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_cef4bfc9-d74f-4847-a752-8d7e246adab6.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Stelar White 60x120 - Eliane",
-    "sku": "37713",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/5401dd38-79ea-4f3a-ad29-a72c5fd0683a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_927da768-3209-46cf-bcec-9ba1b02a3582.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Unique Pulido 57.3X117 - Tendenza ",
-    "sku": "37806",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/def64e7d-85ec-4689-bcc6-46a47cf06fdc?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b17909d3-4287-4b3d-b7a6-b0af9ec6fc4e.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Palladium Pulido 57.5X57.5 - Tendenza",
-    "sku": "37805",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/60d7e278-ed80-4a31-b2c7-54ea371a4b02?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_11fd5774-e927-4173-9a0c-9050bb77a14d.jpg?s=small&f=webp"
-    },
-  {
-    "nombre": "Wood Forest Mate 19X118 - Tendenza",
-    "sku": "37756",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/99f6ffb7-ced2-4084-9b79-dc6171d87470?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_7896ab95-af89-43ad-acb8-0b67e4622385.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Brushed White Mate 19X118 - Tendenza",
-    "sku": "37755",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/c5c74473-82a8-435f-b4bb-f404d4fa543a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_de72aef2-92fb-499e-a6e4-dc0bdfbf41da.jpg?s=small&f=webp"
 
-    
-  },
-  {
-    "nombre": "Golden Pulido 57.5X57.5 - Tendenza",
-    "sku": "37754",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/d969cba6-a8bb-423d-bcf8-2b80106f2a70?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_21aa8a96-0bbd-492d-b208-736a22931836.jpg?s=medium&f=webp"
-  },
-  {
-    "nombre": "Ice Pulido 57.5X57,5 - Tendenza",
-    "sku": "37752",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/8bc46e58-ebd4-41e9-b650-3faddad15e76?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_7a0da4e5-685d-4bed-b696-82bf571c7ca8.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Gloria Beige 53x53 - San Pietro ",
-    "sku": "35103",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/1fa40655-276f-4a6a-b9e0-af5e063a294d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d3e0315e-7f70-42e8-a288-1a09ec88ab30.jpg?s=small&f=webp"
-  },
-  {
-    "nombre": "Soho Glam 60x60 - Ilva ",
-    "sku": "31084",
-    "categoria": "Porcelanatos",
-    "url": "https://catalogo.rossomateriales.site/products/52031944-eb3b-4ff7-9946-e31d2a157e71?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
-    "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_21aa8a96-0bbd-492d-b208-736a22931836.jpg?s=small&f=webp"
-  }
-];
+           // --- PORCELANATOS ---
+    {
+        "nombre": "Calipso Gris Cl. Br. HD 53x53 - San Pietro",
+        "sku": "37898",
+        "url": "https://catalogo.rossomateriales.site/products/68cb316f-3a0a-4f63-8576-4f73ebeda556?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_bead3325-e4a2-4c80-acaf-770b74c142f8.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Legini Identica Ibira 22,5x90 - ILVA",
+        "sku": "31090",
+        "url": "https://catalogo.rossomateriales.site/products/4f4aad52-ae64-4dcd-86de-a165b1e2db24?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9a8e560e-d937-4aec-8394-69f91eeb4ac7.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Soho Lounge 60x60 - Ilva",
+        "sku": "31039",
+        "url": "https://catalogo.rossomateriales.site/products/297c9558-cb1e-405f-bd32-ee0a1ca80218?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_df28c650-6b85-4a66-aa6a-9b71e27c8caa.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Legni Identica Acacia 22,5x90 - Tendenza",
+        "sku": "31084",
+        "url": "https://catalogo.rossomateriales.site/products/f1d32809-e055-4a3a-ac0a-62c680534a89?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_6227dae3-5a0f-4ae1-b90e-6eae13ca07e7.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Aquarium Intense 57,1x57,1 - Cerámica Alberdi",
+        "sku": "32845",
+        "url": "https://catalogo.rossomateriales.site/products/da4b7f06-c732-4a59-a911-11f54d34f8b8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_16e241b7-d739-47c9-b395-f9bd8e31f16c.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Madera Mix 57,1x57,1 - Cerámica Alberdi",
+        "sku": "34171",
+        "url": "https://catalogo.rossomateriales.site/products/29cb9bdb-8c04-4c3d-b52b-3d3de0a85430?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_c420e310-f7c0-4087-8b3c-7c57c2d78ac2.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Century Calcio 60x60 - Cerámica Alberdi",
+        "sku": "37154",
+        "url": "https://catalogo.rossomateriales.site/products/74a14897-7511-465c-a9a6-c30df9717dbc?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_db179464-7285-40f7-b0bc-7e2b057ffd11.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Obsidian Mate 60x60 - Tendenza",
+        "sku": "37751",
+        "url": "https://catalogo.rossomateriales.site/products/e2852774-0b3b-4df2-99ae-70fc93b1e819?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_5ce0b3e3-a689-4e3e-a3f0-b658e9022936.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Rocks Smoke Mate 60X60 - Tendenza",
+        "sku": "37750",
+        "url": "https://catalogo.rossomateriales.site/products/cee160da-3840-4ca4-9f4b-d4b93a8eb229?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_390148b9-f8d5-4091-8896-c0e73091fc48.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Metropolitan Grey 57,1x57,1 - Alberdi",
+        "sku": "37152",
+        "url": "https://catalogo.rossomateriales.site/products/f9f4b7b4-f481-47b6-9ca0-9bbaa925a614?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_1209e292-e3d0-4b79-a47e-2ed40cb84489.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Manhattan White 60x60- Cerámica Alberdi",
+        "sku": "37149",
+        "url": "https://catalogo.rossomateriales.site/products/01f50a74-a180-47f3-863c-9e2fe218b376?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_6f8eaa97-4b27-402b-8daa-e9b9cf07f62f.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Planet 20x119 - Eliane",
+        "sku": "36228",
+        "url": "https://catalogo.rossomateriales.site/products/50949dd1-7bf8-429f-8381-e7b382142a70?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_4b2cf01a-281e-4520-9a80-c1832007bc3b.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Manhattan Nigth 60x60 - Cerámica Alberdi",
+        "sku": "37151",
+        "url": "https://catalogo.rossomateriales.site/products/7789f324-11e9-40cb-8d3d-27c6107918e9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d5649d8d-d687-4634-82fc-eece24b184ba.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Manhattan Dark 60x60 - Cerámica Alberdi",
+        "sku": "37153",
+        "url": "https://catalogo.rossomateriales.site/products/43d76bb7-045b-496a-a29d-70637e2da471?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_818f00e8-fc96-4f9b-99d4-de57db6ddc8e.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Roble Canela 19.4x118.2 - Eliane",
+        "sku": "37767",
+        "url": "https://catalogo.rossomateriales.site/products/5d4388a8-ba71-41df-b5ca-3d7494ced660?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_06f5f17f-c640-4314-9b4e-c6cd4140c42a.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Graywood 20x119 - Eliane",
+        "sku": "36132",
+        "url": "https://catalogo.rossomateriales.site/products/b1d4fde3-7195-4e44-825d-e523888a232c?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_79827eac-6533-45d3-b059-5b31ba29dbd6.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Madison Brown 20x120 - Cerámica Alberdi",
+        "sku": "37155",
+        "url": "https://catalogo.rossomateriales.site/products/04697243-c546-4461-98a5-7b9fb3102d47?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_f08e1ee4-8a19-47d8-b48e-d297b8a505da.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Onix Cristal 60x120 - Eliane",
+        "sku": "37769",
+        "url": "https://catalogo.rossomateriales.site/products/a76b4679-fca1-4119-a94b-746c7a39d5de?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_1c3eda06-9b91-4391-970e-c06320bc21ef.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Atlántica Canela 19,7x120 - Elinae",
+        "sku": "37766",
+        "url": "https://catalogo.rossomateriales.site/products/da3194f3-ad9c-471a-a9a8-2274d005926e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e2e2eef1-81bd-4a89-8832-d6821b412e1c.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Stelar Black 60x120 - Eliane",
+        "sku": "37712",
+        "url": "https://catalogo.rossomateriales.site/products/3cd695e5-d548-4706-a878-0a058ccd628b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_cef4bfc9-d74f-4847-a752-8d7e246adab6.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Stelar White 60x120 - Eliane",
+        "sku": "37713",
+        "url": "https://catalogo.rossomateriales.site/products/5401dd38-79ea-4f3a-ad29-a72c5fd0683a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_927da768-3209-46cf-bcec-9ba1b02a3582.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Poison Pulido 57.3X117 - Tendenza /cod:",
+        "sku": "37758",
+        "url": "https://catalogo.rossomateriales.site/products/def64e7d-85ec-4689-bcc6-46a47cf06fdc?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b17909d3-4287-4b3d-b7a6-b0af9ec6fc4e.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Unique Pulido 57.3X117 - Tendenza /cod:",
+        "sku": "37757",
+        "url": "https://catalogo.rossomateriales.site/products/60d7e278-ed80-4a31-b2c7-54ea371a4b02?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_de72aef2-92fb-499e-a6e4-dc0bdfbf41da.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Michelangelo Pulido 57.5X117 - Tendenza /cod: RR0022 Porcelanatos Fotos y más",
+        "sku": "37806",
+        "url": "https://catalogo.rossomateriales.site/products/99f6ffb7-ced2-4084-9b79-dc6171d87470?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_7896ab95-af89-43ad-acb8-0b67e4622385.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Pearl Pulido 57.5X117 - Tendenza /cod:",
+        "sku": "37729",
+        "url": "https://catalogo.rossomateriales.site/products/c5c74473-82a8-435f-b4bb-f404d4fa543a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a44364d1-f285-45d7-a261-9664648059d4.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Palladium Pulido 57.5X57.5 - Tendenza /cod:",
+        "sku": "37805",
+        "url": "https://catalogo.rossomateriales.site/products/d969cba6-a8bb-423d-bcf8-2b80106f2a70?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_11fd5774-e927-4173-9a0c-9050bb77a14d.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Wood Forest Mate 19X118 - Tendenza /cod:",
+        "sku": "37756",
+        "url": "https://catalogo.rossomateriales.site/products/8bc46e58-ebd4-41e9-b650-3faddad15e76?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_7a0da4e5-685d-4bed-b696-82bf571c7ca8.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Brushed White Mate 19X118 - Tendenza /cod:",
+        "sku": "37755",
+        "url": "https://catalogo.rossomateriales.site/products/1fa40655-276f-4a6a-b9e0-af5e063a294d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d3e0315e-7f70-42e8-a288-1a09ec88ab30.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Golden Pulido 57.5X57.5 - Tendenza /cod:",
+        "sku": "37754",
+        "url": "https://catalogo.rossomateriales.site/products/52031944-eb3b-4ff7-9946-e31d2a157e71?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_21aa8a96-0bbd-492d-b208-736a22931836.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ice Pulido 57.5X57,5 - Tendenza /cod:",
+        "sku": "37730",
+        "url": "https://catalogo.rossomateriales.site/products/0d8ab0dd-d635-4398-a3ec-41e0b5ef41c3?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_03a321ea-58fd-4623-845f-e7922dd5772b.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Polar Pulido 57.5X57.5 - Tendenza /cod:",
+        "sku": "37753",
+        "url": "https://catalogo.rossomateriales.site/products/c144b4e3-4a71-4720-b2f4-804dbf979571?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_718f2197-2220-4963-8ef0-1ff5ac50fd41.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Wood Stormy Mate 19x118 - Tendenza /cod:",
+        "sku": "37752",
+        "url": "https://catalogo.rossomateriales.site/products/8d777ee0-0100-4f5f-adf6-32937ca87a94?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_c1b58cfd-8c84-4e97-8515-cd5ac0aa3fe3.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Gloria Beige 53x53 - San Pietro / cod:",
+        "sku": "34090",
+        "url": "https://catalogo.rossomateriales.site/products/d5e63dee-67a2-4577-9ca6-23de30dbfdc4?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9ef13312-3839-4a92-86cd-1f5b880813f9.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Cemento Gris 53x53 - San Pietro / cod:",
+        "sku": "31674",
+        "url": "https://catalogo.rossomateriales.site/products/cb7c3028-e557-4142-bbe5-7049e62b3a14?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_24a90041-82c0-44ef-ae64-07269b109a3c.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Kairo Marfil 53x53 - San Pietro /cod:",
+        "sku": "31669",
+        "url": "https://catalogo.rossomateriales.site/products/fe4310f0-0105-4249-a4f7-bc8fb1f33a83?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_64a3b7dc-6f7e-4aee-abde-6034060d6fff.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Gloria Marfil Br. 53x53 - San Pietro /cod:",
+        "sku": "33934",
+        "url": "https://catalogo.rossomateriales.site/products/14ec2c8b-8cb6-439c-924a-2014452f4ece?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_122d1795-26e3-4710-bd78-d1a5e13d5aa7.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Soho Glam 60x60 - Ilva /cod:",
+        "sku": "31040",
+        "url": "https://catalogo.rossomateriales.site/products/aeaa577f-b8d0-4929-8617-2c3fab46a716?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_00305cc9-eeac-47f0-bd39-b679f4a94b6a.jpg?s=small&f=webp"
+    },
+// --- CERÁMICOS ---
+  
+    {
+        "nombre": "Murete Crayon 35x60 - Cerámica Cortines",
+        "sku": "28089",
+        "url": "https://catalogo.rossomateriales.site/products/b87aaaaf-b3c3-4356-8533-e90f588be28e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ec4337ab-5162-4d5d-a4bd-4d345fd8b84b.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Piedra Basalto Acero 35x60 - C. Cortines",
+        "sku": "38027",
+        "url": "https://catalogo.rossomateriales.site/products/7b67b10a-5a04-4f71-81ab-d67e90fe96fe?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_56107040-2b0c-4df9-80d1-f70856667890.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Parquet Fresno 35x60 - C. Cortines",
+        "sku": "38160",
+        "url": "https://catalogo.rossomateriales.site/products/f776e5ec-99bc-4079-b86a-9e01f1ed6fb9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_27232656-d504-4607-84c9-9a6630721148.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Bariloche Gris 43x43 - Cañuelas",
+        "sku": "36618",
+        "url": "https://catalogo.rossomateriales.site/products/4f7b5008-6efa-47d0-87c5-11f4b3643662?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_68e2dccf-9d0b-44c9-bca7-8193775e16c2.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Niza Beige 43x43 - Cañuelas",
+        "sku": "36616",
+        "url": "https://catalogo.rossomateriales.site/products/f944fd44-a8b5-420c-a097-6fe4b028c696?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_05d0af80-c60f-4838-be38-6f01a9587530.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Portland Negro 51x51 - C. Alberdi",
+        "sku": "32698",
+        "url": "https://catalogo.rossomateriales.site/products/dfe8a5d4-2b91-4786-bcfe-8abd59914f3b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9d364664-5d26-4634-9bdc-cb09d4be7c9a.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Potenza Negra 50x50 - Cañuelas",
+        "sku": "36601",
+        "url": "https://catalogo.rossomateriales.site/products/428643c5-a2d5-465c-9618-44c0d58691d6?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_eade6819-644f-455f-bcc7-110d0dc8bda6.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Portland Steel 50x50 - C. Cortines",
+        "sku": "33982",
+        "url": "https://catalogo.rossomateriales.site/products/8ccc402f-3663-4463-ba12-55fb6323b788?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_1cafc453-5a9e-4699-bc11-77bb70144451.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "California Gris 51x51 - C. Alberdi",
+        "sku": "34934",
+        "url": "https://catalogo.rossomateriales.site/products/5656d875-760f-431f-8dc6-0dc013f25c2c?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_702d68b2-3b76-48de-a41c-28ba494c5fed.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Bologna Beige 50x50- Cañuelas",
+        "sku": "36595",
+        "url": "https://catalogo.rossomateriales.site/products/52d52774-fdf5-466e-a25f-1994ebe222f5?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_33be17f6-629d-4775-8d59-11e0bf239178.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Biloba Intenso 51x51- C. Alberdi",
+        "sku": "34006",
+        "url": "https://catalogo.rossomateriales.site/products/b96a8853-2b3b-4e15-914d-12362b8d3579?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_8cf9729d-9a6d-4eac-b479-49e251abe26a.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Bologna Gris 50x50 - Cañuelas",
+        "sku": "36596",
+        "url": "https://catalogo.rossomateriales.site/products/8b5a4717-e493-4f4c-9632-726833e87a6c?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_8b99bef9-7c43-49f9-8fd9-bcdd592bc14c.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Urbino Mate 61,5x61,5 - Cañuelas",
+        "sku": "36928",
+        "url": "https://catalogo.rossomateriales.site/products/8153bf9a-18bf-4ca0-87d5-019ceb629b7f?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0f992548-137d-40cc-afcf-0f562d520053.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Veneto Intenso 34x51 - C. Alberdi",
+        "sku": "34028",
+        "url": "https://catalogo.rossomateriales.site/products/3242bd90-201b-4eb9-ae4b-dbe00da2087e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_131e2cdc-48bd-4dad-956e-fec56179d41e.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Veneto Gris 34x51 - C. Alberdi",
+        "sku": "34029",
+        "url": "https://catalogo.rossomateriales.site/products/e32388cb-32f3-4367-a418-0820a7da55ae?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_886bfcfd-beca-4e09-935e-4b70e85c70a7.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Malaga Beige 32x47- Cañuelas",
+        "sku": "36600",
+        "url": "https://catalogo.rossomateriales.site/products/150a0701-fd57-4b2b-9093-ca2505144295?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_44fefcb2-96e8-4f2c-aaf3-9812fdad16d1.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Tivoli 20X62 - Cañuelas",
+        "sku": "36707",
+        "url": "https://catalogo.rossomateriales.site/products/75971f96-b35e-4488-aba3-07017f818d89?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_1a44085a-012d-4472-ac6d-670d14e2637f.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Bianco Satinado 25x35 - C. Lourdes",
+        "sku": "27223",
+        "url": "https://catalogo.rossomateriales.site/products/73eeacf2-3bfd-4c70-9e12-fb827a84524e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_31bbf58a-e913-4658-af0b-e11499b37a05.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Umbrio 20x62 - Cañuelas",
+        "sku": "36708",
+        "url": "https://catalogo.rossomateriales.site/products/761a94ef-5166-49c4-9aa5-c0bb3c6ceb1d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0493f230-4744-4421-9807-9689840f96c1.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Puglia 20x62 - Cañuelas",
+        "sku": "36706",
+        "url": "https://catalogo.rossomateriales.site/products/c78f8c25-3688-4082-94df-ba670ba2ed51?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_47d24b4c-494e-4c73-9fc4-a5b62383faad.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Malaga Gris 32x47 - Cañuelas",
+        "sku": "36599",
+        "url": "https://catalogo.rossomateriales.site/products/cedfa618-30a1-44b9-9c2b-13748fdc09a9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_2966b6af-77a5-4e57-a06c-f56b4e415bc3.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Cannes 60x60 - Cañuelas",
+        "sku": "37057",
+        "url": "https://catalogo.rossomateriales.site/products/bb2bae0f-1484-4e69-8fdd-3381049e398e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e64b5d95-1c66-4921-a8c2-0e698dfebd62.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Parquet Cerezo 35x60 - C. Cortines",
+        "sku": "32200",
+        "url": "https://catalogo.rossomateriales.site/products/bcf05726-95d7-48d1-b1c4-a038a4379833?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_429f10cc-6cb7-487f-8c73-eca4a2007f22.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Guijon Microvenecita 32x47 - Cañuelas",
+        "sku": "36597",
+        "url": "https://catalogo.rossomateriales.site/products/52ad86db-0ae6-4a8f-88a0-244485fe1b29?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_3b4cce79-b7aa-4ce0-8158-5d237aecce9a.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Glaciar Tramado 32x47 - Cañuelas",
+        "sku": "36598",
+        "url": "https://catalogo.rossomateriales.site/products/c5307d9a-0930-4427-9779-95e378cfc57e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_79b979f3-64ec-4d34-b2ea-ed297e6c7767.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Alessandria 20x62 - Cañuelas",
+        "sku": "36705",
+        "url": "https://catalogo.rossomateriales.site/products/cfa1c25b-01d2-487f-a0bb-3e336001be3d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_aefb1858-4239-461e-98a2-0b7a846b839a.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Lille 60x60 - Cañuelas",
+        "sku": "37055",
+        "url": "https://catalogo.rossomateriales.site/products/efc8cb92-7f85-4ad9-9883-8f5fe2808d77?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_68276f9c-ee0d-4e31-a055-501a753bc7f7.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Bologna Tiza 51x51 - Cañuelas",
+        "sku": "36594",
+        "url": "https://catalogo.rossomateriales.site/products/61b031d0-1db2-4577-947d-e2bb583f6560?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_fc847a06-1628-40ec-a10a-7680ddb7c232.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Liguria Mate 61,5x61,5 - Cañuelas",
+        "sku": "36927",
+        "url": "https://catalogo.rossomateriales.site/products/8efcb415-6b6a-48c0-81bc-2af3f52bbde9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_de0f8d46-7435-4d92-807b-88a2005389db.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Nantes 60x60 - Cañuelas",
+        "sku": "37056",
+        "url": "https://catalogo.rossomateriales.site/products/abc73ca6-56b1-4417-9f30-a6fa1348d2b5?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0f39b897-08f0-43ea-9f01-39fce9c9fa3e.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Niza Gris - Cañuelas",
+        "sku": "36617",
+        "url": "https://catalogo.rossomateriales.site/products/84fc43d6-7b53-4805-b8bf-c2ef51d912f9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_80817530-1b84-4ba7-9e81-ea3b81fbde9b.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Azul Ibiza 32x47 - Cañuelas",
+        "sku": "36873",
+        "url": "https://catalogo.rossomateriales.site/products/fccd4601-c392-436d-bdf8-b41537eba415?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b14cda16-7ae4-4ecb-8a9c-6b527febe7e8.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Acuario br. 25x35 - C. Lourdes",
+        "sku": "27221",
+        "url": "https://catalogo.rossomateriales.site/products/bf6bb7bb-0f16-4995-a63e-3a814ff23a6f?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_bbab792a-90af-4b25-afd6-73931bfb4681.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Portland Grey 50x50 - C. Cortines",
+        "sku": "37971",
+        "url": "https://catalogo.rossomateriales.site/products/12b5a260-4974-4a53-850b-809a005cecb3?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b32e250b-4c6a-4e80-bef4-02cb3f5653f2.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Marmol Calacata 50x50 - C. Cortines",
+        "sku": "37970",
+        "url": "https://catalogo.rossomateriales.site/products/a8c6f804-7c3f-42ab-abf0-ef7d8697de04?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_89417522-a9e2-45f1-bf47-dab94e0d3877.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Benfica Marfil 36x36 - Cerámica Alberdi",
+        "sku": "33553",
+        "url": "https://catalogo.rossomateriales.site/products/37d57046-d39e-4f78-9977-19038788867a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_26bfaeb9-f704-40c9-9d2e-74a1558de338.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "California Beige 36x36- Cerámica Alberdi",
+        "sku": "33566",
+        "url": "https://catalogo.rossomateriales.site/products/d45dfd2b-1ac9-450e-943f-42b778a8d4d9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_fd8af0a8-cb9a-418d-ac3a-6f446f33c220.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Gema Diamante 36x36- Cerámica Alberdi",
+        "sku": "33552",
+        "url": "https://catalogo.rossomateriales.site/products/c9132992-5555-4933-ab59-129efa6a9b03?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a07db7bb-1034-40d1-87c9-1cd7237402a7.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Parquet Viraro 36x36- Cerámica Alberdi",
+        "sku": "33555",
+        "url": "https://catalogo.rossomateriales.site/products/fb469cfe-cef1-463a-9bfd-55e306dbb408?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_262df743-b00a-4ac1-86f5-08891f49e7d9.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Lenga Rojizo 36x36- Cerámica Alberdi",
+        "sku": "33549",
+        "url": "https://catalogo.rossomateriales.site/products/c8514666-c141-4dbe-b4eb-75af0e246436?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_63121f10-fd28-4d0f-87c7-4ea4637d262b.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Alpes Beige 36x36 - Cerámica Alberdi",
+        "sku": "33563",
+        "url": "https://catalogo.rossomateriales.site/products/0ff775d4-a5ae-43af-9497-2bba32549dd4?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ff9d8f71-748a-4b5f-833b-6eb70c49bcdc.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Alicura 36x36 - Cerámica Alberdi",
+        "sku": "33556",
+        "url": "https://catalogo.rossomateriales.site/products/a7622ad4-9bc6-4270-b09e-de53b0f6ff11?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a594971e-c6b0-4739-a9d5-31444d1a58de.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Gema Zafiro 36x36 - Cerámica Alberdi",
+        "sku": "33551",
+        "url": "https://catalogo.rossomateriales.site/products/35326154-5c83-4d2c-b335-3591d562d249?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_e277aa92-ad39-46df-a20b-0e1d097f7de6.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Garden 36x36 - Cerámica Alberdi",
+        "sku": "33554",
+        "url": "https://catalogo.rossomateriales.site/products/8b943b87-cd00-4ed3-b6b2-b03b5e3dc838?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_86057208-c920-4c72-a3de-1f5f6b830c63.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Barcelos Azul 36x36- Cerámica Alberdi",
+        "sku": "33561",
+        "url": "https://catalogo.rossomateriales.site/products/6a4aad23-5ae5-4e96-bd00-d911d50501a3?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_f36624be-1bd4-4747-ab82-3448591d278d.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Azabache 36x36 - Cerámica Alberdi",
+        "sku": "36247",
+        "url": "https://catalogo.rossomateriales.site/products/5027c22d-63c0-41f3-80b2-d9b9abc08f34?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a8682bd9-331d-48a6-bd95-802af200cd75.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Textil Marfil 36x36 - Cerámica Alberdi",
+        "sku": "33562",
+        "url": "https://catalogo.rossomateriales.site/products/d81ad567-b076-4841-a71f-948a21ef0c0a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_90d62cbd-a6e5-498f-995d-d8af2e736fe8.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Barcelos Rojo 36x36- Cerámica Alberdi",
+        "sku": "34931",
+        "url": "https://catalogo.rossomateriales.site/products/2e8b8e5a-618b-4962-8a4c-6572ddaf3526?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_abac65e2-f360-4bbb-940c-bd55fc085263.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Tafí Beige 36x36- Cerámica Alberdi",
+        "sku": "34986",
+        "url": "https://catalogo.rossomateriales.site/products/363e68ec-cf1e-44e7-bccf-d5aa096dfea8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ed40536e-b968-437d-bc08-71b36b17ce33.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Gema Esmeralda 36x36- Cerámica Alberdi",
+        "sku": "33558",
+        "url": "https://catalogo.rossomateriales.site/products/57100d3b-efeb-43b6-8e1c-9efa6ff8b344?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d324c08f-ae9a-4def-a9af-988e77fe735a.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Cedro 36x36 - Cerámica Alberdi",
+        "sku": "33564",
+        "url": "https://catalogo.rossomateriales.site/products/9a859388-97f7-4d3f-a676-8586baf4b83a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ea9ac952-d005-451e-bfb2-1d94849fb0e0.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Blanco Plus 35x35- Cerámica Lourdes",
+        "sku": "28014",
+        "url": "https://catalogo.rossomateriales.site/products/cadb5181-d90d-41e2-aba7-b7efd757acc9?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9727b4fd-9460-4980-861a-c2e602f1b628.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Negro Plus 35x35- Cerámica Lourdes",
+        "sku": "28633",
+        "url": "https://catalogo.rossomateriales.site/products/9f1b42c9-35c6-4cae-a112-6e4d647f5c6e?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_42076a8f-1c53-42d8-89ed-8596c8a63235.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Tafi Marrón 35x35 - Cerámica Lourdes",
+        "sku": "35018",
+        "url": "https://catalogo.rossomateriales.site/products/591dd45b-5b29-495c-b16e-4d3664a4b80f?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_56c8e37d-97ea-4697-b4d1-dacca61e3e11.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Travertino Gris HD Plus 35x35 - Cerámica Lourdes",
+        "sku": "27177",
+        "url": "https://catalogo.rossomateriales.site/products/178d9a7a-28ef-4296-954b-097e4c9bdd35?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9d1b4800-33bf-496b-afcf-90ff9e41736f.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Victoria Beige 35x35 - Cerámica Lourdes",
+        "sku": "31375",
+        "url": "https://catalogo.rossomateriales.site/products/072f579f-2b72-4a45-8929-0480453f317b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_4e10d998-e08b-4df6-8fbc-22862c97fd6a.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Grafiato Marrón HD 35x35 - Cerámica Lourdes",
+        "sku": "35161",
+        "url": "https://catalogo.rossomateriales.site/products/562db327-ab09-4afe-a836-57e562be0e61?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_ce94d179-934f-4d23-9476-d0e4198a4524.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Grafiato Marfil 35x35 - Cerámica Lourdes",
+        "sku": "27149",
+        "url": "https://catalogo.rossomateriales.site/products/79a03a8e-87fe-4503-b472-27849bca52d0?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_233d429e-1d99-4571-b609-8e9af7d2a382.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Travertino Marrón HD Plus 40x40- Cerámica",
+        "sku": "27178",
+        "url": "https://catalogo.rossomateriales.site/products/88505ec1-92c0-486c-a432-c34a61fc889a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_98cec345-77f1-444c-8c19-f0448eab03aa.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Victoria Gris 35x35 - Cerámica Lourdes",
+        "sku": "31376",
+        "url": "https://catalogo.rossomateriales.site/products/63ea7b59-e943-42f2-819e-d573db66a35a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_cb304c9f-94f0-4768-9145-1f7eaa92c842.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Calera Beige 36x36 - Cerámica Alberdi",
+        "sku": "33557",
+        "url": "https://catalogo.rossomateriales.site/products/8c9aae76-5f4f-4d0a-a540-215f1caed096?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_5be4c4b6-466a-4812-8c67-c03ab9412ada.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "California Gris 36x36- Cerámica Lourdes",
+        "sku": "35704",
+        "url": "https://catalogo.rossomateriales.site/products/996269d1-fee2-4538-a34f-e28f785c30ed?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_85acb1ac-1204-4951-a0af-fb034f784668.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "California Gris Claro 36x36 - Cerámica Alberdi",
+        "sku": "34736",
+        "url": "https://catalogo.rossomateriales.site/products/7ed668c8-fabb-4866-9964-11f4cf236895?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_79927a48-96a4-4909-8e45-689dcb985fd3.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Porfido HD Marrón 35x35 - Cerámica Lourdes",
+        "sku": "34158",
+        "url": "https://catalogo.rossomateriales.site/products/cde064c1-a83e-4036-b1fe-203e0e5d75e4?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0595b991-c358-4f05-bc94-2adb86baa6c4.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Cotto Cortines 45x45 - Cerámica Cortines",
+        "sku": "36896",
+        "url": "https://catalogo.rossomateriales.site/products/6df86e92-7bcb-4ba2-b560-8a9391007262?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_644dc162-8475-4fc6-9c52-a70bc577cee0.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Cordillera Cobre 45x45 - Cerámica Cortines",
+        "sku": "36853",
+        "url": "https://catalogo.rossomateriales.site/products/9d025232-b127-40fd-8ed5-79d7240d2119?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_59b01736-fbfb-4494-a306-fcfc46e95fb7.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Cuzco Beige 46x46 - Cerámica Alberdi",
+        "sku": "33774",
+        "url": "https://catalogo.rossomateriales.site/products/63408f3e-0cb2-4e16-88f1-a0638bb0db9a?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_cd492baa-34e0-452c-bafb-496f1adba370.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Piedra Amalfi 46x46 - Cerámica Allpa",
+        "sku": "37239",
+        "url": "https://catalogo.rossomateriales.site/products/38bf4096-ffea-4308-801a-2f104441b238?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_2dfd9f54-0529-449c-8c77-1da8adb9c5c6.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Barcelo Beige 46x46 - Cerámica Alberdi",
+        "sku": "33776",
+        "url": "https://catalogo.rossomateriales.site/products/d94aabb2-3716-48fa-816d-7f3dc5a7dbbe?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_91936bd8-9192-40c2-afdf-a91106aad9e1.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ibiza Blanco 51x51 - Cerámica Alberdi",
+        "sku": "34213",
+        "url": "https://catalogo.rossomateriales.site/products/4356aca9-de35-445f-9685-b0c917bfd608?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_4984970d-46c3-4bb0-b2bb-5b6fe8a0e57f.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Stage Gris 51x51 - Cerámica Alberdi",
+        "sku": "32700",
+        "url": "https://catalogo.rossomateriales.site/products/2e652364-4b74-49f0-9b45-061645d779ad?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_9f25917d-a93e-408a-8bb5-6a8dae57fdb2.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Portland Gris 51x51 - Cerámica Alberdi",
+        "sku": "32697",
+        "url": "https://catalogo.rossomateriales.site/products/ffe090d7-83e0-4959-8f2e-92f5f25fd7ee?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_4f29e883-cce4-4733-9093-306ca41bcc21.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Bianco 20x60 - Cerámica Alberdi",
+        "sku": "32704",
+        "url": "https://catalogo.rossomateriales.site/products/ab8169a3-c00f-4383-8028-db624ceef855?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_00c1950a-d3d2-4fcf-aa0f-de83b558dc67.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Paris 34x51 - Cerámica Allpa",
+        "sku": "37240",
+        "url": "https://catalogo.rossomateriales.site/products/521548af-36b8-4054-bb2d-bd976e5ea70b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_27629ba1-502c-41c5-b34b-02bd7860b3b4.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Axella Blanco 34x51 - Cerámica Allpa",
+        "sku": "37241",
+        "url": "https://catalogo.rossomateriales.site/products/d4b3d4ee-5df7-435a-8061-af290400edeb?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_8297b53a-530e-4223-9b16-10e0fa34e526.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Murete Crayon Neon 30x45 - Cerámica Cortines",
+        "sku": "32501",
+        "url": "https://catalogo.rossomateriales.site/products/407dd2c2-90fb-44b3-8067-be74bab28ad3?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_dfdc5ea7-2870-465b-ad9d-9cc7139247cb.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Bianco Mate 32x47 - Cerámica Cañuelas",
+        "sku": "37236",
+        "url": "https://catalogo.rossomateriales.site/products/d26363c9-a09d-48aa-8d2e-75acf657fcf8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0ba88bbd-f850-4785-a7c2-b48af03b60ab.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Marmol Calacatta Br. 32x47 - Cerámica Cañuelas",
+        "sku": "37235",
+        "url": "https://catalogo.rossomateriales.site/products/e566d7ad-5cfc-4328-a532-d3d3d0a0f487?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_59ae1208-3c86-48c0-bb84-902f4ff545d0.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Snow 34x51 - Cerámica Allpa",
+        "sku": "36620",
+        "url": "https://catalogo.rossomateriales.site/products/fe3554b8-75cb-417f-ab59-37ab9970d0b8?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0da5cd04-92f1-4032-b3a7-d71bea107286.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Legno Lenga 30x45 - Cerámica Cortines",
+        "sku": "27673",
+        "url": "https://catalogo.rossomateriales.site/products/10b05f13-5b32-4384-a91b-2ab9d8189a8b?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b56d1b3f-f074-4056-b1ec-545ceba82974.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Portland Sand Cortines 50x50cm - Ceramica",
+        "sku": "35670",
+        "url": "https://catalogo.rossomateriales.site/products/27f5efe8-da56-428c-878c-3e110a88cf0d?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_07e82da8-a284-4375-85b4-d77ee180dd9f.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Toledo Beige 50x50 - Cerámica Cortines",
+        "sku": "37605",
+        "url": "https://catalogo.rossomateriales.site/products/305c78d9-6560-4b37-b98d-b6bbe6d4ac84?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b69b2be6-b318-4378-a261-965012ede6dc.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Rubi 36x36 - Cerámica Alberdi",
+        "sku": "36497",
+        "url": "https://catalogo.rossomateriales.site/products/592e3bee-0b25-4520-9b91-1452805a87a5?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_d9c5ed27-0afd-47dc-9322-795c54706e9e.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Statuario Blanco 45x45 - Cerámica Cortines",
+        "sku": "37611",
+        "url": "https://catalogo.rossomateriales.site/products/2e061de1-02a3-453d-b3da-f0407e9696ed?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_40a72bff-e101-453b-9bbd-70626dbed6f9.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Parquet Castaño 45x45 - Cerámica Cortines",
+        "sku": "36854",
+        "url": "https://catalogo.rossomateriales.site/products/256bf691-295a-4ea0-bd11-51b72baa50de?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_b82281dc-990d-43fc-a42c-f946474c7f5d.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Cairo Beige 45x45 - Cerámica Cortines",
+        "sku": "37609",
+        "url": "https://catalogo.rossomateriales.site/products/2cd77a90-2a22-4109-8bcf-ec9eaee12204?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_00366f05-5956-4da1-a438-796ce2c39b0c.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Sierra Gris 50x50 cm - Cerámica Cortines",
+        "sku": "37606",
+        "url": "https://catalogo.rossomateriales.site/products/30e51e58-34bf-4c1e-a16a-2bd47b014213?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_96c5ea57-e7ca-4e90-9246-106cdf94e0ba.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Parquet Alamo 45X45 - Cerámica Cortines",
+        "sku": "36855",
+        "url": "https://catalogo.rossomateriales.site/products/f36f5747-55bb-4f21-8af7-f7875e94727f?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_68b746ff-b632-436c-9444-7bfcdf4b316f.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Sierra Beige 50x50 - Cerámica Cortines",
+        "sku": "37608",
+        "url": "https://catalogo.rossomateriales.site/products/90658c6d-09ba-489a-aff3-77a0986df719?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_83f49c28-8f65-4488-b77f-26cafef02a77.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Toledo negro 50 x 50 - Cerámica Cortines",
+        "sku": "37607",
+        "url": "https://catalogo.rossomateriales.site/products/58176c97-896b-443c-92a6-83f3fe099d37?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_0256204a-cef5-41e8-b7b3-407a76b46275.jpg?s=small&f=webp"
+    }
+
+      ];
