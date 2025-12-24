@@ -127,7 +127,7 @@
       /* --- INICIO: ESTILOS PARA PARCHE DE DESCUENTO --- */
       .discount-badge {
         position: absolute;
-        top: 12px;
+        bottom: 12px;
         right: 12px;
         background-color: var(--accent);
         color: white;
@@ -1108,6 +1108,33 @@
 
       ];
 
+      const productosPromo = [
+
+        {
+        "nombre": "Combo baño ",
+        "sku": "1",
+        "url": "https://catalogo.rossomateriales.site/products/80866651-8501-4d9c-8a8a-2f95abcdacfe?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_6857fe9b-e0bb-4a54-9f04-e3efd9213dcd.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Ceramica - Patagonia Gris ",
+        "sku": "2",
+        "url": "https://catalogo.rossomateriales.site/products/3cd36c1d-27d2-4f11-ae19-19ee881912fc?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_a87a34ee-801a-4617-8ec3-d240e951613a.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Porcelanato - Black Mate ",
+        "sku": "3",
+        "url": "https://catalogo.rossomateriales.site/products/8fc1a837-70b8-46f4-9f4d-a72473e03543?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_f1887730-ddbe-4c8e-be62-82076fba4da7.jpg?s=small&f=webp"
+    },
+    {
+        "nombre": "Cerámica - Beige ",
+        "sku": "4",
+        "url": "https://catalogo.rossomateriales.site/products/904cd0e4-4b79-4a14-ab44-ef3dae4102b1?utm_source=pdf&utm_medium=product&utm_campaign=catalog_pdf",
+        "imagen": "https://assets.rediredi.com/items/images/4a25b0ac-f881-433a-820b-bc4280dc10c7_8cdc7c78-cf09-4712-9fbf-4cdc29e78388.jpg?s=small&f=webp"
+    }
+      ];
       const searchInput = document.getElementById("search-input");
       const resultsContainer = document.getElementById("results-container");
       const statusMessage = document.getElementById("status-message");
@@ -1165,12 +1192,15 @@
 
       // --- LÓGICA PARA EL CARRUSEL DE OFERTAS ---
       document.addEventListener('DOMContentLoaded', () => {
-        const productosEnOfertaSKUs = ["36618", "32698", "34006", "33835", "37970", "37769", "37712", "37151"];
+        const productosEnOfertaSKUs = ["1", "2", "3", "4","1", "2", "3", "4","1", "2", "3", "4","1", "2", "3", "4"];
         const track = document.getElementById('promo-carousel-track');
         
         if (!track) return;
 
-        const productosEnOferta = productos.filter(p => productosEnOfertaSKUs.includes(p.sku));
+        // Mapeamos los SKUs para respetar el orden y la cantidad (incluyendo duplicados)
+        const productosEnOferta = productosEnOfertaSKUs
+            .map(sku => productosPromo.find(p => p.sku === sku))
+            .filter(p => p !== undefined);
 
         // 1. Renderizar las tarjetas
         productosEnOferta.forEach(producto => {
@@ -1180,13 +1210,13 @@
             card.className = 'card-link promo-card is-visible';
             card.innerHTML = `
               <div class="card">
-                <div class="discount-badge">25% OFF</div>
+                <div class="discount-badge">Oferta</div>
                 <div class="card-image-container">
                   <img class="card-image" src="${producto.imagen}" alt="${producto.nombre}" loading="lazy" onerror="this.src='https://placehold.co/200x200/EFEFEF/333333?text=Rosso';">
                 </div>
                 <div class="card-content" style="padding-top: 90px;">
                   <h3 style="font-size: 1rem;">${producto.nombre}</h3>
-                  <p style="font-size: 0.8rem;">Cód: ${producto.sku}</p>
+             
                 </div>
               </div>
             `;
