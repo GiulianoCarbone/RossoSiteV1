@@ -1,9 +1,5 @@
 // Importa el Service Worker de OneSignal al principio de tu archivo
-try {
-  importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
-} catch (e) {
-  console.warn("OneSignal Service Worker could not be loaded (likely blocked by privacy settings). Push notifications will not work in this session.");
-}
+importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
 
 const CACHE_NAME = 'panel-vendedores-cache-v2';
@@ -32,4 +28,3 @@ self.addEventListener('fetch', event => {
         return response || fetch(event.request);
       })
   );
-});
