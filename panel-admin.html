@@ -9,6 +9,17 @@
     <link href="style.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+        // Fix: Unregister any Service Workers that might be causing Firestore errors on this page
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) {
+                    console.log('Unregistering Service Worker:', registration);
+                    registration.unregister();
+                }
+            });
+        }
+    </script>
     <style>
         :root {
             --panel-bg: #f4f7f6;
@@ -1003,6 +1014,7 @@
         async function sendPushNotification(title, message, link) {
             const ONE_SIGNAL_APP_ID = "24c23510-f95c-49ca-873b-67dbfcff5740";
             const REST_API_KEY = "tu clave aqui";
+            // "os_v2_app_etbdkehzlre4vbz3m7n7z72xibclpywqqwgebwvfha7uzhkpvcyl6a7fb2vl6m3erov4s6g52up3634jod5nvt2ezb77w27wqkf2spy";
 
             const headers = {
                 "Content-Type": "application/json; charset=utf-8",

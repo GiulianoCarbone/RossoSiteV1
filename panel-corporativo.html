@@ -328,9 +328,26 @@
     .logout-button {
       background: none;
       border: none;
-      font-size: 0.9rem;
-      color: var(--muted);
+      font-size: 1rem;
+      color: #272e68;
+      font-weight: 500;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .logout-button:hover {
+      color: var(--accent);
+    }
+
+    .logout-button i {
+      transition: transform 0.3s ease;
+    }
+
+    .logout-button:hover i {
+      transform: translateY(-3px) scale(1.1);
     }
 
     .panel-grid {
@@ -1205,6 +1222,9 @@
           <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales"
             class="logo-image" />
         </a>
+        <button id="logout-button" class="logout-button">
+          <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </button>
       </nav>
     </header>
     <!-- SECCIÓN PANEL DE HERRAMIENTAS-->
@@ -1232,9 +1252,7 @@
           </div>
           <!-- FIN NOTIFICACIONES -->
 
-          <button id="logout-button" class="logout-button">
-            <i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesión
-          </button>
+
         </div>
       </div>
 
@@ -1254,7 +1272,7 @@
                 <ul id="comerciales-news-list"></ul>
               </div>
               <div class="news-section">
-                <h4><i class="fa-solid fa-users"></i> Recursos Humanos</h4>
+                <h4><i class="fa-solid fa-users"></i>Capital Humano</h4>
                 <ul id="rrhh-news-list"></ul>
               </div>
               <div id="birthday-section" class="news-section" style="display: none">
