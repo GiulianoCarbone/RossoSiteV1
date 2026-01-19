@@ -8,14 +8,14 @@
   "description": "Panel de acceso para vendedores de Rosso Materiales.",
   "icons": [
     {
-      "src": "assets/FAV.png",
+      "src": "assets/pwa.jpg",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/jpeg"
     },
     {
-      "src": "assets/FAV.png",
+      "src": "assets/pwa.jpg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpeg"
     }
   ]
 }
