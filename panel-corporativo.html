@@ -1,2034 +1,2084 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Panel Corporativo | Rosso Materiales</title>
-    <link href="assets/FAV.png" rel="icon" />
-    <link href="style.css" rel="stylesheet" />
-    <link rel="manifest" href="manifest-vendedores.json" />
-    <script
-      src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
-      defer
-    ></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function (OneSignal) {
-        await OneSignal.init({
-          appId: "24c23510-f95c-49ca-873b-67dbfcff5740",
-        });
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Corporativo | Rosso Materiales</title>
+  <link href="assets/FAV.png" rel="icon" />
+  <link href="style.css" rel="stylesheet" />
+  <link rel="manifest" href="manifest-vendedores.json" />
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function (OneSignal) {
+      await OneSignal.init({
+        appId: "24c23510-f95c-49ca-873b-67dbfcff5740",
       });
-    </script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <style>
-            :root {
-              --panel-bg: #f4f7f6;
-              --card-bg: #ffffff;
-              --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-              --border-color: #e5e7eb;
-            }
-            body,
-            html {
-              margin: 0;
-              padding: 0;
-              width: 100%;
-              background-color: var(--panel-bg);
-              font-family: "Inter", sans-serif;
-              -webkit-font-smoothing: antialiased;
-            }
-            /* --- ESTILOS LOGIN --- */
-            #login-overlay {
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background-color: #f0f2f5;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              z-index: 2000;
-            }
-            #login-container {
-              background: white;
-              padding: 40px;
-              border-radius: 12px;
-              box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-              width: 90%;
-              max-width: 400px;
-              text-align: center;
-            }
-            #login-container img.logo {
-                max-width: 180px;
-        margin-bottom: 24px;
-        margin-inline: auto; /* <-- Agrega esta línea para centrarlo */
+    });
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    :root {
+      --panel-bg: #f4f7f6;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      --border-color: #e5e7eb;
+    }
+
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background-color: var(--panel-bg);
+      font-family: "Inter", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- ESTILOS LOGIN --- */
+    #login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    #login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    #login-container img.logo {
+      max-width: 180px;
+      margin-bottom: 24px;
+      margin-inline: auto;
+      /* <-- Agrega esta línea para centrarlo */
+    }
+
+    #login-container h2 {
+      margin: 0 0 24px 0;
+      color: var(--brand);
+      font-size: 1.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .input-group input,
+    .input-group textarea,
+    .input-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    #login-button,
+    #submit-suggestion-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--accent);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    #login-button:hover,
+    #submit-suggestion-btn:hover {
+      background-color: #d95324;
+    }
+
+    #login-button:disabled,
+    #submit-suggestion-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    #login-error,
+    #admin-password-error {
+      color: #d9534f;
+      margin-top: 15px;
+      font-weight: 600;
+      min-height: 20px;
+    }
+
+    /* --- ESTILOS BOTÓN BACK TO TOP --- */
+    #back-to-top-btn {
+      display: none;
+      /* Oculto por defecto */
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 1000;
+      border: none;
+      outline: none;
+      background-color: var(--accent);
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      /* Quitamos el padding para controlar el tamaño exacto */
+      border-radius: 50%;
+      width: 50px;
+      /* Ancho del círculo */
+      height: 50px;
+      /* Alto del círculo */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: opacity 0.3s, transform 0.3s;
+      /* Centramos el ícono dentro del círculo */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.2rem;
+    }
+
+    #back-to-top-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-3px);
+      /* Efecto sutil al pasar el mouse */
+    }
+
+    #back-to-top-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-3px);
+    }
+
+    /* --- ESTILOS NOTIFICACIONES --- */
+    .notification-wrapper {
+      position: relative;
+      cursor: pointer;
+      margin-right: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .notification-bell {
+      font-size: 1.5rem;
+      color: var(--brand);
+      transition: color 0.2s;
+    }
+
+    .notification-bell:hover {
+      color: var(--accent);
+    }
+
+    /* Badge rojo sobre la campana */
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #d9534f;
+      /* Rojo */
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: none;
+      /* Oculto por defecto */
+      border: 2px solid white;
+    }
+
+    /* Dropdown de notificaciones */
+    .notification-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 300px;
+      background: white;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      border-radius: 8px;
+      z-index: 1000;
+      display: none;
+      /* Oculto por defecto */
+      flex-direction: column;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .notification-dropdown.active {
+      display: flex;
+    }
+
+    .notification-header {
+      padding: 10px 15px;
+      background: #f8f9fa;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 700;
+      color: var(--brand);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notification-header small {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .notification-list {
+      max-height: 300px;
+      overflow-y: auto;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .notification-item {
+      padding: 12px 15px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.2s;
+    }
+
+    .notification-item:last-child {
+      border-bottom: none;
+    }
+
+    .notification-item:hover {
+      background-color: #f9f9f9;
+    }
+
+    .notification-title {
+      font-weight: 600;
+      color: var(--brand);
+      margin-bottom: 4px;
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .notification-time {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .empty-notifications {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* --- ESTILOS PANEL --- */
+    #panel-wrapper {
+      display: none;
+      /* Oculto por defecto */
+      padding-top: var(--header-h);
+    }
+
+    .panel-header {
+      background: var(--card-bg);
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-header-content h1 {
+      font-size: 1.8rem;
+      color: var(--brand);
+      margin: 0;
+    }
+
+    .panel-user-info {
+      text-align: right;
+    }
+
+    .panel-user-info span {
+      display: block;
+      font-weight: 600;
+      color: var(--brand);
+      font-size: 1.1rem;
+    }
+
+    .logout-button {
+      background: none;
+      border: none;
+      font-size: 0.9rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      padding: 30px 0;
+    }
+
+    .panel-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-card-header {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-card-icon-title {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .panel-card-icon {
+      font-size: 1.5rem;
+      color: var(--accent);
+      animation: icon-bounce 2.5s ease-in-out infinite;
+    }
+
+    .panel-card-header h3 {
+      font-size: 1.3rem;
+      color: var(--brand);
+      margin: 0;
+    }
+
+    .panel-card-body {
+      padding: 20px;
+    }
+
+    /* --- INICIO: CÓDIGO AÑADIDO PARA CORREGIR REDES SOCIALES --- */
+    .social-embed-wrapper {
+      width: 100%;
+      max-width: 450px;
+      /* Un ancho máximo para que no se estire demasiado en pantallas grandes */
+      margin: 0 auto;
+    }
+
+    /* --- FIN: CÓDIGO AÑADIDO --- */
+
+    .news-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .news-section h4 {
+      color: var(--brand);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 8px;
+      margin: 0 0 15px 0;
+    }
+
+    .news-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .news-item {
+      position: relative;
+      padding-bottom: 30px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .news-item p {
+      margin: 0;
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .tool-link {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      color: var(--brand);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .tool-link i {
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .tool-link:hover {
+      background-color: var(--accent);
+      color: white;
+      transform: translateY(-5px);
+    }
+
+    .tool-link:hover i {
+      color: white;
+    }
+
+    .featured-employee-card {
+      background: linear-gradient(135deg, var(--brand) 0%, #3e489b 100%);
+      color: white;
+    }
+
+    .featured-employee-card .panel-card-header h3,
+    .featured-employee-card .panel-card-icon {
+      color: white;
+    }
+
+    .employee-body {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .employee-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid var(--accent);
+      object-fit: cover;
+      margin: 0 auto 15px;
+    }
+
+    .employee-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .employee-title {
+      margin-top: 5px;
+      opacity: 0.9;
+    }
+
+    @keyframes icon-bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
       }
-            #login-container h2 {
-              margin: 0 0 24px 0;
-              color: var(--brand);
-              font-size: 1.5rem;
-            }
-            .input-group {
-              margin-bottom: 20px;
-              text-align: left;
-            }
-            .input-group label {
-              display: block;
-              margin-bottom: 8px;
-              font-weight: 600;
-              color: var(--muted);
-            }
-            .input-group input,
-            .input-group textarea,
-            .input-group select {
-              width: 100%;
-              padding: 12px;
-              border: 1px solid #ccc;
-              border-radius: 8px;
-              font-size: 1rem;
-              box-sizing: border-box;
-            }
-            #login-button, #submit-suggestion-btn {
-              width: 100%;
-              padding: 14px;
-              border: none;
-              border-radius: 8px;
-              background-color: var(--accent);
-              color: white;
-              font-size: 1.1rem;
-              font-weight: 700;
-              cursor: pointer;
-              transition: background-color: 0.2s;
-            }
-            #login-button:hover, #submit-suggestion-btn:hover {
-              background-color: #d95324;
-            }
-            #login-button:disabled, #submit-suggestion-btn:disabled {
-                opacity: 0.7;
-                cursor: not-allowed;
-            }
-            #login-error,
-            #admin-password-error {
-              color: #d9534f;
-              margin-top: 15px;
-              font-weight: 600;
-              min-height: 20px;
-            }
-/* --- ESTILOS BOTÓN BACK TO TOP --- */
-#back-to-top-btn {
-  display: none; /* Oculto por defecto */
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  z-index: 1000;
-  border: none;
-  outline: none;
-  background-color: var(--accent);
-  color: white;
-  cursor: pointer;
-  padding: 0; /* Quitamos el padding para controlar el tamaño exacto */
-  border-radius: 50%;
-  width: 50px; /* Ancho del círculo */
-  height: 50px; /* Alto del círculo */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: opacity 0.3s, transform 0.3s;
-  /* Centramos el ícono dentro del círculo */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-}
 
-#back-to-top-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-3px); /* Efecto sutil al pasar el mouse */
-}
+      40% {
+        transform: translateY(-8px);
+      }
 
-#back-to-top-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-3px);
-}
-            /* --- ESTILOS PANEL --- */
-            #panel-wrapper {
-              display: none; /* Oculto por defecto */
-              padding-top: var(--header-h);
-            }
-            .panel-header {
-              background: var(--card-bg);
-              padding: 20px 0;
-              border-bottom: 1px solid var(--border-color);
-            }
-            .panel-header-content {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            }
-            .panel-header-content h1 {
-              font-size: 1.8rem;
-              color: var(--brand);
-              margin: 0;
-            }
-            .panel-user-info {
-              text-align: right;
-            }
-            .panel-user-info span {
-              display: block;
-              font-weight: 600;
-              color: var(--brand);
-              font-size: 1.1rem;
-            }
-            .logout-button {
-              background: none;
-              border: none;
-              font-size: 0.9rem;
-              color: var(--muted);
-              cursor: pointer;
-            }
+      60% {
+        transform: translateY(-4px);
+      }
+    }
 
-            .panel-grid {
-              display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-              gap: 30px;
-              padding: 30px 0;
-            }
-            .panel-card {
-              background: var(--card-bg);
-              border-radius: 12px;
-              box-shadow: var(--shadow);
-              display: flex;
-              flex-direction: column;
-            }
-            .panel-card-header {
-              padding: 20px;
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              gap: 15px;
-              border-bottom: 1px solid var(--border-color);
-            }
+    /* --- ESTILOS MODALES --- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+    }
 
-            .panel-card-icon-title {
-              display: flex;
-              align-items: center;
-              gap: 15px;
-            }
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
 
-            .panel-card-icon {
-              font-size: 1.5rem;
-              color: var(--accent);
-              animation: icon-bounce 2.5s ease-in-out infinite;
-            }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
 
-            .panel-card-header h3 {
-              font-size: 1.3rem;
-              color: var(--brand);
-              margin: 0;
-            }
-            .panel-card-body {
-              padding: 20px;
-            }
+    .modal-header h4 {
+      font-size: 1.5rem;
+      color: var(--brand);
+      margin: 0;
+    }
 
-            /* --- INICIO: CÓDIGO AÑADIDO PARA CORREGIR REDES SOCIALES --- */
-            .social-embed-wrapper {
-              width: 100%;
-              max-width: 450px; /* Un ancho máximo para que no se estire demasiado en pantallas grandes */
-              margin: 0 auto;
-            }
-             /* --- FIN: CÓDIGO AÑADIDO --- */
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--muted);
+    }
 
-            .news-container {
-              display: grid;
-              grid-template-columns: 1fr;
-              gap: 20px;
-            }
-            .news-section h4 {
-              color: var(--brand);
-              border-bottom: 2px solid var(--accent);
-              padding-bottom: 8px;
-              margin: 0 0 15px 0;
-            }
-            .news-section ul {
-              list-style: none;
-              padding: 0;
-              margin: 0;
-            }
-            .news-item {
-              position: relative;
-              padding-bottom: 30px;
-              margin-bottom: 10px;
-              border-bottom: 1px solid #f0f0f0;
-            }
-            .news-item p {
-              margin: 0;
-            }
-            .news-item:last-child {
-              border-bottom: none;
-            }
+    /* Links Útiles */
+    .link-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
 
-            .tools-grid {
-              display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-              gap: 15px;
-            }
-            .tool-link {
-              display: flex;
-              align-items: center;
-              gap: 15px;
-              background: #f8f9fa;
-              padding: 20px;
-              border-radius: 10px;
-              font-weight: 600;
-              color: var(--brand);
-              transition: all 0.2s ease;
-              cursor: pointer;
-            }
-            .tool-link i {
-              font-size: 1.5rem;
-              color: var(--accent);
-            }
-            .tool-link:hover {
-              background-color: var(--accent);
-              color: white;
-              transform: translateY(-5px);
-            }
-            .tool-link:hover i {
-              color: white;
-            }
+    .link-item-info {
+      display: flex;
+      flex-direction: column;
+    }
 
-            .featured-employee-card {
-              background: linear-gradient(135deg, var(--brand) 0%, #3e489b 100%);
-              color: white;
-            }
-            .featured-employee-card .panel-card-header h3,
-            .featured-employee-card .panel-card-icon {
-              color: white;
-            }
-            .employee-body {
-              text-align: center;
-              padding: 20px;
-            }
-            .employee-photo {
-              width: 120px;
-              height: 120px;
-              border-radius: 50%;
-              border: 4px solid var(--accent);
-              object-fit: cover;
-              margin: 0 auto 15px;
-            }
-            .employee-name {
-              font-size: 1.5rem;
-              font-weight: 700;
-              margin: 0;
-            }
-            .employee-title {
-              margin-top: 5px;
-              opacity: 0.9;
-            }
+    .link-item-info strong {
+      color: var(--brand);
+    }
 
-            @keyframes icon-bounce {
-              0%,
-              20%,
-              50%,
-              80%,
-              100% {
-                transform: translateY(0);
-              }
-              40% {
-                transform: translateY(-8px);
-              }
-              60% {
-                transform: translateY(-4px);
-              }
-            }
+    .link-item-info span {
+      font-size: 0.85rem;
+      color: var(--muted);
+      word-break: break-all;
+    }
 
-            /* --- ESTILOS MODALES --- */
-            .modal-overlay {
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background: rgba(0, 0, 0, 0.6);
-              display: none;
-              justify-content: center;
-              align-items: center;
-              z-index: 3000;
-            }
-            .modal-content {
-              background: white;
-              padding: 30px;
-              border-radius: 12px;
-              width: 90%;
-              max-width: 600px;
-              max-height: 80vh;
-              overflow-y: auto;
-              display: flex;
-              flex-direction: column;
-            }
-            .modal-header {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              border-bottom: 1px solid var(--border-color);
-              padding-bottom: 15px;
-              margin-bottom: 20px;
-            }
-            .modal-header h4 {
-              font-size: 1.5rem;
-              color: var(--brand);
-              margin: 0;
-            }
-            .close-modal {
-              background: none;
-              border: none;
-              font-size: 1.8rem;
-              cursor: pointer;
-              color: var(--muted);
-            }
+    .copy-link-btn {
+      padding: 8px 12px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
 
-            /* Links Útiles */
-            .link-item {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              background: #f8f9fa;
-              padding: 12px;
-              border-radius: 8px;
-              margin-bottom: 12px;
-            }
-            .link-item-info {
-              display: flex;
-              flex-direction: column;
-            }
-            .link-item-info strong {
-              color: var(--brand);
-            }
-            .link-item-info span {
-              font-size: 0.85rem;
-              color: var(--muted);
-              word-break: break-all;
-            }
-            .copy-link-btn {
-              padding: 8px 12px;
-              border: none;
-              background: var(--accent);
-              color: white;
-              font-weight: 600;
-              border-radius: 6px;
-              cursor: pointer;
-              white-space: nowrap;
-            }
-            .copy-link-btn:active {
-              transform: scale(0.95);
-            }
+    .copy-link-btn:active {
+      transform: scale(0.95);
+    }
 
-            /* --- ESTILOS DIRECTORIO DESPLEGABLE --- */
-            .directory-accordion details {
-              background: #fff;
-              border-radius: 8px;
-              margin-bottom: 10px;
-              border: 1px solid var(--border-color);
-              transition: box-shadow 0.2s ease;
-            }
-            .directory-accordion details[open] {
-              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            }
-            .directory-accordion summary {
-              display: flex;
-              align-items: center;
-              gap: 15px;
-              padding: 15px;
-              font-size: 1.2rem;
-              font-weight: 700;
-              color: var(--brand);
-              cursor: pointer;
-              list-style: none;
-            }
-            .directory-accordion summary i.area-icon {
-              color: var(--accent);
-              font-size: 1.5rem;
-              width: 30px;
-              text-align: center;
-            }
-            .directory-accordion summary::-webkit-details-marker {
-              display: none;
-            }
-            .directory-accordion summary::after {
-              content: "\f078";
-              font-family: "Font Awesome 6 Free";
-              font-weight: 900;
-              margin-left: auto;
-              transition: transform 0.2s ease-in-out;
-            }
-            .directory-accordion details[open] summary::after {
-              transform: rotate(180deg);
-            }
-            .directory-content {
-              padding: 0 20px 20px;
-              border-top: 1px solid var(--border-color);
-            }
-            .employee-contact-card {
-              display: grid;
-              grid-template-columns: auto 1fr;
-              gap: 10px 15px;
-              align-items: center;
-              background: #f8f9fa;
-              padding: 12px;
-              border-radius: 8px;
-              margin-top: 12px;
-            }
-            .employee-contact-card .name {
-              font-weight: 600;
-              color: var(--brand);
-              grid-column: 1 / -1;
-            }
-            .employee-contact-card .position {
-              font-size: 0.9rem;
-              color: var(--muted);
-              grid-column: 1 / -1;
-              margin-top: -8px;
-            }
-            .employee-contact-card i {
-              color: var(--accent);
-              text-align: center;
-            }
-            .employee-contact-card .contact-info {
-              font-size: 0.9rem;
-              color: var(--ink);
-              word-break: break-all;
-            }
-            .employee-contact-card a.contact-info {
-              text-decoration: none;
-            }
-            .employee-contact-card a.contact-info:hover {
-              text-decoration: underline;
-            }
+    /* --- ESTILOS DIRECTORIO DESPLEGABLE --- */
+    .directory-accordion details {
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border-color);
+      transition: box-shadow 0.2s ease;
+    }
 
-            /* --- STYLES FOR COLLAPSIBLE DIRECTORY CARD -- */
-            .directory-main-card {
-              display: block;
-            }
-            .directory-main-card > summary {
-              list-style: none;
-              cursor: pointer;
-            }
-            .directory-main-card > summary::-webkit-details-marker {
-              display: none;
-            }
-            .summary-arrow {
-              color: var(--brand);
-              font-size: 1.2rem;
-              transition: transform 0.2s ease-in-out;
-            }
-            .summary-arrow::before {
-              content: "\f078";
-              font-family: "Font Awesome 6 Free";
-              font-weight: 900;
-            }
-            .directory-main-card[open] > summary .summary-arrow {
-              transform: rotate(180deg);
-            }
+    .directory-accordion details[open] {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
 
-            /* --- ESTILOS REACCIONES --- */
-            .news-footer {
-              position: absolute;
-              bottom: 5px;
-              left: 0;
-              width: 100%;
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            }
-            .reactions-summary {
-              display: flex;
-              gap: 4px;
-            }
-            .reaction-display {
-              display: flex;
-              align-items: center;
-              gap: 4px;
-              background-color: #f0f2f5;
-              padding: 2px 8px;
-              border-radius: 20px;
-              font-size: 0.8rem;
-              font-weight: 500;
-            }
-            .reaction-display .emoji {
-              font-size: 0.9rem;
-            }
-            .add-reaction-container {
-              position: relative;
-            }
-            .add-reaction-btn {
-              cursor: pointer;
-              font-size: 1rem;
-              color: #adb5bd;
-              background: transparent;
-              border-radius: 50%;
-              width: 28px;
-              height: 28px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              transition: all 0.2s ease;
-            }
-            .add-reaction-btn:hover {
-              background-color: #f0f2f5;
-              color: var(--muted);
-            }
-            .reaction-picker {
-              position: absolute;
-              bottom: 100%;
-              right: 50%;
-              transform: translateX(50%);
-              background: white;
-              border-radius: 20px;
-              box-shadow: var(--shadow);
-              padding: 5px;
-              display: flex;
-              gap: 5px;
-              opacity: 0;
-              visibility: hidden;
-              transition: all 0.2s ease;
-              z-index: 10;
-            }
-            .add-reaction-container.show-picker .reaction-picker {
-              opacity: 1;
-              visibility: visible;
-              transform: translateX(50%) translateY(0);
-            }
-            .reaction-picker.picker-below {
-              bottom: auto;
-              top: 100%;
-            }
-            .picker-btn {
-              background: none;
-              border: none;
-              font-size: 1.5rem;
-              cursor: pointer;
-              transition: transform 0.1s ease;
-            }
-            .picker-btn:hover {
-              transform: scale(1.2);
-            }
+    .directory-accordion summary {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--brand);
+      cursor: pointer;
+      list-style: none;
+    }
 
-            /* --- ESTILOS PANEL DE ADMINISTRACIÓN --- */
-            #admin-controls,
-            #admin-controls-trainings,
-            #admin-controls-vendedores {
-              margin-bottom: 20px;
-              display: flex;
-              justify-content: flex-end;
-              gap: 10px;
-            }
-            .admin-section-header {
-              font-size: 1.2rem;
-              color: var(--brand);
-              border-bottom: 2px solid var(--accent);
-              padding-bottom: 5px;
-              margin: 20px 0 10px 0;
-            }
-            /* --- ESTILOS PARA DESPLEGABLES DE ADMIN --- */
-            .admin-section-details summary {
-              cursor: pointer;
-              list-style: none;
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              font-size: 1.2rem;
-              color: var(--brand);
-              border-bottom: 2px solid var(--accent);
-              padding-bottom: 5px;
-              margin: 20px 0 10px 0;
-            }
-            .admin-section-details summary::-webkit-details-marker {
-                display: none;
-            }
-            .admin-section-details .details-arrow {
-                transition: transform 0.2s ease-in-out;
-            }
-            .admin-section-details[open] .details-arrow {
-                transform: rotate(180deg);
-            }
-            .admin-section-details[open] > div {
-                margin-top: 10px;
-            }
+    .directory-accordion summary i.area-icon {
+      color: var(--accent);
+      font-size: 1.5rem;
+      width: 30px;
+      text-align: center;
+    }
 
-            /* --- ESTILOS PARA CONTADOR DE USUARIOS ACTIVOS --- */
-            #active-users-display {
-                background-color: #eef2ff;
-                border: 1px solid #c7d2fe;
-                border-radius: 8px;
-                padding: 16px;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                font-size: 1.1rem;
-            }
-            #active-users-display .fa-users {
-                color: #4f46e5;
-            }
-            #active-users-count {
-                font-weight: 800;
-                color: #4f46e5;
-            }
-            #active-users-list {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                margin-top: 12px;
-                padding-top: 12px;
-                border-top: 1px solid #e5e7eb;
-            }
-            .user-tag {
-                background-color: #e0e7ff;
-                color: #3730a3;
-                padding: 4px 10px;
-                border-radius: 16px;
-                font-size: 0.85rem;
-                font-weight: 500;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
+    .directory-accordion summary::-webkit-details-marker {
+      display: none;
+    }
 
-            #add-news-btn,
-            #add-training-btn {
-              padding: 8px 16px;
-              font-weight: 700;
-              background-color: var(--accent);
-              color: white;
-              border: none;
-              border-radius: 8px;
-              cursor: pointer;
-            }
-            .admin-list {
-              display: flex;
-              flex-direction: column;
-              gap: 12px;
-              max-height: 40vh;
-              overflow-y: auto;
-              padding-right: 10px;
-            }
-            .admin-item {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              gap: 15px;
-              background: #f8f9fa;
-              padding: 10px 15px;
-              border-radius: 8px;
-            }
-            .admin-item-content {
-              font-size: 0.9rem;
-              flex-grow: 1;
-              overflow: hidden;
-            }
-            .admin-item-content p {
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              margin: 0;
-            }
-            .admin-item-content p.request-details {
-              text-overflow: ellipsis;
-              margin: 0;
-            }
-            .admin-item-content small {
-              display: block;
-              color: var(--muted);
-              font-family: monospace;
-              margin-top: 4px;
-            }
-            .admin-item-actions {
-              display: flex;
-              gap: 8px;
-              flex-shrink: 0;
-            }
-            .admin-btn {
-              padding: 6px 12px;
-              border: none;
-              color: white;
-              font-weight: 600;
-              border-radius: 6px;
-              cursor: pointer;
-            }
-            .edit-btn {
-              background-color: #007bff;
-            }
-            .view-btn {
-              background-color: #17a2b8;
-            }
-            .delete-btn {
-              background-color: #dc3545;
-            }
-            .reset-btn {
-              background-color: #6c757d;
-            }
-            .complete-btn {
-                background-color: #28a745;
-            }
+    .directory-accordion summary::after {
+      content: "\f078";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      margin-left: auto;
+      transition: transform 0.2s ease-in-out;
+    }
 
-            /* Formulario de Contenido */
-            #news-form,
-            #training-form,
-            #admin-password-form,
-            #suggestion-form {
-              display: flex;
-              flex-direction: column;
-              gap: 15px;
-            }
-            #news-form textarea,
-            #training-form input[type="text"] {
-              min-height: 120px;
-              resize: vertical;
-            }
-            #news-form button,
-            #training-form button,
-            #admin-password-form button {
-              padding: 12px;
-              background-color: var(--accent);
-              color: white;
-              font-weight: 700;
-              border: none;
-              border-radius: 8px;
-              cursor: pointer;
-            }
+    .directory-accordion details[open] summary::after {
+      transform: rotate(180deg);
+    }
 
-            /* --- CALENDAR STYLES --- */
-            .calendar-container {
-              font-size: 0.9rem;
-            }
-            .calendar-header {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              margin-bottom: 1rem;
-            }
-            #month-year {
-              font-weight: 700;
-              font-size: 1.2rem;
-              color: var(--brand);
-            }
-            .calendar-nav button {
-              background: none;
-              border: none;
-              cursor: pointer;
-              padding: 0.5rem;
-            }
-            .calendar-grid {
-              display: grid;
-              grid-template-columns: repeat(7, 1fr);
-              gap: 5px;
-              text-align: center;
-            }
-            .calendar-day {
-              padding: 0.5rem 0;
-              border-radius: 50%;
-              width: 32px;
-              height: 32px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              margin: auto;
-            }
-            .day-name {
-              font-weight: 600;
-              color: var(--muted);
-              padding-bottom: 0.5rem;
-            }
-            .is-today {
-              background-color: #fee2e2;
-            }
-            .has-event {
-              background-color: var(--accent);
-              color: white;
-              font-weight: 700;
-              cursor: pointer;
-            }
-            .empty-day {
-              visibility: hidden;
-            }
-            #event-details {
-              margin-top: 1rem;
-              padding: 1rem;
-              background-color: #f8f9fa;
-              border-radius: 8px;
-              min-height: 50px;
-            }
-            #event-details h5 {
-              font-weight: 700;
-              color: var(--brand);
-            }
-            #event-details p {
-              margin: 0;
-              color: var(--muted);
-            }
+    .directory-content {
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--border-color);
+    }
 
-      /* --- INICIO: ESTILOS PARA TARJETA DE REDES MINIMALISTA (CORREGIDO) --- */
-            .social-preview-card-single {
-              border-radius: 8px;
-              overflow: hidden;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-              text-align: center;
-            }
-            .social-preview-image {
-              width: 100%;
-              display: block;
-            }
-            .social-buttons-container {
-              display: flex;
-              flex-direction: column;
-              align-items: center; /* Centra horizontalmente todo el contenido */
-              padding: 15px 10px;
-              background-color: #f8f9fa;
-              gap: 10px;
-            }
-            .social-buttons-row {
-              display: flex;
-              justify-content: center; /* Centra los botones de la fila */
-              gap: 10px;
-              width: 100%;
-            }
-            .social-preview-button {
-              /* La propiedad flex: 1; fue eliminada para que no se estiren */
-              padding: 8px 24px; /* Un poco más de padding para que no queden tan chicos */
-              border-radius: 20px;
-              color: white;
-              font-weight: 600;
-              font-size: 0.9rem;
-              text-decoration: none;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              gap: 8px;
-              transition: opacity 0.2s ease;
-            }
-            .social-preview-button:hover {
-              opacity: 0.9;
-            }
-            .social-preview-button.instagram {
-              background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            }
-            .social-preview-button.facebook {
-              background-color: #1877F2;
-            }
-            .social-preview-button.linkedin {
-              background-color: #0A66C2;
-            }
-            /* --- FIN: ESTILOS PARA TARJETA --- */
-    </style>
-  </head>
-  <body>
-    <div id="login-overlay">
-      <div id="login-container">
-        <img
-          src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png"
-          alt="Rosso Materiales Logo"
-          class="logo"
-        />
-        <h2>Acceso Corporativo</h2>
-        <form id="login-form">
-          <div class="input-group">
-            <label for="nombre">Nombre y Apellido</label>
-            <input type="text" id="nombre" required />
-          </div>
-          <div class="input-group">
-            <label for="dni">Documento</label>
-            <input type="password" id="dni" required />
-          </div>
-          <button type="submit" id="login-button">Ingresar</button>
-          <div id="login-error"></div>
-        </form>
-      </div>
+    .employee-contact-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px 15px;
+      align-items: center;
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .employee-contact-card .name {
+      font-weight: 600;
+      color: var(--brand);
+      grid-column: 1 / -1;
+    }
+
+    .employee-contact-card .position {
+      font-size: 0.9rem;
+      color: var(--muted);
+      grid-column: 1 / -1;
+      margin-top: -8px;
+    }
+
+    .employee-contact-card i {
+      color: var(--accent);
+      text-align: center;
+    }
+
+    .employee-contact-card .contact-info {
+      font-size: 0.9rem;
+      color: var(--ink);
+      word-break: break-all;
+    }
+
+    .employee-contact-card a.contact-info {
+      text-decoration: none;
+    }
+
+    .employee-contact-card a.contact-info:hover {
+      text-decoration: underline;
+    }
+
+    /* --- STYLES FOR COLLAPSIBLE DIRECTORY CARD -- */
+    .directory-main-card {
+      display: block;
+    }
+
+    .directory-main-card>summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .directory-main-card>summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .summary-arrow {
+      color: var(--brand);
+      font-size: 1.2rem;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .summary-arrow::before {
+      content: "\f078";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+    }
+
+    .directory-main-card[open]>summary .summary-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* --- ESTILOS REACCIONES --- */
+    .news-footer {
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .reactions-summary {
+      display: flex;
+      gap: 4px;
+    }
+
+    .reaction-display {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background-color: #f0f2f5;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .reaction-display .emoji {
+      font-size: 0.9rem;
+    }
+
+    .add-reaction-container {
+      position: relative;
+    }
+
+    .add-reaction-btn {
+      cursor: pointer;
+      font-size: 1rem;
+      color: #adb5bd;
+      background: transparent;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .add-reaction-btn:hover {
+      background-color: #f0f2f5;
+      color: var(--muted);
+    }
+
+    .reaction-picker {
+      position: absolute;
+      bottom: 100%;
+      right: 50%;
+      transform: translateX(50%);
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 5px;
+      display: flex;
+      gap: 5px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .add-reaction-container.show-picker .reaction-picker {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(50%) translateY(0);
+    }
+
+    .reaction-picker.picker-below {
+      bottom: auto;
+      top: 100%;
+    }
+
+    .picker-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    .picker-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* --- ESTILOS PANEL DE ADMINISTRACIÓN --- */
+    #admin-controls,
+    #admin-controls-trainings,
+    #admin-controls-vendedores {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .admin-section-header {
+      font-size: 1.2rem;
+      color: var(--brand);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+      margin: 20px 0 10px 0;
+    }
+
+    /* --- ESTILOS PARA DESPLEGABLES DE ADMIN --- */
+    .admin-section-details summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.2rem;
+      color: var(--brand);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 5px;
+      margin: 20px 0 10px 0;
+    }
+
+    .admin-section-details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .admin-section-details .details-arrow {
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .admin-section-details[open] .details-arrow {
+      transform: rotate(180deg);
+    }
+
+    .admin-section-details[open]>div {
+      margin-top: 10px;
+    }
+
+    /* --- ESTILOS PARA CONTADOR DE USUARIOS ACTIVOS --- */
+    #active-users-display {
+      background-color: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+    }
+
+    #active-users-display .fa-users {
+      color: #4f46e5;
+    }
+
+    #active-users-count {
+      font-weight: 800;
+      color: #4f46e5;
+    }
+
+    #active-users-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .user-tag {
+      background-color: #e0e7ff;
+      color: #3730a3;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #add-news-btn,
+    #add-training-btn {
+      padding: 8px 16px;
+      font-weight: 700;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .admin-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 40vh;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .admin-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      background: #f8f9fa;
+      padding: 10px 15px;
+      border-radius: 8px;
+    }
+
+    .admin-item-content {
+      font-size: 0.9rem;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    .admin-item-content p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0;
+    }
+
+    .admin-item-content p.request-details {
+      text-overflow: ellipsis;
+      margin: 0;
+    }
+
+    .admin-item-content small {
+      display: block;
+      color: var(--muted);
+      font-family: monospace;
+      margin-top: 4px;
+    }
+
+    .admin-item-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .admin-btn {
+      padding: 6px 12px;
+      border: none;
+      color: white;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .edit-btn {
+      background-color: #007bff;
+    }
+
+    .view-btn {
+      background-color: #17a2b8;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+    }
+
+    .reset-btn {
+      background-color: #6c757d;
+    }
+
+    .complete-btn {
+      background-color: #28a745;
+    }
+
+    /* Formulario de Contenido */
+    #news-form,
+    #training-form,
+    #admin-password-form,
+    #suggestion-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    #news-form textarea,
+    #training-form input[type="text"] {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    #news-form button,
+    #training-form button,
+    #admin-password-form button {
+      padding: 12px;
+      background-color: var(--accent);
+      color: white;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* --- CALENDAR STYLES --- */
+    .calendar-container {
+      font-size: 0.9rem;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    #month-year {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--brand);
+    }
+
+    .calendar-nav button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      text-align: center;
+    }
+
+    .calendar-day {
+      padding: 0.5rem 0;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+    }
+
+    .day-name {
+      font-weight: 600;
+      color: var(--muted);
+      padding-bottom: 0.5rem;
+    }
+
+    .is-today {
+      background-color: #fee2e2;
+    }
+
+    .has-event {
+      background-color: var(--accent);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .empty-day {
+      visibility: hidden;
+    }
+
+    #event-details {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      min-height: 50px;
+    }
+
+    #event-details h5 {
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    #event-details p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    /* --- INICIO: ESTILOS PARA TARJETA DE REDES MINIMALISTA (CORREGIDO) --- */
+    .social-preview-card-single {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .social-preview-image {
+      width: 100%;
+      display: block;
+    }
+
+    .social-buttons-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* Centra horizontalmente todo el contenido */
+      padding: 15px 10px;
+      background-color: #f8f9fa;
+      gap: 10px;
+    }
+
+    .social-buttons-row {
+      display: flex;
+      justify-content: center;
+      /* Centra los botones de la fila */
+      gap: 10px;
+      width: 100%;
+    }
+
+    .social-preview-button {
+      /* La propiedad flex: 1; fue eliminada para que no se estiren */
+      padding: 8px 24px;
+      /* Un poco más de padding para que no queden tan chicos */
+      border-radius: 20px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s ease;
+    }
+
+    .social-preview-button:hover {
+      opacity: 0.9;
+    }
+
+    .social-preview-button.instagram {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    .social-preview-button.facebook {
+      background-color: #1877F2;
+    }
+
+    .social-preview-button.linkedin {
+      background-color: #0A66C2;
+    }
+
+    /* --- FIN: ESTILOS PARA TARJETA --- */
+  </style>
+</head>
+
+<body>
+  <div id="login-overlay">
+    <div id="login-container">
+      <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales Logo" class="logo" />
+      <h2>Acceso Corporativo</h2>
+      <form id="login-form">
+        <div class="input-group">
+          <label for="nombre">Nombre y Apellido</label>
+          <input type="text" id="nombre" required />
+        </div>
+        <div class="input-group">
+          <label for="dni">Documento</label>
+          <input type="password" id="dni" required />
+        </div>
+        <button type="submit" id="login-button">Ingresar</button>
+        <div id="login-error"></div>
+      </form>
     </div>
+  </div>
 
-    <div id="panel-wrapper">
-      <header class="main-header" role="banner">
-        <nav class="main-nav container" aria-label="Primaria">
-          <a href="/" class="logo" aria-label="Ir al inicio">
-            <img
-              src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png"
-              alt="Rosso Materiales"
-              class="logo-image"
-            />
-          </a>
-        </nav>
-      </header>
-      <!-- SECCIÓN PANEL DE HERRAMIENTAS-->
-      <main>
-        <div class="panel-header">
-          <div class="container panel-header-content">
-            <h1 id="welcome-message">Panel Corporativo</h1>
-            <button id="logout-button" class="logout-button">
-              <i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesión
-            </button>
+  <div id="panel-wrapper">
+    <header class="main-header" role="banner">
+      <nav class="main-nav container" aria-label="Primaria">
+        <a href="/" class="logo" aria-label="Ir al inicio">
+          <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales"
+            class="logo-image" />
+        </a>
+      </nav>
+    </header>
+    <!-- SECCIÓN PANEL DE HERRAMIENTAS-->
+    <main>
+      <div class="panel-header">
+        <div class="container panel-header-content">
+          <h1 id="welcome-message">Panel Corporativo</h1>
+
+          <!-- INICIO NOTIFICACIONES -->
+          <div class="notification-wrapper" id="notification-wrapper">
+            <i class="fa-solid fa-bell notification-bell"></i>
+            <span class="notification-badge" id="notification-badge">0</span>
+            <div class="notification-dropdown" id="notification-dropdown">
+              <div class="notification-header">
+                Novedades
+                <small>Últimas 5</small>
+              </div>
+              <ul class="notification-list" id="notification-list">
+                <!-- Items via JS -->
+              </ul>
+              <div id="empty-notifications-msg" class="empty-notifications" style="display:none;">
+                No hay novedades recientes.
+              </div>
+            </div>
+          </div>
+          <!-- FIN NOTIFICACIONES -->
+
+          <button id="logout-button" class="logout-button">
+            <i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesión
+          </button>
+        </div>
+      </div>
+
+      <div class="container panel-grid">
+        <!-- SECCIÓN NOVEDADES -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-bullhorn"></i></span>
+              <h3>Novedades</h3>
+            </div>
+          </div>
+          <div class="panel-card-body">
+            <div class="news-container">
+              <div class="news-section">
+                <h4><i class="fa-solid fa-tags"></i> Comerciales</h4>
+                <ul id="comerciales-news-list"></ul>
+              </div>
+              <div class="news-section">
+                <h4><i class="fa-solid fa-users"></i> Recursos Humanos</h4>
+                <ul id="rrhh-news-list"></ul>
+              </div>
+              <div id="birthday-section" class="news-section" style="display: none">
+                <h4>
+                  <i class="fa-solid fa-cake-candles"></i> Cumpleaños del Día
+                </h4>
+                <ul id="birthday-list"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- SECCIÓN HERRAMIENTAS -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-wrench"></i></span>
+              <h3>Herramientas</h3>
+            </div>
+          </div>
+          <div class="panel-card-body">
+            <div class="tools-grid">
+              <a href="pdf/manualdeproductos.html" class="tool-link">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Manual de Productos</span>
+              </a>
+              <a href="pdf/Laventapasoapaso.html" target="_blank" class="tool-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>La venta paso a paso</span>
+              </a>
+              <a href="sucursales.html" target="_blank" class="tool-link">
+                <i class="fa-solid fa-clock"></i>
+                <span>Horarios</span>
+              </a>
+              <div id="open-links-modal-btn" class="tool-link">
+                <i class="fa-solid fa-link"></i>
+                <span>Links Útiles</span>
+              </div>
+              <div id="open-promo-modal-btn" class="tool-link" style="cursor: pointer;">
+                <i class="fa-solid fa-photo-film"></i>
+                <span>Contenido Promocional</span>
+              </div>
+              <div id="open-photos-modal-btn" class="tool-link" style="cursor: pointer;">
+                <i class="fa-solid fa-camera-retro"></i>
+                <span>Fotos de Productos</span>
+              </div>
+              <a href="https://drive.google.com/drive/folders/1ZRM-7tjpNzbfoOMEZgGZK1-1Tqynn2OP?usp=sharing"
+                target="_blank" class="tool-link">
+                <i class="fa-solid fa-video"></i>
+                <span>Capacitaciones</span>
+              </a>
+              <a href="/argumentarios.html" target="_blank" class="tool-link">
+                <i class="fa-solid fa-comments-dollar"></i>
+                <span>Argumentario de ventas</span>
+              </a>
+              <a href="calculadora.html" target="_blank" class="tool-link">
+                <i class="fa-solid fa-calculator"></i>
+                <span>Calculadora de M²</span>
+              </a>
+
+            </div>
+          </div>
+        </div>
+        <!-- SECCIÓN CALENDARIO DE EVENTOS -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-calendar-days"></i></span>
+              <h3>Calendario de Eventos</h3>
+            </div>
+          </div>
+          <div class="panel-card-body calendar-container">
+            <div class="calendar-header">
+              <button id="prev-month-btn" aria-label="Mes anterior">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <h4 id="month-year"></h4>
+              <button id="next-month-btn" aria-label="Mes siguiente">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="calendar-grid" id="calendar-days-header"></div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+            <div id="event-details">
+              <p>Seleccioná una fecha destacada para ver el evento.</p>
+            </div>
           </div>
         </div>
 
-        <div class="container panel-grid">
-          <!-- SECCIÓN NOVEDADES -->
-          <div class="panel-card">
-            <div class="panel-card-header">
-              <div class="panel-card-icon-title">
-                <span class="panel-card-icon"
-                  ><i class="fa-solid fa-bullhorn"></i
-                ></span>
-                <h3>Novedades</h3>
-              </div>
-            </div>
-            <div class="panel-card-body">
-              <div class="news-container">
-                <div class="news-section">
-                  <h4><i class="fa-solid fa-tags"></i> Comerciales</h4>
-                  <ul id="comerciales-news-list"></ul>
-                </div>
-                <div class="news-section">
-                  <h4><i class="fa-solid fa-users"></i> Recursos Humanos</h4>
-                  <ul id="rrhh-news-list"></ul>
-                </div>
-                <div
-                  id="birthday-section"
-                  class="news-section"
-                  style="display: none"
-                >
-                  <h4>
-                    <i class="fa-solid fa-cake-candles"></i> Cumpleaños del Día
-                  </h4>
-                  <ul id="birthday-list"></ul>
-                </div>
-              </div>
+        <!-- SECCIÓN APOYO EN REDES -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-share-nodes"></i></span>
+              <h3>¡Apoyanos en Redes!</h3>
             </div>
           </div>
-<!-- SECCIÓN HERRAMIENTAS -->
-          <div class="panel-card">
-            <div class="panel-card-header">
-              <div class="panel-card-icon-title">
-                <span class="panel-card-icon"
-                  ><i class="fa-solid fa-wrench"></i
-                ></span>
-                <h3>Herramientas</h3>
-              </div>
-            </div>
-            <div class="panel-card-body">
-              <div class="tools-grid">
-                <a href="pdf/manualdeproductos.html" class="tool-link">
-                  <i class="fa-solid fa-book-open"></i>
-                  <span>Manual de Productos</span>
-                </a>
-                <a
-                  href="pdf/Laventapasoapaso.html"
-                  target="_blank"
-                  class="tool-link"
-                >
-                  <i class="fa-solid fa-chart-line"></i>
-                  <span>La venta paso a paso</span>
-                </a>
-                <a href="sucursales.html" target="_blank" class="tool-link">
-                  <i class="fa-solid fa-clock"></i>
-                  <span>Horarios</span>
-                </a>
-                <div id="open-links-modal-btn" class="tool-link">
-                  <i class="fa-solid fa-link"></i>
-                  <span>Links Útiles</span>
-                </div>
-                <div id="open-promo-modal-btn" class="tool-link" style="cursor: pointer;">
-                  <i class="fa-solid fa-photo-film"></i>
-                  <span>Contenido Promocional</span>
-                </div>
-                <div id="open-photos-modal-btn" class="tool-link" style="cursor: pointer;">
-                  <i class="fa-solid fa-camera-retro"></i>
-                  <span>Fotos de Productos</span>
-                </div>
-                <a
-                  href="https://drive.google.com/drive/folders/1ZRM-7tjpNzbfoOMEZgGZK1-1Tqynn2OP?usp=sharing"
-                  target="_blank"
-                  class="tool-link"
-                >
-                  <i class="fa-solid fa-video"></i>
-                  <span>Capacitaciones</span>
-                </a>
-                <a href="/argumentarios.html" target="_blank" class="tool-link">
-                  <i class="fa-solid fa-comments-dollar"></i>
-                  <span>Argumentario de ventas</span>
-                </a>
-                <a href="calculadora.html" target="_blank" class="tool-link">
-                  <i class="fa-solid fa-calculator"></i>
-                  <span>Calculadora de M²</span>
-                </a>
-                
-              </div>
-            </div>
-          </div>
-<!-- SECCIÓN CALENDARIO DE EVENTOS -->
-          <div class="panel-card">
-            <div class="panel-card-header">
-              <div class="panel-card-icon-title">
-                <span class="panel-card-icon"
-                  ><i class="fa-solid fa-calendar-days"></i
-                ></span>
-                <h3>Calendario de Eventos</h3>
-              </div>
-            </div>
-            <div class="panel-card-body calendar-container">
-              <div class="calendar-header">
-                <button id="prev-month-btn" aria-label="Mes anterior">
-                  <i class="fa-solid fa-chevron-left"></i>
-                </button>
-                <h4 id="month-year"></h4>
-                <button id="next-month-btn" aria-label="Mes siguiente">
-                  <i class="fa-solid fa-chevron-right"></i>
-                </button>
-              </div>
-              <div class="calendar-grid" id="calendar-days-header"></div>
-              <div class="calendar-grid" id="calendar-grid"></div>
-              <div id="event-details">
-                <p>Seleccioná una fecha destacada para ver el evento.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- SECCIÓN APOYO EN REDES -->
-          <div class="panel-card">
-            <div class="panel-card-header">
-              <div class="panel-card-icon-title">
-                <span class="panel-card-icon"
-                  ><i class="fa-solid fa-share-nodes"></i
-                ></span>
-                <h3>¡Apoyanos en Redes!</h3>
-              </div>
-            </div>
-            <div class="panel-card-body">
-              <p
-                style="
+          <div class="panel-card-body">
+            <p style="
                   font-size: 0.9rem;
                   color: var(--muted);
                   margin-bottom: 20px;
-                "
-              >
-                ¡Tu apoyo es clave! Dale Me Gusta y compartí nuestra última
-                publicación para llegar a más clientes.
-              </p>
-              <div class="social-preview-card-single">
-                <img
-                  src="https://i.ibb.co/KzGfB7pV/PORTADA-A-o-nuevo-ba-o-nuevo-Portada-Post.jpg"
-                  alt="Previa de la publicación"
-                  class="social-preview-image"
-                />
-                <div class="social-buttons-container">
-                  <div class="social-buttons-row">
-                    <a
-                      href="https://www.instagram.com/p/DTIUVT7koAP/?img_index=1"
-                      target="_blank"
-                      class="social-preview-button instagram"
-                    >
-                      <i class="fab fa-instagram"></i> Instagram
-                    </a>
-                    <a
-                      href="https://www.facebook.com/share/p/1BxGASxeV9/"
-                      target="_blank"
-                      class="social-preview-button facebook"
-                    >
-                      <i class="fab fa-facebook-f"></i> Facebook
-                    </a>
-                  </div>
-                  <a
-                    href="https://www.linkedin.com/posts/rossomateriales_rossohnos-monteros-prevencioncancerdemama-activity-7388676487647772672-Kad0?utm_source=share&utm_medium=member_desktop&rcm=ACoAACiggasBXprLvh8y__uHJFymH1CEO9Eu5oc"
-                    target="_blank"
-                    class="social-preview-button linkedin"
-                  >
-                    <i class="fab fa-linkedin-in"></i> LinkedIn
+                ">
+              ¡Tu apoyo es clave! Dale Me Gusta y compartí nuestra última
+              publicación para llegar a más clientes.
+            </p>
+            <div class="social-preview-card-single">
+              <img src="https://i.ibb.co/KzGfB7pV/PORTADA-A-o-nuevo-ba-o-nuevo-Portada-Post.jpg"
+                alt="Previa de la publicación" class="social-preview-image" />
+              <div class="social-buttons-container">
+                <div class="social-buttons-row">
+                  <a href="https://www.instagram.com/p/DTIUVT7koAP/?img_index=1" target="_blank"
+                    class="social-preview-button instagram">
+                    <i class="fab fa-instagram"></i> Instagram
+                  </a>
+                  <a href="https://www.facebook.com/share/p/1BxGASxeV9/" target="_blank"
+                    class="social-preview-button facebook">
+                    <i class="fab fa-facebook-f"></i> Facebook
                   </a>
                 </div>
+                <a href="https://www.linkedin.com/posts/rossomateriales_rossohnos-monteros-prevencioncancerdemama-activity-7388676487647772672-Kad0?utm_source=share&utm_medium=member_desktop&rcm=ACoAACiggasBXprLvh8y__uHJFymH1CEO9Eu5oc"
+                  target="_blank" class="social-preview-button linkedin">
+                  <i class="fab fa-linkedin-in"></i> LinkedIn
+                </a>
               </div>
             </div>
           </div>
-          <!-- SECCIÓN EMPLEADO DEL MES-->
-          <div class="panel-card featured-employee-card">
-            <div class="panel-card-header">
-              <div class="panel-card-icon-title">
-                <span class="panel-card-icon"
-                  ><i class="fa-solid fa-crown"></i
-                ></span>
-                <h3>Empleado Destacado del Mes</h3>
-              </div>
-            </div>
-            <div class="panel-card-body employee-body">
-              <img
-                src="/assets/VENDEDORDESTACADO/Luis-Barrionuevo.jpg"
-                alt="Foto de Juan Perez"
-                class="employee-photo"
-              />
-              <h4 class="employee-name">Luis Barrionuevo</h4>
-              <p class="employee-title">
-                ¡Felicitaciones por tu excelente desempeño, compromiso y resultados durante este mes!
-              </p>
+        </div>
+        <!-- SECCIÓN EMPLEADO DEL MES-->
+        <div class="panel-card featured-employee-card">
+          <div class="panel-card-header">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
+              <h3>Empleado Destacado del Mes</h3>
             </div>
           </div>
+          <div class="panel-card-body employee-body">
+            <img src="/assets/VENDEDORDESTACADO/Luis-Barrionuevo.jpg" alt="Foto de Juan Perez" class="employee-photo" />
+            <h4 class="employee-name">Luis Barrionuevo</h4>
+            <p class="employee-title">
+              ¡Felicitaciones por tu excelente desempeño, compromiso y resultados durante este mes!
+            </p>
+          </div>
+        </div>
 
-          <!-- SECCIÓN DIRECTORIO DE CONTACTOS -->
-          <details class="panel-card directory-main-card" style="">
-            <summary class="panel-card-header">
-              <div class="panel-card-icon-title">
-                <span class="panel-card-icon"
-                  ><i class="fa-solid fa-address-book"></i
-                ></span>
-                <h3>Directorio de Contactos</h3>
-              </div>
-              <span class="summary-arrow"></span>
-            </summary>
-            <div
-              class="panel-card-body directory-accordion"
-              id="directory-container"
-            ></div>
-          </details>
-
-          <!-- SECCIÓN BUZÓN DE SUGERENCIAS -->
-          <div class="panel-card">
-            <div class="panel-card-header">
-              <div class="panel-card-icon-title">
-                <span class="panel-card-icon"
-                  ><i class="fa-solid fa-lightbulb"></i
-                ></span>
-                <h3>Buzón de Sugerencias</h3>
-              </div>
+        <!-- SECCIÓN DIRECTORIO DE CONTACTOS -->
+        <details class="panel-card directory-main-card" style="">
+          <summary class="panel-card-header">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-address-book"></i></span>
+              <h3>Directorio de Contactos</h3>
             </div>
-            <div class="panel-card-body">
-              <form id="suggestion-form">
-                <p
-                  style="
+            <span class="summary-arrow"></span>
+          </summary>
+          <div class="panel-card-body directory-accordion" id="directory-container"></div>
+        </details>
+
+        <!-- SECCIÓN BUZÓN DE SUGERENCIAS -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-lightbulb"></i></span>
+              <h3>Buzón de Sugerencias</h3>
+            </div>
+          </div>
+          <div class="panel-card-body">
+            <form id="suggestion-form">
+              <p style="
                     font-size: 0.9rem;
                     color: var(--muted);
                     margin-bottom: 15px;
-                  "
-                >
-                  Tu aporte nos ayuda a mejorar. Tu sugerencia será registrada
-                  de forma anónima. ¡Gracias por participar!
-                </p>
-                <div class="input-group">
-                  <label for="suggestion-text">Tu Mensaje</label>
-                  <textarea
-                    id="suggestion-text"
-                    rows="5"
-                    placeholder="Escribí tu sugerencia, idea o comentario aquí..."
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" id="submit-suggestion-btn">
-                  Enviar Sugerencia
-                </button>
-                <div
-                  id="suggestion-status"
-                  style="
+                  ">
+                Tu aporte nos ayuda a mejorar. Tu sugerencia será registrada
+                de forma anónima. ¡Gracias por participar!
+              </p>
+              <div class="input-group">
+                <label for="suggestion-text">Tu Mensaje</label>
+                <textarea id="suggestion-text" rows="5" placeholder="Escribí tu sugerencia, idea o comentario aquí..."
+                  required></textarea>
+              </div>
+              <button type="submit" id="submit-suggestion-btn">
+                Enviar Sugerencia
+              </button>
+              <div id="suggestion-status" style="
                     margin-top: 15px;
                     text-align: center;
                     font-weight: 600;
                     min-height: 20px;
-                  "
-                ></div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-
-    <div id="admin-password-modal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4>Código de Acceso de Administrador</h4>
-          <button id="close-admin-password-modal-btn" class="close-modal">
-            &times;
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="admin-password-form">
-            <div class="input-group">
-              <label for="admin-password-field"
-                >Por favor, ingrese el código de acceso:</label
-              >
-              <input type="password" id="admin-password-field" required />
-            </div>
-            <button type="submit">Ingresar</button>
-            <div id="admin-password-error"></div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div id="links-modal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4>Links Útiles</h4>
-          <button id="close-links-modal-btn" class="close-modal">
-            &times;
-          </button>
-        </div>
-        <div class="modal-body" id="links-modal-body"></div>
-      </div>
-    </div>
-
-    <!-- INICIO: Modal de Contenido Promocional -->
-    <div id="promo-modal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4>Contenido Promocional</h4>
-          <button id="close-promo-modal-btn" class="close-modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p style="text-align: center; color: var(--muted); margin-bottom: 20px;">
-            Seleccioná la unidad de negocio para ver el contenido disponible.
-          </p>
-          <div class="tools-grid" style="grid-template-columns: 1fr;">
-            <a href="https://drive.google.com/drive/folders/1qyuNbA91lnUbF7pND3WdBYGNuecincL_?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
-              <img 
-                src="https://i.ibb.co/RpL8Cc4B/391618712-745978567557207-2458085058780650835-n.jpg" 
-                alt="Logo Rosso" 
-                style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
-              <span>Rosso Materiales</span>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1CguouD9sPqGGjdQy-w7mT7Y5o-0jMA8s?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
-              <img 
-                src="https://i.ibb.co/bMdzMy5k/369899767-708310554626977-4315876856746933057-n.jpg" 
-                alt="Logo Rossomix" 
-                style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
-              <span>RossoMix</span>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1p1pE8xiAm3hPhMdyzP3vu9fAoKdmFb9d?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
-              <img 
-                src="https://i.ibb.co/hRZ1XGfR/301361756-434352202053908-482034628495522669-n.png" 
-                alt="Logo Punto Caño" 
-                style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
-              <span>Punto Caño</span>
-            </a>
+                  "></div>
+            </form>
           </div>
         </div>
       </div>
-    </div>
-    <!-- FIN: Modal de Contenido Promocional -->
+    </main>
+  </div>
 
-    <!-- INICIO: Modal de Fotos de Productos -->
-    <div id="photos-modal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4>Fotos de Productos</h4>
-          <button id="close-photos-modal-btn" class="close-modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p style="text-align: center; color: var(--muted); margin-bottom: 20px;">
-            Seleccioná la unidad de negocio para ver las fotos disponibles.
-          </p>
-          <div class="tools-grid" style="grid-template-columns: 1fr;">
-            <a href="https://drive.google.com/drive/folders/1Ep7UcuJvFPhtaqlKQqtIKVgfkcT3KDN-?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
-              <img src="https://i.ibb.co/RpL8Cc4B/391618712-745978567557207-2458085058780650835-n.jpg" alt="Logo Rosso" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
-              <span>Rosso Materiales</span>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1HZyHhAYQjUOnhJQE5GzvNOiRmktr4HK7?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
-              <img src="https://i.ibb.co/bMdzMy5k/369899767-708310554626977-4315876856746933057-n.jpg" alt="Logo Rossomix" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
-              <span>Rossomix</span>
-            </a>
-            <a href="https://drive.google.com/drive/folders/1Q8YgRmVuGmuuEc0XSGeGcN3BJtfiw98Q?usp=sharing" target="_blank" class="tool-link" style="background-color: #f1f3f6;">
-              <img src="https://i.ibb.co/hRZ1XGfR/301361756-434352202053908-482034628495522669-n.png" alt="Logo Punto Caño" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
-              <span>Punto Caño</span>
-            </a>
-          </div>
+
+
+  <div id="links-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Links Útiles</h4>
+        <button id="close-links-modal-btn" class="close-modal">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body" id="links-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- INICIO: Modal de Contenido Promocional -->
+  <div id="promo-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Contenido Promocional</h4>
+        <button id="close-promo-modal-btn" class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="text-align: center; color: var(--muted); margin-bottom: 20px;">
+          Seleccioná la unidad de negocio para ver el contenido disponible.
+        </p>
+        <div class="tools-grid" style="grid-template-columns: 1fr;">
+          <a href="https://drive.google.com/drive/folders/1qyuNbA91lnUbF7pND3WdBYGNuecincL_?usp=sharing" target="_blank"
+            class="tool-link" style="background-color: #f1f3f6;">
+            <img src="https://i.ibb.co/RpL8Cc4B/391618712-745978567557207-2458085058780650835-n.jpg" alt="Logo Rosso"
+              style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+            <span>Rosso Materiales</span>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1CguouD9sPqGGjdQy-w7mT7Y5o-0jMA8s?usp=sharing" target="_blank"
+            class="tool-link" style="background-color: #f1f3f6;">
+            <img src="https://i.ibb.co/bMdzMy5k/369899767-708310554626977-4315876856746933057-n.jpg" alt="Logo Rossomix"
+              style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+            <span>RossoMix</span>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1p1pE8xiAm3hPhMdyzP3vu9fAoKdmFb9d?usp=sharing" target="_blank"
+            class="tool-link" style="background-color: #f1f3f6;">
+            <img src="https://i.ibb.co/hRZ1XGfR/301361756-434352202053908-482034628495522669-n.png"
+              alt="Logo Punto Caño" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+            <span>Punto Caño</span>
+          </a>
         </div>
       </div>
     </div>
-    <!-- FIN: Modal de Fotos de Productos -->
+  </div>
+  <!-- FIN: Modal de Contenido Promocional -->
 
-    <div id="admin-modal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4>Panel de Administración</h4>
-          <button id="close-admin-modal-btn" class="close-modal">
-            &times;
-          </button>
-        </div>
-        <div class="modal-body">
-          <details class="admin-section-details">
-            <summary>
-              <span>Actividad en Tiempo Real</span>
-              <i class="fa-solid fa-chevron-down details-arrow"></i>
-            </summary>
-            <div>
-              <div id="active-users-display">
-                <i class="fa-solid fa-users"></i>
-                <span>Usuarios Activos: </span>
-                <strong id="active-users-count">Cargando...</strong>
-              </div>
-              <div id="active-users-list">
-                <!-- Los nombres de los usuarios activos aparecerán aquí -->
-              </div>
-            </div>
-          </details>
-          <details class="admin-section-details">
-            <summary>
-              <span>Gestionar Vendedores</span>
-              <i class="fa-solid fa-chevron-down details-arrow"></i>
-            </summary>
-            <div id="admin-controls-vendedores">
-              <a
-                href="carga-masiva.html"
-                target="_blank"
-                id="manage-vendedores-btn"
-                class="admin-btn"
-                style="
-                  background-color: #007bff;
-                  display: inline-block;
-                  text-decoration: none;
-                  padding: 8px 16px;
-                  width: auto;
-                  font-weight: 700;
-                  color: white;
-                "
-              >
-                <i class="fa-solid fa-users-cog"></i> Ir a Gestión de Vendedores
-              </a>
-            </div>
-          </details>
-
-          <details class="admin-section-details">
-            <summary>
-              <span>Gestionar Noticias</span>
-              <i class="fa-solid fa-chevron-down details-arrow"></i>
-            </summary>
-            <div id="admin-controls">
-              <button id="add-news-btn">
-                <i class="fa-solid fa-plus"></i> Crear Noticia
-              </button>
-            </div>
-            <div id="admin-news-list" class="admin-list"></div>
-          </details>
-
-          <details class="admin-section-details">
-            <summary>
-              <span>Gestionar Capacitaciones</span>
-              <i class="fa-solid fa-chevron-down details-arrow"></i>
-            </summary>
-            <div id="admin-controls-trainings">
-              <button id="add-training-btn">
-                <i class="fa-solid fa-plus"></i> Agregar Fecha
-              </button>
-            </div>
-            <div id="admin-trainings-list" class="admin-list"></div>
-          </details>
-
+  <!-- INICIO: Modal de Fotos de Productos -->
+  <div id="photos-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Fotos de Productos</h4>
+        <button id="close-photos-modal-btn" class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="text-align: center; color: var(--muted); margin-bottom: 20px;">
+          Seleccioná la unidad de negocio para ver las fotos disponibles.
+        </p>
+        <div class="tools-grid" style="grid-template-columns: 1fr;">
+          <a href="https://drive.google.com/drive/folders/1Ep7UcuJvFPhtaqlKQqtIKVgfkcT3KDN-?usp=sharing" target="_blank"
+            class="tool-link" style="background-color: #f1f3f6;">
+            <img src="https://i.ibb.co/RpL8Cc4B/391618712-745978567557207-2458085058780650835-n.jpg" alt="Logo Rosso"
+              style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+            <span>Rosso Materiales</span>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1HZyHhAYQjUOnhJQE5GzvNOiRmktr4HK7?usp=sharing" target="_blank"
+            class="tool-link" style="background-color: #f1f3f6;">
+            <img src="https://i.ibb.co/bMdzMy5k/369899767-708310554626977-4315876856746933057-n.jpg" alt="Logo Rossomix"
+              style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+            <span>Rossomix</span>
+          </a>
+          <a href="https://drive.google.com/drive/folders/1Q8YgRmVuGmuuEc0XSGeGcN3BJtfiw98Q?usp=sharing" target="_blank"
+            class="tool-link" style="background-color: #f1f3f6;">
+            <img src="https://i.ibb.co/hRZ1XGfR/301361756-434352202053908-482034628495522669-n.png"
+              alt="Logo Punto Caño" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+            <span>Punto Caño</span>
+          </a>
         </div>
       </div>
     </div>
+  </div>
+  <!-- FIN: Modal de Fotos de Productos -->
 
-    <div id="news-form-modal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 id="news-form-title">Crear Noticia</h4>
-          <button id="close-news-form-modal-btn" class="close-modal">
-            &times;
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="news-form">
-            <input type="hidden" id="news-id-field" />
-            <div class="input-group">
-              <label for="news-title-field">Título</label>
-              <input type="text" id="news-title-field" required />
-            </div>
-            <div class="input-group">
-              <label for="news-description-field"
-                >Descripción (acepta HTML como &lt;strong&gt;)</label
-              >
-              <textarea id="news-description-field" required></textarea>
-            </div>
-            <div class="input-group">
-              <label for="news-category-field">Categoría</label>
-              <select id="news-category-field" required>
-                <option value="comerciales">Comerciales</option>
-                <option value="rrhh">Recursos Humanos</option>
-              </select>
-            </div>
-            <button type="submit" id="save-news-btn">Guardar Noticia</button>
-          </form>
-        </div>
-      </div>
-    </div>
 
-    <div id="training-form-modal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 id="training-form-title">Agregar Capacitación</h4>
-          <button id="close-training-form-modal-btn" class="close-modal">
-            &times;
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="training-form">
-            <input type="hidden" id="training-id-field" />
-            <div class="input-group">
-              <label for="training-date-field">Fecha</label>
-              <input type="date" id="training-date-field" required />
-            </div>
-            <div class="input-group">
-              <label for="training-title-field">Título / Descripción</label>
-              <input type="text" id="training-title-field" required />
-            </div>
-            <button type="submit" id="save-training-btn">Guardar Evento</button>
-          </form>
-        </div>
-      </div>
-    </div>
 
-    <div id="fb-root"></div>
-    <script
-      async
-      defer
-      crossorigin="anonymous"
-      src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v20.0"
-      nonce="ABCDEF"
-    ></script>
-    <script async src="//www.instagram.com/embed.js"></script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v20.0"
+    nonce="ABCDEF"></script>
+  <script async src="//www.instagram.com/embed.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
-        authDomain: "backend-panel-vendedores.firebaseapp.com",
-        projectId: "backend-panel-vendedores",
-        storageBucket: "backend-panel-vendedores.firebasestorage.app",
-        messagingSenderId: "24873830395",
-        appId: "1:24873830395:web:ea6749407f991ee8226d5e",
-        measurementId: "G-E4Z0Y849KF",
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+      authDomain: "backend-panel-vendedores.firebaseapp.com",
+      projectId: "backend-panel-vendedores",
+      storageBucket: "backend-panel-vendedores.firebasestorage.app",
+      messagingSenderId: "24873830395",
+      appId: "1:24873830395:web:ea6749407f991ee8226d5e",
+      measurementId: "G-E4Z0Y849KF",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const directoryData = {
+        "Gerencia General": {
+          icon: "fa-user-tie",
+          members: [
+            {
+              puesto: "Gerencia General",
+              nombre: "Molicia Jose",
+              email: "jmolicia@rossomateriales.com.ar",
+              numero: "+5493814145401",
+            },
+          ],
+        },
+        "Comerciales": {
+          icon: "fa-headset",
+          members: [
+            {
+              puesto: "Gerencia Comercial",
+              nombre: "Rosso Andrea",
+              email: "andrea@rossomateriales.com.ar",
+              numero: "+5493815062999",
+            },
+            {
+              puesto: "Jefe de Ventas Retail",
+              nombre: "Garcia Juan",
+              email: "jgarcia@rossomateriales.com.ar",
+              numero: "+5493863512483",
+            },
+            {
+              puesto: "Supervisor Retail",
+              nombre: "Almaraz Nahuel",
+              email: "nalmaraz@rossomateriales.com.ar",
+              numero: "+5493814146719",
+            },
+            {
+              puesto: "Gerente. Suc. Salta",
+              nombre: "Ruano Etel",
+              email: "salta@rossomateriales.com.ar",
+              numero: "+5493814148409",
+            },
+            {
+              puesto: "Gerente. Suc. Metan",
+              nombre: "Lamas Gabriel",
+              email: "metan@rossomateriales.com.ar",
+              numero: "+5493813539959",
+            },
+            {
+              puesto: "Gerente. Suc. Manantial",
+              nombre: "Montenegro Carlos",
+              email: "manantial@rossomateriales.com.ar",
+              numero: "+5493815153152",
+            },
+            {
+              puesto: "Gerente. Suc. Monteros",
+              nombre: "Nallen Mauricio",
+              email: "monteros@rossomateriales.com.ar",
+              numero: "+5493814148286",
+            },
+            {
+              puesto: "Gerente. Suc. Concepción ",
+              nombre: "Carabajal Damian",
+              email: "concepcion@rossomateriales.com.ar",
+              numero: "+5493814147723",
+            },
+            {
+              puesto: "Gerente. Suc. Tafi del Valle",
+              nombre: "Cordoba Jonathan",
+              email: "tafidelvalle@rossomateriales.com.ar",
+              numero: "+5493814148083",
+            },
+            {
+              puesto: "Gerente. Suc. Aguilares",
+              nombre: "Oyola Esteban",
+              email: "aguilares@rossomateriales.com.ar",
+              numero: "+5493814167106",
+            },
+            {
+              puesto: "Gerente. Suc. Alberdi",
+              nombre: " Alí Alberto",
+              email: "alberdi@rossomateriales.com.ar",
+              numero: "+5493814147642",
+            },
+            {
+              puesto: "Gerente. Suc. Famailla",
+              nombre: "Leal Franscisco",
+              email: "famailla@rossomateriales.com.ar",
+              numero: "+5493814145876",
+            },
+          ],
+        },
+        Suministro: {
+          icon: "fa-truck-ramp-box",
+          members: [
+            {
+              puesto: "Gerencia",
+              nombre: "Rizzio Constanza",
+              email: "criccio@rossomateriales.com.ar",
+              numero: "+5493815857491",
+            },
+            {
+              puesto: "Jefe de Compras",
+              nombre: "Amran Eduardo",
+              email: "compras@rossomateriales.com.ar",
+              numero: "+5493863515623",
+            },
+            // {
+            //   puesto: "Jefe de Logistica",
+            //   nombre: "Nieva Sergio",
+            //   email: "snieva@rossomateriales.com.ar",
+            //   numero: "+5493814145405",
+            // },
+          ],
+        },
+        "Finanzas y Tesorería": {
+          icon: "fa-chart-pie",
+          members: [
+            {
+              puesto: "Gerencia",
+              nombre: "Capalbo Javier",
+              email: "jcapalbo@rossomateriales.com.ar",
+              numero: "+5491140239900",
+            },
+            {
+              puesto: "Tesorero",
+              nombre: "Jose Brito",
+              email: "jbrito@rossomateriales.com.ar",
+              numero: "+5493813539956",
+            },
+          ],
+        },
+        "Contabilidad y Auditoría": {
+          icon: "fa-calculator",
+          members: [
+            {
+              puesto: "Gerencia",
+              nombre: "Del Pero Casey Mariana",
+              email: "mdelpaero@rossomateriales.com.ar",
+              numero: "+5493814145515",
+            },
+            {
+              puesto: "Auditoría",
+              nombre: "Rosso Julieta",
+              email: "auditorias@rossomateriales.com.ar",
+              numero: "+5493815272274",
+            },
+          ],
+        },
+        "Capital Humano": {
+          icon: "fa-users-gear",
+          members: [
+            {
+              puesto: "Jefe de RRHH",
+              nombre: "Olea Babich Emilia",
+              email: "emiliaolea@rossomateriales.com.ar",
+              numero: "+5493815431488",
+            },
+            {
+              puesto: "Analista",
+              nombre: "Garcia Etelvina",
+              email: "rrhh@rossomateriales.com.ar",
+              numero: "+5493813539960",
+            },
+          ],
+        },
+        Marketing: {
+          icon: "fa-bullhorn",
+          members: [
+            {
+              puesto: "Jefe de marketing",
+              nombre: "Carbone Giuliano",
+              email: "cm.rrss@rossomateriales.com.ar",
+              numero: "+5493863552800",
+            },
+            {
+              puesto: "Diseño Gráfico",
+              nombre: "Delgado Cirene",
+              email: "grafica@rossomateriales.com.ar",
+              numero: "+5493815803113",
+            },
+          ],
+        },
+        Deposito: {
+          icon: "fa-warehouse",
+          members: [
+            {
+              puesto: "Encargado de Depósito. Suc. Tafí del Valle",
+              nombre: "Gustavo Ahumada",
+              email: "dep.tafidelvalle@rossomateriales.com.ar",
+              numero: "+5493813539965",
+            },
+            {
+              puesto: "Encargado de Depósito. Suc. Alberdi",
+              nombre: "Antonio Zamorano",
+              email: "dep.alberdi@rossomateriales.com.ar",
+              numero: "+5493814147684",
+            },
+            {
+              puesto: "Encargado de Depósito. Suc. Monteros",
+              nombre: "Jose Juarez",
+              email: "dep.monteros@rossomateriales.com.ar",
+              numero: "+5493814148335",
+            },
+            {
+              puesto: "Encargado de Depósito. Suc. Depósito Aguilares",
+              nombre: "Mario Bustamante",
+              email: "dep.aguilares@rossomateriales.com.ar",
+              numero: "+5493814147737",
+            },
+            {
+              puesto: "Encargado de Depósito. Suc. Famaillá",
+              nombre: "Nestor Paez",
+              email: "dep.famailla@rossomateriales.com.ar",
+              numero: "+5493814147036",
+            },
+            {
+              puesto: "Encargado de Depósito. Suc. Manantial",
+              nombre: "Marcelo Maomte",
+              email: "dep.manantial.cab@rossomateriales.com.ar",
+              numero: "+5493814147116",
+            },
+            {
+              puesto: "Encargado de Depósito. Suc. Concepción",
+              nombre: "Miguel Paez",
+              email: "concepcion@rossomateriales.com.ar",
+              numero: "+5493814148075",
+            },
+            {
+              puesto: "Encargado de Depósito. Suc. Salta",
+              nombre: "Dario Barboza",
+              email: "dep.salta@rossomateriales.com.ar",
+              numero: "+5493814146924",
+            },
+            {
+              puesto: "Encargado de Depósito. Suc. Metán",
+              nombre: "Franco Castillo",
+              email: "dep.metan@rossomateriales.com.ar",
+              numero: "+5493815722872",
+            },
+          ],
+        },
+        "Obras y Mantenimiento": {
+          icon: "fa-helmet-safety",
+          members: [
+            {
+              puesto: "Jefe de Obras",
+              nombre: "Figueroa Raul",
+              email: "obras@rossomateriales.com.ar",
+              numero: "+5493814146928",
+            },
+          ],
+        },
+        IT: {
+          icon: "fa-laptop-code",
+          members: [
+            {
+              puesto: "Responsable IT",
+              nombre: "Ahumada Jose",
+              email: "jahumada@rossomateriales.com.ar",
+              numero: "+5493814148584",
+            },
+          ],
+        },
       };
 
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
+      const usefulLinks = [
+        {
+          title: "Catálogo de Productos",
+          url: "https://catalogo.rossomateriales.site",
+        },
+        {
+          title: "Promos vigentes",
+          url: "https://rossomateriales.netlify.app",
+        },
+        {
+          title: "Sucursales",
+          url: "https://rossomateriales.site/sucursales",
+        },
+        { title: "Web Institucional", url: "https://rossomateriales.site" },
+        { title: "Ecommerce", url: "https://wa.me/5493814146917" },
+      ];
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const directoryData = {
-          "Gerencia General": {
-            icon: "fa-user-tie",
-            members: [
-              {
-                puesto: "Gerencia General",
-                nombre: "Molicia Jose",
-                email: "jmolicia@rossomateriales.com.ar",
-                numero: "+5493814145401",
-              },
-            ],
-          },
-         "Comerciales": {
-            icon: "fa-headset",
-            members: [
-              {
-                puesto: "Gerencia Comercial",
-                nombre: "Rosso Andrea",
-                email: "andrea@rossomateriales.com.ar",
-                numero: "+5493815062999",
-              },
-              {
-                puesto: "Jefe de Ventas Retail",
-                nombre: "Garcia Juan",
-                email: "jgarcia@rossomateriales.com.ar",
-                numero: "+5493863512483",
-              },
-              {
-                puesto: "Supervisor Retail",
-                nombre: "Almaraz Nahuel",
-                email: "nalmaraz@rossomateriales.com.ar",
-                numero: "+5493814146719",
-              },
-              {
-                puesto: "Gerente. Suc. Salta",
-                nombre: "Ruano Etel",
-                email: "salta@rossomateriales.com.ar",
-                numero: "+5493814148409",
-              },
-              {
-                puesto: "Gerente. Suc. Metan",
-                nombre: "Lamas Gabriel",
-                email: "metan@rossomateriales.com.ar",
-                numero: "+5493813539959",
-              },
-              {
-                puesto: "Gerente. Suc. Manantial",
-                nombre: "Montenegro Carlos",
-                email: "manantial@rossomateriales.com.ar",
-                numero: "+5493815153152",
-              },
-              {
-                puesto: "Gerente. Suc. Monteros",
-                nombre: "Nallen Mauricio",
-                email: "monteros@rossomateriales.com.ar",
-                numero: "+5493814148286",
-              },
-              {
-                puesto: "Gerente. Suc. Concepción ",
-                nombre: "Carabajal Damian",
-                email: "concepcion@rossomateriales.com.ar",
-                numero: "+5493814147723",
-              },
-              {
-                puesto: "Gerente. Suc. Tafi del Valle",
-                nombre: "Cordoba Jonathan",
-                email: "tafidelvalle@rossomateriales.com.ar",
-                numero: "+5493814148083",
-              },
-              {
-                puesto: "Gerente. Suc. Aguilares",
-                nombre: "Oyola Esteban",
-                email: "aguilares@rossomateriales.com.ar",
-                numero: "+5493814167106",
-              },
-              {
-                puesto: "Gerente. Suc. Alberdi",
-                nombre: " Alí Alberto",
-                email: "alberdi@rossomateriales.com.ar",
-                numero: "+5493814147642",
-              },
-              {
-                puesto: "Gerente. Suc. Famailla",
-                nombre: "Leal Franscisco",
-                email: "famailla@rossomateriales.com.ar",
-                numero: "+5493814145876",
-              },
-            ],
-          },
-          Suministro: {
-            icon: "fa-truck-ramp-box",
-            members: [
-              {
-                puesto: "Gerencia",
-                nombre: "Rizzio Constanza",
-                email: "criccio@rossomateriales.com.ar",
-                numero: "+5493815857491",
-              },
-              {
-                puesto: "Jefe de Compras",
-                nombre: "Amran Eduardo",
-                email: "compras@rossomateriales.com.ar",
-                numero: "+5493863515623",
-              },
-              // {
-              //   puesto: "Jefe de Logistica",
-              //   nombre: "Nieva Sergio",
-              //   email: "snieva@rossomateriales.com.ar",
-              //   numero: "+5493814145405",
-              // },
-            ],
-          },
-          "Finanzas y Tesorería": {
-            icon: "fa-chart-pie",
-            members: [
-              {
-                puesto: "Gerencia",
-                nombre: "Capalbo Javier",
-                email: "jcapalbo@rossomateriales.com.ar",
-                numero: "+5491140239900",
-              },
-              {
-                puesto: "Tesorero",
-                nombre: "Jose Brito",
-                email: "jbrito@rossomateriales.com.ar",
-                numero: "+5493813539956",
-              },
-            ],
-          },
-          "Contabilidad y Auditoría": {
-            icon: "fa-calculator",
-            members: [
-              {
-                puesto: "Gerencia",
-                nombre: "Del Pero Casey Mariana",
-                email: "mdelpaero@rossomateriales.com.ar",
-                numero: "+5493814145515",
-              },
-              {
-                puesto: "Auditoría",
-                nombre: "Rosso Julieta",
-                email: "auditorias@rossomateriales.com.ar",
-                numero: "+5493815272274",
-              },
-            ],
-          },
-          "Capital Humano": {
-            icon: "fa-users-gear",
-            members: [
-              {
-                puesto: "Jefe de RRHH",
-                nombre: "Olea Babich Emilia",
-                email: "emiliaolea@rossomateriales.com.ar",
-                numero: "+5493815431488",
-              },
-              {
-                puesto: "Analista",
-                nombre: "Garcia Etelvina",
-                email: "rrhh@rossomateriales.com.ar",
-                numero: "+5493813539960",
-              },
-            ],
-          },
-          Marketing: {
-            icon: "fa-bullhorn",
-            members: [
-              {
-                puesto: "Jefe de marketing",
-                nombre: "Carbone Giuliano",
-                email: "cm.rrss@rossomateriales.com.ar",
-                numero: "+5493863552800",
-              },
-              {
-                puesto: "Diseño Gráfico",
-                nombre: "Delgado Cirene",
-                email: "grafica@rossomateriales.com.ar",
-                numero: "+5493815803113",
-              },
-            ],
-          },
-          Deposito: {
-            icon: "fa-warehouse",
-            members: [
-               {
-    puesto: "Encargado de Depósito. Suc. Tafí del Valle",
-    nombre: "Gustavo Ahumada",
-    email: "dep.tafidelvalle@rossomateriales.com.ar",
-    numero: "+5493813539965",
-  },
-  {
-    puesto: "Encargado de Depósito. Suc. Alberdi",
-    nombre: "Antonio Zamorano",
-    email: "dep.alberdi@rossomateriales.com.ar",
-    numero: "+5493814147684",
-  },
-  {
-    puesto: "Encargado de Depósito. Suc. Monteros",
-    nombre: "Jose Juarez",
-    email: "dep.monteros@rossomateriales.com.ar",
-    numero: "+5493814148335",
-  },
-  {
-    puesto: "Encargado de Depósito. Suc. Depósito Aguilares",
-    nombre: "Mario Bustamante",
-    email: "dep.aguilares@rossomateriales.com.ar",
-    numero: "+5493814147737",
-  },
-  {
-    puesto: "Encargado de Depósito. Suc. Famaillá",
-    nombre: "Nestor Paez",
-    email: "dep.famailla@rossomateriales.com.ar",
-    numero: "+5493814147036",
-  },
-  {
-    puesto: "Encargado de Depósito. Suc. Manantial",
-    nombre: "Marcelo Maomte",
-    email: "dep.manantial.cab@rossomateriales.com.ar",
-    numero: "+5493814147116",
-  },
-  {
-    puesto: "Encargado de Depósito. Suc. Concepción",
-    nombre: "Miguel Paez",
-    email: "concepcion@rossomateriales.com.ar",
-    numero: "+5493814148075",
-  },
-  {
-    puesto: "Encargado de Depósito. Suc. Salta",
-    nombre: "Dario Barboza",
-    email: "dep.salta@rossomateriales.com.ar",
-    numero: "+5493814146924",
-  },
-  {
-    puesto: "Encargado de Depósito. Suc. Metán",
-    nombre: "Franco Castillo",
-    email: "dep.metan@rossomateriales.com.ar",
-    numero: "+5493815722872",
-  },
-            ],
-          },
-          "Obras y Mantenimiento": {
-            icon: "fa-helmet-safety",
-            members: [
-              {
-                puesto: "Jefe de Obras",
-                nombre: "Figueroa Raul",
-                email: "obras@rossomateriales.com.ar",
-                numero: "+5493814146928",
-              },
-            ],
-          },
-          IT: {
-            icon: "fa-laptop-code",
-            members: [
-              {
-                puesto: "Responsable IT",
-                nombre: "Ahumada Jose",
-                email: "jahumada@rossomateriales.com.ar",
-                numero: "+5493814148584",
-              },
-            ],
-          },
-        };
+      // --- LÓGICA DE LOGIN Y RENDERIZADO INICIAL ---
+      function checkLogin() {
+        // ***** LÍNEA CORREGIDA *****
+        const loggedInUserName = localStorage.getItem("vendedorLogueado");
+        if (loggedInUserName) {
+          document.getElementById("login-overlay").style.display = "none";
+          document.getElementById("panel-wrapper").style.display = "block";
+          document.getElementById(
+            "welcome-message"
+          ).innerHTML = `¡Hola, <span style="color: var(--accent);">${loggedInUserName}</span>!`;
+          populateBirthdays();
+          populateNews();
+          populateNotifications();
+          populateDirectory();
+          populateUsefulLinks();
+          initializeCalendar();
 
-        const usefulLinks = [
-          {
-            title: "Catálogo de Productos",
-            url: "https://catalogo.rossomateriales.site",
-          },
-          {
-            title: "Promos vigentes",
-            url: "https://rossomateriales.netlify.app",
-          },
-          {
-            title: "Sucursales",
-            url: "https://rossomateriales.site/sucursales",
-          },
-          { title: "Web Institucional", url: "https://rossomateriales.site" },
-          { title: "Ecommerce", url: "https://wa.me/5493814146917" },
-        ];
+          // Inicia la lógica del contador de usuarios
+          updateUserSession(); // Registra la sesión al cargar
+          listenToActiveUsers(); // Empieza a contar
 
-        // --- LÓGICA DE LOGIN Y RENDERIZADO INICIAL ---
-        function checkLogin() {
-          // ***** LÍNEA CORREGIDA *****
-          const loggedInUserName = localStorage.getItem("vendedorLogueado");
-          if (loggedInUserName) {
-            document.getElementById("login-overlay").style.display = "none";
-            document.getElementById("panel-wrapper").style.display = "block";
-            document.getElementById(
-              "welcome-message"
-            ).innerHTML = `¡Hola, <span style="color: var(--accent);">${loggedInUserName}</span>!`;
-            populateBirthdays();
-            populateNews();
-            populateDirectory();
-            populateUsefulLinks();
-            initializeCalendar();
-
-            // Inicia la lógica del contador de usuarios
-            updateUserSession(); // Registra la sesión al cargar
-            listenToActiveUsers(); // Empieza a contar
-            
-            // Mantiene la sesión activa actualizando el timestamp cada 30 segundos
-            setInterval(updateUserSession, 30000);
-          } else {
-            document.getElementById("login-overlay").style.display = "flex";
-            document.getElementById("panel-wrapper").style.display = "none";
-          }
+          // Mantiene la sesión activa actualizando el timestamp cada 30 segundos
+          setInterval(updateUserSession, 30000);
+        } else {
+          document.getElementById("login-overlay").style.display = "flex";
+          document.getElementById("panel-wrapper").style.display = "none";
         }
+      }
 
-        // --- LÓGICA DEL MODAL DE CONTENIDO PROMOCIONAL ---
-        const promoModal = document.getElementById("promo-modal");
-        if (promoModal) {
-            document.getElementById("open-promo-modal-btn")?.addEventListener("click", () => {
-                promoModal.style.display = "flex";
-            });
-            document.getElementById("close-promo-modal-btn")?.addEventListener("click", () => {
-                promoModal.style.display = "none";
-            });
-            // Cierra el modal si se hace clic fuera del contenido
-            promoModal.addEventListener('click', (e) => {
-                if (e.target === promoModal) promoModal.style.display = 'none';
-            });
-        }
+      // --- LÓGICA DEL MODAL DE CONTENIDO PROMOCIONAL ---
+      const promoModal = document.getElementById("promo-modal");
+      if (promoModal) {
+        document.getElementById("open-promo-modal-btn")?.addEventListener("click", () => {
+          promoModal.style.display = "flex";
+        });
+        document.getElementById("close-promo-modal-btn")?.addEventListener("click", () => {
+          promoModal.style.display = "none";
+        });
+        // Cierra el modal si se hace clic fuera del contenido
+        promoModal.addEventListener('click', (e) => {
+          if (e.target === promoModal) promoModal.style.display = 'none';
+        });
+      }
 
-        // --- LÓGICA DEL MODAL DE FOTOS DE PRODUCTOS ---
-        const photosModal = document.getElementById("photos-modal");
-        if (photosModal) {
-            document.getElementById("open-photos-modal-btn")?.addEventListener("click", () => {
-                photosModal.style.display = "flex";
-            });
-            document.getElementById("close-photos-modal-btn")?.addEventListener("click", () => {
-                photosModal.style.display = "none";
-            });
-            // Cierra el modal si se hace clic fuera del contenido
-            photosModal.addEventListener('click', (e) => {
-                if (e.target === photosModal) photosModal.style.display = 'none';
-            });
-        }
+      // --- LÓGICA DEL MODAL DE FOTOS DE PRODUCTOS ---
+      const photosModal = document.getElementById("photos-modal");
+      if (photosModal) {
+        document.getElementById("open-photos-modal-btn")?.addEventListener("click", () => {
+          photosModal.style.display = "flex";
+        });
+        document.getElementById("close-photos-modal-btn")?.addEventListener("click", () => {
+          photosModal.style.display = "none";
+        });
+        // Cierra el modal si se hace clic fuera del contenido
+        photosModal.addEventListener('click', (e) => {
+          if (e.target === photosModal) photosModal.style.display = 'none';
+        });
+      }
 
-        // --- LÓGICA DE LOGIN (YA ESTABA BIEN) ---
-        document
-          .getElementById("login-form")
-          .addEventListener("submit", async function (event) {
-            event.preventDefault();
-            const nombreInput = document
-              .getElementById("nombre")
-              .value.trim()
-              .toLowerCase();
-            const dniInput = document.getElementById("dni").value.trim();
-            const loginError = document.getElementById("login-error");
+      // --- LÓGICA DE LOGIN (YA ESTABA BIEN) ---
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const nombreInput = document
+            .getElementById("nombre")
+            .value.trim()
+            .toLowerCase();
+          const dniInput = document.getElementById("dni").value.trim();
+          const loginError = document.getElementById("login-error");
 
-            loginError.textContent = "Verificando...";
-
-            try {
-              const snapshot = await db.collection("vendedores").get();
-              let userFound = null;
-
-              snapshot.forEach((doc) => {
-                if (userFound) return;
-
-                const vendedor = doc.data();
-                const dbName = vendedor.nombre.toLowerCase().replace(/,/g, "");
-
-                const dbNameParts = dbName.split(" ").filter(Boolean);
-
-                if (dbNameParts.length < 2) {
-                  if (dbName === nombreInput && vendedor.dni === dniInput) {
-                    userFound = vendedor;
-                  }
-                  return;
-                }
-
-                const dbLastName = dbNameParts[0];
-                const dbFirstNames = dbNameParts.slice(1);
-
-                const inputWords = nombreInput.split(" ").filter(Boolean);
-
-                const lastNameMatch = inputWords.includes(dbLastName);
-
-                const firstNameMatch = dbFirstNames.some((firstName) =>
-                  inputWords.includes(firstName)
-                );
-
-                if (
-                  lastNameMatch &&
-                  firstNameMatch &&
-                  vendedor.dni === dniInput
-                ) {
-                  userFound = vendedor;
-                }
-              });
-
-              if (userFound) {
-                localStorage.setItem("vendedorLogueado", userFound.nombre);
-                checkLogin();
-              } else {
-                // Si el usuario no se encuentra, se limpia el contador de sesión por si acaso
-                loginError.textContent = "Nombre o DNI incorrecto.";
-              }
-            } catch (error) {
-              console.error("Error al verificar vendedor: ", error);
-              loginError.textContent = "Error al conectar. Intente de nuevo.";
-            }
-          });
-
-        // =================================================================
-        // === LÓGICA DEL CONTADOR DE USUARIOS ACTIVOS =====================
-        // =================================================================
-        
-        // Función para registrar o actualizar la sesión del usuario
-        async function updateUserSession() {
-            const loggedInUserName = localStorage.getItem("vendedorLogueado");
-            if (!loggedInUserName) return;
-
-            // Usamos el nombre del vendedor como ID único para su sesión.
-            // Esto previene que un mismo vendedor abra múltiples sesiones contables.
-            currentUserSessionId = loggedInUserName.replace(/\s+/g, '-').toLowerCase();
-
-            try {
-                const sessionRef = db.collection('active_sessions').doc(currentUserSessionId);
-                await sessionRef.set({
-                    userName: loggedInUserName,
-                    last_seen: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            } catch (error) {
-                console.error("Error al actualizar la sesión de usuario:", error);
-            }
-        }
-
-        // Función para eliminar la sesión del usuario al salir
-        async function removeUserSession() {
-            if (currentUserSessionId) {
-                try {
-                    await db.collection('active_sessions').doc(currentUserSessionId).delete();
-                } catch (error) {
-                    console.error("Error al eliminar la sesión de usuario:", error);
-                }
-            }
-        }
-
-        // Escucha los cambios en la colección de sesiones activas
-        function listenToActiveUsers() {
-            const activeUsersCountEl = document.getElementById('active-users-count');
-            const activeUsersListEl = document.getElementById('active-users-list');
-            const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
-
-            db.collection('active_sessions')
-              .where('last_seen', '>', twoMinutesAgo) // Solo contamos usuarios vistos en los últimos 2 minutos
-              .onSnapshot(snapshot => {
-                  const activeCount = snapshot.size;
-                  const activeUsers = [];
-                  snapshot.forEach(doc => {
-                      activeUsers.push(doc.data().userName);
-                  });
-
-                  if (activeUsersListEl) {
-                      if (activeUsers.length > 0) {
-                          activeUsersListEl.innerHTML = activeUsers.map(name => `<span class="user-tag"><i class="fa-solid fa-circle fa-2xs" style="color: #22c55e;"></i>${name}</span>`).join('');
-                      } else {
-                          activeUsersListEl.innerHTML = `<p class="text-sm text-gray-500">Nadie conectado en este momento.</p>`;
-                      }
-                  }
-
-                  if (activeUsersCountEl) {
-                      activeUsersCountEl.textContent = activeCount;
-                  }
-              }, error => {
-                  console.error("Error al escuchar usuarios activos:", error);
-                  if (activeUsersCountEl) {
-                      activeUsersCountEl.textContent = 'Error';
-                  }
-              });
-        }
-
-        // Se activa cuando el usuario cierra la pestaña o el navegador
-        window.addEventListener('beforeunload', removeUserSession);
-
-
-        document
-          .getElementById("logout-button")
-          .addEventListener("click", () => {
-            localStorage.removeItem("vendedorLogueado");
-            localStorage.clear();
-            location.reload();
-          });
-
-        // --- LÓGICA DE CUMPLEAÑOS ---
-        async function populateBirthdays() {
-          const birthdaySection = document.getElementById("birthday-section");
-          const birthdayList = document.getElementById("birthday-list");
-          birthdayList.innerHTML = "";
+          loginError.textContent = "Verificando...";
 
           try {
-            const response = await fetch("cumpleanos.json");
-            if (!response.ok) {
-              throw new Error("No se pudo cargar el archivo de cumpleaños.");
+            const snapshot = await db.collection("vendedores").get();
+            let userFound = null;
+
+            snapshot.forEach((doc) => {
+              if (userFound) return;
+
+              const vendedor = doc.data();
+              const dbName = vendedor.nombre.toLowerCase().replace(/,/g, "");
+
+              const dbNameParts = dbName.split(" ").filter(Boolean);
+
+              if (dbNameParts.length < 2) {
+                if (dbName === nombreInput && vendedor.dni === dniInput) {
+                  userFound = vendedor;
+                }
+                return;
+              }
+
+              const dbLastName = dbNameParts[0];
+              const dbFirstNames = dbNameParts.slice(1);
+
+              const inputWords = nombreInput.split(" ").filter(Boolean);
+
+              const lastNameMatch = inputWords.includes(dbLastName);
+
+              const firstNameMatch = dbFirstNames.some((firstName) =>
+                inputWords.includes(firstName)
+              );
+
+              if (
+                lastNameMatch &&
+                firstNameMatch &&
+                vendedor.dni === dniInput
+              ) {
+                userFound = vendedor;
+              }
+            });
+
+            if (userFound) {
+              localStorage.setItem("vendedorLogueado", userFound.nombre);
+              checkLogin();
+            } else {
+              // Si el usuario no se encuentra, se limpia el contador de sesión por si acaso
+              loginError.textContent = "Nombre o DNI incorrecto.";
             }
-            const employeeBirthdays = await response.json();
+          } catch (error) {
+            console.error("Error al verificar vendedor: ", error);
+            loginError.textContent = "Error al conectar. Intente de nuevo.";
+          }
+        });
 
-            const today = new Date();
-            const month = String(today.getMonth() + 1).padStart(2, "0");
-            const day = String(today.getDate()).padStart(2, "0");
-            const todayFormatted = `${month}-${day}`;
-            const year = today.getFullYear();
-            const dateString = `${year}-${month}-${day}`;
+      // =================================================================
+      // === LÓGICA DEL CONTADOR DE USUARIOS ACTIVOS =====================
+      // =================================================================
 
-            const birthdayEmployees = employeeBirthdays.filter(
-              (emp) => emp.fecha === todayFormatted
-            );
+      // Función para registrar o actualizar la sesión del usuario
+      async function updateUserSession() {
+        const loggedInUserName = localStorage.getItem("vendedorLogueado");
+        if (!loggedInUserName) return;
 
-            if (birthdayEmployees.length > 0) {
-              birthdayEmployees.forEach((emp) => {
-                const employeeNameId = emp.nombre.replace(/\s+/g, "");
-                const birthdayId = `bday-${employeeNameId}-${dateString}`;
+        // Usamos el nombre del vendedor como ID único para su sesión.
+        // Esto previene que un mismo vendedor abra múltiples sesiones contables.
+        currentUserSessionId = loggedInUserName.replace(/\s+/g, '-').toLowerCase();
 
-                const li = document.createElement("li");
-                li.className = "news-item";
-                li.dataset.newsId = birthdayId;
-                li.innerHTML = `
+        try {
+          const sessionRef = db.collection('active_sessions').doc(currentUserSessionId);
+          await sessionRef.set({
+            userName: loggedInUserName,
+            last_seen: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } catch (error) {
+          console.error("Error al actualizar la sesión de usuario:", error);
+        }
+      }
+
+      // Función para eliminar la sesión del usuario al salir
+      async function removeUserSession() {
+        if (currentUserSessionId) {
+          try {
+            await db.collection('active_sessions').doc(currentUserSessionId).delete();
+          } catch (error) {
+            console.error("Error al eliminar la sesión de usuario:", error);
+          }
+        }
+      }
+
+      // Escucha los cambios en la colección de sesiones activas
+      function listenToActiveUsers() {
+        const activeUsersCountEl = document.getElementById('active-users-count');
+        const activeUsersListEl = document.getElementById('active-users-list');
+        const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
+
+        db.collection('active_sessions')
+          .where('last_seen', '>', twoMinutesAgo) // Solo contamos usuarios vistos en los últimos 2 minutos
+          .onSnapshot(snapshot => {
+            const activeCount = snapshot.size;
+            const activeUsers = [];
+            snapshot.forEach(doc => {
+              activeUsers.push(doc.data().userName);
+            });
+
+            if (activeUsersListEl) {
+              if (activeUsers.length > 0) {
+                activeUsersListEl.innerHTML = activeUsers.map(name => `<span class="user-tag"><i class="fa-solid fa-circle fa-2xs" style="color: #22c55e;"></i>${name}</span>`).join('');
+              } else {
+                activeUsersListEl.innerHTML = `<p class="text-sm text-gray-500">Nadie conectado en este momento.</p>`;
+              }
+            }
+
+            if (activeUsersCountEl) {
+              activeUsersCountEl.textContent = activeCount;
+            }
+          }, error => {
+            console.error("Error al escuchar usuarios activos:", error);
+            if (activeUsersCountEl) {
+              activeUsersCountEl.textContent = 'Error';
+            }
+          });
+      }
+
+      // Se activa cuando el usuario cierra la pestaña o el navegador
+      window.addEventListener('beforeunload', removeUserSession);
+
+
+      document
+        .getElementById("logout-button")
+        .addEventListener("click", () => {
+          localStorage.removeItem("vendedorLogueado");
+          localStorage.clear();
+          location.reload();
+        });
+
+      // --- LÓGICA DE CUMPLEAÑOS ---
+      async function populateBirthdays() {
+        const birthdaySection = document.getElementById("birthday-section");
+        const birthdayList = document.getElementById("birthday-list");
+        birthdayList.innerHTML = "";
+
+        try {
+          const response = await fetch("cumpleanos.json");
+          if (!response.ok) {
+            throw new Error("No se pudo cargar el archivo de cumpleaños.");
+          }
+          const employeeBirthdays = await response.json();
+
+          const today = new Date();
+          const month = String(today.getMonth() + 1).padStart(2, "0");
+          const day = String(today.getDate()).padStart(2, "0");
+          const todayFormatted = `${month}-${day}`;
+          const year = today.getFullYear();
+          const dateString = `${year}-${month}-${day}`;
+
+          const birthdayEmployees = employeeBirthdays.filter(
+            (emp) => emp.fecha === todayFormatted
+          );
+
+          if (birthdayEmployees.length > 0) {
+            birthdayEmployees.forEach((emp) => {
+              const employeeNameId = emp.nombre.replace(/\s+/g, "");
+              const birthdayId = `bday-${employeeNameId}-${dateString}`;
+
+              const li = document.createElement("li");
+              li.className = "news-item";
+              li.dataset.newsId = birthdayId;
+              li.innerHTML = `
                             <p><strong>¡Feliz cumpleaños, ${emp.nombre}!</strong> 🥳 Que tengas un día excelente.</p>
                             <div class="news-footer">
                                 <div class="reactions-summary"></div>
@@ -2042,45 +2092,90 @@
                                 </div>
                             </div>
                         `;
-                birthdayList.appendChild(li);
-              });
-              birthdaySection.style.display = "block";
-              initializeReactions();
-            } else {
-              birthdaySection.style.display = "none";
-            }
-          } catch (error) {
-            console.error("Error al cargar cumpleaños:", error);
+              birthdayList.appendChild(li);
+            });
+            birthdaySection.style.display = "block";
+            initializeReactions();
+          } else {
             birthdaySection.style.display = "none";
+          }
+        } catch (error) {
+          console.error("Error al cargar cumpleaños:", error);
+          birthdaySection.style.display = "none";
+        }
+      }
+
+      // --- LÓGICA DE NOTIFICACIONES ---
+      const notificationWrapper = document.getElementById('notification-wrapper');
+      const notificationDropdown = document.getElementById('notification-dropdown');
+      const notificationBadge = document.getElementById('notification-badge');
+
+      if (notificationWrapper) {
+        notificationWrapper.addEventListener('click', (e) => {
+          e.stopPropagation();
+          notificationDropdown.classList.toggle('active');
+          if (notificationDropdown.classList.contains('active')) {
+            markNotificationsAsRead();
+          }
+        });
+
+        // Cerrar al hacer clic fuera
+        document.addEventListener('click', (e) => {
+          if (!notificationWrapper.contains(e.target)) {
+            notificationDropdown.classList.remove('active');
+          }
+        });
+      }
+
+      function setAppBadge(count) {
+        // 1. Badge en la interfaz (Campanita)
+        if (notificationBadge) {
+          if (count > 0) {
+            notificationBadge.style.display = 'block';
+            notificationBadge.textContent = count > 9 ? '9+' : count;
+          } else {
+            notificationBadge.style.display = 'none';
           }
         }
 
-        // --- LÓGICA DE NOTICIAS ---
-        function populateNews() {
-          db.collection("news")
-            .orderBy("timestamp", "desc")
-            .onSnapshot(
-              (querySnapshot) => {
-                const comercialesList = document.getElementById(
-                  "comerciales-news-list"
-                );
-                const rrhhList = document.getElementById("rrhh-news-list");
-                if (!comercialesList || !rrhhList) return;
+        // 2. Badge en el ícono de la App (PWA)
+        if ('setAppBadge' in navigator) {
+          if (count > 0) {
+            navigator.setAppBadge(count).catch(e => console.error("Error badging:", e));
+          } else {
+            navigator.clearAppBadge().catch(e => console.error("Error badging:", e));
+          }
+        }
+      }
 
-                comercialesList.innerHTML = "";
-                rrhhList.innerHTML = "";
+      function markNotificationsAsRead() {
+        localStorage.setItem('lastNotificationVisit', Date.now());
+        setAppBadge(0);
+      }
 
-                querySnapshot.forEach((doc) => {
-                  const news = doc.data();
-                  const newsId = doc.id;
+      // --- LÓGICA DE NOTICIAS (SOLO MURO) ---
+      function populateNews() {
+        db.collection("news")
+          .orderBy("timestamp", "desc")
+          .onSnapshot(
+            (querySnapshot) => {
+              const comercialesList = document.getElementById("comerciales-news-list");
+              const rrhhList = document.getElementById("rrhh-news-list");
 
-                  const newsElement = document.createElement("li");
-                  newsElement.className = "news-item";
-                  newsElement.dataset.newsId = newsId;
-                  newsElement.innerHTML = `
-                            <p><strong>${news.title || ""}</strong> ${
-                    news.description || ""
-                  }</p>
+              if (!comercialesList || !rrhhList) return;
+
+              comercialesList.innerHTML = "";
+              rrhhList.innerHTML = "";
+
+              querySnapshot.forEach((doc) => {
+                const news = doc.data();
+                const newsId = doc.id;
+
+                const newsElement = document.createElement("li");
+                newsElement.className = "news-item";
+                newsElement.dataset.newsId = newsId;
+                newsElement.innerHTML = `
+                            <p><strong>${news.title || ""}</strong> ${news.description || ""}</p>
                             <div class="news-footer">
                                 <div class="reactions-summary"></div>
                                 <div class="add-reaction-container">
@@ -2093,152 +2188,222 @@
                                 </div>
                             </div>
                         `;
-                  const list =
-                    news.category === "comerciales"
-                      ? comercialesList
-                      : rrhhList;
-                  list.appendChild(newsElement);
-                });
-                initializeReactions();
-              },
-              (error) => {
-                console.error("Error al obtener noticias: ", error);
-              }
-            );
-        }
-
-        // --- LÓGICA DE REACCIONES ---
-        function initializeReactions() {
-          document
-            .querySelectorAll(".news-item:not(.reactions-initialized)")
-            .forEach((item) => {
-              item.classList.add("reactions-initialized");
-              const newsId = item.dataset.newsId;
-              if (!newsId) return;
-
-              const docRef = db.collection("reactions").doc(newsId);
-
-              docRef.onSnapshot((doc) => {
-                updateReactionSummary(item, doc.exists ? doc.data() : {});
+                const list = news.category === "comerciales"
+                  ? comercialesList
+                  : rrhhList;
+                list.appendChild(newsElement);
               });
 
-              item.querySelectorAll(".picker-btn").forEach((btn) => {
-                btn.addEventListener("click", async () => {
-                  const reaction = btn.dataset.reaction;
-                  const currentReaction = localStorage.getItem(
-                    `reaction_${newsId}`
-                  );
-                  const increment = firebase.firestore.FieldValue.increment(1);
-                  const decrement = firebase.firestore.FieldValue.increment(-1);
+              initializeReactions();
+            },
+            (error) => {
+              console.error("Error al obtener noticias: ", error);
+            }
+          );
+      }
 
-                  const batch = db.batch();
+      // --- LÓGICA DE NOTIFICACIONES (SEPARADA) ---
+      function populateNotifications() {
+        db.collection("notifications")
+          .orderBy("timestamp", "desc")
+          .limit(10) // Traemos las ultimas 10
+          .onSnapshot((querySnapshot) => {
+            const notificationList = document.getElementById("notification-list");
+            const emptyMsg = document.getElementById("empty-notifications-msg");
+            if (!notificationList) return;
 
-                  if (currentReaction === reaction) {
-                    batch.set(
-                      docRef,
-                      { [reaction]: decrement },
-                      { merge: true }
-                    );
-                    localStorage.removeItem(`reaction_${newsId}`);
-                  } else {
-                    if (currentReaction) {
-                      batch.set(
-                        docRef,
-                        { [currentReaction]: decrement },
-                        { merge: true }
-                      );
-                    }
-                    batch.set(
-                      docRef,
-                      { [reaction]: increment },
-                      { merge: true }
-                    );
-                    localStorage.setItem(`reaction_${newsId}`, reaction);
-                  }
-                  await batch.commit();
-                });
-              });
+            notificationList.innerHTML = "";
+            let newCount = 0;
+            let allNotifications = [];
+            const lastVisit = localStorage.getItem('lastNotificationVisit') || 0;
 
-              const addReactionBtn = item.querySelector(".add-reaction-btn");
-              const reactionContainer = item.querySelector(
-                ".add-reaction-container"
-              );
+            querySnapshot.forEach((doc) => {
+              const notif = doc.data();
+              const notifId = doc.id;
+              allNotifications.push({ ...notif, id: notifId });
 
-              if (addReactionBtn && reactionContainer) {
-                addReactionBtn.addEventListener("click", (e) => {
-                  e.stopPropagation();
-                  const isAlreadyOpen =
-                    reactionContainer.classList.contains("show-picker");
-
-                  document
-                    .querySelectorAll(".add-reaction-container.show-picker")
-                    .forEach((openContainer) => {
-                      openContainer.classList.remove("show-picker");
-                      const otherPicker =
-                        openContainer.querySelector(".reaction-picker");
-                      if (otherPicker)
-                        otherPicker.classList.remove("picker-below");
-                    });
-
-                  if (!isAlreadyOpen) {
-                    reactionContainer.classList.add("show-picker");
-                    const picker =
-                      reactionContainer.querySelector(".reaction-picker");
-                    const panelCard = reactionContainer.closest(".panel-card");
-
-                    if (picker && panelCard) {
-                      const pickerRect = picker.getBoundingClientRect();
-                      const panelCardRect = panelCard.getBoundingClientRect();
-                      if (pickerRect.top < panelCardRect.top) {
-                        picker.classList.add("picker-below");
-                      } else {
-                        picker.classList.remove("picker-below");
-                      }
-                    }
-                  }
-                });
+              // Conteo de no leídas
+              if (notif.timestamp && notif.timestamp.toMillis() > lastVisit) {
+                newCount++;
               }
             });
-        }
 
-        function updateReactionSummary(item, data) {
-          const summaryContainer = item.querySelector(".reactions-summary");
-          summaryContainer.innerHTML = "";
-          let totalReactions = 0;
-          const userReaction = localStorage.getItem(
-            `reaction_${item.dataset.newsId}`
-          );
+            // Renderizado (Top 5)
+            const top5 = allNotifications.slice(0, 5);
 
-          ["👍", "❤️", "🎉"].forEach((emoji) => {
-            const count = data[emoji] || 0;
-            if (count > 0) {
-              totalReactions += count;
-              const pill = document.createElement("span");
-              pill.className = "reaction-display";
-              pill.innerHTML = `<span class="emoji">${emoji}</span> ${count}`;
-              if (userReaction === emoji) {
-                pill.style.backgroundColor = "#E9ECEF";
-                pill.style.color = "var(--brand)";
-                pill.style.fontWeight = "700";
-              }
-              summaryContainer.appendChild(pill);
+            if (top5.length === 0) {
+              if (emptyMsg) emptyMsg.style.display = 'block';
+            } else {
+              if (emptyMsg) emptyMsg.style.display = 'none';
+              top5.forEach(n => {
+                const li = document.createElement('li');
+                li.className = 'notification-item';
+
+                // Formato de fecha
+                let timeString = "";
+                if (n.timestamp) {
+                  const date = n.timestamp.toDate();
+                  timeString = date.toLocaleDateString() + " " + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                }
+
+                // Si tiene link, hacemos que el contenido sea clickeable o agregamos un anchor
+                let contentHTML = `
+                    <span class="notification-title">${n.title}</span>
+                    <span class="notification-desc" style="font-size: 0.85em; color: #555; display:block;">${n.message}</span>
+                    <span class="notification-time">${timeString}</span>
+                `;
+
+                if (n.link) {
+                  li.style.cursor = "pointer";
+                  li.onclick = () => window.open(n.link, '_blank');
+                  contentHTML += `<span style="font-size: 0.8em; color: var(--accent); display:block; margin-top: 2px;"><i class="fa-solid fa-link"></i> Abrir enlace</span>`;
+                }
+
+                li.innerHTML = contentHTML;
+                notificationList.appendChild(li);
+              });
+            }
+
+            // Actualizar Badge
+            setAppBadge(newCount);
+
+          }, (error) => {
+            console.error("Error al obtener notificaciones: ", error);
+          });
+      }
+
+      // --- LÓGICA DE REACCIONES ---
+      function initializeReactions() {
+        document
+          .querySelectorAll(".news-item:not(.reactions-initialized)")
+          .forEach((item) => {
+            item.classList.add("reactions-initialized");
+            const newsId = item.dataset.newsId;
+            if (!newsId) return;
+
+            const docRef = db.collection("reactions").doc(newsId);
+
+            docRef.onSnapshot((doc) => {
+              updateReactionSummary(item, doc.exists ? doc.data() : {});
+            });
+
+            item.querySelectorAll(".picker-btn").forEach((btn) => {
+              btn.addEventListener("click", async () => {
+                const reaction = btn.dataset.reaction;
+                const currentReaction = localStorage.getItem(
+                  `reaction_${newsId}`
+                );
+                const increment = firebase.firestore.FieldValue.increment(1);
+                const decrement = firebase.firestore.FieldValue.increment(-1);
+
+                const batch = db.batch();
+
+                if (currentReaction === reaction) {
+                  batch.set(
+                    docRef,
+                    { [reaction]: decrement },
+                    { merge: true }
+                  );
+                  localStorage.removeItem(`reaction_${newsId}`);
+                } else {
+                  if (currentReaction) {
+                    batch.set(
+                      docRef,
+                      { [currentReaction]: decrement },
+                      { merge: true }
+                    );
+                  }
+                  batch.set(
+                    docRef,
+                    { [reaction]: increment },
+                    { merge: true }
+                  );
+                  localStorage.setItem(`reaction_${newsId}`, reaction);
+                }
+                await batch.commit();
+              });
+            });
+
+            const addReactionBtn = item.querySelector(".add-reaction-btn");
+            const reactionContainer = item.querySelector(
+              ".add-reaction-container"
+            );
+
+            if (addReactionBtn && reactionContainer) {
+              addReactionBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const isAlreadyOpen =
+                  reactionContainer.classList.contains("show-picker");
+
+                document
+                  .querySelectorAll(".add-reaction-container.show-picker")
+                  .forEach((openContainer) => {
+                    openContainer.classList.remove("show-picker");
+                    const otherPicker =
+                      openContainer.querySelector(".reaction-picker");
+                    if (otherPicker)
+                      otherPicker.classList.remove("picker-below");
+                  });
+
+                if (!isAlreadyOpen) {
+                  reactionContainer.classList.add("show-picker");
+                  const picker =
+                    reactionContainer.querySelector(".reaction-picker");
+                  const panelCard = reactionContainer.closest(".panel-card");
+
+                  if (picker && panelCard) {
+                    const pickerRect = picker.getBoundingClientRect();
+                    const panelCardRect = panelCard.getBoundingClientRect();
+                    if (pickerRect.top < panelCardRect.top) {
+                      picker.classList.add("picker-below");
+                    } else {
+                      picker.classList.remove("picker-below");
+                    }
+                  }
+                }
+              });
             }
           });
-          summaryContainer.style.display = totalReactions > 0 ? "flex" : "none";
-        }
+      }
 
-        // --- LÓGICA DEL DIRECTORIO ---
-        function populateDirectory() {
-          const directoryContainer = document.getElementById(
-            "directory-container"
-          );
-          if (!directoryContainer) return;
-          directoryContainer.innerHTML = Object.keys(directoryData)
-            .map((area) => {
-              const areaData = directoryData[area];
-              const membersHTML = areaData.members
-                .map(
-                  (emp) => `
+      function updateReactionSummary(item, data) {
+        const summaryContainer = item.querySelector(".reactions-summary");
+        summaryContainer.innerHTML = "";
+        let totalReactions = 0;
+        const userReaction = localStorage.getItem(
+          `reaction_${item.dataset.newsId}`
+        );
+
+        ["👍", "❤️", "🎉"].forEach((emoji) => {
+          const count = data[emoji] || 0;
+          if (count > 0) {
+            totalReactions += count;
+            const pill = document.createElement("span");
+            pill.className = "reaction-display";
+            pill.innerHTML = `<span class="emoji">${emoji}</span> ${count}`;
+            if (userReaction === emoji) {
+              pill.style.backgroundColor = "#E9ECEF";
+              pill.style.color = "var(--brand)";
+              pill.style.fontWeight = "700";
+            }
+            summaryContainer.appendChild(pill);
+          }
+        });
+        summaryContainer.style.display = totalReactions > 0 ? "flex" : "none";
+      }
+
+      // --- LÓGICA DEL DIRECTORIO ---
+      function populateDirectory() {
+        const directoryContainer = document.getElementById(
+          "directory-container"
+        );
+        if (!directoryContainer) return;
+        directoryContainer.innerHTML = Object.keys(directoryData)
+          .map((area) => {
+            const areaData = directoryData[area];
+            const membersHTML = areaData.members
+              .map(
+                (emp) => `
                         <div class="employee-contact-card">
                             <p class="name">${emp.nombre}</p>
                             <p class="position">${emp.puesto}</p>
@@ -2248,37 +2413,37 @@
                             <a href="tel:${emp.numero}" class="contact-info">${emp.numero}</a>
                         </div>
                     `
-                )
-                .join("");
-              return `
+              )
+              .join("");
+            return `
                         <details>
                             <summary><i class="fa-solid ${areaData.icon} area-icon"></i>${area}</summary>
                             <div class="directory-content">${membersHTML}</div>
                         </details>
                     `;
-            })
-            .join("");
+          })
+          .join("");
 
-          directoryContainer.querySelectorAll("details").forEach((details) => {
-            details.addEventListener("toggle", () => {
-              if (details.open) {
-                directoryContainer
-                  .querySelectorAll("details")
-                  .forEach((other) => {
-                    if (other !== details) other.open = false;
-                  });
-              }
-            });
+        directoryContainer.querySelectorAll("details").forEach((details) => {
+          details.addEventListener("toggle", () => {
+            if (details.open) {
+              directoryContainer
+                .querySelectorAll("details")
+                .forEach((other) => {
+                  if (other !== details) other.open = false;
+                });
+            }
           });
-        }
-        // --- LÓGICA DE LINKS ÚTILES ---
-        function populateUsefulLinks() {
-          const linksContainer = document.getElementById("links-modal-body");
-          if (!linksContainer) return;
+        });
+      }
+      // --- LÓGICA DE LINKS ÚTILES ---
+      function populateUsefulLinks() {
+        const linksContainer = document.getElementById("links-modal-body");
+        if (!linksContainer) return;
 
-          linksContainer.innerHTML = usefulLinks
-            .map(
-              (link) => `
+        linksContainer.innerHTML = usefulLinks
+          .map(
+            (link) => `
                     <div class="link-item">
                         <div class="link-item-info">
                             <strong>${link.title}</strong>
@@ -2287,532 +2452,279 @@
                         <button class="copy-link-btn" data-url="${link.url}">Copiar</button>
                     </div>
                 `
-            )
-            .join("");
+          )
+          .join("");
 
-          linksContainer
-            .querySelectorAll(".copy-link-btn")
-            .forEach((button) => {
-              button.addEventListener("click", (e) => {
-                const url = e.currentTarget.dataset.url;
-                navigator.clipboard.writeText(url).then(() => {
-                  e.currentTarget.textContent = "¡Copiado!";
-                  setTimeout(() => {
-                    e.currentTarget.textContent = "Copiar";
-                  }, 2000);
-                });
+        linksContainer
+          .querySelectorAll(".copy-link-btn")
+          .forEach((button) => {
+            button.addEventListener("click", (e) => {
+              const url = e.currentTarget.dataset.url;
+              navigator.clipboard.writeText(url).then(() => {
+                e.currentTarget.textContent = "¡Copiado!";
+                setTimeout(() => {
+                  e.currentTarget.textContent = "Copiar";
+                }, 2000);
               });
             });
-        }
-
-        // --- LÓGICA DEL BUZÓN DE SUGERENCIAS ---
-        const suggestionForm = document.getElementById("suggestion-form");
-        const suggestionStatus = document.getElementById("suggestion-status");
-        const suggestionBtn = document.getElementById("submit-suggestion-btn");
-
-        if (suggestionForm) {
-          suggestionForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const suggestionText = document
-              .getElementById("suggestion-text")
-              .value.trim();
-            const originalButtonText = suggestionBtn.textContent;
-            const loggedInUserName = localStorage.getItem("vendedorLogueado");
-
-            if (!suggestionText) {
-              suggestionStatus.textContent =
-                "Por favor, escribí una sugerencia.";
-              suggestionStatus.style.color = "#d9534f";
-              return;
-            }
-
-            if (!loggedInUserName) {
-              suggestionStatus.textContent =
-                "Error: No se pudo identificar al usuario. Por favor, reiniciá sesión.";
-              suggestionStatus.style.color = "#d9534f";
-              return;
-            }
-
-            suggestionBtn.disabled = true;
-            suggestionBtn.textContent = "Enviando...";
-
-            try {
-              await db.collection("sugerencias").add({
-                sugerencia: suggestionText,
-                vendedor: "Anónimo", // Se envía como anónimo
-                fecha: firebase.firestore.FieldValue.serverTimestamp(),
-              });
-
-              suggestionStatus.textContent =
-                "¡Sugerencia enviada con éxito! Gracias.";
-              suggestionStatus.style.color = "green";
-              suggestionForm.reset();
-            } catch (error) {
-              console.error("Error al enviar sugerencia: ", error);
-              suggestionStatus.textContent =
-                "Hubo un error al enviar. Intentá de nuevo.";
-              suggestionStatus.style.color = "#d9534f";
-            } finally {
-              setTimeout(() => {
-                suggestionBtn.disabled = false;
-                suggestionBtn.textContent = originalButtonText;
-                suggestionStatus.textContent = "";
-              }, 3000);
-            }
           });
-        }
+      }
 
-        // --- LÓGICA DE MODALES GENERALES Y CIERRE DE PICKERS ---
-        document
-          .getElementById("open-links-modal-btn")
-          ?.addEventListener("click", () => {
-            document.getElementById("links-modal").style.display = "flex";
-          });
-        document
-          .getElementById("close-links-modal-btn")
-          ?.addEventListener("click", () => {
-            document.getElementById("links-modal").style.display = "none";
-          });
+      // --- LÓGICA DEL BUZÓN DE SUGERENCIAS ---
+      const suggestionForm = document.getElementById("suggestion-form");
+      const suggestionStatus = document.getElementById("suggestion-status");
+      const suggestionBtn = document.getElementById("submit-suggestion-btn");
 
-        document.addEventListener("click", (e) => {
-          const openPickerContainer = document.querySelector(
-            ".add-reaction-container.show-picker"
-          );
-          if (openPickerContainer && !openPickerContainer.contains(e.target)) {
-            openPickerContainer.classList.remove("show-picker");
-            const picker =
-              openPickerContainer.querySelector(".reaction-picker");
-            if (picker) picker.classList.remove("picker-below");
-          }
-        });
+      if (suggestionForm) {
+        suggestionForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const suggestionText = document
+            .getElementById("suggestion-text")
+            .value.trim();
+          const originalButtonText = suggestionBtn.textContent;
+          const loggedInUserName = localStorage.getItem("vendedorLogueado");
 
-        // --- PANEL DE ADMINISTRACIÓN ---
-        const adminModal = document.getElementById("admin-modal");
-        const newsFormModal = document.getElementById("news-form-modal");
-        const trainingFormModal = document.getElementById(
-          "training-form-modal"
-        );
-
-        const adminPasswordModal = document.getElementById(
-          "admin-password-modal"
-        );
-        const adminPasswordForm = document.getElementById(
-          "admin-password-form"
-        );
-        const adminPasswordField = document.getElementById(
-          "admin-password-field"
-        );
-        const adminPasswordError = document.getElementById(
-          "admin-password-error"
-        );
-        const closeAdminPasswordModalBtn = document.getElementById(
-          "close-admin-password-modal-btn"
-        );
-        
-        // Variables para el contador de usuarios
-        let currentUserSessionId = null;
-
-        let keySequence = [];
-        const adminSecretCode = "admin";
-
-        document.addEventListener("keydown", (e) => {
-          // ***** LÍNEA CORREGIDA *****
-          if (
-            !localStorage.getItem("vendedorLogueado") ||
-            e.target.tagName === "INPUT" ||
-            e.target.tagName === "TEXTAREA"
-          ) {
-            keySequence = [];
+          if (!suggestionText) {
+            suggestionStatus.textContent =
+              "Por favor, escribí una sugerencia.";
+            suggestionStatus.style.color = "#d9534f";
             return;
           }
-          keySequence.push(e.key.toLowerCase());
-          const currentSequence = keySequence.join("");
 
-          if (currentSequence.endsWith(adminSecretCode)) {
-            adminPasswordModal.style.display = "flex";
-            adminPasswordField.focus();
-            keySequence = [];
+          if (!loggedInUserName) {
+            suggestionStatus.textContent =
+              "Error: No se pudo identificar al usuario. Por favor, reiniciá sesión.";
+            suggestionStatus.style.color = "#d9534f";
+            return;
           }
 
-          if (keySequence.length > 5) keySequence.shift();
-        });
+          suggestionBtn.disabled = true;
+          suggestionBtn.textContent = "Enviando...";
 
-        adminPasswordForm.addEventListener("submit", (e) => {
-          e.preventDefault();
-          const enteredPassword = adminPasswordField.value;
-          const encodedAdminPassword = "NTM1MTUyNQ==";
-
-          if (btoa(enteredPassword) === encodedAdminPassword) {
-            adminPasswordModal.style.display = "none";
-            adminPasswordForm.reset();
-            adminPasswordError.textContent = "";
-
-            populateAdminModal();
-            adminModal.style.display = "flex";
-          } else {
-            adminPasswordError.textContent = "Código de acceso incorrecto.";
-            adminPasswordField.value = "";
-          }
-        });
-
-        closeAdminPasswordModalBtn.addEventListener("click", () => {
-          adminPasswordModal.style.display = "none";
-          adminPasswordForm.reset();
-          adminPasswordError.textContent = "";
-        });
-
-        async function populateAdminModal() {
-          // Populate news
-          const newsListContainer = document.getElementById("admin-news-list");
-          newsListContainer.innerHTML = "Cargando...";
-          const newsSnapshot = await db
-            .collection("news")
-            .orderBy("timestamp", "desc")
-            .get();
-          newsListContainer.innerHTML = "";
-          newsSnapshot.forEach((doc) => {
-            const news = { id: doc.id, ...doc.data() };
-            const item = document.createElement("div");
-            item.className = "admin-item";
-            const fullContent = `<strong>${news.title || ""}</strong> ${
-              news.description || ""
-            }`;
-            item.innerHTML = `<div class="admin-item-content" title="${fullContent.replace(
-              /<[^>]*>?/gm,
-              ""
-            )}"><p>${fullContent}</p><small>Categoría: ${
-              news.category
-            }</small></div><div class="admin-item-actions"><button class="admin-btn edit-btn" data-id="${
-              news.id
-            }"><i class="fa-solid fa-pencil"></i></button><button class="admin-btn delete-btn" data-collection="news" data-id="${
-              news.id
-            }"><i class="fa-solid fa-trash"></i></button><button class="admin-btn reset-btn" data-id="${
-              news.id
-            }"><i class="fa-solid fa-arrows-rotate"></i></button></div>`;
-            newsListContainer.appendChild(item);
-          });
-
-          // Populate trainings
-          const trainingsListContainer = document.getElementById(
-            "admin-trainings-list"
-          );
-          trainingsListContainer.innerHTML = "Cargando...";
-          const trainingsSnapshot = await db
-            .collection("trainings")
-            .orderBy("date", "desc")
-            .get();
-          trainingsListContainer.innerHTML = "";
-          trainingsSnapshot.forEach((doc) => {
-            const training = { id: doc.id, ...doc.data() };
-            const item = document.createElement("div");
-            item.className = "admin-item";
-            item.innerHTML = `<div class="admin-item-content"><p><strong>${training.date}:</strong> ${training.title}</p></div><div class="admin-item-actions"><button class="admin-btn edit-btn" data-collection="trainings" data-id="${training.id}"><i class="fa-solid fa-pencil"></i></button><button class="admin-btn delete-btn" data-collection="trainings" data-id="${training.id}"><i class="fa-solid fa-trash"></i></button></div>`;
-            trainingsListContainer.appendChild(item);
-          });
-
-          addAdminEventListeners();
-        }
-
-        function addAdminEventListeners() {
-          document.querySelectorAll("#admin-modal .delete-btn").forEach(
-            (btn) =>
-              (btn.onclick = function (e) {
-                const button = e.currentTarget;
-                const docId = button.dataset.id;
-                const collection = button.dataset.collection;
-                if (
-                  confirm(
-                    `¿Seguro que querés borrar este item de "${collection}"?`
-                  )
-                ) {
-                  db.collection(collection)
-                    .doc(docId)
-                    .delete()
-                    .then(() => {
-                      if (collection === "news") {
-                        db.collection("reactions").doc(docId).delete();
-                      }
-                      populateAdminModal();
-                    });
-                }
-              })
-          );
-
-          document.querySelectorAll("#admin-news-list .edit-btn").forEach(
-            (btn) =>
-              (btn.onclick = async (e) => {
-                const id = e.currentTarget.dataset.id;
-                const doc = await db.collection("news").doc(id).get();
-                openNewsForm({ id, ...doc.data() });
-              })
-          );
-
-          document.querySelectorAll("#admin-news-list .reset-btn").forEach(
-            (btn) =>
-              (btn.onclick = async (e) => {
-                const newsId = e.currentTarget.dataset.id;
-                await db
-                  .collection("reactions")
-                  .doc(newsId)
-                  .set({ "👍": 0, "❤️": 0, "🎉": 0 });
-                e.currentTarget.innerHTML = '<i class="fa-solid fa-check"></i>';
-                setTimeout(
-                  () =>
-                    (e.currentTarget.innerHTML =
-                      '<i class="fa-solid fa-arrows-rotate"></i>'),
-                  1500
-                );
-              })
-          );
-
-          // Delegación de eventos para editar capacitaciones
-          document.querySelectorAll("#admin-trainings-list .edit-btn").forEach(
-            (btn) =>
-              (btn.onclick = async function (e) {
-                const id = e.currentTarget.dataset.id;
-                const doc = await db.collection("trainings").doc(id).get();
-                openTrainingForm({ id, ...doc.data() });
-              })
-          );
-
-        }
-
-        function openNewsForm(data = {}) {
-          document.getElementById("news-form").reset();
-          document.getElementById("news-id-field").value = data.id || "";
-          document.getElementById("news-title-field").value = data.title || "";
-          document.getElementById("news-description-field").value =
-            data.description || "";
-          document.getElementById("news-category-field").value =
-            data.category || "comerciales";
-          document.getElementById("news-form-title").textContent = data.id
-            ? "Editar Noticia"
-            : "Crear Noticia";
-          newsFormModal.style.display = "flex";
-        }
-
-        function openTrainingForm(data = {}) {
-          document.getElementById("training-form").reset();
-          document.getElementById("training-id-field").value = data.id || "";
-          document.getElementById("training-date-field").value = data.date || "";
-          document.getElementById("training-title-field").value = data.title || "";
-          document.getElementById("training-form-title").textContent = data.id ? "Editar Capacitación" : "Agregar Capacitación";
-          trainingFormModal.style.display = "flex";
-        }
-
-        // Modal Buttons
-        document.getElementById("add-news-btn").onclick = () => openNewsForm();
-        document.getElementById("add-training-btn").onclick = () =>
-          openTrainingForm();
-
-        document.getElementById("close-admin-modal-btn").onclick = () =>
-          (adminModal.style.display = "none");
-        document.getElementById("close-news-form-modal-btn").onclick = () =>
-          (newsFormModal.style.display = "none");
-        document.getElementById("close-training-form-modal-btn").onclick = () =>
-          (trainingFormModal.style.display = "none");
-
-        // Form Submissions
-        document.getElementById("news-form").onsubmit = async (e) => {
-          e.preventDefault();
-          const id = document.getElementById("news-id-field").value;
-          const data = {
-            title: document.getElementById("news-title-field").value,
-            description: document.getElementById("news-description-field")
-              .value,
-            category: document.getElementById("news-category-field").value,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          };
-          if (id) await db.collection("news").doc(id).update(data);
-          else await db.collection("news").add(data);
-          newsFormModal.style.display = "none";
-          populateAdminModal();
-        };
-
-        document.getElementById("training-form").onsubmit = async (e) => {
-          e.preventDefault();
-          const id = document.getElementById("training-id-field").value;
-          const data = {
-            date: document.getElementById("training-date-field").value,
-            title: document.getElementById("training-title-field").value,
-          };
-          if (id) await db.collection("trainings").doc(id).update(data);
-          else await db.collection("trainings").add(data);
-          trainingFormModal.style.display = "none";
-          populateAdminModal();
-        };
-
-        // --- LÓGICA DEL CALENDARIO ---
-        let currentDate = new Date();
-        let trainingEvents = {};
-
-        function initializeCalendar() {
-          db.collection("trainings").onSnapshot((snapshot) => {
-            trainingEvents = {};
-            snapshot.forEach((doc) => {
-              const data = doc.data();
-              trainingEvents[data.date] = data.title;
+          try {
+            await db.collection("sugerencias").add({
+              sugerencia: suggestionText,
+              vendedor: "Anónimo", // Se envía como anónimo
+              fecha: firebase.firestore.FieldValue.serverTimestamp(),
             });
-            renderCalendar(currentDate);
-          });
 
-          document.getElementById("prev-month-btn").onclick = () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar(currentDate);
-          };
-          document.getElementById("next-month-btn").onclick = () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar(currentDate);
-          };
-
-          const daysHeader = document.getElementById("calendar-days-header");
-          daysHeader.innerHTML = "";
-          ["D", "L", "M", "M", "J", "V", "S"].forEach((day) => {
-            daysHeader.innerHTML += `<div class="day-name">${day}</div>`;
-          });
-        }
-
-        function renderCalendar(date) {
-          const month = date.getMonth();
-          const year = date.getFullYear();
-
-          document.getElementById("month-year").textContent = date
-            .toLocaleDateString("es-AR", { month: "long", year: "numeric" })
-            .replace(/^\w/, (c) => c.toUpperCase());
-
-          const firstDay = new Date(year, month, 1).getDay();
-          const daysInMonth = new Date(year, month + 1, 0).getDate();
-          const grid = document.getElementById("calendar-grid");
-          grid.innerHTML = "";
-
-          for (let i = 0; i < firstDay; i++) {
-            grid.innerHTML += `<div class="calendar-day empty-day"></div>`;
+            suggestionStatus.textContent =
+              "¡Sugerencia enviada con éxito! Gracias.";
+            suggestionStatus.style.color = "green";
+            suggestionForm.reset();
+          } catch (error) {
+            console.error("Error al enviar sugerencia: ", error);
+            suggestionStatus.textContent =
+              "Hubo un error al enviar. Intentá de nuevo.";
+            suggestionStatus.style.color = "#d9534f";
+          } finally {
+            setTimeout(() => {
+              suggestionBtn.disabled = false;
+              suggestionBtn.textContent = originalButtonText;
+              suggestionStatus.textContent = "";
+            }, 3000);
           }
-
-          for (let day = 1; day <= daysInMonth; day++) {
-            const dayEl = document.createElement("div");
-            dayEl.className = "calendar-day";
-            dayEl.textContent = day;
-
-            const today = new Date();
-            if (
-              day === today.getDate() &&
-              month === today.getMonth() &&
-              year === today.getFullYear()
-            ) {
-              dayEl.classList.add("is-today");
-            }
-
-            const dateString = `${year}-${String(month + 1).padStart(
-              2,
-              "0"
-            )}-${String(day).padStart(2, "0")}`;
-            if (trainingEvents[dateString]) {
-              dayEl.classList.add("has-event");
-              dayEl.dataset.event = trainingEvents[dateString];
-              dayEl.dataset.date = new Date(
-                dateString + "T00:00:00"
-              ).toLocaleDateString("es-AR", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              });
-              dayEl.onclick = () => {
-                const details = document.getElementById("event-details");
-                details.innerHTML = `<h5>${dayEl.dataset.date.replace(
-                  /^\w/,
-                  (c) => c.toUpperCase()
-                )}</h5><p>${dayEl.dataset.event}</p>`;
-              };
-            }
-
-            grid.appendChild(dayEl);
-          }
-        }
-// --- LÓGICA DEL BOTÓN BACK TO TOP (CORREGIDA) ---
-const backToTopButton = document.getElementById("back-to-top-btn");
-
-if (backToTopButton) {
-  function toggleBackToTopButton() {
-    const scrollBuffer = 15; // Un pequeño margen para que se active justo antes del final
-    
-    // Comprueba si la página es más alta que la ventana (es decir, si se puede hacer scroll)
-    const isScrollable = document.documentElement.scrollHeight > document.documentElement.clientHeight;
-    
-    // Comprueba si estás al final de la página
-    const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - scrollBuffer;
-
-    // El botón solo se muestra si la página es desplazable Y estás al final
-    if (isScrollable && isAtBottom) {
-      backToTopButton.style.display = "flex"; 
-    } else {
-      backToTopButton.style.display = "none";
-    }
-  }
-
-  // Escuchamos los eventos de scroll y cambio de tamaño de la ventana
-  window.addEventListener("scroll", toggleBackToTopButton);
-  window.addEventListener("resize", toggleBackToTopButton);
-  
-  // Hacemos una comprobación inicial medio segundo después de que cargue la página.
-  // Esto da tiempo a que el contenido dinámico (como las noticias) se cargue y la altura de la página sea definitiva.
-  setTimeout(toggleBackToTopButton, 500);
-
-  // Al hacer clic, volver suavemente arriba
-  backToTopButton.addEventListener("click", (e) => {
-    e.preventDefault(); 
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-}
-        // -- INICIALIZACIÓN FINAL --
-        checkLogin();
-//         // --- LÓGICA DEL BOTÓN BACK TO TOP ---
-// const backToTopButton = document.getElementById("back-to-top-btn");
-
-// // Mostrar el botón cuando el usuario baja 150px
-// window.onscroll = function() {
-//   if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
-//     backToTopButton.style.display = "block";
-//   } else {
-//     backToTopButton.style.display = "none";
-//   }
-// };
-
-// // Al hacer clic, volver suavemente arriba
-// backToTopButton.addEventListener("click", function(e) {
-//   e.preventDefault();
-//   window.scrollTo({
-//     top: 0,
-//     behavior: 'smooth'
-//   });
-// });
-      });
-    </script>
-
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("/sw-vendedores.js")
-            .then((registration) => {
-              console.log(
-                "ServiceWorker del Panel registrado con éxito:",
-                registration.scope
-              );
-            })
-            .catch((error) => {
-              console.log(
-                "Error en el registro de ServiceWorker del Panel:",
-                error
-              );
-            });
         });
       }
-    </script>
-    <a id="back-to-top-btn" title="Volver arriba"><i class="fa-solid fa-arrow-up"></i></a>
-  </body>
+
+      // --- LÓGICA DE MODALES GENERALES Y CIERRE DE PICKERS ---
+      document
+        .getElementById("open-links-modal-btn")
+        ?.addEventListener("click", () => {
+          document.getElementById("links-modal").style.display = "flex";
+        });
+      document
+        .getElementById("close-links-modal-btn")
+        ?.addEventListener("click", () => {
+          document.getElementById("links-modal").style.display = "none";
+        });
+
+      document.addEventListener("click", (e) => {
+        const openPickerContainer = document.querySelector(
+          ".add-reaction-container.show-picker"
+        );
+        if (openPickerContainer && !openPickerContainer.contains(e.target)) {
+          openPickerContainer.classList.remove("show-picker");
+          const picker =
+            openPickerContainer.querySelector(".reaction-picker");
+          if (picker) picker.classList.remove("picker-below");
+        }
+      });
+
+
+
+      // --- LÓGICA DEL CALENDARIO ---
+      let currentDate = new Date();
+      let trainingEvents = {};
+
+      function initializeCalendar() {
+        db.collection("trainings").onSnapshot((snapshot) => {
+          trainingEvents = {};
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            trainingEvents[data.date] = data.title;
+          });
+          renderCalendar(currentDate);
+        });
+
+        document.getElementById("prev-month-btn").onclick = () => {
+          currentDate.setMonth(currentDate.getMonth() - 1);
+          renderCalendar(currentDate);
+        };
+        document.getElementById("next-month-btn").onclick = () => {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          renderCalendar(currentDate);
+        };
+
+        const daysHeader = document.getElementById("calendar-days-header");
+        daysHeader.innerHTML = "";
+        ["D", "L", "M", "M", "J", "V", "S"].forEach((day) => {
+          daysHeader.innerHTML += `<div class="day-name">${day}</div>`;
+        });
+      }
+
+      function renderCalendar(date) {
+        const month = date.getMonth();
+        const year = date.getFullYear();
+
+        document.getElementById("month-year").textContent = date
+          .toLocaleDateString("es-AR", { month: "long", year: "numeric" })
+          .replace(/^\w/, (c) => c.toUpperCase());
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const grid = document.getElementById("calendar-grid");
+        grid.innerHTML = "";
+
+        for (let i = 0; i < firstDay; i++) {
+          grid.innerHTML += `<div class="calendar-day empty-day"></div>`;
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayEl = document.createElement("div");
+          dayEl.className = "calendar-day";
+          dayEl.textContent = day;
+
+          const today = new Date();
+          if (
+            day === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+          ) {
+            dayEl.classList.add("is-today");
+          }
+
+          const dateString = `${year}-${String(month + 1).padStart(
+            2,
+            "0"
+          )}-${String(day).padStart(2, "0")}`;
+          if (trainingEvents[dateString]) {
+            dayEl.classList.add("has-event");
+            dayEl.dataset.event = trainingEvents[dateString];
+            dayEl.dataset.date = new Date(
+              dateString + "T00:00:00"
+            ).toLocaleDateString("es-AR", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
+            dayEl.onclick = () => {
+              const details = document.getElementById("event-details");
+              details.innerHTML = `<h5>${dayEl.dataset.date.replace(
+                /^\w/,
+                (c) => c.toUpperCase()
+              )}</h5><p>${dayEl.dataset.event}</p>`;
+            };
+          }
+
+          grid.appendChild(dayEl);
+        }
+      }
+      // --- LÓGICA DEL BOTÓN BACK TO TOP (CORREGIDA) ---
+      const backToTopButton = document.getElementById("back-to-top-btn");
+
+      if (backToTopButton) {
+        function toggleBackToTopButton() {
+          const scrollBuffer = 15; // Un pequeño margen para que se active justo antes del final
+
+          // Comprueba si la página es más alta que la ventana (es decir, si se puede hacer scroll)
+          const isScrollable = document.documentElement.scrollHeight > document.documentElement.clientHeight;
+
+          // Comprueba si estás al final de la página
+          const isAtBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - scrollBuffer;
+
+          // El botón solo se muestra si la página es desplazable Y estás al final
+          if (isScrollable && isAtBottom) {
+            backToTopButton.style.display = "flex";
+          } else {
+            backToTopButton.style.display = "none";
+          }
+        }
+
+        // Escuchamos los eventos de scroll y cambio de tamaño de la ventana
+        window.addEventListener("scroll", toggleBackToTopButton);
+        window.addEventListener("resize", toggleBackToTopButton);
+
+        // Hacemos una comprobación inicial medio segundo después de que cargue la página.
+        // Esto da tiempo a que el contenido dinámico (como las noticias) se cargue y la altura de la página sea definitiva.
+        setTimeout(toggleBackToTopButton, 500);
+
+        // Al hacer clic, volver suavemente arriba
+        backToTopButton.addEventListener("click", (e) => {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+      // -- INICIALIZACIÓN FINAL --
+      checkLogin();
+      //         // --- LÓGICA DEL BOTÓN BACK TO TOP ---
+      // const backToTopButton = document.getElementById("back-to-top-btn");
+
+      // // Mostrar el botón cuando el usuario baja 150px
+      // window.onscroll = function() {
+      //   if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+      //     backToTopButton.style.display = "block";
+      //   } else {
+      //     backToTopButton.style.display = "none";
+      //   }
+      // };
+
+      // // Al hacer clic, volver suavemente arriba
+      // backToTopButton.addEventListener("click", function(e) {
+      //   e.preventDefault();
+      //   window.scrollTo({
+      //     top: 0,
+      //     behavior: 'smooth'
+      //   });
+      // });
+    });
+  </script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("/sw-vendedores.js")
+          .then((registration) => {
+            console.log(
+              "ServiceWorker del Panel registrado con éxito:",
+              registration.scope
+            );
+          })
+          .catch((error) => {
+            console.log(
+              "Error en el registro de ServiceWorker del Panel:",
+              error
+            );
+          });
+      });
+    }
+  </script>
+  <a id="back-to-top-btn" title="Volver arriba"><i class="fa-solid fa-arrow-up"></i></a>
+</body>
+
 </html>

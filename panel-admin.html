@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administración | Rosso Materiales</title>
+    <link href="assets/FAV.png" rel="icon" />
+    <link href="style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --panel-bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --sidebar-bg: #1f2937;
+            --sidebar-text: #f3f4f6;
+            --accent: #d95324;
+            --brand: #1a1a1a;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: var(--panel-bg);
+            font-family: "Inter", sans-serif;
+        }
+
+        /* Login Overlay */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        #login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        #login-container img.logo {
+            max-width: 180px;
+            margin-bottom: 24px;
+            margin-inline: auto;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--accent);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #bd461e;
+        }
+
+        #login-error {
+            color: #d9534f;
+            margin-top: 15px;
+            font-weight: 600;
+            min-height: 20px;
+        }
+
+        /* Admin Layout */
+        #admin-wrapper {
+            display: none;
+            /* Initially hidden */
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        #sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #374151;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: #9ca3af;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background-color: #374151;
+            color: white;
+        }
+
+        .nav-item i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid #374151;
+        }
+
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid #4b5563;
+            color: #9ca3af;
+        }
+
+        .logout-btn:hover {
+            background-color: #374151;
+            color: white;
+        }
+
+        /* Main Content */
+        #main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background-color: #f3f4f6;
+        }
+
+        .content-section {
+            display: none;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h1 {
+            margin: 0;
+            color: var(--brand);
+            font-size: 2rem;
+        }
+
+        /* Cards & Lists */
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .admin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .admin-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .admin-item-content {
+            flex-grow: 1;
+        }
+
+        .admin-item-content p {
+            margin: 5px 0 0;
+            color: #374151;
+        }
+
+        .admin-item-content small {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .admin-item-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .btn-reset {
+            background-color: #6c757d;
+        }
+
+        /* Active Users */
+        #active-users-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        #active-users-count {
+            font-weight: 800;
+            color: #4f46e5;
+        }
+
+        #active-users-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .user-tag {
+            background-color: #e0e7ff;
+            color: #3730a3;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            width: auto;
+            padding: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #admin-wrapper {
+                flex-direction: column;
+            }
+
+            #sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                align-items: center;
+                padding: 10px;
+                justify-content: space-between;
+            }
+
+            .sidebar-header {
+                border: none;
+                padding: 0;
+                text-align: left;
+            }
+
+            .sidebar-nav {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--sidebar-bg);
+                z-index: 100;
+            }
+
+            .sidebar-nav.mobile-open {
+                display: block;
+            }
+
+            .sidebar-footer {
+                display: none;
+            }
+
+            #main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-overlay">
+        <div id="login-container">
+            <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales Logo"
+                class="logo" />
+            <h2>Acceso Administrativo</h2>
+            <form id="admin-login-form">
+                <div class="input-group">
+                    <label for="admin-password">Contraseña</label>
+                    <input type="password" id="admin-password" placeholder="Ingrese código de acceso" required />
+                </div>
+                <button type="submit">Ingresar</button>
+                <div id="login-error"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL -->
+    <div id="admin-wrapper" style="display: none;">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h2>Panel Admin</h2>
+            </div>
+            <div class="sidebar-nav">
+                <a class="nav-item active" data-section="dashboard">
+                    <i class="fa-solid fa-gauge"></i> Dashboard
+                </a>
+                <a class="nav-item" data-section="news">
+                    <i class="fa-solid fa-bullhorn"></i> Noticias
+                </a>
+                <a class="nav-item" data-section="trainings">
+                    <i class="fa-solid fa-graduation-cap"></i> Capacitaciones
+                </a>
+                <a class="nav-item" data-section="suggestions">
+                    <i class="fa-solid fa-envelope-open-text"></i> Sugerencias
+                </a>
+                <a class="nav-item" data-section="vendedores">
+                    <i class="fa-solid fa-users-cog"></i> Vendedores
+                </a>
+                <a class="nav-item" data-section="notifications">
+                    <i class="fa-solid fa-bell"></i> Notificaciones
+                </a>
+                <!-- Link to go back to main site -->
+                <a href="panel-corporativo.html" class="nav-item">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Volver al Sitio
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+                </button>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <main id="main-content">
+
+            <!-- DASHBOARD SECTION -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-users"></i> Usuarios Activos</h3>
+                    <div id="active-users-display">
+                        <span id="active-users-count">0</span>
+                        <span>conectados ahora</span>
+                    </div>
+                    <div id="active-users-list">
+                        <!-- Users populated here -->
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Accesos Rápidos</h3>
+                    <div class="quick-actions-grid">
+                        <button onclick="openNewsModalAction()" class="quick-action-card action-news">
+                            <div class="icon-wrapper"><i class="fa-solid fa-bullhorn"></i></div>
+                            <span>Nueva Noticia</span>
+                        </button>
+                        <button onclick="openTrainingModalAction()" class="quick-action-card action-training">
+                            <div class="icon-wrapper"><i class="fa-solid fa-calendar-plus"></i></div>
+                            <span>Agregar Fecha</span>
+                        </button>
+                        <button onclick="switchSection('suggestions')" class="quick-action-card action-suggestions">
+                            <div class="icon-wrapper"><i class="fa-solid fa-envelope-open-text"></i></div>
+                            <span>Ver Sugerencias</span>
+                        </button>
+                        <button onclick="openNotificationModalAction()" class="quick-action-card action-notifications">
+                            <div class="icon-wrapper"><i class="fa-solid fa-bell"></i></div>
+                            <span>Nueva Notificación</span>
+                        </button>
+                        <a href="carga-masiva.html" target="_blank" class="quick-action-card action-vendors">
+                            <div class="icon-wrapper"><i class="fa-solid fa-users-cog"></i></div>
+                            <span>Gestionar Vendedores</span>
+                        </a>
+                    </div>
+
+                    <style>
+                        .quick-actions-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                            gap: 15px;
+                            margin-top: 20px;
+                        }
+
+                        .quick-action-card {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            padding: 20px;
+                            border-radius: 12px;
+                            border: none;
+                            text-decoration: none;
+                            color: white;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: transform 0.2s, box-shadow 0.2s;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            text-align: center;
+                            height: 100%;
+                        }
+
+                        .quick-action-card:hover {
+                            transform: translateY(-3px);
+                            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+                        }
+
+                        .quick-action-card .icon-wrapper {
+                            font-size: 1.8rem;
+                            margin-bottom: 10px;
+                        }
+
+                        .action-news {
+                            background: linear-gradient(135deg, #FF6B6B, #EE5D5D);
+                        }
+
+                        .action-training {
+                            background: linear-gradient(135deg, #4ECDC4, #45B7AF);
+                        }
+
+                        .action-suggestions {
+                            background: linear-gradient(135deg, #FFA502, #E69502);
+                        }
+
+                        .action-notifications {
+                            background: linear-gradient(135deg, #6f42c1, #59359a);
+                        }
+
+                        .action-vendors {
+                            background: linear-gradient(135deg, #007bff, #0056b3);
+                        }
+                    </style>
+                </div>
+            </section>
+
+            <!-- VENDEDORES SECTION -->
+            <section id="vendedores" class="content-section">
+                <div class="section-header">
+                    <h1>Gestión de Vendedores</h1>
+                </div>
+                <div class="card">
+                    <p style="margin-bottom: 20px; color: #4b5563;">Desde aquí podés acceder a la herramienta de carga
+                        masiva y gestión de vendedores.</p>
+                    <a href="carga-masiva.html" target="_blank" class="admin-btn" style="
+                      background-color: #007bff;
+                      display: inline-flex;
+                      align-items: center;
+                      gap: 10px;
+                      text-decoration: none;
+                      padding: 12px 24px;
+                      border-radius: 8px;
+                      font-weight: 700;
+                      color: white;
+                    ">
+                        <i class="fa-solid fa-users-cog"></i> Ir a Gestión de Vendedores
+                    </a>
+                </div>
+            </section>
+
+            <!-- NEWS SECTION -->
+            <section id="news" class="content-section">
+                <div class="section-header">
+                    <h1>Gestión de Noticias</h1>
+                    <button id="add-news-btn" style="width: auto;"><i class="fa-solid fa-plus"></i> Nueva
+                        Noticia</button>
+                </div>
+                <div id="admin-news-list" class="admin-list">
+                    <!-- News items populated here -->
+                </div>
+            </section>
+
+            <!-- TRAININGS SECTION -->
+            <section id="trainings" class="content-section">
+                <div class="section-header">
+                    <h1>Gestión de Capacitaciones</h1>
+                    <button id="add-training-btn" style="width: auto;"><i class="fa-solid fa-plus"></i> Agregar
+                        Fecha</button>
+                </div>
+                <div id="admin-trainings-list" class="admin-list">
+                    <!-- Trainings populated here -->
+                </div>
+            </section>
+
+            <!-- SUGGESTIONS SECTION -->
+            <section id="suggestions" class="content-section">
+                <div class="section-header">
+                    <h1>Buzón de Sugerencias</h1>
+                </div>
+                <div id="admin-suggestions-list" class="admin-list">
+                    <!-- Suggestions populated here -->
+                </div>
+            </section>
+
+            <!-- NOTIFICATIONS SECTION -->
+            <section id="notifications" class="content-section">
+                <div class="section-header">
+                    <h1>Gestión de Notificaciones</h1>
+                    <button id="add-notification-btn" style="width: auto;"><i class="fa-solid fa-plus"></i> Nueva
+                        Notificación</button>
+                </div>
+                <div id="admin-notifications-list" class="admin-list">
+                    <!-- Notifications populated here -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAL: NEWS FORM -->
+    <div id="news-form-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="news-form-title">Crear Noticia</h4>
+                <button class="close-modal" onclick="closeModal('news-form-modal')">&times;</button>
+            </div>
+            <form id="news-form">
+                <input type="hidden" id="news-id-field" />
+                <div class="input-group">
+                    <label>Título</label>
+                    <input type="text" id="news-title-field" required />
+                </div>
+                <div class="input-group">
+                    <label>Descripción</label>
+                    <textarea id="news-description-field" rows="4" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Categoría</label>
+                    <select id="news-category-field" required>
+                        <option value="comerciales">Comerciales</option>
+                        <option value="rrhh">Recursos Humanos</option>
+                    </select>
+                </div>
+                <button type="submit">Guardar Noticia</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: TRAINING FORM -->
+    <div id="training-form-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="training-form-title">Agregar Capacitación</h4>
+                <button class="close-modal" onclick="closeModal('training-form-modal')">&times;</button>
+            </div>
+            <form id="training-form">
+                <input type="hidden" id="training-id-field" />
+                <div class="input-group">
+                    <label>Fecha</label>
+                    <input type="date" id="training-date-field" required />
+                </div>
+                <div class="input-group">
+                    <label>Título / Descripción</label>
+                    <input type="text" id="training-title-field" required />
+                </div>
+                <button type="submit">Guardar Evento</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: NOTIFICATION FORM -->
+    <div id="notification-form-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="notification-form-title">Crear Notificación</h4>
+                <button class="close-modal" onclick="closeModal('notification-form-modal')">&times;</button>
+            </div>
+            <form id="notification-form">
+                <input type="hidden" id="notification-id-field" />
+                <div class="input-group">
+                    <label>Título</label>
+                    <input type="text" id="notification-title-field" required />
+                </div>
+                <div class="input-group">
+                    <label>Mensaje</label>
+                    <textarea id="notification-message-field" rows="3" required></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Link / Enlace (Opcional)</label>
+                    <input type="url" id="notification-link-field" placeholder="https://..." />
+                </div>
+                <button type="submit">Enviar Notificación</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+            authDomain: "backend-panel-vendedores.firebaseapp.com",
+            projectId: "backend-panel-vendedores",
+            storageBucket: "backend-panel-vendedores.firebasestorage.app",
+            messagingSenderId: "24873830395",
+            appId: "1:24873830395:web:ea6749407f991ee8226d5e",
+            measurementId: "G-E4Z0Y849KF",
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Auth Logic
+        const encodedAdminPassword = "NTM1MTUyNQ=="; // "5351525" base64
+        const loginForm = document.getElementById("admin-login-form");
+        const passwordInput = document.getElementById("admin-password");
+        const loginError = document.getElementById("login-error");
+
+        // Check session
+        if (sessionStorage.getItem("adminAuth") === "true") {
+            showPanel();
+        }
+
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const entered = passwordInput.value;
+            if (btoa(entered) === encodedAdminPassword) {
+                sessionStorage.setItem("adminAuth", "true");
+                showPanel();
+            } else {
+                loginError.textContent = "Contraseña incorrecta";
+            }
+        });
+
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            sessionStorage.removeItem("adminAuth");
+            location.reload();
+        });
+
+        function showPanel() {
+            document.getElementById("login-overlay").style.display = "none";
+            document.getElementById("admin-wrapper").style.display = "flex";
+            initDashboard();
+            initNews();
+            initTrainings();
+            initSuggestions();
+            initNotifications();
+        }
+
+        // Navigation Logic
+        const navItems = document.querySelectorAll(".nav-item[data-section]");
+        const sections = document.querySelectorAll(".content-section");
+
+        navItems.forEach(item => {
+            item.addEventListener("click", () => {
+                const target = item.dataset.section;
+                switchSection(target);
+            });
+        });
+
+        function switchSection(sectionId) {
+            // Update nav
+            navItems.forEach(nav => {
+                if (nav.dataset.section === sectionId) nav.classList.add("active");
+                else nav.classList.remove("active");
+            });
+            // Update content
+            sections.forEach(sec => {
+                if (sec.id === sectionId) sec.classList.add("active");
+                else sec.classList.remove("active");
+            });
+
+            // Refresh data based on section
+            if (sectionId === 'news') loadNews();
+            if (sectionId === 'trainings') loadTrainings();
+            if (sectionId === 'suggestions') loadSuggestions();
+            if (sectionId === 'notifications') loadNotifications();
+        }
+
+        // Makes switchSection global for inline calls
+        window.switchSection = switchSection;
+
+        window.openNewsModalAction = () => {
+            switchSection('news');
+            openNewsForm();
+        };
+
+        window.openTrainingModalAction = () => {
+            switchSection('trainings');
+            openTrainingForm();
+        };
+
+        window.openNotificationModalAction = () => {
+            switchSection('notifications');
+            openNotificationForm();
+        };
+
+        // --- DASHBOARD LOGIC (Active Users) ---
+        function initDashboard() {
+            const activeUsersCountEl = document.getElementById('active-users-count');
+            const activeUsersListEl = document.getElementById('active-users-list');
+            const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
+
+            db.collection('active_sessions')
+                .where('last_seen', '>', twoMinutesAgo)
+                .onSnapshot(snapshot => {
+                    const activeCount = snapshot.size;
+                    const activeUsers = [];
+                    snapshot.forEach(doc => activeUsers.push(doc.data().userName));
+
+                    if (activeUsersListEl) {
+                        if (activeUsers.length > 0) {
+                            activeUsersListEl.innerHTML = activeUsers.map(name =>
+                                `<span class="user-tag"><i class="fa-solid fa-circle fa-2xs" style="color: #22c55e;"></i>${name}</span>`
+                            ).join('');
+                        } else {
+                            activeUsersListEl.innerHTML = `<p style="color: #6b7280;">No hay usuarios activos.</p>`;
+                        }
+                    }
+                    if (activeUsersCountEl) activeUsersCountEl.textContent = activeCount;
+                });
+        }
+
+        // --- NEWS LOGIC ---
+        function initNews() {
+            loadNews();
+            document.getElementById("add-news-btn").onclick = () => openNewsForm();
+            document.getElementById("news-form").onsubmit = async (e) => {
+                e.preventDefault();
+                const id = document.getElementById("news-id-field").value;
+                const data = {
+                    title: document.getElementById("news-title-field").value,
+                    description: document.getElementById("news-description-field").value,
+                    category: document.getElementById("news-category-field").value,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                };
+                if (id) await db.collection("news").doc(id).update(data);
+                else await db.collection("news").add(data);
+                closeModal("news-form-modal");
+                loadNews();
+            };
+        }
+
+        async function loadNews() {
+            const container = document.getElementById("admin-news-list");
+            container.innerHTML = "<p>Cargando...</p>";
+            const snapshot = await db.collection("news").orderBy("timestamp", "desc").get();
+            container.innerHTML = "";
+            snapshot.forEach(doc => {
+                const news = { id: doc.id, ...doc.data() };
+                const item = document.createElement("div");
+                item.className = "admin-item";
+                item.innerHTML = `
+                <div class="admin-item-content">
+                    <small>${news.category.toUpperCase()}</small>
+                    <p><strong>${news.title}</strong></p>
+                    <p style="color: #666; font-size: 0.9em;">${news.description.substring(0, 100)}...</p>
+                </div>
+                <div class="admin-item-actions">
+                    <button class="action-btn btn-edit" onclick="editNews('${news.id}')"><i class="fa-solid fa-pencil"></i></button>
+                    <button class="action-btn btn-delete" onclick="deleteItem('news', '${news.id}')"><i class="fa-solid fa-trash"></i></button>
+                    <button class="action-btn btn-reset" onclick="resetReactions('${news.id}')" title="Resetear Reacciones"><i class="fa-solid fa-arrows-rotate"></i></button>
+                </div>
+            `;
+                container.appendChild(item);
+            });
+        }
+
+        window.editNews = async (id) => {
+            const doc = await db.collection("news").doc(id).get();
+            const data = doc.data();
+            document.getElementById("news-id-field").value = id;
+            document.getElementById("news-title-field").value = data.title;
+            document.getElementById("news-description-field").value = data.description;
+            document.getElementById("news-category-field").value = data.category;
+            document.getElementById("news-form-title").textContent = "Editar Noticia";
+            document.getElementById("news-form-modal").style.display = "flex";
+        };
+
+        // --- TRAININGS LOGIC ---
+        function initTrainings() {
+            loadTrainings();
+            document.getElementById("add-training-btn").onclick = () => openTrainingForm();
+            document.getElementById("training-form").onsubmit = async (e) => {
+                e.preventDefault();
+                const id = document.getElementById("training-id-field").value;
+                const data = {
+                    date: document.getElementById("training-date-field").value,
+                    title: document.getElementById("training-title-field").value,
+                };
+                if (id) await db.collection("trainings").doc(id).update(data);
+                else await db.collection("trainings").add(data);
+                closeModal("training-form-modal");
+                loadTrainings();
+            };
+        }
+
+        async function loadTrainings() {
+            const container = document.getElementById("admin-trainings-list");
+            container.innerHTML = "<p>Cargando...</p>";
+            const snapshot = await db.collection("trainings").orderBy("date", "desc").get();
+            container.innerHTML = "";
+            snapshot.forEach(doc => {
+                const t = { id: doc.id, ...doc.data() };
+                const item = document.createElement("div");
+                item.className = "admin-item";
+                item.innerHTML = `
+                <div class="admin-item-content">
+                    <small>${t.date}</small>
+                    <p>${t.title}</p>
+                </div>
+                <div class="admin-item-actions">
+                    <button class="action-btn btn-edit" onclick="editTraining('${t.id}')"><i class="fa-solid fa-pencil"></i></button>
+                    <button class="action-btn btn-delete" onclick="deleteItem('trainings', '${t.id}')"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
+                container.appendChild(item);
+            });
+        }
+
+        window.editTraining = async (id) => {
+            const doc = await db.collection("trainings").doc(id).get();
+            const data = doc.data();
+            document.getElementById("training-id-field").value = id;
+            document.getElementById("training-date-field").value = data.date;
+            document.getElementById("training-title-field").value = data.title;
+            document.getElementById("training-form-title").textContent = "Editar Capacitación";
+            document.getElementById("training-form-modal").style.display = "flex";
+        };
+
+        // --- SUGGESTIONS LOGIC ---
+        function initSuggestions() {
+            loadSuggestions();
+        }
+
+        // --- NOTIFICATIONS LOGIC ---
+        function initNotifications() {
+            loadNotifications();
+            document.getElementById("add-notification-btn").onclick = () => openNotificationForm();
+            document.getElementById("notification-form").onsubmit = async (e) => {
+                e.preventDefault();
+                const id = document.getElementById("notification-id-field").value;
+                const data = {
+                    title: document.getElementById("notification-title-field").value,
+                    message: document.getElementById("notification-message-field").value,
+                    link: document.getElementById("notification-link-field").value || "",
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                };
+                if (id) await db.collection("notifications").doc(id).update(data);
+                else await db.collection("notifications").add(data);
+                closeModal("notification-form-modal");
+                loadNotifications();
+            };
+        }
+
+        async function loadNotifications() {
+            const container = document.getElementById("admin-notifications-list");
+            container.innerHTML = "<p>Cargando...</p>";
+            const snapshot = await db.collection("notifications").orderBy("timestamp", "desc").get();
+            container.innerHTML = "";
+            snapshot.forEach(doc => {
+                const n = { id: doc.id, ...doc.data() };
+                const date = n.timestamp ? n.timestamp.toDate().toLocaleString() : 'Reciente';
+                const item = document.createElement("div");
+                item.className = "admin-item";
+                item.innerHTML = `
+                <div class="admin-item-content">
+                    <small>${date}</small>
+                    <p><strong>${n.title}</strong></p>
+                    <p style="color: #666; font-size: 0.9em;">${n.message}</p>
+                    ${n.link ? `<small style="color: blue;"><a href="${n.link}" target="_blank">🔗 Link adjunto</a></small>` : ''}
+                </div>
+                <div class="admin-item-actions">
+                     <button class="action-btn btn-edit" onclick="editNotification('${n.id}')"><i class="fa-solid fa-pencil"></i></button>
+                    <button class="action-btn btn-delete" onclick="deleteItem('notifications', '${n.id}')"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
+                container.appendChild(item);
+            });
+        }
+
+        window.editNotification = async (id) => {
+            const doc = await db.collection("notifications").doc(id).get();
+            const data = doc.data();
+            document.getElementById("notification-id-field").value = id;
+            document.getElementById("notification-title-field").value = data.title;
+            document.getElementById("notification-message-field").value = data.message;
+            document.getElementById("notification-link-field").value = data.link || "";
+            document.getElementById("notification-form-title").textContent = "Editar Notificación";
+            document.getElementById("notification-form-modal").style.display = "flex";
+        };
+
+        async function loadSuggestions() {
+            const container = document.getElementById("admin-suggestions-list");
+            container.innerHTML = "<p>Cargando...</p>";
+            const snapshot = await db.collection("sugerencias").orderBy("fecha", "desc").get();
+            container.innerHTML = "";
+            if (snapshot.empty) {
+                container.innerHTML = "<p>No hay sugerencias recientes.</p>";
+                return;
+            }
+            snapshot.forEach(doc => {
+                const s = { id: doc.id, ...doc.data() };
+                const date = s.fecha ? s.fecha.toDate().toLocaleString() : 'Fecha desconocida';
+                const item = document.createElement("div");
+                item.className = "admin-item";
+                // Correct wrapping for suggestions
+                item.innerHTML = `
+                <div class="admin-item-content" style="white-space: normal; overflow: visible;">
+                    <small>${date}</small>
+                    <p style="white-space: pre-wrap;">${s.sugerencia}</p>
+                </div>
+                <div class="admin-item-actions">
+                    <button class="action-btn btn-delete" onclick="deleteItem('sugerencias', '${s.id}')" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
+                container.appendChild(item);
+            });
+        }
+
+        // --- SHARED UTILS ---
+        window.deleteItem = async (collection, id) => {
+            if (confirm("¿Seguro que querés eliminar este elemento?")) {
+                await db.collection(collection).doc(id).delete();
+                if (collection === 'news') {
+                    try { await db.collection('reactions').doc(id).delete(); } catch (e) { }
+                }
+                alert("Eliminado correctamente");
+                // Reload current section
+                if (collection === 'news') loadNews();
+                if (collection === 'trainings') loadTrainings();
+                if (collection === 'sugerencias') loadSuggestions();
+                if (collection === 'notifications') loadNotifications();
+            }
+        };
+
+        window.resetReactions = async (id) => {
+            if (confirm("¿Resetear reacciones de esta noticia?")) {
+                await db.collection("reactions").doc(id).set({ "👍": 0, "❤️": 0, "🎉": 0 });
+                alert("Reacciones reseteadas.");
+            }
+        };
+
+        // Modal helpers
+        function openNewsForm() {
+            document.getElementById("news-form").reset();
+            document.getElementById("news-id-field").value = "";
+            document.getElementById("news-form-title").textContent = "Crear Noticia";
+            document.getElementById("news-form-modal").style.display = "flex";
+        }
+        function openTrainingForm() {
+            document.getElementById("training-form").reset();
+            document.getElementById("training-id-field").value = "";
+            document.getElementById("training-form-title").textContent = "Agregar Capacitación";
+            document.getElementById("training-form-modal").style.display = "flex";
+        }
+        function openNotificationForm() {
+            document.getElementById("notification-form").reset();
+            document.getElementById("notification-id-field").value = "";
+            document.getElementById("notification-form-title").textContent = "Crear Notificación";
+            document.getElementById("notification-form-modal").style.display = "flex";
+        }
+        window.closeModal = (id) => {
+            document.getElementById(id).style.display = "none";
+        };
+
+        // Close modal on outside click
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = "none";
+            }
+        }
+
+    </script>
+</body>
+
+</html>
