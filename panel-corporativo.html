@@ -16,6 +16,39 @@
       await OneSignal.init({
         appId: "24c23510-f95c-49ca-873b-67dbfcff5740",
         allowLocalhostAsSecureOrigin: true,
+        notifyButton: {
+          enable: true, /* Enable the bell button */
+          size: 'medium', /* small, medium, large */
+          theme: 'default', /* default, inverse */
+          position: 'bottom-right', /* bottom-left, bottom-right */
+          offset: { bottom: '20px', right: '20px' },
+          colors: { // Customize the colors of the main button and dialog popup buttons
+            'circle.background': '#ec6434',
+            'circle.foreground': 'white',
+            'badge.background': '#ec6434',
+            'badge.foreground': 'white',
+            'badge.bordercolor': 'white',
+            'pulse.color': '#ec6434',
+            'dialog.button.background.hover': '#d95324',
+            'dialog.button.background.active': '#d95324',
+            'dialog.button.background': '#ec6434',
+            'dialog.button.foreground': 'white'
+          },
+          text: {
+            'tip.state.unsubscribed': 'Suscribite a las notificaciones',
+            'tip.state.subscribed': 'Estás suscrito a las notificaciones',
+            'tip.state.blocked': 'Has bloqueado las notificaciones',
+            'message.prenotify': 'Hacé click para suscribirte a las notificaciones',
+            'message.action.subscribed': '¡Gracias por suscribirte!',
+            'message.action.resubscribed': 'Estás suscrito a las notificaciones',
+            'message.action.unsubscribed': 'No volverás a recibir notificaciones',
+            'dialog.main.title': 'Gestionar Notificaciones',
+            'dialog.main.button.subscribe': 'SUSCRIBIRME',
+            'dialog.main.button.unsubscribe': 'DESUSCRIBIRME',
+            'dialog.blocked.title': 'Desbloquear Notificaciones',
+            'dialog.blocked.message': 'Sigue las instrucciones para permitir las notificaciones.'
+          }
+        },
       });
       // Solicitar permiso automáticamente con un Slidedown
       OneSignal.Slidedown.promptPush({ force: true })
