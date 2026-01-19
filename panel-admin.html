@@ -440,6 +440,9 @@
                 <a class="nav-item" data-section="notifications">
                     <i class="fa-solid fa-bell"></i> Notificaciones
                 </a>
+                <a class="nav-item" data-section="social-config">
+                    <i class="fa-solid fa-share-nodes"></i> Redes Sociales
+                </a>
                 <!-- Link to go back to main site -->
                 <a href="panel-corporativo.html" class="nav-item">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Volver al Sitio
@@ -477,6 +480,10 @@
                             <div class="icon-wrapper"><i class="fa-solid fa-bullhorn"></i></div>
                             <span>Nueva Noticia</span>
                         </button>
+                        <button onclick="openNotificationModalAction()" class="quick-action-card action-notifications">
+                            <div class="icon-wrapper"><i class="fa-solid fa-bell"></i></div>
+                            <span>Nueva Notificación</span>
+                        </button>
                         <button onclick="openTrainingModalAction()" class="quick-action-card action-training">
                             <div class="icon-wrapper"><i class="fa-solid fa-calendar-plus"></i></div>
                             <span>Agregar Fecha</span>
@@ -485,9 +492,9 @@
                             <div class="icon-wrapper"><i class="fa-solid fa-envelope-open-text"></i></div>
                             <span>Ver Sugerencias</span>
                         </button>
-                        <button onclick="openNotificationModalAction()" class="quick-action-card action-notifications">
-                            <div class="icon-wrapper"><i class="fa-solid fa-bell"></i></div>
-                            <span>Nueva Notificación</span>
+                        <button onclick="switchSection('social-config')" class="quick-action-card action-configure">
+                            <div class="icon-wrapper"><i class="fa-solid fa-share-nodes"></i></div>
+                            <span>Configurar Redes</span>
                         </button>
                         <a href="carga-masiva.html" target="_blank" class="quick-action-card action-vendors">
                             <div class="icon-wrapper"><i class="fa-solid fa-users-cog"></i></div>
@@ -531,24 +538,16 @@
                             margin-bottom: 10px;
                         }
 
-                        .action-news {
-                            background: linear-gradient(135deg, #FF6B6B, #EE5D5D);
-                        }
-
-                        .action-training {
-                            background: linear-gradient(135deg, #4ECDC4, #45B7AF);
-                        }
-
-                        .action-suggestions {
-                            background: linear-gradient(135deg, #FFA502, #E69502);
-                        }
-
+                        .action-news,
                         .action-notifications {
-                            background: linear-gradient(135deg, #6f42c1, #59359a);
+                            background: linear-gradient(135deg, #ec6434, #d95324);
                         }
 
-                        .action-vendors {
-                            background: linear-gradient(135deg, #007bff, #0056b3);
+                        .action-training,
+                        .action-suggestions,
+                        .action-vendors,
+                        .action-configure {
+                            background: linear-gradient(135deg, #34495e, #2c3e50);
                         }
                     </style>
                 </div>
@@ -621,6 +620,35 @@
                 </div>
                 <div id="admin-notifications-list" class="admin-list">
                     <!-- Notifications populated here -->
+                </div>
+            </section>
+
+            <!-- SOCIAL CONFIG SECTION -->
+            <section id="social-config" class="content-section">
+                <div class="section-header">
+                    <h1>Configurar Redes Sociales</h1>
+                </div>
+                <div class="panel-card" style="padding: 20px; max-width: 600px;">
+                    <form id="social-config-form">
+                        <div class="input-group">
+                            <label>URL Imagen del Post</label>
+                            <input type="url" id="social-image-url" placeholder="https://..." required>
+                            <small>Link directo a la imagen que queres mostrar.</small>
+                        </div>
+                        <div class="input-group">
+                            <label>Link Instagram</label>
+                            <input type="url" id="social-instagram-url" placeholder="https://instagram.com/...">
+                        </div>
+                        <div class="input-group">
+                            <label>Link Facebook</label>
+                            <input type="url" id="social-facebook-url" placeholder="https://facebook.com/...">
+                        </div>
+                        <div class="input-group">
+                            <label>Link LinkedIn</label>
+                            <input type="url" id="social-linkedin-url" placeholder="https://linkedin.com/...">
+                        </div>
+                        <button type="submit" style="margin-top: 10px;">Guardar Configuración</button>
+                    </form>
                 </div>
             </section>
 
@@ -756,6 +784,7 @@
             initTrainings();
             initSuggestions();
             initNotifications();
+            initSocialConfig();
         }
 
         // Navigation Logic
@@ -786,6 +815,7 @@
             if (sectionId === 'trainings') loadTrainings();
             if (sectionId === 'suggestions') loadSuggestions();
             if (sectionId === 'notifications') loadNotifications();
+            if (sectionId === 'social-config') loadSocialConfig();
         }
 
         // Makes switchSection global for inline calls
@@ -972,7 +1002,7 @@
         // Función para enviar Push a OneSignal
         async function sendPushNotification(title, message, link) {
             const ONE_SIGNAL_APP_ID = "24c23510-f95c-49ca-873b-67dbfcff5740";
-            const REST_API_KEY = "os_v2_app_etbdkehzlre4vbz3m7n7z72xibpxntsleffewsm2cqptfxdrnadv6w5suzmo6duf46s67haerund7mhpvvawhyqwo4hmgmjc4gkgfwy";
+            const REST_API_KEY = "tu clave aqui";
 
             const headers = {
                 "Content-Type": "application/json; charset=utf-8",
@@ -1036,6 +1066,41 @@
             document.getElementById("notification-form-title").textContent = "Editar Notificación";
             document.getElementById("notification-form-modal").style.display = "flex";
         };
+
+        // --- SOCIAL CONFIG LOGIC ---
+        function initSocialConfig() {
+            document.getElementById("social-config-form").onsubmit = async (e) => {
+                e.preventDefault();
+                const data = {
+                    imageUrl: document.getElementById("social-image-url").value,
+                    instagramUrl: document.getElementById("social-instagram-url").value,
+                    facebookUrl: document.getElementById("social-facebook-url").value,
+                    linkedinUrl: document.getElementById("social-linkedin-url").value,
+                };
+                try {
+                    await db.collection("config").doc("social_networks").set(data);
+                    alert("Configuración de redes guardada correctamente.");
+                } catch (error) {
+                    console.error("Error guardando redes:", error);
+                    alert("Hubo un error al guardar.");
+                }
+            };
+        }
+
+        async function loadSocialConfig() {
+            try {
+                const doc = await db.collection("config").doc("social_networks").get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById("social-image-url").value = data.imageUrl || "";
+                    document.getElementById("social-instagram-url").value = data.instagramUrl || "";
+                    document.getElementById("social-facebook-url").value = data.facebookUrl || "";
+                    document.getElementById("social-linkedin-url").value = data.linkedinUrl || "";
+                }
+            } catch (error) {
+                console.error("Error cargando redes:", error);
+            }
+        }
 
         async function loadSuggestions() {
             const container = document.getElementById("admin-suggestions-list");
