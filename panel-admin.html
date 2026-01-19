@@ -957,11 +957,47 @@
                     link: document.getElementById("notification-link-field").value || "",
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 };
-                if (id) await db.collection("notifications").doc(id).update(data);
-                else await db.collection("notifications").add(data);
+                if (id) {
+                    await db.collection("notifications").doc(id).update(data);
+                } else {
+                    await db.collection("notifications").add(data);
+                    // Solo enviamos Push si es una notificación NUEVA
+                    sendPushNotification(data.title, data.message, data.link);
+                }
                 closeModal("notification-form-modal");
                 loadNotifications();
             };
+        }
+
+        // Función para enviar Push a OneSignal
+        async function sendPushNotification(title, message, link) {
+            const ONE_SIGNAL_APP_ID = "24c23510-f95c-49ca-873b-67dbfcff5740";
+            const REST_API_KEY = "os_v2_app_etbdkehzlre4vbz3m7n7z72xibpxntsleffewsm2cqptfxdrnadv6w5suzmo6duf46s67haerund7mhpvvawhyqwo4hmgmjc4gkgfwy";
+
+            const headers = {
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": `Basic ${REST_API_KEY}`
+            };
+
+            const body = {
+                app_id: ONE_SIGNAL_APP_ID,
+                headings: { "en": title, "es": title },
+                contents: { "en": message, "es": message },
+                included_segments: ["Total Subscriptions"], // Envía a todos los suscritos
+                url: link || undefined // Abre el link si existe
+            };
+
+            try {
+                const response = await fetch("https://onesignal.com/api/v1/notifications", {
+                    method: "POST",
+                    headers: headers,
+                    body: JSON.stringify(body)
+                });
+                const result = await response.json();
+                console.log("Push enviado:", result);
+            } catch (error) {
+                console.error("Error enviando Push:", error);
+            }
         }
 
         async function loadNotifications() {
