@@ -309,7 +309,7 @@
     }
 
     .panel-header-content h1 {
-      font-size: 1.8rem;
+      font-size: 1.4rem;
       color: var(--brand);
       margin: 0;
     }
@@ -2152,11 +2152,16 @@
       function setAppBadge(count) {
         // 1. Badge en la interfaz (Campanita)
         if (notificationBadge) {
+          const bellIcon = document.querySelector('.notification-bell');
           if (count > 0) {
             notificationBadge.style.display = 'block';
             notificationBadge.textContent = count > 9 ? '9+' : count;
+            // Activar animación
+            if (bellIcon) bellIcon.classList.add('has-unread');
           } else {
             notificationBadge.style.display = 'none';
+            // Desactivar animación
+            if (bellIcon) bellIcon.classList.remove('has-unread');
           }
         }
 
