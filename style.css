@@ -29,18 +29,47 @@
 
 /* ANIMACIÓN CAMPANA DE NOTIFICACIONES */
 @keyframes bell-pulse {
-  0% { transform: scale(1); rotate: 0deg; }
-  10% { transform: scale(1.2); rotate: 10deg; color: var(--accent); }
-  20% { transform: scale(1.2); rotate: -10deg; }
-  30% { transform: scale(1.2); rotate: 10deg; }
-  40% { transform: scale(1.2); rotate: -10deg; }
-  50% { transform: scale(1); rotate: 0deg; }
-  100% { transform: scale(1); rotate: 0deg; }
+  0% {
+    transform: scale(1);
+    rotate: 0deg;
+  }
+
+  10% {
+    transform: scale(1.2);
+    rotate: 10deg;
+    color: var(--accent);
+  }
+
+  20% {
+    transform: scale(1.2);
+    rotate: -10deg;
+  }
+
+  30% {
+    transform: scale(1.2);
+    rotate: 10deg;
+  }
+
+  40% {
+    transform: scale(1.2);
+    rotate: -10deg;
+  }
+
+  50% {
+    transform: scale(1);
+    rotate: 0deg;
+  }
+
+  100% {
+    transform: scale(1);
+    rotate: 0deg;
+  }
 }
 
 .notification-bell.has-unread {
   animation: bell-pulse 2s infinite ease-in-out;
-  color: var(--accent); /* Opcional: cambiar color cuando hay notificaciones */
+  color: var(--accent);
+  /* Opcional: cambiar color cuando hay notificaciones */
 }
 
 .marquee-content {
@@ -103,7 +132,7 @@ a {
   margin-inline: auto;
 }
 
-}
+
 
 /* Header */
 main {
