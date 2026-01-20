@@ -1014,7 +1014,6 @@
         async function sendPushNotification(title, message, link) {
             const ONE_SIGNAL_APP_ID = "24c23510-f95c-49ca-873b-67dbfcff5740";
             const REST_API_KEY = "tu clave aqui";
-            // "os_v2_app_etbdkehzlre4vbz3m7n7z72xibclpywqqwgebwvfha7uzhkpvcyl6a7fb2vl6m3erov4s6g52up3634jod5nvt2ezb77w27wqkf2spy";
 
             const headers = {
                 "Content-Type": "application/json; charset=utf-8",
@@ -1050,6 +1049,14 @@
             snapshot.forEach(doc => {
                 const n = { id: doc.id, ...doc.data() };
                 const date = n.timestamp ? n.timestamp.toDate().toLocaleString() : 'Reciente';
+                const readBy = n.read_by || [];
+                const readCount = readBy.length;
+
+                // Generate users list HTML
+                const usersList = readCount > 0
+                    ? readBy.map(u => `<div style="font-size:0.85em; border-bottom:1px solid #eee; padding:2px;">${u}</div>`).join('')
+                    : '<div style="font-size:0.85em; color:#888;">Nadie aún</div>';
+
                 const item = document.createElement("div");
                 item.className = "admin-item";
                 item.innerHTML = `
@@ -1058,6 +1065,17 @@
                     <p><strong>${n.title}</strong></p>
                     <p style="color: #666; font-size: 0.9em;">${n.message}</p>
                     ${n.link ? `<small style="color: blue;"><a href="${n.link}" target="_blank">🔗 Link adjunto</a></small>` : ''}
+                    
+                    <div style="margin-top: 8px;">
+                        <details>
+                            <summary style="cursor:pointer; list-style:none; color: var(--brand); font-size:0.9em; font-weight:600;">
+                                <i class="fa-solid fa-eye"></i> Visto por ${readCount} personas <span style="font-size:0.8em; color:#999;">(ver lista)</span>
+                            </summary>
+                            <div style="background: #f8f9fa; padding: 8px; border-radius: 6px; margin-top: 5px; max-height: 150px; overflow-y: auto; border: 1px solid #e9ecef;">
+                                ${usersList}
+                            </div>
+                        </details>
+                    </div>
                 </div>
                 <div class="admin-item-actions">
                      <button class="action-btn btn-edit" onclick="editNotification('${n.id}')"><i class="fa-solid fa-pencil"></i></button>

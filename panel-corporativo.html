@@ -2170,9 +2170,48 @@
         }
       }
 
-      function markNotificationsAsRead() {
+      async function markNotificationsAsRead() {
         localStorage.setItem('lastNotificationVisit', Date.now());
         setAppBadge(0);
+
+        const loggedInUserName = localStorage.getItem("vendedorLogueado");
+        if (!loggedInUserName) return;
+
+        try {
+          // Actualizamos la lectura en las últimas 20 notificaciones para asegurar cobertura
+          const snapshot = await db.collection("notifications")
+            .orderBy("timestamp", "desc")
+            .limit(20)
+            .get();
+
+          const batch = db.batch();
+          let updateCount = 0;
+
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const readBy = data.read_by || [];
+
+            // LÓGICA HÍBRIDA:
+            // Si tiene LINK, NO lo marcamos aquí (esperamos al clic).
+            // Si es SOLO TEXTO (no link), lo marcamos ahora mismo.
+            const hasLink = data.link && data.link.trim() !== "";
+
+            if (!hasLink && !readBy.includes(loggedInUserName)) {
+              const docRef = db.collection("notifications").doc(doc.id);
+              batch.update(docRef, {
+                read_by: firebase.firestore.FieldValue.arrayUnion(loggedInUserName)
+              });
+              updateCount++;
+            }
+          });
+
+          if (updateCount > 0) {
+            await batch.commit();
+            console.log(`Marcadas ${updateCount} notificaciones como leídas en Firestore.`);
+          }
+        } catch (error) {
+          console.error("Error al marcar notificaciones como leídas en servidor:", error);
+        }
       }
 
       // --- LÓGICA DE NOTICIAS (SOLO MURO) ---
@@ -2277,7 +2316,11 @@
 
                 if (n.link) {
                   li.style.cursor = "pointer";
-                  li.onclick = () => window.open(n.link, '_blank');
+                  // LÓGICA HÍBRIDA: Click Tracking
+                  li.onclick = () => {
+                    markSingleNotificationAsRead(n.id);
+                    window.open(n.link, '_blank');
+                  };
                   contentHTML += `<span style="font-size: 0.8em; color: var(--accent); display:block; margin-top: 2px;"><i class="fa-solid fa-link"></i> Abrir enlace</span>`;
                 }
 
@@ -2292,6 +2335,22 @@
           }, (error) => {
             console.error("Error al obtener notificaciones: ", error);
           });
+      }
+
+      // Función para marcar una notificación individual (con link) como leída
+      async function markSingleNotificationAsRead(notificationId) {
+        const loggedInUserName = localStorage.getItem("vendedorLogueado");
+        if (!loggedInUserName || !notificationId) return;
+
+        try {
+          const docRef = db.collection("notifications").doc(notificationId);
+          await docRef.update({
+            read_by: firebase.firestore.FieldValue.arrayUnion(loggedInUserName)
+          });
+          console.log(`Click registrado en notificación ${notificationId} para ${loggedInUserName}`);
+        } catch (error) {
+          console.error("Error al registrar clic en notificación:", error);
+        }
       }
 
       // --- POPULATE SOCIAL NETWORKS FROM FIREBASE ---
