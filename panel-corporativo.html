@@ -39,6 +39,12 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 140px;
+      /* Offset for fixed header */
+    }
+
     /* --- ESTILOS LOGIN --- */
     #login-overlay {
       position: fixed;
@@ -507,6 +513,128 @@
     .employee-title {
       margin-top: 5px;
       opacity: 0.9;
+    }
+
+    /* Featured Review Card */
+    .featured-review-card {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+
+    .featured-review-card .panel-card-header h3,
+    .featured-review-card .panel-card-icon {
+      color: white;
+    }
+
+    .review-body {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .review-image-container {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .review-screenshot {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .review-congratulations {
+      text-align: center;
+      padding: 15px;
+    }
+
+    .review-trophy {
+      font-size: 2.5rem;
+      color: #fbbf24;
+      margin-bottom: 15px;
+      animation: trophy-bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes trophy-bounce {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      25% {
+        transform: translateY(-10px) rotate(-5deg);
+      }
+
+      75% {
+        transform: translateY(-10px) rotate(5deg);
+      }
+    }
+
+    .review-congratulations h4 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    .review-congratulations p {
+      margin-top: 10px;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    /* Review Image Modal */
+    .review-screenshot {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .review-screenshot:hover {
+      transform: scale(1.02);
+    }
+
+    #review-image-modal {
+      display: none;
+      position: fixed;
+      z-index: 5000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    #review-image-modal.active {
+      display: flex;
+    }
+
+    .review-modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .review-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .review-modal-close:hover {
+      color: #f59e0b;
     }
 
     @keyframes icon-bounce {
@@ -1192,6 +1320,145 @@
     }
 
     /* --- FIN: ESTILOS PARA TARJETA --- */
+    /* --- ESTILOS HAMBURGER MENU --- */
+    #hamburger-menu-btn {
+      display: none;
+      /* Hidden by default, shown on mobile */
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: var(--brand);
+      cursor: pointer;
+      padding: 8px;
+      transition: color 0.2s;
+    }
+
+    #hamburger-menu-btn:hover {
+      color: var(--accent);
+    }
+
+    #hamburger-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 280px;
+      height: 100%;
+      background: white;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 4000;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+    }
+
+    #hamburger-menu-overlay.active {
+      left: 0;
+    }
+
+    .hamburger-menu-header {
+      padding: 20px;
+      border-bottom: 2px solid var(--border-color);
+      background: var(--brand);
+      color: white;
+    }
+
+    .hamburger-menu-header h3 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .hamburger-menu-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    .hamburger-menu-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hamburger-menu-item {
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hamburger-menu-item a,
+    .hamburger-menu-item button {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px 20px;
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--brand);
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+
+    .hamburger-menu-item a:hover,
+    .hamburger-menu-item button:hover {
+      background: #f8f9fa;
+    }
+
+    .hamburger-menu-item i {
+      font-size: 1.3rem;
+      color: var(--accent);
+      width: 25px;
+      text-align: center;
+    }
+
+    .hamburger-menu-item.logout-item {
+      border-top: 2px solid var(--border-color);
+      margin-top: 10px;
+    }
+
+    .hamburger-menu-item.logout-item button {
+      color: #d9534f;
+      font-weight: 600;
+    }
+
+    .hamburger-menu-item.logout-item i {
+      color: #d9534f;
+    }
+
+    #menu-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 3999;
+    }
+
+    #menu-backdrop.active {
+      display: block;
+    }
+
+    /* Show hamburger on mobile */
+    @media (max-width: 768px) {
+      #hamburger-menu-btn {
+        display: block;
+      }
+
+      #logout-button {
+        display: none;
+        /* Hide desktop logout button on mobile */
+      }
+    }
+
+    /* --- FIN ESTILOS HAMBURGER MENU --- */
   </style>
 </head>
 
@@ -1222,11 +1489,77 @@
           <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales"
             class="logo-image" />
         </a>
+        <button id="hamburger-menu-btn" aria-label="Abrir menú">
+          <i class="fa-solid fa-bars"></i>
+        </button>
         <button id="logout-button" class="logout-button">
           <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
         </button>
       </nav>
     </header>
+
+    <!-- HAMBURGER MENU OVERLAY -->
+    <div id="menu-backdrop"></div>
+    <div id="hamburger-menu-overlay">
+      <div class="hamburger-menu-header">
+        <h3>Menú</h3>
+        <button class="hamburger-menu-close" id="hamburger-menu-close" aria-label="Cerrar menú">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+      <ul class="hamburger-menu-items">
+        <li class="hamburger-menu-item">
+          <a href="#novedades">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span>Novedades</span>
+          </a>
+        </li>
+        <li class="hamburger-menu-item">
+          <a href="#herramientas">
+            <i class="fa-solid fa-wrench"></i>
+            <span>Herramientas</span>
+          </a>
+        </li>
+        <li class="hamburger-menu-item">
+          <a href="#capacitaciones">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Eventos</span>
+          </a>
+        </li>
+        <li class="hamburger-menu-item">
+          <a href="#directorio">
+            <i class="fa-solid fa-address-book"></i>
+            <span>Directorio</span>
+          </a>
+        </li>
+        <li class="hamburger-menu-item">
+          <a href="#redes-sociales">
+            <i class="fa-solid fa-share-nodes"></i>
+            <span>Apoyanos en redes</span>
+          </a>
+        </li>
+        <li class="hamburger-menu-item">
+          <a href="#resena-destacada">
+            <i class="fa-solid fa-star"></i>
+            <span>Reseña Destacada</span>
+          </a>
+        </li>
+        <li class="hamburger-menu-item">
+          <a href="#buzon">
+            <i class="fa-solid fa-envelope"></i>
+            <span>Dejá tu sugerencia</span>
+          </a>
+        </li>
+        <li class="hamburger-menu-item logout-item">
+          <button id="hamburger-logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Cerrar Sesión</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+    <!-- FIN HAMBURGER MENU -->
+
     <!-- SECCIÓN PANEL DE HERRAMIENTAS-->
     <main>
       <div class="panel-header">
@@ -1258,7 +1591,7 @@
 
       <div class="container panel-grid">
         <!-- SECCIÓN NOVEDADES -->
-        <div class="panel-card">
+        <div class="panel-card" id="novedades">
           <div class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-bullhorn"></i></span>
@@ -1285,7 +1618,7 @@
           </div>
         </div>
         <!-- SECCIÓN HERRAMIENTAS -->
-        <div class="panel-card">
+        <div class="panel-card" id="herramientas">
           <div class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-wrench"></i></span>
@@ -1336,7 +1669,7 @@
           </div>
         </div>
         <!-- SECCIÓN CALENDARIO DE EVENTOS -->
-        <div class="panel-card">
+        <div class="panel-card" id="capacitaciones">
           <div class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-calendar-days"></i></span>
@@ -1362,7 +1695,7 @@
         </div>
 
         <!-- SECCIÓN APOYO EN REDES -->
-        <div class="panel-card">
+        <div class="panel-card" id="redes-sociales">
           <div class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-share-nodes"></i></span>
@@ -1419,8 +1752,32 @@
           </div>
         </div>
 
+        <!-- SECCIÓN RESEÑA DESTACADA -->
+        <div class="panel-card featured-review-card" id="resena-destacada">
+          <div class="panel-card-header">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-star"></i></span>
+              <h3>Reseña Destacada del Mes</h3>
+            </div>
+          </div>
+          <div class="panel-card-body review-body">
+            <div class="review-image-container">
+              <img id="featured-review-image" src="https://via.placeholder.com/400x300?text=Captura+de+Reseña"
+                alt="Captura de reseña de Google Maps" class="review-screenshot" />
+            </div>
+            <div class="review-congratulations">
+              <i class="fa-solid fa-trophy review-trophy"></i>
+              <h4 id="review-branch-name">¡Felicitaciones Sucursal Salta!</h4>
+              <p id="review-message">
+                Excelente trabajo del equipo. Esta reseña destaca la calidad de atención y compromiso con nuestros
+                clientes. ¡Sigamos así!
+              </p>
+            </div>
+          </div>
+        </div>
+
         <!-- SECCIÓN DIRECTORIO DE CONTACTOS -->
-        <details class="panel-card directory-main-card" style="">
+        <details class="panel-card directory-main-card" id="directorio" style="">
           <summary class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-address-book"></i></span>
@@ -1432,7 +1789,7 @@
         </details>
 
         <!-- SECCIÓN BUZÓN DE SUGERENCIAS -->
-        <div class="panel-card">
+        <div class="panel-card" id="buzon">
           <div class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-lightbulb"></i></span>
@@ -1482,6 +1839,12 @@
       </div>
       <div class="modal-body" id="links-modal-body"></div>
     </div>
+  </div>
+
+  <!-- MODAL: REVIEW IMAGE -->
+  <div id="review-image-modal">
+    <span class="review-modal-close" id="review-modal-close">&times;</span>
+    <img class="review-modal-content" id="review-modal-img" src="" alt="Reseña completa">
   </div>
 
   <!-- INICIO: Modal de Contenido Promocional -->
@@ -1876,6 +2239,7 @@
           populateNotifications();
           populateDirectory();
           populateSocialNetworks();
+          populateFeaturedReview();
           populateUsefulLinks();
           initializeCalendar();
 
@@ -2604,6 +2968,55 @@
           });
       }
 
+      // --- LÓGICA DE RESEÑA DESTACADA ---
+      async function populateFeaturedReview() {
+        try {
+          const doc = await db.collection("config").doc("featured_review").get();
+          if (doc.exists) {
+            const data = doc.data();
+            // Update image
+            const reviewImage = document.getElementById("featured-review-image");
+            if (reviewImage && data.imageUrl) {
+              reviewImage.src = data.imageUrl;
+            }
+            // Update branch name
+            const branchName = document.getElementById("review-branch-name");
+            if (branchName && data.branchName) {
+              branchName.textContent = `¡Felicitaciones ${data.branchName}!`;
+            }
+          }
+        } catch (error) {
+          console.error("Error cargando reseña destacada:", error);
+        }
+      }
+
+      // --- REVIEW IMAGE MODAL LOGIC ---
+      const reviewImageModal = document.getElementById('review-image-modal');
+      const reviewModalImg = document.getElementById('review-modal-img');
+      const reviewModalClose = document.getElementById('review-modal-close');
+      const reviewScreenshot = document.getElementById('featured-review-image');
+
+      if (reviewScreenshot) {
+        reviewScreenshot.addEventListener('click', function () {
+          reviewImageModal.classList.add('active');
+          reviewModalImg.src = this.src;
+        });
+      }
+
+      if (reviewModalClose) {
+        reviewModalClose.addEventListener('click', function () {
+          reviewImageModal.classList.remove('active');
+        });
+      }
+
+      if (reviewImageModal) {
+        reviewImageModal.addEventListener('click', function (e) {
+          if (e.target === reviewImageModal) {
+            reviewImageModal.classList.remove('active');
+          }
+        });
+      }
+
       // --- LÓGICA DEL BUZÓN DE SUGERENCIAS ---
       const suggestionForm = document.getElementById("suggestion-form");
       const suggestionStatus = document.getElementById("suggestion-status");
@@ -2813,6 +3226,62 @@
           });
         });
       }
+
+      // --- HAMBURGER MENU LOGIC ---
+      const hamburgerBtn = document.getElementById('hamburger-menu-btn');
+      const hamburgerMenu = document.getElementById('hamburger-menu-overlay');
+      const hamburgerClose = document.getElementById('hamburger-menu-close');
+      const menuBackdrop = document.getElementById('menu-backdrop');
+      const hamburgerLogoutBtn = document.getElementById('hamburger-logout-btn');
+      const desktopLogoutBtn = document.getElementById('logout-button');
+
+      function openHamburgerMenu() {
+        hamburgerMenu.classList.add('active');
+        menuBackdrop.classList.add('active');
+      }
+
+      function closeHamburgerMenu() {
+        hamburgerMenu.classList.remove('active');
+        menuBackdrop.classList.remove('active');
+      }
+
+      function handleLogout() {
+        localStorage.removeItem('vendedorLogueado');
+        location.reload();
+      }
+
+      // Event listeners
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openHamburgerMenu);
+      }
+
+      if (hamburgerClose) {
+        hamburgerClose.addEventListener('click', closeHamburgerMenu);
+      }
+
+      if (menuBackdrop) {
+        menuBackdrop.addEventListener('click', closeHamburgerMenu);
+      }
+
+      // Close menu when clicking on any menu item link
+      const menuLinks = document.querySelectorAll('.hamburger-menu-item a');
+      menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          closeHamburgerMenu();
+        });
+      });
+
+      // Logout from hamburger menu
+      if (hamburgerLogoutBtn) {
+        hamburgerLogoutBtn.addEventListener('click', handleLogout);
+      }
+
+      // Logout from desktop button
+      if (desktopLogoutBtn) {
+        desktopLogoutBtn.addEventListener('click', handleLogout);
+      }
+      // --- END HAMBURGER MENU LOGIC ---
+
       // -- INICIALIZACIÓN FINAL --
       checkLogin();
       //         // --- LÓGICA DEL BOTÓN BACK TO TOP ---

@@ -150,6 +150,16 @@
             color: white;
         }
 
+        #mobile-menu-toggle {
+            display: none;
+            /* Hidden on desktop */
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
         .sidebar-nav {
             flex: 1;
             padding: 20px 0;
@@ -382,6 +392,15 @@
                 border: none;
                 padding: 0;
                 text-align: left;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            #mobile-menu-toggle {
+                display: block;
+                /* Visible on mobile */
             }
 
             .sidebar-nav {
@@ -434,6 +453,7 @@
         <nav id="sidebar">
             <div class="sidebar-header">
                 <h2>Panel Admin</h2>
+                <button id="mobile-menu-toggle"><i class="fa-solid fa-bars"></i></button>
             </div>
             <div class="sidebar-nav">
                 <a class="nav-item active" data-section="dashboard">
@@ -457,6 +477,9 @@
 
                 <a class="nav-item" data-section="social-config">
                     <i class="fa-solid fa-share-nodes"></i> Redes Sociales
+                </a>
+                <a class="nav-item" data-section="review-config">
+                    <i class="fa-solid fa-star"></i> Reseña Destacada
                 </a>
                 <!-- Link to go back to main site -->
                 <a href="panel-corporativo.html" class="nav-item">
@@ -524,8 +547,10 @@
                     <style>
                         .quick-actions-grid {
                             display: grid;
-                            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                            gap: 15px;
+                            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                            /* Reduced min-width to fit 2 cols on mobile */
+                            gap: 12px;
+                            /* Slightly reduced gap */
                             margin-top: 20px;
                         }
 
@@ -534,39 +559,36 @@
                             flex-direction: column;
                             align-items: center;
                             justify-content: center;
-                            padding: 20px;
+                            padding: 15px;
                             border-radius: 12px;
-                            border: none;
+                            border: 1px solid #e5e7eb;
+                            background-color: #ffffff;
                             text-decoration: none;
-                            color: white;
+                            color: #1f2937;
                             font-weight: 600;
+                            font-size: 0.95rem;
                             cursor: pointer;
-                            transition: transform 0.2s, box-shadow 0.2s;
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
                             text-align: center;
                             height: 100%;
+                            min-height: 100px;
                         }
 
                         .quick-action-card:hover {
                             transform: translateY(-3px);
-                            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+                            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                            border-color: #d95324;
+                            background-color: #ffffff !important;
+                            /* Force white background to override button:hover */
+                            color: #1f2937;
+                            /* Ensure text stays dark */
                         }
 
                         .quick-action-card .icon-wrapper {
-                            font-size: 1.8rem;
-                            margin-bottom: 10px;
-                        }
-
-                        .action-news,
-                        .action-notifications {
-                            background: linear-gradient(135deg, #ec6434, #d95324);
-                        }
-
-                        .action-training,
-                        .action-suggestions,
-                        .action-vendors,
-                        .action-configure {
-                            background: linear-gradient(135deg, #34495e, #2c3e50);
+                            font-size: 1.5rem;
+                            margin-bottom: 8px;
+                            color: #d95324;
                         }
                     </style>
                 </div>
@@ -671,6 +693,31 @@
                 </div>
             </section>
 
+            <!-- REVIEW CONFIG SECTION -->
+            <section id="review-config" class="content-section">
+                <div class="section-header">
+                    <h1>Configurar Reseña Destacada</h1>
+                </div>
+                <div class="panel-card" style="padding: 20px; max-width: 600px;">
+                    <p style="color: #6b7280; margin-bottom: 20px;">
+                        Configura la imagen y el mensaje de felicitación para la reseña destacada del mes.
+                    </p>
+                    <form id="review-config-form">
+                        <div class="input-group">
+                            <label>URL Imagen de la Reseña</label>
+                            <input type="url" id="review-image-url" placeholder="https://..." required>
+                            <small>Link directo a la captura de pantalla de la reseña de Google Maps.</small>
+                        </div>
+                        <div class="input-group">
+                            <label>Nombre de la Sucursal</label>
+                            <input type="text" id="review-branch-name-input" placeholder="Ej: Sucursal Salta" required>
+                            <small>Nombre de la sucursal que recibió la reseña destacada.</small>
+                        </div>
+                        <button type="submit" style="margin-top: 10px;">Guardar Configuración</button>
+                    </form>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -756,7 +803,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div style="display: flex; gap: 10px; align-items: center;">
-                    <h4>Conectados del Día</h4>
+                    <h4>Conectados del Día <span id="connected-total-count"
+                            style="font-size: 0.8em; color: #666; font-weight: normal;">(0)</span></h4>
                     <button onclick="exportConnectedUsersPDF()" class="admin-btn"
                         style="background-color: #dc2626; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">
                         <i class="fa-solid fa-file-pdf"></i> Exportar PDF
@@ -824,6 +872,7 @@
             initSuggestions();
             initNotifications();
             initSocialConfig();
+            initReviewConfig();
         }
 
         // Navigation Logic
@@ -855,7 +904,19 @@
             if (sectionId === 'suggestions') loadSuggestions();
             if (sectionId === 'notifications') loadNotifications();
             if (sectionId === 'social-config') loadSocialConfig();
+            if (sectionId === 'review-config') loadReviewConfig();
+
+            // Close mobile menu if open
+            const sidebarNav = document.querySelector('.sidebar-nav');
+            if (window.innerWidth <= 768 && sidebarNav.classList.contains('mobile-open')) {
+                sidebarNav.classList.remove('mobile-open');
+            }
         }
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+            document.querySelector('.sidebar-nav').classList.toggle('mobile-open');
+        });
 
         // Makes switchSection global for inline calls
         window.switchSection = switchSection;
@@ -921,8 +982,12 @@
 
                 if (snapshot.empty) {
                     container.innerHTML = '<p>No se encontraron conexiones hoy.</p>';
+                    document.getElementById('connected-total-count').textContent = '(0)';
                     return;
                 }
+
+                // Update count
+                document.getElementById('connected-total-count').textContent = `(${snapshot.size})`;
 
                 let html = '<ul style="list-style: none; padding: 0;">';
                 snapshot.forEach(doc => {
@@ -964,10 +1029,11 @@
             doc.text("Reporte de Usuarios Conectados", 14, 22);
             doc.setFontSize(12);
             doc.text(`Fecha: ${dateStr}`, 14, 32);
+            doc.text(`Total Conectados: ${currentConnectedUsers.length}`, 14, 38);
 
             // Table
             doc.autoTable({
-                startY: 40,
+                startY: 45,
                 head: [['Usuario', 'Hora de Conexión']],
                 body: currentConnectedUsers.map(u => [u.name, u.time]),
                 theme: 'striped',
@@ -1166,13 +1232,14 @@
             doc.setFontSize(12);
             doc.text(`Noticia: ${data.title}`, 14, 32);
             doc.text(`Fecha del Reporte: ${dateStr}`, 14, 40);
+            doc.text(`Total Leídos: ${data.readBy.length}`, 14, 46);
 
             // Table
             // Map plain strings to array for autotable
             const tableBody = data.readBy.map(user => [user]);
 
             doc.autoTable({
-                startY: 50,
+                startY: 55,
                 head: [['Leído por Usuario']],
                 body: tableBody,
                 theme: 'striped',
@@ -1281,6 +1348,37 @@
                 }
             } catch (error) {
                 console.error("Error cargando redes:", error);
+            }
+        }
+
+        // --- REVIEW CONFIG LOGIC ---
+        function initReviewConfig() {
+            document.getElementById("review-config-form").onsubmit = async (e) => {
+                e.preventDefault();
+                const data = {
+                    imageUrl: document.getElementById("review-image-url").value,
+                    branchName: document.getElementById("review-branch-name-input").value,
+                };
+                try {
+                    await db.collection("config").doc("featured_review").set(data);
+                    alert("Configuración de reseña guardada correctamente.");
+                } catch (error) {
+                    console.error("Error guardando reseña:", error);
+                    alert("Hubo un error al guardar.");
+                }
+            };
+        }
+
+        async function loadReviewConfig() {
+            try {
+                const doc = await db.collection("config").doc("featured_review").get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById("review-image-url").value = data.imageUrl || "";
+                    document.getElementById("review-branch-name-input").value = data.branchName || "";
+                }
+            } catch (error) {
+                console.error("Error cargando reseña:", error);
             }
         }
 
