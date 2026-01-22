@@ -9,6 +9,9 @@
     <link href="style.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- jsPDF and AutoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.21/jspdf.plugin.autotable.min.js"></script>
     <script>
         // Fix: Unregister any Service Workers that might be causing Firestore errors on this page
         if ('serviceWorker' in navigator) {
@@ -436,6 +439,9 @@
                 <a class="nav-item active" data-section="dashboard">
                     <i class="fa-solid fa-gauge"></i> Dashboard
                 </a>
+                <a class="nav-item" data-section="notifications">
+                    <i class="fa-solid fa-bell"></i> Notificaciones
+                </a>
                 <a class="nav-item" data-section="news">
                     <i class="fa-solid fa-bullhorn"></i> Noticias
                 </a>
@@ -448,9 +454,7 @@
                 <a class="nav-item" data-section="vendedores">
                     <i class="fa-solid fa-users-cog"></i> Vendedores
                 </a>
-                <a class="nav-item" data-section="notifications">
-                    <i class="fa-solid fa-bell"></i> Notificaciones
-                </a>
+
                 <a class="nav-item" data-section="social-config">
                     <i class="fa-solid fa-share-nodes"></i> Redes Sociales
                 </a>
@@ -483,6 +487,10 @@
                     <div id="active-users-list">
                         <!-- Users populated here -->
                     </div>
+                    <button onclick="openConnectedTodayModal()"
+                        style="margin-top: 15px; width: auto; background-color: #4f46e5;">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Ver Conectados Hoy
+                    </button>
                 </div>
                 <div class="card">
                     <h3>Accesos Rápidos</h3>
@@ -743,7 +751,27 @@
         </div>
     </div>
 
+    <!-- MODAL: CONNECTED USERS LIST -->
+    <div id="connected-today-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <h4>Conectados del Día</h4>
+                    <button onclick="exportConnectedUsersPDF()" class="admin-btn"
+                        style="background-color: #dc2626; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">
+                        <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+                    </button>
+                </div>
+                <button class="close-modal" onclick="closeModal('connected-today-modal')">&times;</button>
+            </div>
+            <div id="connected-users-container" style="max-height: 300px; overflow-y: auto;">
+                <p>Cargando usuarios...</p>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPTS -->
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script>
@@ -872,6 +900,82 @@
                     if (activeUsersCountEl) activeUsersCountEl.textContent = activeCount;
                 });
         }
+
+        // --- CONNECTED TODAY LOGIC ---
+        let currentConnectedUsers = []; // Store for PDF export
+
+        window.openConnectedTodayModal = async () => {
+            document.getElementById('connected-today-modal').style.display = 'flex';
+            const container = document.getElementById('connected-users-container');
+            container.innerHTML = '<p>Cargando datos...</p>';
+            currentConnectedUsers = []; // Reset list
+
+            const startOfDay = new Date();
+            startOfDay.setHours(0, 0, 0, 0);
+
+            try {
+                const snapshot = await db.collection('active_sessions')
+                    .where('last_seen', '>', startOfDay)
+                    .orderBy('last_seen', 'desc')
+                    .get();
+
+                if (snapshot.empty) {
+                    container.innerHTML = '<p>No se encontraron conexiones hoy.</p>';
+                    return;
+                }
+
+                let html = '<ul style="list-style: none; padding: 0;">';
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const time = data.last_seen ? data.last_seen.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Unknown';
+                    const name = data.userName || 'Usuario desconocido';
+
+                    // Add to global list for export
+                    currentConnectedUsers.push({ name, time });
+
+                    html += `
+                        <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 500;">${name}</span>
+                            <small style="color: #666;">${time}</small>
+                        </li>
+                    `;
+                });
+                html += '</ul>';
+                container.innerHTML = html;
+
+            } catch (error) {
+                console.error("Error fetching connected users:", error);
+                container.innerHTML = '<p style="color: red;">Error al cargar usuarios. Verifica la consola.</p>';
+            }
+        };
+
+        window.exportConnectedUsersPDF = () => {
+            if (!currentConnectedUsers || currentConnectedUsers.length === 0) {
+                alert("No hay datos para exportar.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const dateStr = new Date().toLocaleDateString();
+
+            // Header
+            doc.setFontSize(18);
+            doc.text("Reporte de Usuarios Conectados", 14, 22);
+            doc.setFontSize(12);
+            doc.text(`Fecha: ${dateStr}`, 14, 32);
+
+            // Table
+            doc.autoTable({
+                startY: 40,
+                head: [['Usuario', 'Hora de Conexión']],
+                body: currentConnectedUsers.map(u => [u.name, u.time]),
+                theme: 'striped',
+                headStyles: { fillColor: [79, 70, 229] } // Purple specific to this site theme
+            });
+
+            doc.save(`Reporte_Conectados_${dateStr.replace(/\//g, '-')}.pdf`);
+        };
 
         // --- NEWS LOGIC ---
         function initNews() {
@@ -1041,16 +1145,63 @@
             }
         }
 
+        // --- NOTIFICATION PDF EXPORT ---
+        window.notificationsData = {}; // Store for PDF export
+
+        window.exportNotificationReadsPDF = (id) => {
+            const data = window.notificationsData[id];
+            if (!data || !data.readBy || data.readBy.length === 0) {
+                alert("No hay lecturas registradas para exportar.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const dateStr = new Date().toLocaleDateString();
+
+            // Header
+            doc.setFontSize(16);
+            doc.text("Reporte de Lecturas de Notificación", 14, 22);
+
+            doc.setFontSize(12);
+            doc.text(`Noticia: ${data.title}`, 14, 32);
+            doc.text(`Fecha del Reporte: ${dateStr}`, 14, 40);
+
+            // Table
+            // Map plain strings to array for autotable
+            const tableBody = data.readBy.map(user => [user]);
+
+            doc.autoTable({
+                startY: 50,
+                head: [['Leído por Usuario']],
+                body: tableBody,
+                theme: 'striped',
+                headStyles: { fillColor: [79, 70, 229] }
+            });
+
+            doc.save(`Reporte_Notificacion_${id}_${dateStr.replace(/\//g, '-')}.pdf`);
+        };
+
         async function loadNotifications() {
             const container = document.getElementById("admin-notifications-list");
             container.innerHTML = "<p>Cargando...</p>";
             const snapshot = await db.collection("notifications").orderBy("timestamp", "desc").get();
             container.innerHTML = "";
+
+            // Reset data store
+            window.notificationsData = {};
+
             snapshot.forEach(doc => {
                 const n = { id: doc.id, ...doc.data() };
                 const date = n.timestamp ? n.timestamp.toDate().toLocaleString() : 'Reciente';
                 const readBy = n.read_by || [];
                 const readCount = readBy.length;
+
+                // Store for export
+                window.notificationsData[n.id] = {
+                    title: n.title,
+                    readBy: readBy
+                };
 
                 // Generate users list HTML
                 const usersList = readCount > 0
@@ -1068,8 +1219,9 @@
                     
                     <div style="margin-top: 8px;">
                         <details>
-                            <summary style="cursor:pointer; list-style:none; color: var(--brand); font-size:0.9em; font-weight:600;">
-                                <i class="fa-solid fa-eye"></i> Visto por ${readCount} personas <span style="font-size:0.8em; color:#999;">(ver lista)</span>
+                            <summary style="cursor:pointer; list-style:none; color: var(--brand); font-size:0.9em; font-weight:600; display:flex; align-items:center; gap: 10px;">
+                                <span><i class="fa-solid fa-eye"></i> Visto por ${readCount} personas <span style="font-size:0.8em; color:#999;">(ver lista)</span></span>
+                                ${readCount > 0 ? `<button onclick="exportNotificationReadsPDF('${n.id}')" title="Exportar PDF" style="background: none; border: none; color: #dc2626; cursor: pointer; padding: 0;"><i class="fa-solid fa-file-pdf"></i></button>` : ''}
                             </summary>
                             <div style="background: #f8f9fa; padding: 8px; border-radius: 6px; margin-top: 5px; max-height: 150px; overflow-y: auto; border: 1px solid #e9ecef;">
                                 ${usersList}
