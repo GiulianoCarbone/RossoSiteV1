@@ -16,24 +16,12 @@
     "fecha": "12-05"
   },
   {
-    "nombre": "Agustina Rosso",
-    "fecha": "10-03"
-  },
-  {
-    "nombre": "Alberto Ali",
-    "fecha": "07-20"
-  },
-  {
     "nombre": "Alberto Urbano",
     "fecha": "02-13"
   },
   {
     "nombre": "Alejandro Roman",
     "fecha": "12-11"
-  },
-  {
-    "nombre": "Alvaro Rosso",
-    "fecha": "01-06"
   },
   {
     "nombre": "Analia Carrizo",
@@ -60,10 +48,6 @@
     "fecha": "08-27"
   },
   {
-    "nombre": "Antonio Zamorano",
-    "fecha": "09-27"
-  },
-  {
     "nombre": "Ariel Gonzalez",
     "fecha": "05-29"
   },
@@ -80,20 +64,12 @@
     "fecha": "05-23"
   },
   {
-    "nombre": "Carla Rosso",
-    "fecha": "12-26"
-  },
-  {
     "nombre": "Carlos Acosta",
     "fecha": "01-27"
   },
   {
     "nombre": "Carlos Alvarenga",
     "fecha": "02-26"
-  },
-  {
-    "nombre": "Carlos Britos",
-    "fecha": "11-08"
   },
   {
     "nombre": "Carlos Brizuela",
@@ -106,14 +82,6 @@
   {
     "nombre": "Carlos Espeche",
     "fecha": "11-12"
-  },
-  {
-    "nombre": "Carlos Espinosa",
-    "fecha": "12-26"
-  },
-  {
-    "nombre": "Carlos Gimenez",
-    "fecha": "06-30"
   },
   {
     "nombre": "Carlos Gomez",
@@ -148,10 +116,6 @@
     "fecha": "01-08"
   },
   {
-    "nombre": "Cirene Delgado",
-    "fecha": "12-10"
-  },
-  {
     "nombre": "Claudio Pacheco",
     "fecha": "02-07"
   },
@@ -166,10 +130,6 @@
   {
     "nombre": "Cristian Monasterio",
     "fecha": "01-17"
-  },
-  {
-    "nombre": "Cristian Vega",
-    "fecha": "01-08"
   },
   {
     "nombre": "Cynthia Cabral",
@@ -298,10 +258,6 @@
   {
     "nombre": "Georgina Lazarte",
     "fecha": "12-19"
-  },
-  {
-    "nombre": "Gerardo Diaz",
-    "fecha": "04-09"
   },
   {
     "nombre": "Giuliano Carbone",
@@ -552,10 +508,6 @@
     "fecha": "01-10"
   },
   {
-    "nombre": "Maria Paz",
-    "fecha": "12-06"
-  },
-  {
     "nombre": "Maria Riccio",
     "fecha": "05-28"
   },
@@ -697,10 +649,6 @@
   },
   {
     "nombre": "Raul Rosso",
-    "fecha": "05-02"
-  },
-  {
-    "nombre": "Raul Rosso",
     "fecha": "03-02"
   },
   {
@@ -786,9 +734,5 @@
   {
     "nombre": "Walter Barrientos",
     "fecha": "05-10"
-  },
-  {
-    "nombre": "Walter Soloa",
-    "fecha": "05-29"
   }
 ]
