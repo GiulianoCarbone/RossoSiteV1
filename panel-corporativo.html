@@ -2245,6 +2245,7 @@
 
           // Inicia la lógica del contador de usuarios
           updateUserSession(); // Registra la sesión al cargar
+          logUserConnection(); // HISTORIAL: Registra la conexión en logs permanentes
           listenToActiveUsers(); // Empieza a contar
 
           // Mantiene la sesión activa actualizando el timestamp cada 30 segundos
@@ -2383,6 +2384,40 @@
           } catch (error) {
             console.error("Error al eliminar la sesión de usuario:", error);
           }
+        }
+      }
+
+      // Función para registrar histórico de conexiones (Logs)
+      async function logUserConnection() {
+        const loggedInUserName = localStorage.getItem("vendedorLogueado");
+        console.log("🔵 logUserConnection llamada. Usuario:", loggedInUserName);
+
+        if (!loggedInUserName) {
+          console.warn("⚠️ No hay usuario logueado, no se registra conexión");
+          return;
+        }
+
+        try {
+          // Crear ID único: usuario_timestamp
+          const timestamp = Date.now();
+          const sessionId = loggedInUserName.replace(/\s+/g, '-').toLowerCase();
+          const logId = `${sessionId}_${timestamp}`;
+
+          const logData = {
+            userName: loggedInUserName,
+            sessionId: sessionId,
+            connectionTime: firebase.firestore.FieldValue.serverTimestamp(),
+            timestamp: timestamp,
+            isHistory: true
+          };
+
+          console.log("🔵 Guardando conexión con ID:", logId);
+
+          await db.collection('active_sessions').doc(logId).set(logData);
+          console.log("✅ Conexión registrada");
+        } catch (error) {
+          console.error("❌ Error al registrar historial:", error);
+          console.error("Detalles:", error.code, error.message);
         }
       }
 

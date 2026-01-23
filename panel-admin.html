@@ -804,7 +804,10 @@
             <div class="modal-header">
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <h4>Conectados del Día <span id="connected-total-count"
-                            style="font-size: 0.8em; color: #666; font-weight: normal;">(0)</span></h4>
+                            style="font-size: 0.8em; color: #666; font-weight: normal;">(0)</span> <span
+                            id="connection-mode-badge"
+                            style="font-size: 0.6em; background: #eee; padding: 2px 5px; border-radius: 4px;">Cargando...</span>
+                    </h4>
                     <button onclick="exportConnectedUsersPDF()" class="admin-btn"
                         style="background-color: #dc2626; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">
                         <i class="fa-solid fa-file-pdf"></i> Exportar PDF
@@ -814,6 +817,19 @@
             </div>
             <div id="connected-users-container" style="max-height: 300px; overflow-y: auto;">
                 <p>Cargando usuarios...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: USER CONNECTION HISTORY -->
+    <div id="user-history-modal" class="modal-overlay" style="z-index: 3001;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="history-modal-title">Historial de Conexiones</h4>
+                <button class="close-modal" onclick="closeModal('user-history-modal')">&times;</button>
+            </div>
+            <div id="user-history-list" style="max-height: 300px; overflow-y: auto;">
+                <!-- History populated here -->
             </div>
         </div>
     </div>
@@ -963,45 +979,128 @@
         }
 
         // --- CONNECTED TODAY LOGIC ---
-        let currentConnectedUsers = []; // Store for PDF export
+        let currentConnectedUsers = []; // Store for PDF export (unique users)
+        let allConnectionsData = []; // Store all raw connections for history
 
         window.openConnectedTodayModal = async () => {
             document.getElementById('connected-today-modal').style.display = 'flex';
             const container = document.getElementById('connected-users-container');
             container.innerHTML = '<p>Cargando datos...</p>';
-            currentConnectedUsers = []; // Reset list
+            currentConnectedUsers = [];
+            allConnectionsData = [];
 
             const startOfDay = new Date();
             startOfDay.setHours(0, 0, 0, 0);
 
             try {
-                const snapshot = await db.collection('active_sessions')
-                    .where('last_seen', '>', startOfDay)
-                    .orderBy('last_seen', 'desc')
+                // NUEVA ESTRATEGIA: Buscar documentos con isHistory=true en active_sessions
+                const usersMap = {};
+                document.getElementById('connection-mode-badge').textContent = "Cargando...";
+                document.getElementById('connection-mode-badge').style.color = "#666";
+
+                // Buscar todos los documentos de historial (isHistory=true)
+                const historySnapshot = await db.collection('active_sessions')
+                    .where('isHistory', '==', true)
                     .get();
 
-                if (snapshot.empty) {
-                    container.innerHTML = '<p>No se encontraron conexiones hoy.</p>';
-                    document.getElementById('connected-total-count').textContent = '(0)';
-                    return;
+                console.log("📊 Documentos de historial encontrados:", historySnapshot.size);
+
+                if (historySnapshot.empty) {
+                    console.log("No logs found in session_logs, trying fallback to active_sessions...");
+                    document.getElementById('connection-mode-badge').textContent = "Modo: Tiempo Real (Fallback)";
+                    document.getElementById('connection-mode-badge').style.color = "#d9534f"; // Red for fallback
+
+                    // FALLBACK: Try active_sessions for backward compatibility
+                    const fallbackSnapshot = await db.collection('active_sessions')
+                        .where('last_seen', '>', startOfDay)
+                        .get(); // Also remove orderBy here just in case
+
+                    if (fallbackSnapshot.empty) {
+                        container.innerHTML = '<p>No se encontraron conexiones hoy.</p>';
+                        document.getElementById('connected-total-count').textContent = '(0)';
+                        return;
+                    }
+
+                    // Process fallback data (same structure logic but simpler)
+                    fallbackSnapshot.forEach(doc => {
+                        const data = doc.data();
+                        const name = data.userName || 'Usuario desconocido';
+                        const timeObj = data.last_seen ? data.last_seen.toDate() : null;
+                        if (!timeObj) return;
+                        const timeStr = timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                        // In fallback, we only have one record per user (the latest one usually), 
+                        // so 'count' will be 1 and 'history' will have just this time.
+                        if (!usersMap[name]) {
+                            usersMap[name] = {
+                                name: name,
+                                firstTime: timeStr,
+                                count: 1,
+                                history: [timeStr]
+                            };
+                            // We push to global data too
+                            allConnectionsData.push({ name, time: timeStr });
+                        }
+                    });
+
+                } else {
+                    document.getElementById('connection-mode-badge').textContent = "Modo: Historial (Activo)";
+                    document.getElementById('connection-mode-badge').style.color = "#22c55e";
+
+                    // Procesar documentos de historial
+                    historySnapshot.forEach(doc => {
+                        const data = doc.data();
+                        const timeObj = data.connectionTime ? data.connectionTime.toDate() : null;
+
+                        if (!timeObj || timeObj < startOfDay) return;
+
+                        const userName = data.userName;
+                        const sessionId = data.sessionId || userName;
+
+                        if (!usersMap[sessionId]) {
+                            usersMap[sessionId] = {
+                                name: userName,
+                                times: [],
+                                count: 0
+                            };
+                        }
+
+                        usersMap[sessionId].times.push(timeObj);
+                        usersMap[sessionId].count++;
+                    });
+
+                    // Procesar y ordenar tiempos
+                    Object.values(usersMap).forEach(user => {
+                        if (user.times && user.times.length > 0) {
+                            user.times.sort((a, b) => a - b);
+                            user.firstTime = user.times[0].toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            user.history = user.times.map(t => t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+                        }
+                    });
                 }
 
-                // Update count
-                document.getElementById('connected-total-count').textContent = `(${snapshot.size})`;
+                // Convert map to array and Sort by First Connection Time
+                const sortedUsers = Object.values(usersMap).sort((a, b) => {
+                    return a.firstTime.localeCompare(b.firstTime);
+                });
+
+                currentConnectedUsers = sortedUsers; // Update for PDF export
+
+                // Update count (Total UNIQUE users)
+                document.getElementById('connected-total-count').textContent = `(${sortedUsers.length})`;
 
                 let html = '<ul style="list-style: none; padding: 0;">';
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const time = data.last_seen ? data.last_seen.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Unknown';
-                    const name = data.userName || 'Usuario desconocido';
-
-                    // Add to global list for export
-                    currentConnectedUsers.push({ name, time });
-
+                sortedUsers.forEach(u => {
                     html += `
                         <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-weight: 500;">${name}</span>
-                            <small style="color: #666;">${time}</small>
+                            <span style="font-weight: 500;">${u.name}</span>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <span style="cursor: pointer; background: #e0e7ff; color: #4338ca; padding: 4px 10px; border-radius: 20px; font-size: 0.9em; font-weight: 700; display: inline-block; min-width: 20px; text-align: center;" 
+                                      onclick="openUserHistory('${u.name}')" title="Ver historial">
+                                    ${u.count}
+                                </span>
+                                <small style="color: #666; width: 60px; text-align: right;">${u.firstTime}</small>
+                            </div>
                         </li>
                     `;
                 });
@@ -1012,6 +1111,30 @@
                 console.error("Error fetching connected users:", error);
                 container.innerHTML = '<p style="color: red;">Error al cargar usuarios. Verifica la consola.</p>';
             }
+        };
+
+        window.openUserHistory = (userName) => {
+            const user = currentConnectedUsers.find(u => u.name === userName);
+            if (!user) return;
+
+            const container = document.getElementById('user-history-list');
+            document.getElementById('history-modal-title').textContent = `Historial: ${userName}`;
+
+            let html = '<ul style="list-style: none; padding: 0;">';
+            // Reverse history to show latest first? Or Keep Chronological? 
+            // "Historial" usually implies a timeline. Let's show chronological as collected (ASC).
+            user.history.forEach((time, index) => {
+                html += `
+                    <li style="padding: 8px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between;">
+                        <span>Conexión #${index + 1}</span>
+                        <span style="font-weight: 600; color: #555;">${time}</span>
+                    </li>
+                 `;
+            });
+            html += '</ul>';
+
+            container.innerHTML = html;
+            document.getElementById('user-history-modal').style.display = 'flex';
         };
 
         window.exportConnectedUsersPDF = () => {
@@ -1029,15 +1152,15 @@
             doc.text("Reporte de Usuarios Conectados", 14, 22);
             doc.setFontSize(12);
             doc.text(`Fecha: ${dateStr}`, 14, 32);
-            doc.text(`Total Conectados: ${currentConnectedUsers.length}`, 14, 38);
+            doc.text(`Total Usuarios Únicos: ${currentConnectedUsers.length}`, 14, 38);
 
             // Table
             doc.autoTable({
                 startY: 45,
-                head: [['Usuario', 'Hora de Conexión']],
-                body: currentConnectedUsers.map(u => [u.name, u.time]),
+                head: [['Usuario', 'Primera Conexión', 'Total Accesos']],
+                body: currentConnectedUsers.map(u => [u.name, u.firstTime, u.count]),
                 theme: 'striped',
-                headStyles: { fillColor: [79, 70, 229] } // Purple specific to this site theme
+                headStyles: { fillColor: [79, 70, 229] }
             });
 
             doc.save(`Reporte_Conectados_${dateStr.replace(/\//g, '-')}.pdf`);
