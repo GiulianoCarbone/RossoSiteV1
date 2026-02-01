@@ -1459,7 +1459,76 @@
     }
 
     /* --- FIN ESTILOS HAMBURGER MENU --- */
+
+    /* --- ANIMACIÓN FLOTANTE PARA EL PREMIO --- */
+    @keyframes floating {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .floating-prize {
+      animation: floating 3s ease-in-out infinite;
+      max-height: 250px;
+      width: auto;
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+    }
+
+    /* --- ANIMACIÓN NEON GLOW --- */
+    @keyframes neon-glow {
+      0% {
+        box-shadow: 0 0 5px rgba(236, 100, 52, 0.2), 0 0 10px rgba(236, 100, 52, 0.1);
+        border-color: rgba(236, 100, 52, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 20px rgba(236, 100, 52, 0.6), 0 0 30px rgba(236, 100, 52, 0.2);
+        border-color: rgba(236, 100, 52, 0.8);
+      }
+
+      100% {
+        box-shadow: 0 0 5px rgba(236, 100, 52, 0.2), 0 0 10px rgba(236, 100, 52, 0.1);
+        border-color: rgba(236, 100, 52, 0.3);
+      }
+    }
+
+    .contest-card-neon {
+      animation: neon-glow 2s infinite alternate;
+      border: 2px solid rgba(236, 100, 52, 0.3) !important;
+    }
+
+    /* RESPONSIVE CONTEST CARD */
+    @media (max-width: 600px) {
+      .floating-prize {
+        max-height: 160px;
+      }
+
+      .contest-prominent-title {
+        font-size: 1.3rem !important;
+      }
+
+      .contest-card-body {
+        padding: 20px 10px !important;
+      }
+
+      .contest-card-header h3 {
+        font-size: 1rem !important;
+      }
+
+      .contest-card-text {
+        font-size: 1rem !important;
+      }
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 
 <body>
@@ -1590,6 +1659,53 @@
       </div>
 
       <div class="container panel-grid">
+        <!-- SECCIÓN CONCURSO (PROVISORIA) -->
+        <div class="panel-card contest-card contest-card-neon" id="contest-section"
+          style="grid-column: 1 / -1; background: white; position: relative; overflow: hidden; transition: transform 0.3s ease;">
+
+          <div class="panel-card-header contest-card-header"
+            style="position: relative; z-index: 1; border-bottom: 1px solid #f1f1f1;">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-trophy"
+                  style="animation: none; color: var(--accent);"></i></span>
+              <h3 style="color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+                Desafío
+                Atrim de Verano </h3>
+            </div>
+          </div>
+          <div class="panel-card-body contest-card-body"
+            style="text-align: center; padding: 30px 20px; position: relative; z-index: 1;">
+            <!-- Image Container with Floating Animation -->
+            <div style="margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; width: 100%;">
+              <img src="https://i.ibb.co/whSyPTRg/Adobe-Express-file.png" alt="Smartwatch Premio"
+                class="floating-prize">
+            </div>
+            <p class="contest-card-text"
+              style="font-size: 1.15rem; color: #374151; max-width: 600px; margin: 0 auto 15px; line-height: 1.6;">
+              <span class="contest-prominent-title"
+                style="display: block; font-size: 1.6rem; color: var(--accent); font-weight: 900; margin-bottom: 8px; text-transform: uppercase;">¡Participá
+                y ganá!</span>
+              El vendedor con mayor cantidad de unidades vendidas de productos ATRIM gana un <strong>Smartwatch
+                GADNIC</strong>.
+            </p>
+            <!-- SUBTLE COUNTDOWN -->
+            <p id="countdown-timer" style="font-size: 0.9rem; color: #6b7280; margin-bottom: 25px; font-weight: 500;">
+              El concurso finaliza en: <span id="time-left" style="color: var(--accent); font-weight: 700;">--d --h --m
+                --s</span>
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+              <button onclick="openContestModal()"
+                style="padding: 14px 30px; background: linear-gradient(to right, var(--accent), #c2411c); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(236, 100, 52, 0.3);">
+                <i class="fa-solid fa-file-contract"></i> Conocé más
+              </button>
+              <button onclick="openRankingModal()"
+                style="padding: 14px 30px; background: white; color: var(--accent); border: 2px solid var(--accent); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: all 0.2s;">
+                <i class="fa-solid fa-ranking-star"></i> Ver Ranking
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- SECCIÓN NOVEDADES -->
         <div class="panel-card" id="novedades">
           <div class="panel-card-header">
@@ -1762,8 +1878,9 @@
           </div>
           <div class="panel-card-body review-body">
             <div class="review-image-container">
-              <img id="featured-review-image" src="https://via.placeholder.com/400x300?text=Captura+de+Reseña"
-                alt="Captura de reseña de Google Maps" class="review-screenshot" />
+              <img onclick="triggerConfetti();" id="featured-review-image"
+                src="https://via.placeholder.com/400x300?text=Captura+de+Reseña" alt="Captura de reseña de Google Maps"
+                class="review-screenshot" />
             </div>
             <div class="review-congratulations">
               <i class="fa-solid fa-trophy review-trophy"></i>
@@ -2624,7 +2741,12 @@
                 newsElement.className = "news-item";
                 newsElement.dataset.newsId = newsId;
                 newsElement.innerHTML = `
-                            <p><strong>${news.title || ""}</strong> ${news.description || ""}</p>
+                            <p>
+                                <strong style="color: var(--accent);">${news.title || ""}</strong> 
+                                ${news.description || ""}
+                                ${news.link ? `<a href="${news.link}" target="_blank" style="margin-left: 5px; font-size:0.9em; color:var(--accent); text-decoration:none; font-weight:700; white-space: nowrap;">[Ver más]</a>` : ''}
+                            </p>
+
                             <div class="news-footer">
                                 <div class="reactions-summary"></div>
                                 <div class="add-reaction-container">
@@ -3347,6 +3469,219 @@
     }
   </script>
   <a id="back-to-top-btn" title="Volver arriba"><i class="fa-solid fa-arrow-up"></i></a>
+
+  <!-- MODAL: CONTEST DETAILS -->
+  <div id="contest-details-modal" class="modal-overlay" style="z-index: 5000; display: none;">
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="modal-header">
+        <h4 style="font-size: 1.3rem;">Bases del Concurso: "Desafío Atrim de Verano" 🚀</h4>
+        <button class="close-modal" onclick="closeContestModal()">&times;</button>
+      </div>
+      <div style="color: #374151; line-height: 1.6; font-size: 0.95rem;">
+
+        <h5
+          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+          1. VIGENCIA</h5>
+        <p>El concurso tendrá una duración de <strong>1 mes</strong>, comenzando el día <strong>Lunes 2</strong> y
+          finalizando el <strong>Sábado 28 de Febrero</strong> inclusive.</p>
+
+        <h5
+          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+          2. PARTICIPANTES</h5>
+        <p>Podrán participar todos los integrantes del equipo de ventas de <strong>salones y cajas rápidas</strong> de
+          las sucursales de Rosso Materiales.</p>
+
+        <h5
+          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+          3. DINÁMICA DEL CONCURSO</h5>
+        <ul style="padding-left: 20px; list-style-type: disc;">
+          <li><strong>Mecánica:</strong> El ganador será aquel vendedor que logre la mayor cantidad de unidades vendidas
+            de productos de la marca ATRIM (en cualquiera de sus categorías/artículos) durante el periodo de vigencia.
+          </li>
+          <li><strong>Mínimo de Clasificación:</strong> Para poder optar al premio, el vendedor deberá alcanzar un piso
+            mínimo de <strong>100 unidades vendidas</strong>, <strong>COBRADAS Y ENTREGADAS</strong> de la marca ATRIM.
+            Las ventas por debajo de este número <strong>no serán consideradas</strong> para la premiación final.</li>
+        </ul>
+
+        <h5
+          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+          4. EL PREMIO ⌚</h5>
+        <p>El vendedor que ocupe el primer puesto en el ranking de unidades vendidas (superando el mínimo de 100)
+          recibirá:</p>
+        <ul style="padding-left: 20px; list-style-type: disc;">
+          <li><strong>Un Smartwatch GADNIC de última generación.</strong></li>
+        </ul>
+
+        <h5
+          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+          5. CONDICIONES Y REGLAS GENERALES</h5>
+        <ol style="padding-left: 20px;">
+          <li><strong>Cómputo de Ventas:</strong> Solo se contabilizarán las ventas efectivamente facturadas y
+            entregadas dentro del periodo del concurso.</li>
+          <li><strong>Devoluciones:</strong> En caso de que un cliente realice la devolución de un producto dentro del
+            periodo del concurso, dicha unidad será restada del conteo total del vendedor.</li>
+          <li><strong>Transparencia:</strong> Se compartirá un ranking parcial de forma semanal para que todos los
+            participantes puedan seguir su progreso.</li>
+          <li><strong>Criterio de Desempate:</strong> En caso de empate en cantidad de unidades, resultará ganador el
+            vendedor que haya obtenido el mayor monto de facturación total en pesos sobre esas unidades vendidas de
+            Atrim.</li>
+        </ol>
+
+        <h5
+          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+          6. PREMIACIÓN</h5>
+        <p>El anuncio oficial del ganador se realizará el día <strong>3 de Marzo</strong> a través de la <strong>APP DE
+            ROSSOMATERIALES</strong>.</p>
+      </div>
+      <div style="margin-top: 30px; text-align: center;">
+        <button onclick="closeContestModal()"
+          style="padding: 10px 20px; background-color: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+  <div id="contest-ranking-modal" class="modal-overlay" style="z-index: 5000; display: none;">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h4 style="font-size: 1.3rem;">Top 5 Vendedores 🏆</h4>
+        <button class="close-modal" onclick="closeRankingModal()">&times;</button>
+      </div>
+      <div style="padding: 10px 0;">
+        <p style="text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 20px;">El Ranking se actuaza al
+          finalizar cada semana </p>
+
+        <!-- <div class="ranking-item"
+          style="display: flex; align-items: center; padding: 12px; background: #fff7ed; border-radius: 12px; margin-bottom: 10px; border: 1px solid #ffedd5;">
+          <span style="font-size: 1.5rem; margin-right: 15px;">🥇</span>
+          <div style="flex-grow: 1;">
+            <div style="font-weight: 700; color: #1f2937;">Vendedor Demo 1</div>
+            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Central</div>
+          </div>
+          <div style="font-weight: 800; color: var(--accent); font-size: 1.1rem;">145 u.</div>
+        </div>
+
+        <div class="ranking-item"
+          style="display: flex; align-items: center; padding: 12px; background: #f9fafb; border-radius: 12px; margin-bottom: 10px; border: 1px solid #f3f4f6;">
+          <span style="font-size: 1.5rem; margin-right: 15px;">🥈</span>
+          <div style="flex-grow: 1;">
+            <div style="font-weight: 700; color: #1f2937;">Vendedor Demo 2</div>
+            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Sur</div>
+          </div>
+          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;">132 u.</div>
+        </div>
+
+        <div class="ranking-item"
+          style="display: flex; align-items: center; padding: 12px; background: #f9fafb; border-radius: 12px; margin-bottom: 10px; border: 1px solid #f3f4f6;">
+          <span style="font-size: 1.5rem; margin-right: 15px;">🥉</span>
+          <div style="flex-grow: 1;">
+            <div style="font-weight: 700; color: #1f2937;">Vendedor Demo 3</div>
+            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Norte</div>
+          </div>
+          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;">118 u.</div>
+        </div>
+
+        <div class="ranking-item"
+          style="display: flex; align-items: center; padding: 12px; background: #f9fafb; border-radius: 12px; margin-bottom: 10px; border: 1px solid #f3f4f6;">
+          <span
+            style="font-size: 1.1rem; margin-right: 20px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">4</span>
+          <div style="flex-grow: 1;">
+            <div style="font-weight: 700; color: #1f2937;">Vendedor Demo 4</div>
+            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Central</div>
+          </div>
+          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;">105 u.</div>
+        </div>
+
+        <div class="ranking-item"
+          style="display: flex; align-items: center; padding: 12px; background: #f9fafb; border-radius: 12px; border: 1px solid #f3f4f6;">
+          <span
+            style="font-size: 1.1rem; margin-right: 20px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">5</span>
+          <div style="flex-grow: 1;">
+            <div style="font-weight: 700; color: #1f2937;">Vendedor Demo 5</div>
+            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Este</div>
+          </div>
+          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;">98 u.</div>
+        </div> -->
+      </div>
+      <div style="margin-top: 20px; text-align: center;">
+        <button onclick="closeRankingModal()"
+          style="padding: 10px 20px; background-color: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Confetti Logic
+    function triggerConfetti() {
+      var duration = 3 * 1000;
+      var animationEnd = Date.now() + duration;
+      var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 6000 };
+
+      function randomInOut(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      var interval = setInterval(function () {
+        var timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        var particleCount = 50 * (timeLeft / duration);
+        confetti({ ...defaults, particleCount, origin: { x: randomInOut(0.1, 0.3), y: Math.random() - 0.2 } });
+        confetti({ ...defaults, particleCount, origin: { x: randomInOut(0.7, 0.9), y: Math.random() - 0.2 } });
+      }, 250);
+    }
+
+    // Contest Modal Logic
+    function openContestModal() {
+      document.getElementById('contest-details-modal').style.display = 'flex';
+    }
+
+    function closeContestModal() {
+      document.getElementById('contest-details-modal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function (e) {
+      if (e.target === document.getElementById('contest-details-modal')) {
+        closeContestModal();
+      }
+      if (e.target === document.getElementById('contest-ranking-modal')) {
+        closeRankingModal();
+      }
+    });
+
+    // Ranking Modal Logic
+    function openRankingModal() {
+      document.getElementById('contest-ranking-modal').style.display = 'flex';
+    }
+
+    function closeRankingModal() {
+      document.getElementById('contest-ranking-modal').style.display = 'none';
+    }
+
+    // Countdown Logic
+    function updateCountdown() {
+      const targetDate = new Date("February 28, 2026 23:59:59").getTime();
+      const now = new Date().getTime();
+      const timeLeft = targetDate - now;
+
+      if (timeLeft <= 0) {
+        document.getElementById("countdown-timer").innerHTML = "¡El concurso ha finalizado!";
+        return;
+      }
+
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      document.getElementById("time-left").textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown(); // Initial call
+  </script>
 </body>
 
 </html>

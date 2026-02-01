@@ -739,6 +739,10 @@
                     <textarea id="news-description-field" rows="4" required></textarea>
                 </div>
                 <div class="input-group">
+                    <label>Link / Enlace (Opcional)</label>
+                    <input type="url" id="news-link-field" placeholder="https://..." />
+                </div>
+                <div class="input-group">
                     <label>Categoría</label>
                     <select id="news-category-field" required>
                         <option value="comerciales">Comerciales</option>
@@ -1177,6 +1181,7 @@
                     title: document.getElementById("news-title-field").value,
                     description: document.getElementById("news-description-field").value,
                     category: document.getElementById("news-category-field").value,
+                    link: document.getElementById("news-link-field").value || "",
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 };
                 if (id) await db.collection("news").doc(id).update(data);
@@ -1200,6 +1205,7 @@
                     <small>${news.category.toUpperCase()}</small>
                     <p><strong>${news.title}</strong></p>
                     <p style="color: #666; font-size: 0.9em;">${news.description.substring(0, 100)}...</p>
+                    ${news.link ? `<small style="color: blue;"><a href="${news.link}" target="_blank">🔗 Link adjunto</a></small>` : ''}
                 </div>
                 <div class="admin-item-actions">
                     <button class="action-btn btn-edit" onclick="editNews('${news.id}')"><i class="fa-solid fa-pencil"></i></button>
@@ -1218,6 +1224,7 @@
             document.getElementById("news-title-field").value = data.title;
             document.getElementById("news-description-field").value = data.description;
             document.getElementById("news-category-field").value = data.category;
+            document.getElementById("news-link-field").value = data.link || "";
             document.getElementById("news-form-title").textContent = "Editar Noticia";
             document.getElementById("news-form-modal").style.display = "flex";
         };
