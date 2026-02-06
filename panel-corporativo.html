@@ -2745,7 +2745,7 @@
                             <p>
                                 <strong style="color: var(--accent);">${news.title || ""}</strong> 
                                 ${news.description || ""}
-                                ${news.link ? `<a href="${news.link}" target="_blank" style="margin-left: 5px; font-size:0.9em; color:var(--accent); text-decoration:none; font-weight:700; white-space: nowrap;">[Ver más]</a>` : ''}
+                                ${news.link ? `<a href="${news.link}" target="_blank" class="news-link" style="margin-left: 5px; font-size:0.9em; color:var(--accent); text-decoration:none; font-weight:700; white-space: nowrap;">[Ver más]</a>` : ''}
                             </p>
 
                             <div class="news-footer">
@@ -2760,6 +2760,15 @@
                                 </div>
                             </div>
                         `;
+
+                // Prevent "Ver más" link from interfering with reactions
+                const verMasLink = newsElement.querySelector('.news-link');
+                if (verMasLink) {
+                  verMasLink.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                  });
+                }
+
                 const list = news.category === "comerciales"
                   ? comercialesList
                   : rrhhList;
@@ -2913,7 +2922,25 @@
       }
 
       // --- LÓGICA DE REACCIONES ---
+      // Listener global para cerrar pickers (se define una sola vez fuera de la función o se controla con flag)
+      let globalClickListenerAdded = false;
+
+      // --- LÓGICA DE REACCIONES ---
       function initializeReactions() {
+        // Asegurar que el listener global solo se agregue una vez
+        if (!globalClickListenerAdded) {
+          document.addEventListener("click", function (e) {
+            if (!e.target.closest(".add-reaction-container")) {
+              document.querySelectorAll(".add-reaction-container.show-picker").forEach((container) => {
+                container.classList.remove("show-picker");
+                const picker = container.querySelector(".reaction-picker");
+                if (picker) picker.classList.remove("picker-below");
+              });
+            }
+          });
+          globalClickListenerAdded = true;
+        }
+
         document
           .querySelectorAll(".news-item:not(.reactions-initialized)")
           .forEach((item) => {
@@ -2923,74 +2950,97 @@
 
             const docRef = db.collection("reactions").doc(newsId);
 
-            docRef.onSnapshot((doc) => {
-              updateReactionSummary(item, doc.exists ? doc.data() : {});
+            // Escuchar cambios
+            const unsubscribe = docRef.onSnapshot((doc) => {
+              // Verificar si el elemento aún existe en el DOM
+              if (document.body.contains(item)) {
+                updateReactionSummary(item, doc.exists ? doc.data() : {});
+              }
             });
 
+            // Picker Buttons
             item.querySelectorAll(".picker-btn").forEach((btn) => {
-              btn.addEventListener("click", async () => {
-                const reaction = btn.dataset.reaction;
-                const currentReaction = localStorage.getItem(
-                  `reaction_${newsId}`
-                );
-                const increment = firebase.firestore.FieldValue.increment(1);
-                const decrement = firebase.firestore.FieldValue.increment(-1);
+              btn.addEventListener("click", async function (e) {
+                // IMPORTANTÍSIMO: Detener propagación y prevenir default
+                e.preventDefault();
+                e.stopPropagation();
 
-                const batch = db.batch();
+                console.log("Emoji clickeado:", this.dataset.reaction); // Debug
 
-                if (currentReaction === reaction) {
-                  batch.set(
-                    docRef,
-                    { [reaction]: decrement },
-                    { merge: true }
-                  );
-                  localStorage.removeItem(`reaction_${newsId}`);
-                } else {
-                  if (currentReaction) {
-                    batch.set(
-                      docRef,
-                      { [currentReaction]: decrement },
-                      { merge: true }
-                    );
+                const reaction = this.dataset.reaction;
+                if (!reaction) return;
+
+                // Cerrar picker inmediatamente para feedback visual
+                const container = item.querySelector(".add-reaction-container");
+                if (container) container.classList.remove("show-picker");
+
+                const currentReaction = localStorage.getItem(`reaction_${newsId}`);
+
+                // Obtener datos actuales del DOM (cache)
+                const lastData = JSON.parse(item.dataset.reactionsCache || "{}");
+                const currentCount = lastData[reaction] || 0;
+
+                try {
+                  const batch = db.batch();
+
+                  if (currentReaction === reaction) {
+                    // Toggle off
+                    // PROTECCIÓN: Solo decrementar si el contador es positivo
+                    if (currentCount > 0) {
+                      batch.set(docRef, { [reaction]: firebase.firestore.FieldValue.increment(-1) }, { merge: true });
+                    } else {
+                      console.warn("Corrige mismatch: Intentando decrementar 0. Solo borrando local.");
+                    }
+                    localStorage.removeItem(`reaction_${newsId}`);
+                  } else {
+                    // Switch reaction
+                    if (currentReaction) {
+                      // Decrementar anterior
+                      const prevCount = lastData[currentReaction] || 0;
+                      if (prevCount > 0) {
+                        batch.set(docRef, { [currentReaction]: firebase.firestore.FieldValue.increment(-1) }, { merge: true });
+                      }
+                    }
+                    // Incrementar nuevo
+                    batch.set(docRef, { [reaction]: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+                    localStorage.setItem(`reaction_${newsId}`, reaction);
                   }
-                  batch.set(
-                    docRef,
-                    { [reaction]: increment },
-                    { merge: true }
-                  );
-                  localStorage.setItem(`reaction_${newsId}`, reaction);
+
+                  await batch.commit();
+                  console.log("Reacción procesada correctamente (Self-healing activo)");
+                } catch (error) {
+                  console.error("Error al guardar reacción:", error);
                 }
-                await batch.commit();
               });
             });
 
+            // Toggle Button
             const addReactionBtn = item.querySelector(".add-reaction-btn");
-            const reactionContainer = item.querySelector(
-              ".add-reaction-container"
-            );
+            const reactionContainer = item.querySelector(".add-reaction-container");
 
             if (addReactionBtn && reactionContainer) {
-              addReactionBtn.addEventListener("click", (e) => {
+              addReactionBtn.addEventListener("click", function (e) {
+                e.preventDefault();
                 e.stopPropagation();
-                const isAlreadyOpen =
-                  reactionContainer.classList.contains("show-picker");
 
-                document
-                  .querySelectorAll(".add-reaction-container.show-picker")
-                  .forEach((openContainer) => {
+                const isAlreadyOpen = reactionContainer.classList.contains("show-picker");
+
+                // Cerrar otros
+                document.querySelectorAll(".add-reaction-container.show-picker").forEach((openContainer) => {
+                  if (openContainer !== reactionContainer) {
                     openContainer.classList.remove("show-picker");
-                    const otherPicker =
-                      openContainer.querySelector(".reaction-picker");
-                    if (otherPicker)
-                      otherPicker.classList.remove("picker-below");
-                  });
+                    const otherPicker = openContainer.querySelector(".reaction-picker");
+                    if (otherPicker) otherPicker.classList.remove("picker-below");
+                  }
+                });
 
                 if (!isAlreadyOpen) {
                   reactionContainer.classList.add("show-picker");
-                  const picker =
-                    reactionContainer.querySelector(".reaction-picker");
-                  const panelCard = reactionContainer.closest(".panel-card");
+                  const picker = reactionContainer.querySelector(".reaction-picker");
+                  // Forzar z-index alto
+                  if (picker) picker.style.zIndex = "10000";
 
+                  const panelCard = reactionContainer.closest(".panel-card");
                   if (picker && panelCard) {
                     const pickerRect = picker.getBoundingClientRect();
                     const panelCardRect = panelCard.getBoundingClientRect();
@@ -3000,6 +3050,8 @@
                       picker.classList.remove("picker-below");
                     }
                   }
+                } else {
+                  reactionContainer.classList.remove("show-picker");
                 }
               });
             }
@@ -3007,21 +3059,35 @@
       }
 
       function updateReactionSummary(item, data) {
+        // Cachear datos para lógica de decremento
+        item.dataset.reactionsCache = JSON.stringify(data);
+
         const summaryContainer = item.querySelector(".reactions-summary");
+        if (!summaryContainer) return;
+
         summaryContainer.innerHTML = "";
         let totalReactions = 0;
         const userReaction = localStorage.getItem(
           `reaction_${item.dataset.newsId}`
         );
 
-        ["👍", "❤️", "🎉"].forEach((emoji) => {
-          const count = data[emoji] || 0;
+        // Usamos claves dinámicas
+        const preferredOrder = ["👍", "❤️", "🎉"];
+        const keys = Object.keys(data);
+        const allEmojis = [...new Set([...preferredOrder, ...keys])];
+
+        allEmojis.forEach((emoji) => {
+          let count = data[emoji] || 0;
+          // CLAMP VISUAL: Nunca mostrar negativos
+          count = Math.max(0, count);
+
           if (count > 0) {
             totalReactions += count;
             const pill = document.createElement("span");
             pill.className = "reaction-display";
             pill.innerHTML = `<span class="emoji">${emoji}</span> ${count}`;
-            if (userReaction === emoji) {
+
+            if (userReaction && (userReaction === emoji || userReaction.includes(emoji) || emoji.includes(userReaction))) {
               pill.style.backgroundColor = "#E9ECEF";
               pill.style.color = "var(--brand)";
               pill.style.fontWeight = "700";
