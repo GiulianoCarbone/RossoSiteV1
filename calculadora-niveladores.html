@@ -612,7 +612,8 @@
                     <div class="input-group">
                         <label for="superficie">Superficie a cubrir</label>
                         <div class="input-wrapper">
-                            <input type="number" id="superficie" value="10" oninput="calculate()" step="0.01" min="0">
+                            <input type="number" id="superficie" placeholder="Ej: 10" oninput="calculate()" step="0.01"
+                                min="0">
                             <span class="unit">m²</span>
                         </div>
                         <p class="help-text">Área total donde se colocarán los cerámicos</p>
@@ -621,7 +622,8 @@
                     <div class="input-group">
                         <label for="largo">Largo del cerámico</label>
                         <div class="input-wrapper">
-                            <input type="number" id="largo" value="30" oninput="calculate()" step="0.1" min="0">
+                            <input type="number" id="largo" placeholder="Ej: 30" oninput="calculate()" step="0.1"
+                                min="0">
                             <span class="unit">cm</span>
                         </div>
                         <p class="help-text">Medida más larga de la pieza</p>
@@ -630,7 +632,8 @@
                     <div class="input-group">
                         <label for="ancho">Ancho del cerámico</label>
                         <div class="input-wrapper">
-                            <input type="number" id="ancho" value="30" oninput="calculate()" step="0.1" min="0">
+                            <input type="number" id="ancho" placeholder="Ej: 30" oninput="calculate()" step="0.1"
+                                min="0">
                             <span class="unit">cm</span>
                         </div>
                         <p class="help-text">Medida más corta de la pieza</p>
@@ -665,7 +668,7 @@
                 <button class="btn btn-outline" onclick="limpiar()">
                     <i class="fa-solid fa-eraser"></i> LIMPIAR
                 </button>
-                <button class="btn btn-primary" onclick="calculate()">
+                <button class="btn btn-primary" onclick="calculate(true)">
                     <i class="fa-solid fa-calculator"></i> CALCULAR
                 </button>
             </div>
@@ -745,7 +748,7 @@
             return Math.ceil(cm / 30) + 1; // XL: 1 cada 30cm aprox.
         }
 
-        function calculate() {
+        function calculate(showError = false) {
             const superficie = parseFloat(document.getElementById('superficie').value) || 0;
             const largo = parseFloat(document.getElementById('largo').value) || 0;
             const ancho = parseFloat(document.getElementById('ancho').value) || 0;
@@ -792,14 +795,17 @@
                     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
             } else {
-                alert('Por favor, ingresá valores válidos para todos los campos.');
+                document.getElementById('results-panel').style.display = 'none';
+                if (showError) {
+                    alert('Por favor, ingresá valores válidos para todos los campos.');
+                }
             }
         }
 
         function limpiar() {
-            document.getElementById('superficie').value = 10;
-            document.getElementById('largo').value = 30;
-            document.getElementById('ancho').value = 30;
+            document.getElementById('superficie').value = '';
+            document.getElementById('largo').value = '';
+            document.getElementById('ancho').value = '';
             document.getElementById('results-panel').style.display = 'none';
             lastCalculation = null;
         }
@@ -867,7 +873,7 @@
         }
 
         // Inicializar cálculo inicial
-        calculate();
+        // calculate();
     </script>
     <script src="script.js"></script>
 </body>
