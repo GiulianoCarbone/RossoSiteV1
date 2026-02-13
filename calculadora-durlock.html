@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calculadora Durlock | Rosso Materiales</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        .calc-main {
+            padding: 40px 0;
+            background-color: var(--surface);
+            min-height: 80vh;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .calc-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calc-card h2 {
+            color: var(--brand);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .input-box {
+            margin-bottom: 20px;
+        }
+
+        .input-box label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: var(--ink);
+            outline-color: var(--accent);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: auto;
+        }
+
+        .results-table td {
+            padding: 10px 5px;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 0.95rem;
+            color: var(--ink);
+        }
+
+        .results-table .val {
+            text-align: right;
+            font-weight: 700;
+            color: var(--brand);
+            font-size: 1rem;
+        }
+
+        .disclaimer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.8rem;
+            margin-top: 15px;
+        }
+
+        .card-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border: 1px solid var(--accent);
+            background: white;
+            color: var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .action-btn.btn-print {
+            border-color: #1c355e;
+            color: #1c355e;
+        }
+
+        .action-btn.btn-print:hover {
+            background: #1c355e;
+            color: white;
+        }
+
+        /* Estilos de Impresión */
+        #print-container {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+                /* Elimina encabezados/pies de página del navegador */
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            .calc-main,
+            .card-actions,
+            .input-box {
+                display: none !important;
+            }
+
+            #print-container {
+                visibility: visible !important;
+                display: block !important;
+            }
+
+            #print-container * {
+                visibility: visible;
+            }
+
+            #print-container div,
+            #print-container h1,
+            #print-container h2,
+            #print-container p,
+            #print-container span,
+            #print-container img {
+                display: block !important;
+            }
+
+            #print-container table {
+                display: table !important;
+            }
+
+            #print-container thead {
+                display: table-header-group !important;
+            }
+
+            #print-container tbody {
+                display: table-row-group !important;
+            }
+
+            #print-container tr {
+                display: table-row !important;
+            }
+
+            #print-container th,
+            #print-container td {
+                display: table-cell !important;
+            }
+
+            #print-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                padding: 10mm 15mm;
+                /* Márgenes más ajustados */
+                background: white;
+                box-sizing: border-box;
+            }
+
+            /* Header Impresión */
+            .print-header {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid var(--accent);
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .print-logo {
+                width: 140px;
+                /* Logo más pequeño */
+            }
+
+            .print-title h1 {
+                font-family: 'Bebas Neue', sans-serif;
+                color: var(--brand);
+                font-size: 20pt;
+                /* Fuente reducida */
+                margin: 0;
+                text-transform: uppercase;
+                text-align: right;
+            }
+
+            .print-title p {
+                font-size: 9pt;
+                color: var(--muted);
+                margin: 2px 0 0;
+                text-align: right;
+            }
+
+            /* Contenido Impresión */
+            .print-content h2 {
+                color: var(--brand);
+                font-size: 16pt;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .print-content table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 10px;
+                font-size: 10pt;
+                /* Tabla más compacta */
+            }
+
+            .print-content th,
+            .print-content td {
+                padding: 8px 10px;
+                /* Padding reducido */
+                border: 1px solid #eee;
+                text-align: left;
+            }
+
+            .print-content th {
+                background-color: var(--brand-blue);
+                color: white;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 9pt;
+            }
+
+            .print-content tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            .print-content td.val {
+                text-align: right;
+                font-weight: 700;
+                color: var(--brand);
+            }
+
+            /* Footer Impresión */
+            .print-footer {
+                position: fixed;
+                bottom: 10mm;
+                left: 15mm;
+                right: 15mm;
+                border-top: 1px solid #ddd;
+                padding-top: 10px;
+                display: flex !important;
+                justify-content: space-between;
+                font-size: 8pt;
+                color: var(--muted);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="calc-main">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h1 class="section-title">Calculadora - Placas de yeso</h1>
+                <!-- <p class="section-subtitle">Calculá los insumos necesarios para tu obra con los coeficientes oficiales.
+                </p> -->
+            </div>
+
+            <div class="calc-grid">
+                <!-- CIELORRASOS -->
+                <div class="calc-card" id="card-cielorrasos">
+                    <h2><i class="fa-solid fa-layer-group"></i> Cielorrasos</h2>
+                    <div class="input-box">
+                        <label>Superficie a cubrir (m²)</label>
+                        <input type="number" id="c-m2" placeholder="Ej: 24" oninput="calcularTodo()">
+                    </div>
+                    <table class="results-table">
+                        <tbody>
+                            <tr>
+                                <td>Soleras 35</td>
+                                <td class="val" id="r-c-sol">0</td>
+                            </tr>
+                            <tr>
+                                <td>Montantes 34</td>
+                                <td class="val" id="r-c-mon">0</td>
+                            </tr>
+                            <tr>
+                                <td>Tornillos T1</td>
+                                <td class="val" id="r-c-t1">0</td>
+                            </tr>
+                            <tr>
+                                <td>Tornillos T2 </td>
+                                <td class="val" id="r-c-t2">0</td>
+                            </tr>
+                            <tr>
+                                <td>Cinta Durlock</td>
+                                <td class="val" id="r-c-cin">0</td>
+                            </tr>
+                            <tr>
+                                <td>Masilla</td>
+                                <td class="val" id="r-c-mas">0</td>
+                            </tr>
+                            <tr>
+                                <td>Fijaciones</td>
+                                <td class="val" id="r-c-fij">0</td>
+                            </tr>
+                            <tr>
+                                <td>Placas Durlock 9.5mm</td>
+                                <td class="val" id="r-c-pla">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="card-actions">
+                        <button class="action-btn" onclick="copiarTexto('cielorrasos')"><i
+                                class="fa-regular fa-copy"></i> Copiar</button>
+                        <button class="action-btn btn-print" onclick="imprimirTarjeta('card-cielorrasos')"><i
+                                class="fa-solid fa-print"></i> Imprimir</button>
+                    </div>
+                </div>
+
+                <!-- REVESTIMIENTOS -->
+                <div class="calc-card" id="card-revestimientos">
+                    <h2><i class="fa-solid fa-border-none"></i> Revestimientos</h2>
+                    <div class="input-box">
+                        <label>Metros Lineales (ml)</label>
+                        <input type="number" id="rv-ml" placeholder="Ej: 10" oninput="calcularTodo()">
+                    </div>
+                    <div class="input-box">
+                        <label>Alto de Pared (m)</label>
+                        <input type="number" id="rv-a" placeholder="Ej: 4,5" step="0.1" oninput="calcularTodo()">
+                    </div>
+                    <table class="results-table">
+                        <tbody>
+                            <tr>
+                                <td>Perfil Omega</td>
+                                <td class="val" id="r-rv-ome">0</td>
+                            </tr>
+                            <tr>
+                                <td>Tornillos T2 </td>
+                                <td class="val" id="r-rv-t2">0</td>
+                            </tr>
+                            <tr>
+                                <td>Cinta Durlock </td>
+                                <td class="val" id="r-rv-cin">0</td>
+                            </tr>
+                            <tr>
+                                <td>Masilla</td>
+                                <td class="val" id="r-rv-mas">0</td>
+                            </tr>
+                            <tr>
+                                <td>Fijaciones </td>
+                                <td class="val" id="r-rv-fij">0</td>
+                            </tr>
+                            <tr>
+                                <td>Placas Durlock 9.5mm</td>
+                                <td class="val" id="r-rv-pla">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="card-actions">
+                        <button class="action-btn" onclick="copiarTexto('revestimientos')"><i
+                                class="fa-regular fa-copy"></i> Copiar</button>
+                        <button class="action-btn btn-print" onclick="imprimirTarjeta('card-revestimientos')"><i
+                                class="fa-solid fa-print"></i> Imprimir</button>
+                    </div>
+                </div>
+
+                <!-- PAREDES -->
+                <div class="calc-card" id="card-paredes">
+                    <h2><i class="fa-solid fa-rectangle-list"></i> Paredes</h2>
+                    <div class="input-box">
+                        <label>Superficie de Pared (m²)</label>
+                        <input type="number" id="p-m2" placeholder="Ej: 12" oninput="calcularTodo()">
+                    </div>
+                    <table class="results-table">
+                        <tbody>
+                            <tr>
+                                <td>Soleras 70</td>
+                                <td class="val" id="r-p-sol">0</td>
+                            </tr>
+                            <tr>
+                                <td>Montantes 69 o 104</td>
+                                <td class="val" id="r-p-mon">0</td>
+                            </tr>
+                            <tr>
+                                <td>Tornillos T1 </td>
+                                <td class="val" id="r-p-t1">0</td>
+                            </tr>
+                            <tr>
+                                <td>Tornillos T2 </td>
+                                <td class="val" id="r-p-t2">0</td>
+                            </tr>
+                            <tr>
+                                <td>Cinta Durlock </td>
+                                <td class="val" id="r-p-cin">0</td>
+                            </tr>
+                            <tr>
+                                <td>Masilla </td>
+                                <td class="val" id="r-p-mas">0</td>
+                            </tr>
+                            <tr>
+                                <td>Fijaciones</td>
+                                <td class="val" id="r-p-fij">0</td>
+                            </tr>
+                            <tr>
+                                <td>Placas Durlock 12.5mm</td>
+                                <td class="val" id="r-p-pla">0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="card-actions">
+                        <button class="action-btn" onclick="copiarTexto('paredes')"><i class="fa-regular fa-copy"></i>
+                            Copiar</button>
+                        <button class="action-btn btn-print" onclick="imprimirTarjeta('card-paredes')"><i
+                                class="fa-solid fa-print"></i> Imprimir</button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="disclaimer">* Los cálculos incluyen desperdicio según planilla administrativa de Rosso Materiales.
+            </p>
+        </div>
+        </div>
+    </main>
+
+    <!-- Contenedor Invisible para Impresión -->
+    <div id="print-container">
+        <div class="print-header">
+            <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales"
+                class="print-logo">
+            <div class="print-title">
+                <h1>Presupuesto de Materiales</h1>
+                <p>Placas de yeso</p>
+            </div>
+        </div>
+
+        <div id="print-content-area" class="print-content">
+            <!-- Aquí se inyectará la tarjeta clonada -->
+        </div>
+
+        <div class="print-footer">
+            <span>www.rossomateriales.site</span>
+            <span id="print-date"></span>
+        </div>
+    </div>
+
+    <script>
+        function calcularTodo() {
+            // --- 1. CIELORRASO (Lógica Excel base 24m2) ---
+            const m2C = parseFloat(document.getElementById('c-m2').value) || 0;
+            document.getElementById('r-c-sol').innerText = (m2C * (10.15 / 24)).toFixed(2);
+            document.getElementById('r-c-mon').innerText = (m2C * (29.53 / 24)).toFixed(2);
+            document.getElementById('r-c-t1').innerText = (m2C * (384 / 24)).toFixed(0);
+            document.getElementById('r-c-t2').innerText = (m2C * (432 / 24)).toFixed(0);
+            document.getElementById('r-c-cin').innerText = (m2C * (39.6 / 24)).toFixed(1);
+            document.getElementById('r-c-mas').innerText = (m2C * (21.6 / 24)).toFixed(1);
+            document.getElementById('r-c-fij').innerText = (m2C * (144 / 24)).toFixed(0);
+            document.getElementById('r-c-pla').innerText = (m2C * (8.75 / 24)).toFixed(2);
+
+            // --- 2. REVESTIMIENTO (Lógica Excel base 45m2: 10ml x 4.5m) ---
+            const mlRV = parseFloat(document.getElementById('rv-ml').value) || 0;
+            const altoRV = parseFloat(document.getElementById('rv-a').value) || 0;
+            const totalM2RV = mlRV * altoRV;
+
+            document.getElementById('r-rv-ome').innerText = (totalM2RV * (38.46 / 45)).toFixed(2);
+            document.getElementById('r-rv-t2').innerText = (totalM2RV * (675 / 45)).toFixed(0);
+            document.getElementById('r-rv-cin').innerText = (totalM2RV * (74.25 / 45)).toFixed(1);
+            document.getElementById('r-rv-mas').innerText = (totalM2RV * (40.5 / 45)).toFixed(1);
+            document.getElementById('r-rv-fij').innerText = (totalM2RV * (405 / 45)).toFixed(0);
+            document.getElementById('r-rv-pla').innerText = (totalM2RV * (15.625 / 45)).toFixed(2);
+
+            // --- 3. PAREDES (Lógica Excel base 12m2) ---
+            const m2P = parseFloat(document.getElementById('p-m2').value) || 0;
+            document.getElementById('r-p-sol').innerText = (m2P * (4.61 / 12)).toFixed(2);
+            document.getElementById('r-p-mon').innerText = (m2P * (13.84 / 12)).toFixed(2);
+            document.getElementById('r-p-t1').innerText = (m2P * (120 / 12)).toFixed(0);
+            document.getElementById('r-p-t2').innerText = (m2P * (360 / 12)).toFixed(0);
+            document.getElementById('r-p-cin').innerText = (m2P * (39.6 / 12)).toFixed(1);
+            document.getElementById('r-p-mas').innerText = (m2P * (21.6 / 12)).toFixed(1);
+            document.getElementById('r-p-fij').innerText = (m2P * (42 / 12)).toFixed(0);
+            document.getElementById('r-p-pla').innerText = (m2P * (8.54 / 12)).toFixed(2);
+        }
+
+        function imprimirTarjeta(cardId) {
+            // 1. Obtener la tarjeta origen
+            const card = document.getElementById(cardId);
+            const title = card.querySelector('h2').outerHTML;
+            const tableBody = card.querySelector('table tbody').innerHTML;
+
+            // 1.5 Obtener datos de superficie según la tarjeta
+            let superficieInfo = "";
+            let superficieText = "";
+
+            if (cardId === 'card-cielorrasos') {
+                const m2 = document.getElementById('c-m2').value || 0;
+                superficieText = `Superficie a cubrir: ${m2} m²`;
+                superficieInfo = `<p style="font-size: 1.2rem; color: #555; margin-bottom: 20px; font-weight: 600; border: 1px solid #ddd; padding: 10px; display: inline-block; border-radius: 5px; background: #f9f9f9;">${superficieText}</p>`;
+            } else if (cardId === 'card-revestimientos') {
+                const ml = document.getElementById('rv-ml').value || 0;
+                const alto = document.getElementById('rv-a').value || 0;
+                const total = (ml * alto).toFixed(2);
+                superficieText = `Medidas: ${ml}ml x ${alto}m (Total: ${total} m²)`;
+                superficieInfo = `<p style="font-size: 1.2rem; color: #555; margin-bottom: 20px; font-weight: 600; border: 1px solid #ddd; padding: 10px; display: inline-block; border-radius: 5px; background: #f9f9f9;">${superficieText}</p>`;
+            } else if (cardId === 'card-paredes') {
+                const m2 = document.getElementById('p-m2').value || 0;
+                superficieText = `Superficie a cubrir: ${m2} m²`;
+                superficieInfo = `<p style="font-size: 1.2rem; color: #555; margin-bottom: 20px; font-weight: 600; border: 1px solid #ddd; padding: 10px; display: inline-block; border-radius: 5px; background: #f9f9f9;">${superficieText}</p>`;
+            }
+
+
+            // 2. Preparar el área de impresión con tabla estructurada
+            const printContent = document.getElementById('print-content-area');
+            printContent.innerHTML = `
+                ${title}
+                <div style="margin: 10px 0;">
+                    ${superficieInfo}
+                </div>
+                <div style="margin-top:20px; font-weight:bold; color:#444;">
+                    Detalle de Insumos Calculados:
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableBody}
+                    </tbody>
+                </table>
+            `;
+
+            // 3. Poner fecha actual
+            const now = new Date();
+            document.getElementById('print-date').innerText = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+
+            // 4. Imprimir
+            window.print();
+        }
+
+        function copiarTexto(tipo) {
+            let texto = "";
+            let items = [];
+
+            if (tipo === 'cielorrasos') {
+                const m2 = document.getElementById('c-m2').value || 0;
+                texto = `*CÁLCULO CIELORRASO DURLOCK*\nSuperficie a cubrir: ${m2} m²\n\n`;
+                items = [
+                    ['Soleras 35mm', 'r-c-sol'],
+                    ['Montantes 34mm', 'r-c-mon'],
+                    ['Tornillos T1', 'r-c-t1'],
+                    ['Tornillos T2', 'r-c-t2'],
+                    ['Cinta', 'r-c-cin'],
+                    ['Masilla', 'r-c-mas'],
+                    ['Fijaciones', 'r-c-fij'],
+                    ['Placas 9.5mm', 'r-c-pla']
+                ];
+            } else if (tipo === 'revestimientos') {
+                const ml = document.getElementById('rv-ml').value || 0;
+                const alto = document.getElementById('rv-a').value || 0;
+                const total = (ml * alto).toFixed(2);
+                texto = `*CÁLCULO REVESTIMIENTO DURLOCK*\nMedidas: ${ml}ml x ${alto}m (Total: ${total} m²)\n\n`;
+                items = [
+                    ['Perfil Omega', 'r-rv-ome'],
+                    ['Tornillos T2', 'r-rv-t2'],
+                    ['Cinta', 'r-rv-cin'],
+                    ['Masilla', 'r-rv-mas'],
+                    ['Fijaciones', 'r-rv-fij'],
+                    ['Placas 9.5mm', 'r-rv-pla']
+                ];
+            } else if (tipo === 'paredes') {
+                const m2 = document.getElementById('p-m2').value || 0;
+                texto = `*CÁLCULO PARED DURLOCK*\nSuperficie a cubrir: ${m2} m²\n\n`;
+                items = [
+                    ['Soleras 70mm', 'r-p-sol'],
+                    ['Montantes 69mm', 'r-p-mon'],
+                    ['Tornillos T1', 'r-p-t1'],
+                    ['Tornillos T2', 'r-p-t2'],
+                    ['Cinta', 'r-p-cin'],
+                    ['Masilla', 'r-p-mas'],
+                    ['Fijaciones', 'r-p-fij'],
+                    ['Placas 12.5mm', 'r-p-pla']
+                ];
+            }
+
+            items.forEach(item => {
+                const val = document.getElementById(item[1]).innerText;
+                texto += `• ${item[0]}: ${val}\n`;
+            });
+
+            texto += `\n_Cálculo estimado por Rosso Materiales_`;
+
+            navigator.clipboard.writeText(texto).then(() => {
+                alert('¡Copiado al portapapeles!');
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+            });
+        }
+    </script>
+</body>
+
+</html>

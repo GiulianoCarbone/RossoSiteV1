@@ -1196,8 +1196,26 @@
             container.innerHTML = "<p>Cargando...</p>";
             const snapshot = await db.collection("news").orderBy("timestamp", "desc").get();
             container.innerHTML = "";
+
+            // Reset data store
+            window.newsData = {};
+
             snapshot.forEach(doc => {
                 const news = { id: doc.id, ...doc.data() };
+                const clickedBy = news.clicked_by || [];
+                const clickCount = clickedBy.length;
+
+                // Store for export
+                window.newsData[news.id] = {
+                    title: news.title,
+                    clickedBy: clickedBy
+                };
+
+                // Generate users list HTML
+                const usersList = clickCount > 0
+                    ? clickedBy.map(u => `<div style="font-size:0.85em; border-bottom:1px solid #eee; padding:2px;">${u}</div>`).join('')
+                    : '<div style="font-size:0.85em; color:#888;">Nadie aún</div>';
+
                 const item = document.createElement("div");
                 item.className = "admin-item";
                 item.innerHTML = `
@@ -1206,6 +1224,18 @@
                     <p><strong>${news.title}</strong></p>
                     <p style="color: #666; font-size: 0.9em;">${news.description.substring(0, 100)}...</p>
                     ${news.link ? `<small style="color: blue;"><a href="${news.link}" target="_blank">🔗 Link adjunto</a></small>` : ''}
+                    
+                    <div style="margin-top: 8px;">
+                        <details>
+                            <summary style="cursor:pointer; list-style:none; color: var(--brand); font-size:0.9em; font-weight:600; display:flex; align-items:center; gap: 10px;">
+                                <span><i class="fa-solid fa-mouse-pointer"></i> Clics: ${clickCount} personas <span style="font-size:0.8em; color:#999;">(ver lista)</span></span>
+                                ${clickCount > 0 ? `<button onclick="exportNewsClicksPDF('${news.id}')" title="Exportar PDF" style="background: none; border: none; color: #dc2626; cursor: pointer; padding: 0;"><i class="fa-solid fa-file-pdf"></i></button>` : ''}
+                            </summary>
+                            <div style="background: #f8f9fa; padding: 8px; border-radius: 6px; margin-top: 5px; max-height: 150px; overflow-y: auto; border: 1px solid #e9ecef;">
+                                ${usersList}
+                            </div>
+                        </details>
+                    </div>
                 </div>
                 <div class="admin-item-actions">
                     <button class="action-btn btn-edit" onclick="editNews('${news.id}')"><i class="fa-solid fa-pencil"></i></button>
@@ -1378,6 +1408,44 @@
 
             doc.save(`Reporte_Notificacion_${id}_${dateStr.replace(/\//g, '-')}.pdf`);
         };
+
+        // --- NEWS CLICKS PDF EXPORT ---
+        window.newsData = {}; // Store for PDF export
+
+        window.exportNewsClicksPDF = (id) => {
+            const data = window.newsData[id];
+            if (!data || !data.clickedBy || data.clickedBy.length === 0) {
+                alert("No hay clics registrados para exportar.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const dateStr = new Date().toLocaleDateString();
+
+            // Header
+            doc.setFontSize(16);
+            doc.text("Reporte de Clics en Noticia", 14, 22);
+
+            doc.setFontSize(12);
+            doc.text(`Noticia: ${data.title}`, 14, 32);
+            doc.text(`Fecha del Reporte: ${dateStr}`, 14, 40);
+            doc.text(`Total Clics: ${data.clickedBy.length}`, 14, 46);
+
+            // Table
+            const tableBody = data.clickedBy.map(user => [user]);
+
+            doc.autoTable({
+                startY: 55,
+                head: [['Usuario que hizo clic']],
+                body: tableBody,
+                theme: 'striped',
+                headStyles: { fillColor: [79, 70, 229] }
+            });
+
+            doc.save(`Reporte_Noticia_${id}_${dateStr.replace(/\//g, '-')}.pdf`);
+        };
+
 
         async function loadNotifications() {
             const container = document.getElementById("admin-notifications-list");

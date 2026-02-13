@@ -1500,6 +1500,184 @@
       }
     }
 
+    /* --- MODAL CALCULADORA --- */
+    .calculator-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 5000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .calculator-modal.active {
+      display: flex;
+    }
+
+    .calculator-modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .calculator-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #999;
+      cursor: pointer;
+      padding: 5px 10px;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .calculator-modal-close:hover {
+      color: #333;
+    }
+
+    .calculator-modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--brand);
+      margin: 0 0 5px 0;
+      text-align: center;
+    }
+
+    .calculator-modal-subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: 0 0 25px 0;
+      text-align: center;
+    }
+
+    .calculator-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .calculator-option {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: left;
+      padding: 15px 20px;
+      border: 1px solid #e0e0e0;
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      height: auto;
+      justify-content: flex-start;
+    }
+
+    .calculator-option:hover {
+      border-color: var(--accent);
+      background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .calculator-option-icon {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-right: 15px;
+      margin-bottom: 0;
+      min-width: 40px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calculator-option-text {
+      flex: 1;
+    }
+
+    .calculator-option-text h3 {
+      margin: 0 0 3px 0;
+      font-size: 1.05rem;
+      color: var(--brand);
+      font-weight: 600;
+    }
+
+    .calculator-option-text p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    /* --- RESPONSIVE CALCULATOR MODAL --- */
+    @media (max-width: 600px) {
+      .calculator-modal-content {
+        padding: 20px;
+        width: 95%;
+      }
+
+      .calculator-modal-title {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+      }
+
+      .calculator-modal-subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 15px;
+      }
+
+      .calculator-options {
+        gap: 8px;
+      }
+
+      .calculator-option {
+        padding: 12px;
+        border-radius: 8px;
+      }
+
+      .calculator-option-icon {
+        font-size: 1.3rem;
+        margin-right: 12px;
+        min-width: 30px;
+      }
+
+      .calculator-option-text h3 {
+        font-size: 1rem;
+        margin-bottom: 2px;
+      }
+
+      .calculator-option-text p {
+        font-size: 0.8rem;
+        line-height: 1.2;
+      }
+    }
+
+    /* --- FIN MODAL CALCULADORA --- */
+
     .contest-card-neon {
       animation: neon-glow 2s infinite alternate;
       border: 2px solid rgba(236, 100, 52, 0.3) !important;
@@ -1743,14 +1921,14 @@
           </div>
           <div class="panel-card-body">
             <div class="tools-grid">
-              <a href="pdf/manualdeproductos.html" class="tool-link">
-                <i class="fa-solid fa-book-open"></i>
-                <span>Manual de Productos</span>
+              <a href="#" onclick="openCalculatorModal(); return false;" class="tool-link">
+                <i class="fa-solid fa-calculator"></i>
+                <span>Calculadora de Materiales</span>
               </a>
-              <a href="pdf/Laventapasoapaso.html" target="_blank" class="tool-link">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>La venta paso a paso</span>
-              </a>
+              <div id="open-promo-modal-btn" class="tool-link" style="cursor: pointer;">
+                <i class="fa-solid fa-photo-film"></i>
+                <span>Contenido Promocional</span>
+              </div>
               <a href="sucursales.html" target="_blank" class="tool-link">
                 <i class="fa-solid fa-clock"></i>
                 <span>Horarios</span>
@@ -1758,10 +1936,6 @@
               <div id="open-links-modal-btn" class="tool-link">
                 <i class="fa-solid fa-link"></i>
                 <span>Links Útiles</span>
-              </div>
-              <div id="open-promo-modal-btn" class="tool-link" style="cursor: pointer;">
-                <i class="fa-solid fa-photo-film"></i>
-                <span>Contenido Promocional</span>
               </div>
               <div id="open-photos-modal-btn" class="tool-link" style="cursor: pointer;">
                 <i class="fa-solid fa-camera-retro"></i>
@@ -1776,11 +1950,62 @@
                 <i class="fa-solid fa-comments-dollar"></i>
                 <span>Argumentario de ventas</span>
               </a>
-              <a href="calculadora.html" target="_blank" class="tool-link">
-                <i class="fa-solid fa-calculator"></i>
-                <span>Calculadora de M²</span>
+              <a href="pdf/manualdeproductos.html" class="tool-link">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Manual de Productos</span>
+              </a>
+              <a href="pdf/Laventapasoapaso.html" target="_blank" class="tool-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>La venta paso a paso</span>
               </a>
 
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Selección de Calculadora -->
+        <div id="calculator-modal" class="calculator-modal">
+          <div class="calculator-modal-content">
+            <button class="calculator-modal-close" onclick="closeCalculatorModal()">&times;</button>
+            <h2 class="calculator-modal-title">Seleccioná una Calculadora</h2>
+            <p class="calculator-modal-subtitle">Elegí la herramienta que necesitás para tu proyecto</p>
+            <div class="calculator-options">
+              <a href="calculadora.html" target="_blank" class="calculator-option">
+                <div class="calculator-option-icon">
+                  <i class="fa-solid fa-grip"></i>
+                </div>
+                <div class="calculator-option-text">
+                  <h3>Pisos y Revestimientos</h3>
+                  <p>Calculá la cantidad de cajas de cerámicos y porcelanatos</p>
+                </div>
+              </a>
+              <a href="calculadora-durlock.html" target="_blank" class="calculator-option">
+                <div class="calculator-option-icon">
+                  <i class="fa-solid fa-hammer"></i>
+                </div>
+                <div class="calculator-option-text">
+                  <h3>Placas de Yeso (Durlock)</h3>
+                  <p>Calculá materiales para cielorrasos, revestimientos y paredes</p>
+                </div>
+              </a>
+              <a href="Calculadora-viguetas.html" target="_blank" class="calculator-option">
+                <div class="calculator-option-icon">
+                  <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div class="calculator-option-text">
+                  <h3>Viguetas para Losas</h3>
+                  <p>Calculá viguetas, bovedillas y materiales para tu losa</p>
+                </div>
+              </a>
+              <a href="calculadora-niveladores.html" target="_blank" class="calculator-option">
+                <div class="calculator-option-icon">
+                  <i class="fa-solid fa-grip-lines"></i>
+                </div>
+                <div class="calculator-option-text">
+                  <h3>Niveladores para Cerámicos</h3>
+                  <p>Calculá clips, cuñas y pinzas para colocación de cerámicos</p>
+                </div>
+              </a>
             </div>
           </div>
         </div>
@@ -2766,6 +2991,8 @@
                 if (verMasLink) {
                   verMasLink.addEventListener('click', (e) => {
                     e.stopPropagation();
+                    // Register click in Firestore
+                    registerNewsClick(newsId);
                   });
                 }
 
@@ -2870,6 +3097,22 @@
           console.log(`Click registrado en notificación ${notificationId} para ${loggedInUserName}`);
         } catch (error) {
           console.error("Error al registrar clic en notificación:", error);
+        }
+      }
+
+      // Función para registrar clic en noticia
+      async function registerNewsClick(newsId) {
+        const loggedInUserName = localStorage.getItem("vendedorLogueado");
+        if (!loggedInUserName || !newsId) return;
+
+        try {
+          const docRef = db.collection("news").doc(newsId);
+          await docRef.update({
+            clicked_by: firebase.firestore.FieldValue.arrayUnion(loggedInUserName)
+          });
+          console.log(`Click registrado en noticia ${newsId} para ${loggedInUserName}`);
+        } catch (error) {
+          console.error("Error al registrar clic en noticia:", error);
         }
       }
 
@@ -3623,7 +3866,7 @@
             <div style="font-weight: 700; color: #1f2937;">LUIS</div>
             <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Salta</div>
           </div>
-          <div style="font-weight: 800; color: var(--accent); font-size: 1.1rem;">71 u.</div>
+          <div style="font-weight: 800; color: var(--accent); font-size: 1.1rem;">98 u.</div>
         </div>
 
         <div class="ranking-item"
@@ -3633,7 +3876,7 @@
             <div style="font-weight: 700; color: #1f2937;">EVANGELINA</div>
             <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Salta</div>
           </div>
-          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;">50 u.</div>
+          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;">82 u.</div>
         </div>
 
         <div class="ranking-item"
@@ -3643,7 +3886,7 @@
             <div style="font-weight: 700; color: #1f2937;">IGNACIO</div>
             <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Metan</div>
           </div>
-          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;">45 u.</div>
+          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;">72 u.</div>
         </div>
 
         <div class="ranking-item"
@@ -3651,10 +3894,10 @@
           <span
             style="font-size: 1.1rem; margin-right: 20px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">4</span>
           <div style="flex-grow: 1;">
-            <div style="font-weight: 700; color: #1f2937;">MATIAS</div>
-            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Aguilares</div>
+            <div style="font-weight: 700; color: #1f2937;">FERNANDA</div>
+            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Manantial </div>
           </div>
-          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;">18 u.</div>
+          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;">47 u.</div>
         </div>
 
         <div class="ranking-item"
@@ -3662,10 +3905,10 @@
           <span
             style="font-size: 1.1rem; margin-right: 20px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">5</span>
           <div style="flex-grow: 1;">
-            <div style="font-weight: 700; color: #1f2937;">FERNANDA</div>
-            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Manantial</div>
+            <div style="font-weight: 700; color: #1f2937;">MATIAS</div>
+            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Aguilares</div>
           </div>
-          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;">16 u.</div>
+          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;">43 u.</div>
         </div>
       </div>
       <div style="margin-top: 20px; text-align: center;">
@@ -3748,6 +3991,27 @@
 
     setInterval(updateCountdown, 1000);
     updateCountdown(); // Initial call
+
+    // --- FUNCIONES MODAL CALCULADORA ---
+    function openCalculatorModal() {
+      document.getElementById('calculator-modal').classList.add('active');
+    }
+
+    function closeCalculatorModal() {
+      document.getElementById('calculator-modal').classList.remove('active');
+    }
+
+    // Cerrar modal al hacer clic fuera del contenido
+    document.addEventListener('DOMContentLoaded', function () {
+      const modal = document.getElementById('calculator-modal');
+      if (modal) {
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) {
+            closeCalculatorModal();
+          }
+        });
+      }
+    });
   </script>
 </body>
 

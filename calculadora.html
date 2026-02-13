@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora de Pisos y Revestimientos por m² - Rosso Materiales</title>
-    <meta name="description" content="Calculá la cantidad exacta de cajas de cerámicos y porcelanatos que necesitás para tu proyecto. Usá nuestra calculadora gratuita y evitá comprar de más o de menos.">
+    <meta name="description"
+        content="Calculá la cantidad exacta de cajas de cerámicos y porcelanatos que necesitás para tu proyecto. Usá nuestra calculadora gratuita y evitá comprar de más o de menos.">
     ...
-     <link href="assets/FAV.png" rel="icon">
+    <link href="assets/FAV.png" rel="icon">
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QBM51JZ19R"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-      gtag('config', 'G-QBM51JZ19R');
+        gtag('config', 'G-QBM51JZ19R');
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -26,8 +28,10 @@
         .calculator-section {
             padding: 120px 0 64px 0;
             min-height: 80vh;
-            padding-inline: 25px; /* <-- AÑADÍ ESTA LÍNEA */
+            padding-inline: 25px;
+            /* <-- AÑADÍ ESTA LÍNEA */
         }
+
         .calculator-container {
             max-width: 700px;
             margin: 0 auto;
@@ -36,8 +40,10 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             border-top: 5px solid var(--accent);
-             padding-inline: 25px; /* <-- AÑADÍ ESTA LÍNEA */
+            padding-inline: 25px;
+            /* <-- AÑADÍ ESTA LÍNEA */
         }
+
         .calculator-title {
             text-align: center;
             font-size: 2rem;
@@ -45,21 +51,25 @@
             color: var(--brand);
             margin-bottom: 8px;
         }
+
         .calculator-subtitle {
             text-align: center;
             color: var(--muted);
             margin-bottom: 32px;
         }
+
         .form-grid {
             display: grid;
             gap: 20px;
         }
+
         .form-group label {
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
             color: var(--ink);
         }
+
         .form-group input {
             width: 100%;
             padding: 10px 14px;
@@ -67,10 +77,12 @@
             border: 1px solid #d1d5db;
             font-size: 1rem;
         }
+
         .form-group input:focus {
             outline: 2px solid var(--brand);
             border-color: transparent;
         }
+
         .calculate-button {
             width: 100%;
             padding: 12px;
@@ -84,86 +96,257 @@
             margin-top: 16px;
             transition: background-color 0.3s;
         }
+
         .calculate-button:hover {
             background-color: #d95324;
         }
+
         .result-box {
             margin-top: 32px;
             padding: 24px;
             background-color: var(--surface);
             border-radius: 8px;
             text-align: center;
-            display: none; /* Oculto por defecto */
+            display: none;
+            /* Oculto por defecto */
         }
+
         .result-box h3 {
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--brand);
         }
+
         .result-box p {
             font-size: 2.5rem;
             font-weight: 800;
             color: var(--accent);
             margin: 8px 0;
         }
+
         .result-box .disclaimer {
             font-size: 0.9rem;
             color: var(--muted);
         }
+
+        .result-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: 1px solid var(--accent);
+            background: white;
+            color: var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .action-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .action-btn.btn-print {
+            border-color: #1c355e;
+            color: #1c355e;
+        }
+
+        .action-btn.btn-print:hover {
+            background: #1c355e;
+            color: white;
+        }
+
+        /* Print Styles */
+        #print-container {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body * {
+                visibility: hidden;
+            }
+
+            .calculator-section,
+            .result-actions {
+                display: none !important;
+            }
+
+            #print-container {
+                visibility: visible !important;
+                display: block !important;
+            }
+
+            #print-container * {
+                visibility: visible;
+            }
+
+            #print-container div,
+            #print-container h1,
+            #print-container h2,
+            #print-container p,
+            #print-container span,
+            #print-container img {
+                display: block !important;
+            }
+
+            #print-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                padding: 10mm 15mm;
+                background: white;
+                box-sizing: border-box;
+            }
+
+            .print-header {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid var(--accent);
+                padding-bottom: 10px;
+                margin-bottom: 30px;
+            }
+
+            .print-logo {
+                width: 140px;
+            }
+
+            .print-title h1 {
+                font-family: 'Bebas Neue', sans-serif;
+                color: var(--brand);
+                font-size: 20pt;
+                margin: 0;
+                text-transform: uppercase;
+                text-align: right;
+            }
+
+            .print-title p {
+                font-size: 9pt;
+                color: var(--muted);
+                margin: 2px 0 0;
+                text-align: right;
+            }
+
+            .print-content h2 {
+                color: var(--brand);
+                font-size: 16pt;
+                margin-bottom: 15px;
+            }
+
+            .print-content .calc-result {
+                font-size: 32pt;
+                font-weight: 800;
+                color: var(--accent);
+                margin: 20px 0;
+            }
+
+            .print-content .calc-details {
+                background: #f9f9f9;
+                padding: 15px;
+                border-radius: 8px;
+                margin: 15px 0;
+                font-size: 11pt;
+            }
+
+            .print-content .calc-details p {
+                margin: 8px 0;
+                color: #444;
+            }
+
+            .print-footer {
+                position: fixed;
+                bottom: 10mm;
+                left: 15mm;
+                right: 15mm;
+                border-top: 1px solid #ddd;
+                padding-top: 10px;
+                display: flex !important;
+                justify-content: space-between;
+                font-size: 8pt;
+                color: var(--muted);
+            }
+        }
     </style>
 </head>
+
 <body>
-<header class="main-header" role="banner">
-    <nav class="main-nav container" aria-label="Primaria">
-      <a href="/index.html" class="logo" aria-label="Ir al inicio">
-        <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
-      </a>
-      <div class="nav-links" id="nav-links">
-        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
-        <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
-        <a href="/sucursales"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
-        <a href="/nosotros"><i class="fa-solid fa-users"></i> Nosotros</a>
-        <div class="dropdown">
-          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
-          <div class="dropdown-menu">
-            <a href="calculadora.html">Calculá los m²</a>
-            <a href="checklist.html">Checklist de Materiales</a>
-            <a href="glosario.html">Glosario</a>
-          </div>
-        </div>
-      </div>
+    <header class="main-header" role="banner">
+        <nav class="main-nav container" aria-label="Primaria">
+            <a href="/index.html" class="logo" aria-label="Ir al inicio">
+                <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales"
+                    class="logo-image" />
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+                <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+                <a href="/sucursales"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+                <a href="/nosotros"><i class="fa-solid fa-users"></i> Nosotros</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+                    <div class="dropdown-menu">
+                        <a href="calculadora.html">Calculá los m²</a>
+                        <a href="checklist.html">Checklist de Materiales</a>
+                        <a href="glosario.html">Glosario</a>
+                    </div>
+                </div>
+            </div>
 
-      <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false"
-        aria-label="Abrir menú">
-        <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-        </svg>
-      </button>
+            <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false"
+                aria-label="Abrir menú">
+                <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
+            </button>
 
-      <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
-        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
-        <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
-        <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
-        <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
-        <div class="dropdown">
-          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
-          <div class="dropdown-menu">
-            <a href="calculadora.html">Calculá los m²</a>
-            <a href="checklist.html">Checklist de Materiales</a>
-            <a href="glosario.html">Glosario</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+            <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
+                <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+                <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+                <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+                <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+                    <div class="dropdown-menu">
+                        <a href="calculadora.html">Calculá los m²</a>
+                        <a href="checklist.html">Checklist de Materiales</a>
+                        <a href="glosario.html">Glosario</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
 
     <main>
         <section class="calculator-section">
             <div class="calculator-container">
                 <h1 class="calculator-title">Calculadora de Pisos y Revestimientos</h1>
                 <p class="calculator-subtitle">Ingresá las medidas para saber cuántas cajas necesitás.</p>
-                
+
                 <form id="calculator-form" onsubmit="return false;">
                     <div class="form-grid">
                         <div class="form-group">
@@ -186,10 +369,37 @@
                     <h3>Vas a necesitar:</h3>
                     <p id="result-text">0 cajas</p>
                     <p class="disclaimer">Recomendamos comprar un 10% extra por desperdicios y cortes.</p>
+                    <div class="result-actions">
+                        <button class="action-btn" onclick="copiarResultado()"><i class="fa-regular fa-copy"></i>
+                            Copiar</button>
+                        <button class="action-btn btn-print" onclick="imprimirResultado()"><i
+                                class="fa-solid fa-print"></i> Imprimir</button>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <!-- Contenedor Invisible para Impresión -->
+    <div id="print-container">
+        <div class="print-header">
+            <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales"
+                class="print-logo">
+            <div class="print-title">
+                <h1>Presupuesto de Materiales</h1>
+                <p>Pisos y Revestimientos</p>
+            </div>
+        </div>
+
+        <div id="print-content-area" class="print-content">
+            <!-- Se inyectará el contenido dinámicamente -->
+        </div>
+
+        <div class="print-footer">
+            <span>www.rossomateriales.site</span>
+            <span id="print-date"></span>
+        </div>
+    </div>
 
     <footer class="main-footer">
         <div class="container">
@@ -198,6 +408,8 @@
     </footer>
 
     <script>
+        let lastCalculation = null;
+
         function calculate() {
             // 1. Obtener los valores de los inputs
             const largo = parseFloat(document.getElementById('largo').value);
@@ -215,11 +427,68 @@
             const superficieConDesperdicio = superficieTotal * 1.10; // Añadimos un 10%
             const cajasNecesarias = Math.ceil(superficieConDesperdicio / rendimiento); // Redondeamos hacia arriba
 
-            // 4. Mostrar el resultado
+            // 4. Guardar los datos del cálculo
+            lastCalculation = {
+                largo,
+                ancho,
+                rendimiento,
+                superficieTotal: superficieTotal.toFixed(2),
+                cajasNecesarias
+            };
+
+            // 5. Mostrar el resultado
             document.getElementById('result-text').innerText = `${cajasNecesarias} cajas`;
             document.getElementById('result').style.display = 'block';
+        }
+
+        function copiarResultado() {
+            if (!lastCalculation) {
+                alert('Por favor, realizá un cálculo primero.');
+                return;
+            }
+
+            const texto = `PRESUPUESTO DE MATERIALES - Pisos y Revestimientos\n\n` +
+                `Superficie: ${lastCalculation.largo}m x ${lastCalculation.ancho}m = ${lastCalculation.superficieTotal} m²\n` +
+                `Rendimiento por caja: ${lastCalculation.rendimiento} m²\n\n` +
+                `RESULTADO: ${lastCalculation.cajasNecesarias} cajas\n\n` +
+                `(Incluye 10% extra por desperdicios y cortes)`;
+
+            navigator.clipboard.writeText(texto).then(() => {
+                alert('¡Resultado copiado al portapapeles!');
+            }).catch(() => {
+                alert('Error al copiar. Intentá de nuevo.');
+            });
+        }
+
+        function imprimirResultado() {
+            if (!lastCalculation) {
+                alert('Por favor, realizá un cálculo primero.');
+                return;
+            }
+
+            // Preparar el contenido para imprimir
+            const printContent = document.getElementById('print-content-area');
+            printContent.innerHTML = `
+                <h2><i class="fa-solid fa-calculator"></i> Cálculo de Materiales</h2>
+                <div class="calc-result">${lastCalculation.cajasNecesarias} cajas</div>
+                <div class="calc-details">
+                    <p><strong>Largo:</strong> ${lastCalculation.largo} metros</p>
+                    <p><strong>Ancho:</strong> ${lastCalculation.ancho} metros</p>
+                    <p><strong>Superficie total:</strong> ${lastCalculation.superficieTotal} m²</p>
+                    <p><strong>Rendimiento por caja:</strong> ${lastCalculation.rendimiento} m²</p>
+                    <p style="margin-top:15px; font-style:italic; color:#666;">* Incluye 10% extra por desperdicios y cortes</p>
+                </div>
+            `;
+
+            // Actualizar fecha
+            const now = new Date();
+            document.getElementById('print-date').innerText = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+
+            // Imprimir
+            window.print();
         }
     </script>
     <script src="script.js"></script>
 </body>
+
 </html>
