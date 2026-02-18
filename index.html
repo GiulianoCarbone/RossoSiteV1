@@ -1005,6 +1005,71 @@
       border: 1px solid #fecaca;
     }
 
+    /* ===== ESTILOS MARKDOWN EN MENSAJES DEL BOT ===== */
+    .chat-msg--bot .chat-md-list {
+      margin: 4px 0 4px 4px;
+      padding-left: 16px;
+      list-style: disc;
+    }
+
+    .chat-msg--bot .chat-md-list li {
+      margin-bottom: 3px;
+      line-height: 1.5;
+    }
+
+    .chat-msg--bot .chat-md-heading {
+      display: block;
+      margin: 6px 0 2px;
+      font-size: 14px;
+      color: #111827;
+    }
+
+    .chat-msg--bot .chat-md-h1 {
+      font-size: 15px;
+    }
+
+    .chat-msg--bot .chat-md-h2 {
+      font-size: 14px;
+    }
+
+    .chat-msg--bot .chat-md-h3 {
+      font-size: 13.5px;
+    }
+
+    .chat-msg--bot .chat-md-hr {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 8px 0;
+    }
+
+    .chat-code-inline {
+      background: rgba(0, 0, 0, 0.07);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12.5px;
+    }
+
+    .chat-code-block {
+      background: #1e293b;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin: 6px 0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .chat-code-block code {
+      background: none;
+      padding: 0;
+      font-size: inherit;
+      color: inherit;
+    }
+
     /* Responsive móvil */
     @media (max-width: 480px) {
       .chat-window {
@@ -1076,6 +1141,110 @@
         return new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
       }
 
+      /* ---- Parser de Markdown liviano (solo para mensajes del bot) ---- */
+      function parseMarkdown(text) {
+        // Si el texto ya contiene HTML (n8n a veces devuelve HTML directo),
+        // lo procesamos de forma diferente: separamos los tags HTML del texto plano.
+        const hasHTML = /<[a-z][\s\S]*>/i.test(text);
+
+        if (hasHTML) {
+          // Modo HTML mixto: sanitizar tags peligrosos y procesar el texto plano
+          // entre tags con Markdown
+          const safe = sanitizeHTML(text);
+          // Aplicar Markdown solo a los segmentos de texto (fuera de tags HTML)
+          return safe.replace(/(<[^>]+>)|([^<]+)/g, (match, tag, plainText) => {
+            if (tag) return tag; // devolver el tag HTML tal cual
+            if (plainText) return inlineMarkdownSafe(plainText);
+            return match;
+          });
+        }
+
+        // Modo texto puro: escapar HTML y aplicar Markdown completo
+        let html = escapeHTML(text);
+
+        // Bloques de código (```...```)
+        html = html.replace(/```([\s\S]*?)```/g, '<pre class="chat-code-block"><code>$1</code></pre>');
+
+        // Procesar línea por línea para listas y encabezados
+        const lines = html.split('\n');
+        const result = [];
+        let inList = false;
+
+        for (let i = 0; i < lines.length; i++) {
+          let line = lines[i];
+
+          // Encabezados ### ## #
+          if (/^#{1,3}\s/.test(line)) {
+            if (inList) { result.push('</ul>'); inList = false; }
+            const level = line.match(/^(#{1,3})/)[1].length;
+            const content = line.replace(/^#{1,3}\s+/, '');
+            result.push(`<strong class="chat-md-heading chat-md-h${level}">${inlineMarkdownSafe(content)}</strong>`);
+            continue;
+          }
+
+          // Separadores ---
+          if (/^---+$/.test(line.trim())) {
+            if (inList) { result.push('</ul>'); inList = false; }
+            result.push('<hr class="chat-md-hr">');
+            continue;
+          }
+
+          // Ítems de lista (- o * o •)
+          if (/^[\-\*•]\s+/.test(line)) {
+            if (!inList) { result.push('<ul class="chat-md-list">'); inList = true; }
+            const content = line.replace(/^[\-\*•]\s+/, '');
+            result.push('<li>' + inlineMarkdownSafe(content) + '</li>');
+            continue;
+          }
+
+          // Línea normal
+          if (inList) { result.push('</ul>'); inList = false; }
+          if (line.trim() === '') {
+            result.push('<br>');
+          } else {
+            result.push('<span>' + inlineMarkdownSafe(line) + '</span><br>');
+          }
+        }
+
+        if (inList) result.push('</ul>');
+        return result.join('');
+      }
+
+      /* Escapa solo caracteres HTML peligrosos en texto plano */
+      function escapeHTML(str) {
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      /* Sanitiza HTML: elimina tags peligrosos pero deja <a>, <strong>, <em>, <br>, etc. */
+      function sanitizeHTML(str) {
+        return str
+          .replace(/<script[\s\S]*?<\/script>/gi, '')
+          .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
+          .replace(/<style[\s\S]*?<\/style>/gi, '')
+          .replace(/on\w+="[^"]*"/gi, '')
+          .replace(/on\w+='[^']*'/gi, '');
+      }
+
+      /* Aplica formato Markdown inline sobre texto ya seguro (sin escapar HTML) */
+      function inlineMarkdownSafe(text) {
+        return text
+          // Código inline `...`
+          .replace(/`([^`]+)`/g, '<code class="chat-code-inline">$1</code>')
+          // Negrita **...** o __...__
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          .replace(/__(.+?)__/g, '<strong>$1</strong>')
+          // Cursiva *...* o _..._  (solo si no es parte de **)
+          .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
+          .replace(/(?<!_)_(?!_)(.+?)(?<!_)_(?!_)/g, '<em>$1</em>')
+          // Links [texto](url)
+          .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">$1</a>')
+          // URLs automáticas (solo si no están ya dentro de un href)
+          .replace(/(?<!href=["'])(https?:\/\/[^\s<"'&]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">$1</a>');
+      }
+
       /* ---- Agregar mensaje ---- */
       function addMessage(text, role) {
         const wrap = document.createElement('div');
@@ -1083,11 +1252,17 @@
 
         const bubble = document.createElement('div');
         bubble.className = 'chat-msg-bubble';
-        // Permite saltos de línea y links básicos
-        bubble.innerHTML = text
-          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-          .replace(/\n/g, '<br>')
-          .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">$1</a>');
+
+        if (role === 'bot') {
+          // Mensajes del bot: renderizar Markdown
+          bubble.innerHTML = parseMarkdown(text);
+        } else {
+          // Mensajes del usuario y errores: solo escapar HTML
+          bubble.innerHTML = text
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/\n/g, '<br>')
+            .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">$1</a>');
+        }
 
         const time = document.createElement('span');
         time.className = 'chat-msg-time';
