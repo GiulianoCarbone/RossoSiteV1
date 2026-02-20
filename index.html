@@ -578,6 +578,48 @@
 
   <style>
     /* ===== BOTÓN FLOTANTE ===== */
+
+    /* Animación del emoji de saludo 👋 */
+    .emoji-wave {
+      display: inline-block;
+      transform-origin: 70% 90%;
+      animation: wave-hand 2.5s ease-in-out infinite;
+    }
+
+    @keyframes wave-hand {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      8% {
+        transform: rotate(14deg);
+      }
+
+      16% {
+        transform: rotate(-8deg);
+      }
+
+      24% {
+        transform: rotate(14deg);
+      }
+
+      32% {
+        transform: rotate(-4deg);
+      }
+
+      40% {
+        transform: rotate(10deg);
+      }
+
+      48% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+
     .chat-fab {
       position: fixed;
       bottom: 25px;
@@ -634,6 +676,13 @@
     .chat-fab.is-open {
       border-radius: 50%;
       padding: 14px;
+    }
+
+    /* Ocultar botón Volver Arriba cuando el chat está abierto para evitar superposición */
+    .chat-fab.is-open~#back-to-top {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
     }
 
     /* ===== VENTANA DE CHAT ===== */
