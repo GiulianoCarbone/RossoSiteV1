@@ -481,6 +481,9 @@
                 <a class="nav-item" data-section="review-config">
                     <i class="fa-solid fa-star"></i> Reseña Destacada
                 </a>
+                <a class="nav-item" data-section="contest-config">
+                    <i class="fa-solid fa-trophy"></i> Concurso Atrim
+                </a>
                 <!-- Link to go back to main site -->
                 <a href="panel-corporativo.html" class="nav-item">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Volver al Sitio
@@ -718,6 +721,136 @@
                 </div>
             </section>
 
+            <!-- CONTEST CONFIG SECTION -->
+            <section id="contest-config" class="content-section">
+                <div class="section-header">
+                    <h1>Concurso Atrim <i class="fa-solid fa-trophy" style="color: var(--accent);"></i></h1>
+                </div>
+
+                <!-- Premio -->
+                <div class="card">
+                    <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-image" style="color: var(--accent);"></i>
+                        Imagen del Premio</h3>
+                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">URL de la imagen que se muestra
+                        flotando en la tarjeta del concurso.</p>
+                    <form id="contest-prize-form">
+                        <div class="input-group">
+                            <label>URL de la Imagen del Premio</label>
+                            <input type="url" id="contest-prize-image-url" placeholder="https://i.ibb.co/..." required>
+                            <small>Link directo a la imagen del premio (PNG con fondo transparente recomendado).</small>
+                        </div>
+                        <div id="contest-prize-preview" style="margin: 10px 0; text-align: center; display: none;">
+                            <img id="contest-prize-img-preview" src="" alt="Preview"
+                                style="max-height: 150px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        </div>
+                        <button type="submit" style="margin-top: 10px;">Guardar Imagen del Premio</button>
+                    </form>
+                </div>
+
+                <!-- Bases / Terminos -->
+                <div class="card">
+                    <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-file-contract"
+                            style="color: var(--accent);"></i> Bases y Condiciones (Modal Términos)</h3>
+                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">Texto que aparece en el modal
+                        "Conocé más" del concurso. Podés usar HTML básico (párrafos, negritas, listas).</p>
+                    <form id="contest-terms-form">
+                        <div class="input-group">
+                            <label>Título del Modal</label>
+                            <input type="text" id="contest-terms-title"
+                                placeholder="Ej: Bases del Concurso: Desafío Atrim 🚀" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Contenido HTML de las Bases</label>
+                            <textarea id="contest-terms-content" rows="12"
+                                placeholder="<h5>1. VIGENCIA</h5><p>El concurso...</p>" required
+                                style="font-family: monospace; font-size: 0.85rem;"></textarea>
+                            <small>Escribí el contenido con etiquetas HTML básicas: &lt;h5&gt;, &lt;p&gt;, &lt;ul&gt;,
+                                &lt;li&gt;, &lt;strong&gt;, &lt;ol&gt;</small>
+                        </div>
+                        <button type="submit" style="margin-top: 10px;">Guardar Bases</button>
+                    </form>
+                </div>
+
+                <!-- Ranking Top 5 -->
+                <div class="card">
+                    <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-ranking-star"
+                            style="color: var(--accent);"></i> Ranking Top 5 Vendedores</h3>
+                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">Actualizá el ranking semanal que
+                        se muestra en el modal "Ver Ranking".</p>
+                    <form id="contest-ranking-form">
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- Posición 1 -->
+                            <div
+                                style="background: #fff7ed; border: 1px solid #ffedd5; border-radius: 10px; padding: 15px;">
+                                <p style="font-weight: 700; color: #92400e; margin: 0 0 10px;">🥇 1° Puesto</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
+                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
+                                            id="rank1-name" placeholder="Ej: LUIS"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
+                                            type="text" id="rank1-branch" placeholder="Ej: Suc. Salta"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
+                                            type="number" id="rank1-units" placeholder="101" min="0"></div>
+                                </div>
+                            </div>
+                            <!-- Posición 2 -->
+                            <div
+                                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 15px;">
+                                <p style="font-weight: 700; color: #374151; margin: 0 0 10px;">🥈 2° Puesto</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
+                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
+                                            id="rank2-name" placeholder="Ej: EVANGELINA"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
+                                            type="text" id="rank2-branch" placeholder="Ej: Suc. Salta"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
+                                            type="number" id="rank2-units" placeholder="82" min="0"></div>
+                                </div>
+                            </div>
+                            <!-- Posición 3 -->
+                            <div
+                                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 15px;">
+                                <p style="font-weight: 700; color: #374151; margin: 0 0 10px;">🥉 3° Puesto</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
+                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
+                                            id="rank3-name" placeholder="Ej: IGNACIO"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
+                                            type="text" id="rank3-branch" placeholder="Ej: Suc. Metán"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
+                                            type="number" id="rank3-units" placeholder="74" min="0"></div>
+                                </div>
+                            </div>
+                            <!-- Posición 4 -->
+                            <div
+                                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 15px;">
+                                <p style="font-weight: 700; color: #6b7280; margin: 0 0 10px;">4️⃣ 4° Puesto</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
+                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
+                                            id="rank4-name" placeholder="Ej: FERNANDA"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
+                                            type="text" id="rank4-branch" placeholder="Ej: Suc. Manantial"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
+                                            type="number" id="rank4-units" placeholder="59" min="0"></div>
+                                </div>
+                            </div>
+                            <!-- Posición 5 -->
+                            <div
+                                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 15px;">
+                                <p style="font-weight: 700; color: #6b7280; margin: 0 0 10px;">5️⃣ 5° Puesto</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
+                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
+                                            id="rank5-name" placeholder="Ej: MATIAS"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
+                                            type="text" id="rank5-branch" placeholder="Ej: Suc. Aguilares"></div>
+                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
+                                            type="number" id="rank5-units" placeholder="47" min="0"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" style="margin-top: 20px;"><i class="fa-solid fa-save"></i> Guardar
+                            Ranking</button>
+                    </form>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -893,6 +1026,7 @@
             initNotifications();
             initSocialConfig();
             initReviewConfig();
+            initContestConfig();
         }
 
         // Navigation Logic
@@ -925,6 +1059,7 @@
             if (sectionId === 'notifications') loadNotifications();
             if (sectionId === 'social-config') loadSocialConfig();
             if (sectionId === 'review-config') loadReviewConfig();
+            if (sectionId === 'contest-config') loadContestConfig();
 
             // Close mobile menu if open
             const sidebarNav = document.querySelector('.sidebar-nav');
@@ -1577,6 +1712,111 @@
                 }
             } catch (error) {
                 console.error("Error cargando reseña:", error);
+            }
+        }
+
+        // --- CONTEST CONFIG LOGIC ---
+        function initContestConfig() {
+            // Prize image preview on URL change
+            const prizeUrlInput = document.getElementById('contest-prize-image-url');
+            if (prizeUrlInput) {
+                prizeUrlInput.addEventListener('input', () => {
+                    const url = prizeUrlInput.value.trim();
+                    const previewDiv = document.getElementById('contest-prize-preview');
+                    const previewImg = document.getElementById('contest-prize-img-preview');
+                    if (url) {
+                        previewImg.src = url;
+                        previewDiv.style.display = 'block';
+                    } else {
+                        previewDiv.style.display = 'none';
+                    }
+                });
+            }
+
+            // Prize image form
+            document.getElementById('contest-prize-form').onsubmit = async (e) => {
+                e.preventDefault();
+                try {
+                    await db.collection('config').doc('contest_config').set({
+                        prizeImageUrl: document.getElementById('contest-prize-image-url').value,
+                    }, { merge: true });
+                    alert('✅ Imagen del premio guardada.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al guardar la imagen.');
+                }
+            };
+
+            // Terms/Bases form
+            document.getElementById('contest-terms-form').onsubmit = async (e) => {
+                e.preventDefault();
+                try {
+                    await db.collection('config').doc('contest_config').set({
+                        termsTitle: document.getElementById('contest-terms-title').value,
+                        termsContent: document.getElementById('contest-terms-content').value,
+                    }, { merge: true });
+                    alert('✅ Bases guardadas correctamente.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al guardar las bases.');
+                }
+            };
+
+            // Ranking form
+            document.getElementById('contest-ranking-form').onsubmit = async (e) => {
+                e.preventDefault();
+                const ranking = [];
+                for (let i = 1; i <= 5; i++) {
+                    ranking.push({
+                        name: document.getElementById(`rank${i}-name`).value.trim(),
+                        branch: document.getElementById(`rank${i}-branch`).value.trim(),
+                        units: parseInt(document.getElementById(`rank${i}-units`).value) || 0,
+                    });
+                }
+                try {
+                    await db.collection('config').doc('contest_config').set({ ranking }, { merge: true });
+                    alert('✅ Ranking actualizado correctamente.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al guardar el ranking.');
+                }
+            };
+
+            loadContestConfig();
+        }
+
+        async function loadContestConfig() {
+            try {
+                const doc = await db.collection('config').doc('contest_config').get();
+                if (doc.exists) {
+                    const data = doc.data();
+
+                    // Prize image
+                    if (data.prizeImageUrl) {
+                        document.getElementById('contest-prize-image-url').value = data.prizeImageUrl;
+                        const previewDiv = document.getElementById('contest-prize-preview');
+                        const previewImg = document.getElementById('contest-prize-img-preview');
+                        previewImg.src = data.prizeImageUrl;
+                        previewDiv.style.display = 'block';
+                    }
+
+                    // Terms
+                    if (data.termsTitle) document.getElementById('contest-terms-title').value = data.termsTitle;
+                    if (data.termsContent) document.getElementById('contest-terms-content').value = data.termsContent;
+
+                    // Ranking
+                    if (data.ranking && Array.isArray(data.ranking)) {
+                        data.ranking.forEach((item, index) => {
+                            const i = index + 1;
+                            if (i > 5) return;
+                            document.getElementById(`rank${i}-name`).value = item.name || '';
+                            document.getElementById(`rank${i}-branch`).value = item.branch || '';
+                            document.getElementById(`rank${i}-units`).value = item.units || '';
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error('Error cargando config concurso:', err);
             }
         }
 

@@ -1855,8 +1855,8 @@
             style="text-align: center; padding: 30px 20px; position: relative; z-index: 1;">
             <!-- Image Container with Floating Animation -->
             <div style="margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; width: 100%;">
-              <img src="https://i.ibb.co/whSyPTRg/Adobe-Express-file.png" alt="Smartwatch Premio"
-                class="floating-prize">
+              <img src="https://i.ibb.co/whSyPTRg/Adobe-Express-file.png" alt="Smartwatch Premio" class="floating-prize"
+                id="contest-prize-image">
             </div>
             <p class="contest-card-text"
               style="font-size: 1.15rem; color: #374151; max-width: 600px; margin: 0 auto 15px; line-height: 1.6;">
@@ -2569,6 +2569,7 @@
           populateFeaturedReview();
           populateUsefulLinks();
           initializeCalendar();
+          loadContestConfig();
 
           // Inicia la lógica del contador de usuarios
           updateUserSession(); // Registra la sesión al cargar
@@ -3784,10 +3785,11 @@
   <div id="contest-details-modal" class="modal-overlay" style="z-index: 5000; display: none;">
     <div class="modal-content" style="max-width: 800px;">
       <div class="modal-header">
-        <h4 style="font-size: 1.3rem;">Bases del Concurso: "Desafío Atrim de Verano" 🚀</h4>
+        <h4 style="font-size: 1.3rem;" id="contest-terms-title-text">Bases del Concurso: "Desafío Atrim de Verano" 🚀
+        </h4>
         <button class="close-modal" onclick="closeContestModal()">&times;</button>
       </div>
-      <div style="color: #374151; line-height: 1.6; font-size: 0.95rem;">
+      <div id="contest-terms-body" style="color: #374151; line-height: 1.6; font-size: 0.95rem;">
 
         <h5
           style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
@@ -3855,38 +3857,39 @@
         <h4 style="font-size: 1.3rem;">Top 5 Vendedores 🏆</h4>
         <button class="close-modal" onclick="closeRankingModal()">&times;</button>
       </div>
-      <div style="padding: 10px 0;">
-        <p style="text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 20px;">El Ranking se actuaza al
+      <div id="contest-ranking-list" style="padding: 10px 0;">
+        <p style="text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 20px;">El Ranking se actualiza
+          al
           finalizar cada semana </p>
 
         <div class="ranking-item"
           style="display: flex; align-items: center; padding: 12px; background: #fff7ed; border-radius: 12px; margin-bottom: 10px; border: 1px solid #ffedd5;">
           <span style="font-size: 1.5rem; margin-right: 15px;">🥇</span>
           <div style="flex-grow: 1;">
-            <div style="font-weight: 700; color: #1f2937;">LUIS</div>
-            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Salta</div>
+            <div style="font-weight: 700; color: #1f2937;" id="rank-name-1">LUIS</div>
+            <div style="font-size: 0.85rem; color: #6b7280;" id="rank-branch-1">Sucursal Salta</div>
           </div>
-          <div style="font-weight: 800; color: var(--accent); font-size: 1.1rem;">101 u.</div>
+          <div style="font-weight: 800; color: var(--accent); font-size: 1.1rem;" id="rank-units-1">101 u.</div>
         </div>
 
         <div class="ranking-item"
           style="display: flex; align-items: center; padding: 12px; background: #f9fafb; border-radius: 12px; margin-bottom: 10px; border: 1px solid #f3f4f6;">
           <span style="font-size: 1.5rem; margin-right: 15px;">🥈</span>
           <div style="flex-grow: 1;">
-            <div style="font-weight: 700; color: #1f2937;">EVANGELINA</div>
-            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Salta</div>
+            <div style="font-weight: 700; color: #1f2937;" id="rank-name-2">EVANGELINA</div>
+            <div style="font-size: 0.85rem; color: #6b7280;" id="rank-branch-2">Sucursal Salta</div>
           </div>
-          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;">82 u.</div>
+          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;" id="rank-units-2">82 u.</div>
         </div>
 
         <div class="ranking-item"
           style="display: flex; align-items: center; padding: 12px; background: #f9fafb; border-radius: 12px; margin-bottom: 10px; border: 1px solid #f3f4f6;">
           <span style="font-size: 1.5rem; margin-right: 15px;">🥉</span>
           <div style="flex-grow: 1;">
-            <div style="font-weight: 700; color: #1f2937;">IGNACIO</div>
-            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Metan</div>
+            <div style="font-weight: 700; color: #1f2937;" id="rank-name-3">IGNACIO</div>
+            <div style="font-size: 0.85rem; color: #6b7280;" id="rank-branch-3">Sucursal Metan</div>
           </div>
-          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;">74 u.</div>
+          <div style="font-weight: 800; color: #4b5563; font-size: 1.1rem;" id="rank-units-3">74 u.</div>
         </div>
 
         <div class="ranking-item"
@@ -3894,10 +3897,10 @@
           <span
             style="font-size: 1.1rem; margin-right: 20px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">4</span>
           <div style="flex-grow: 1;">
-            <div style="font-weight: 700; color: #1f2937;">FERNANDA</div>
-            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Manantial </div>
+            <div style="font-weight: 700; color: #1f2937;" id="rank-name-4">FERNANDA</div>
+            <div style="font-size: 0.85rem; color: #6b7280;" id="rank-branch-4">Sucursal Manantial </div>
           </div>
-          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;">59 u.</div>
+          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;" id="rank-units-4">59 u.</div>
         </div>
 
         <div class="ranking-item"
@@ -3905,10 +3908,10 @@
           <span
             style="font-size: 1.1rem; margin-right: 20px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">5</span>
           <div style="flex-grow: 1;">
-            <div style="font-weight: 700; color: #1f2937;">MATIAS</div>
-            <div style="font-size: 0.85rem; color: #6b7280;">Sucursal Aguilares</div>
+            <div style="font-weight: 700; color: #1f2937;" id="rank-name-5">MATIAS</div>
+            <div style="font-size: 0.85rem; color: #6b7280;" id="rank-branch-5">Sucursal Aguilares</div>
           </div>
-          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;">47 u.</div>
+          <div style="font-weight: 800; color: #6b7280; font-size: 1.1rem;" id="rank-units-5">47 u.</div>
         </div>
       </div>
       <div style="margin-top: 20px; text-align: center;">
@@ -3968,6 +3971,52 @@
 
     function closeRankingModal() {
       document.getElementById('contest-ranking-modal').style.display = 'none';
+    }
+
+    // --- LOAD CONTEST CONFIG FROM FIREBASE ---
+    async function loadContestConfig() {
+      try {
+        const doc = await db.collection('config').doc('contest_config').get();
+        if (!doc.exists) return;
+        const data = doc.data();
+
+        // 1. Prize image
+        if (data.prizeImageUrl) {
+          const prizeImg = document.getElementById('contest-prize-image');
+          if (prizeImg) prizeImg.src = data.prizeImageUrl;
+        }
+
+        // 2. Terms modal title & body
+        if (data.termsTitle) {
+          const titleEl = document.getElementById('contest-terms-title-text');
+          if (titleEl) titleEl.textContent = data.termsTitle;
+        }
+        if (data.termsContent) {
+          const bodyEl = document.getElementById('contest-terms-body');
+          if (bodyEl) bodyEl.innerHTML = data.termsContent;
+        }
+
+        // 3. Ranking Top 5
+        if (data.ranking && Array.isArray(data.ranking)) {
+          const medals = ['🥇', '🥈', '🥉', '4', '5'];
+          const accentColors = ['var(--accent)', '#4b5563', '#4b5563', '#6b7280', '#6b7280'];
+          data.ranking.forEach((item, index) => {
+            const i = index + 1;
+            if (i > 5) return;
+            const nameEl = document.getElementById(`rank-name-${i}`);
+            const branchEl = document.getElementById(`rank-branch-${i}`);
+            const unitsEl = document.getElementById(`rank-units-${i}`);
+            if (nameEl && item.name) nameEl.textContent = item.name;
+            if (branchEl && item.branch) branchEl.textContent = item.branch;
+            if (unitsEl && item.units !== undefined) {
+              unitsEl.textContent = `${item.units} u.`;
+              unitsEl.style.color = accentColors[index];
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Error cargando config del concurso:', err);
+      }
     }
 
     // Countdown Logic
