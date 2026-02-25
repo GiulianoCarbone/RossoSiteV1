@@ -1876,7 +1876,7 @@
                 style="padding: 14px 30px; background: linear-gradient(to right, var(--accent), #c2411c); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(236, 100, 52, 0.3);">
                 <i class="fa-solid fa-file-contract"></i> Conocé más
               </button>
-              <button onclick="openRankingModal()"
+              <button id="ranking-btn" onclick="openRankingModal()"
                 style="padding: 14px 30px; background: white; color: var(--accent); border: 2px solid var(--accent); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: all 0.2s;">
                 <i class="fa-solid fa-ranking-star"></i> Ver Ranking
               </button>
@@ -4014,19 +4014,54 @@
             }
           });
         }
+
+        // 4. Countdown date
+        if (data.countdownDate) {
+          countdownTargetDate = new Date(data.countdownDate).getTime();
+          startCountdown(); // Reiniciar countdown con la nueva fecha
+        }
+
+        // 5. Ranking button visibility
+        const rankingBtn = document.getElementById('ranking-btn');
+        if (rankingBtn) {
+          const status = data.rankingStatus || 'visible'; // Fallback: visible
+          if (status === 'hidden') {
+            rankingBtn.style.display = 'none';
+          } else if (status === 'coming_soon') {
+            rankingBtn.style.display = '';
+            rankingBtn.disabled = true;
+            rankingBtn.onclick = null;
+            rankingBtn.innerHTML = '<i class="fa-solid fa-clock"></i> Ranking próximamente';
+            rankingBtn.style.opacity = '0.6';
+            rankingBtn.style.cursor = 'not-allowed';
+            rankingBtn.title = 'El ranking estará disponible la próxima semana';
+          } else {
+            // visible (default)
+            rankingBtn.style.display = '';
+            rankingBtn.disabled = false;
+            rankingBtn.onclick = openRankingModal;
+            rankingBtn.innerHTML = '<i class="fa-solid fa-ranking-star"></i> Ver Ranking';
+            rankingBtn.style.opacity = '1';
+            rankingBtn.style.cursor = 'pointer';
+            rankingBtn.title = '';
+          }
+        }
       } catch (err) {
         console.error('Error cargando config del concurso:', err);
       }
     }
 
     // Countdown Logic
+    let countdownTargetDate = new Date("February 28, 2026 23:59:59").getTime(); // Fallback hardcodeado
+    let countdownInterval = null;
+
     function updateCountdown() {
-      const targetDate = new Date("February 28, 2026 23:59:59").getTime();
       const now = new Date().getTime();
-      const timeLeft = targetDate - now;
+      const timeLeft = countdownTargetDate - now;
 
       if (timeLeft <= 0) {
         document.getElementById("countdown-timer").innerHTML = "¡El concurso ha finalizado!";
+        if (countdownInterval) clearInterval(countdownInterval);
         return;
       }
 
@@ -4038,8 +4073,13 @@
       document.getElementById("time-left").textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
 
-    setInterval(updateCountdown, 1000);
-    updateCountdown(); // Initial call
+    function startCountdown() {
+      if (countdownInterval) clearInterval(countdownInterval);
+      countdownInterval = setInterval(updateCountdown, 1000);
+      updateCountdown(); // Initial call
+    }
+
+    startCountdown();
 
     // --- FUNCIONES MODAL CALCULADORA ---
     function openCalculatorModal() {

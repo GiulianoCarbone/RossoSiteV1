@@ -747,6 +747,23 @@
                     </form>
                 </div>
 
+                <!-- Countdown -->
+                <div class="card">
+                    <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-clock" style="color: var(--accent);"></i>
+                        Fecha de Cierre del Countdown</h3>
+                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">Definí la fecha y hora límite del
+                        concurso. El countdown del panel vendedores se calculará automáticamente a partir de este valor.
+                    </p>
+                    <form id="contest-countdown-form">
+                        <div class="input-group">
+                            <label>Fecha y hora de finalización</label>
+                            <input type="datetime-local" id="contest-countdown-date" required>
+                            <small>Ejemplo: 28 de Febrero de 2026 a las 23:59.</small>
+                        </div>
+                        <button type="submit" style="margin-top: 10px;">Guardar Fecha del Countdown</button>
+                    </form>
+                </div>
+
                 <!-- Bases / Terminos -->
                 <div class="card">
                     <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-file-contract"
@@ -777,6 +794,48 @@
                             style="color: var(--accent);"></i> Ranking Top 5 Vendedores</h3>
                     <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">Actualizá el ranking semanal que
                         se muestra en el modal "Ver Ranking".</p>
+
+                    <!-- Visibilidad del botón Ranking -->
+                    <div
+                        style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+                        <p style="font-weight: 700; color: #1f2937; margin: 0 0 6px; font-size: 0.95rem;"><i
+                                class="fa-solid fa-eye" style="color: var(--accent);"></i> Visibilidad del botón "Ver
+                            Ranking"</p>
+                        <p style="color: #6b7280; font-size: 0.82rem; margin: 0 0 14px;">Controlá qué ven los vendedores
+                            independientemente de los datos cargados.</p>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;">
+                            <label id="rstatus-label-hidden"
+                                style="flex: 1; min-width: 130px; cursor: pointer; border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px; text-align: center; transition: all 0.2s; background: white;">
+                                <input type="radio" name="ranking-status" id="rstatus-hidden" value="hidden"
+                                    style="display:none;">
+                                <div style="font-size: 1.4rem; margin-bottom: 4px;">🙈</div>
+                                <div style="font-weight: 700; font-size: 0.88rem; color: #374151;">Oculto</div>
+                                <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 2px;">Botón no aparece</div>
+                            </label>
+                            <label id="rstatus-label-coming_soon"
+                                style="flex: 1; min-width: 130px; cursor: pointer; border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px; text-align: center; transition: all 0.2s; background: white;">
+                                <input type="radio" name="ranking-status" id="rstatus-coming_soon" value="coming_soon"
+                                    style="display:none;">
+                                <div style="font-size: 1.4rem; margin-bottom: 4px;">🔜</div>
+                                <div style="font-weight: 700; font-size: 0.88rem; color: #374151;">Próximamente</div>
+                                <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 2px;">Botón visible,
+                                    deshabilitado</div>
+                            </label>
+                            <label id="rstatus-label-visible"
+                                style="flex: 1; min-width: 130px; cursor: pointer; border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px; text-align: center; transition: all 0.2s; background: white;">
+                                <input type="radio" name="ranking-status" id="rstatus-visible" value="visible"
+                                    style="display:none;">
+                                <div style="font-size: 1.4rem; margin-bottom: 4px;">✅</div>
+                                <div style="font-weight: 700; font-size: 0.88rem; color: #374151;">Visible</div>
+                                <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 2px;">Botón activo y
+                                    clickeable</div>
+                            </label>
+                        </div>
+                        <button type="button" id="save-ranking-status-btn"
+                            style="width: auto; background-color: #4f46e5;"><i class="fa-solid fa-floppy-disk"></i>
+                            Guardar Visibilidad</button>
+                    </div>
+
                     <form id="contest-ranking-form">
                         <div style="display: flex; flex-direction: column; gap: 16px;">
                             <!-- Posición 1 -->
@@ -1762,6 +1821,59 @@
                 }
             };
 
+            // Countdown date form
+            document.getElementById('contest-countdown-form').onsubmit = async (e) => {
+                e.preventDefault();
+                const dateValue = document.getElementById('contest-countdown-date').value;
+                if (!dateValue) return;
+                try {
+                    await db.collection('config').doc('contest_config').set({
+                        countdownDate: dateValue,
+                    }, { merge: true });
+                    alert('✅ Fecha del countdown guardada correctamente.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al guardar la fecha.');
+                }
+            };
+
+            // Ranking visibility radio cards - visual interaction
+            const rankingStatusRadios = document.querySelectorAll('input[name="ranking-status"]');
+            function updateRankingStatusUI(val) {
+                ['hidden', 'coming_soon', 'visible'].forEach(v => {
+                    const lbl = document.getElementById(`rstatus-label-${v}`);
+                    if (lbl) {
+                        if (v === val) {
+                            lbl.style.borderColor = 'var(--accent)';
+                            lbl.style.background = '#fff7ed';
+                            lbl.style.boxShadow = '0 0 0 3px rgba(217,83,36,0.15)';
+                        } else {
+                            lbl.style.borderColor = '#e5e7eb';
+                            lbl.style.background = 'white';
+                            lbl.style.boxShadow = 'none';
+                        }
+                    }
+                });
+            }
+            rankingStatusRadios.forEach(radio => {
+                radio.addEventListener('change', () => updateRankingStatusUI(radio.value));
+            });
+
+            // Save ranking visibility button
+            document.getElementById('save-ranking-status-btn').addEventListener('click', async () => {
+                const selected = document.querySelector('input[name="ranking-status"]:checked');
+                if (!selected) { alert('Seleccioná una opción primero.'); return; }
+                try {
+                    await db.collection('config').doc('contest_config').set({
+                        rankingStatus: selected.value
+                    }, { merge: true });
+                    alert('✅ Visibilidad del ranking guardada.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al guardar.');
+                }
+            });
+
             // Ranking form
             document.getElementById('contest-ranking-form').onsubmit = async (e) => {
                 e.preventDefault();
@@ -1798,6 +1910,32 @@
                         const previewImg = document.getElementById('contest-prize-img-preview');
                         previewImg.src = data.prizeImageUrl;
                         previewDiv.style.display = 'block';
+                    }
+
+                    // Countdown date
+                    if (data.countdownDate) document.getElementById('contest-countdown-date').value = data.countdownDate;
+
+                    // Ranking status
+                    if (data.rankingStatus) {
+                        const radio = document.getElementById(`rstatus-${data.rankingStatus}`);
+                        if (radio) {
+                            radio.checked = true;
+                            // call the UI updater (defined inside initContestConfig, need inline approach)
+                            ['hidden', 'coming_soon', 'visible'].forEach(v => {
+                                const lbl = document.getElementById(`rstatus-label-${v}`);
+                                if (lbl) {
+                                    if (v === data.rankingStatus) {
+                                        lbl.style.borderColor = 'var(--accent)';
+                                        lbl.style.background = '#fff7ed';
+                                        lbl.style.boxShadow = '0 0 0 3px rgba(217,83,36,0.15)';
+                                    } else {
+                                        lbl.style.borderColor = '#e5e7eb';
+                                        lbl.style.background = 'white';
+                                        lbl.style.boxShadow = 'none';
+                                    }
+                                }
+                            });
+                        }
                     }
 
                     // Terms
