@@ -481,9 +481,7 @@
                 <a class="nav-item" data-section="review-config">
                     <i class="fa-solid fa-star"></i> Reseña Destacada
                 </a>
-                <a class="nav-item" data-section="contest-config">
-                    <i class="fa-solid fa-trophy"></i> Concurso Atrim
-                </a>
+
                 <!-- Link to go back to main site -->
                 <a href="panel-corporativo.html" class="nav-item">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Volver al Sitio
@@ -721,194 +719,8 @@
                 </div>
             </section>
 
-            <!-- CONTEST CONFIG SECTION -->
-            <section id="contest-config" class="content-section">
-                <div class="section-header">
-                    <h1>Concurso Eliane<i class="fa-solid fa-trophy" style="color: var(--accent);"></i></h1>
-                </div>
 
-                <!-- Premio -->
-                <div class="card">
-                    <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-image" style="color: var(--accent);"></i>
-                        Imagen del Premio</h3>
-                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">URL de la imagen que se muestra
-                        flotando en la tarjeta del concurso.</p>
-                    <form id="contest-prize-form">
-                        <div class="input-group">
-                            <label>URL de la Imagen del Premio</label>
-                            <input type="url" id="contest-prize-image-url" placeholder="https://i.ibb.co/..." required>
-                            <small>Link directo a la imagen del premio (PNG con fondo transparente recomendado).</small>
-                        </div>
-                        <div id="contest-prize-preview" style="margin: 10px 0; text-align: center; display: none;">
-                            <img id="contest-prize-img-preview" src="" alt="Preview"
-                                style="max-height: 150px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                        </div>
-                        <button type="submit" style="margin-top: 10px;">Guardar Imagen del Premio</button>
-                    </form>
-                </div>
 
-                <!-- Countdown -->
-                <div class="card">
-                    <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-clock" style="color: var(--accent);"></i>
-                        Fecha de Cierre del Countdown</h3>
-                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">Definí la fecha y hora límite del
-                        concurso. El countdown del panel vendedores se calculará automáticamente a partir de este valor.
-                    </p>
-                    <form id="contest-countdown-form">
-                        <div class="input-group">
-                            <label>Fecha y hora de finalización</label>
-                            <input type="datetime-local" id="contest-countdown-date" value="2026-03-31T23:59" required>
-                            <small>Ejemplo: 31 de Marzo de 2026 a las 23:59.</small>
-                        </div>
-                        <button type="submit" style="margin-top: 10px;">Guardar Fecha del Countdown</button>
-                    </form>
-                </div>
-
-                <!-- Bases / Terminos -->
-                <div class="card">
-                    <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-file-contract"
-                            style="color: var(--accent);"></i> Bases y Condiciones (Modal Términos)</h3>
-                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">Texto que aparece en el modal
-                        "Conocé más" del concurso. Podés usar HTML básico (párrafos, negritas, listas).</p>
-                    <form id="contest-terms-form">
-                        <div class="input-group">
-                            <label>Título del Modal</label>
-                            <input type="text" id="contest-terms-title"
-                                placeholder="Ej: Bases del Concurso: Desafío Atrim 🚀" required>
-                        </div>
-                        <div class="input-group">
-                            <label>Contenido HTML de las Bases</label>
-                            <textarea id="contest-terms-content" rows="12"
-                                placeholder="<h5>1. VIGENCIA</h5><p>El concurso...</p>" required
-                                style="font-family: monospace; font-size: 0.85rem;"></textarea>
-                            <small>Escribí el contenido con etiquetas HTML básicas: &lt;h5&gt;, &lt;p&gt;, &lt;ul&gt;,
-                                &lt;li&gt;, &lt;strong&gt;, &lt;ol&gt;</small>
-                        </div>
-                        <button type="submit" style="margin-top: 10px;">Guardar Bases</button>
-                    </form>
-                </div>
-
-                <!-- Ranking Top 5 -->
-                <div class="card">
-                    <h3 style="margin-bottom: 5px;"><i class="fa-solid fa-ranking-star"
-                            style="color: var(--accent);"></i> Ranking Top 5 Vendedores</h3>
-                    <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 15px;">Actualizá el ranking semanal que
-                        se muestra en el modal "Ver Ranking".</p>
-
-                    <!-- Visibilidad del botón Ranking -->
-                    <div
-                        style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
-                        <p style="font-weight: 700; color: #1f2937; margin: 0 0 6px; font-size: 0.95rem;"><i
-                                class="fa-solid fa-eye" style="color: var(--accent);"></i> Visibilidad del botón "Ver
-                            Ranking"</p>
-                        <p style="color: #6b7280; font-size: 0.82rem; margin: 0 0 14px;">Controlá qué ven los vendedores
-                            independientemente de los datos cargados.</p>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px;">
-                            <label id="rstatus-label-hidden"
-                                style="flex: 1; min-width: 130px; cursor: pointer; border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px; text-align: center; transition: all 0.2s; background: white;">
-                                <input type="radio" name="ranking-status" id="rstatus-hidden" value="hidden"
-                                    style="display:none;">
-                                <div style="font-size: 1.4rem; margin-bottom: 4px;">🙈</div>
-                                <div style="font-weight: 700; font-size: 0.88rem; color: #374151;">Oculto</div>
-                                <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 2px;">Botón no aparece</div>
-                            </label>
-                            <label id="rstatus-label-coming_soon"
-                                style="flex: 1; min-width: 130px; cursor: pointer; border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px; text-align: center; transition: all 0.2s; background: white;">
-                                <input type="radio" name="ranking-status" id="rstatus-coming_soon" value="coming_soon"
-                                    style="display:none;">
-                                <div style="font-size: 1.4rem; margin-bottom: 4px;">🔜</div>
-                                <div style="font-weight: 700; font-size: 0.88rem; color: #374151;">Próximamente</div>
-                                <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 2px;">Botón visible,
-                                    deshabilitado</div>
-                            </label>
-                            <label id="rstatus-label-visible"
-                                style="flex: 1; min-width: 130px; cursor: pointer; border: 2px solid #e5e7eb; border-radius: 10px; padding: 12px; text-align: center; transition: all 0.2s; background: white;">
-                                <input type="radio" name="ranking-status" id="rstatus-visible" value="visible"
-                                    style="display:none;">
-                                <div style="font-size: 1.4rem; margin-bottom: 4px;">✅</div>
-                                <div style="font-weight: 700; font-size: 0.88rem; color: #374151;">Visible</div>
-                                <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 2px;">Botón activo y
-                                    clickeable</div>
-                            </label>
-                        </div>
-                        <button type="button" id="save-ranking-status-btn"
-                            style="width: auto; background-color: #4f46e5;"><i class="fa-solid fa-floppy-disk"></i>
-                            Guardar Visibilidad</button>
-                    </div>
-
-                    <form id="contest-ranking-form">
-                        <div style="display: flex; flex-direction: column; gap: 16px;">
-                            <!-- Posición 1 -->
-                            <div
-                                style="background: #fff7ed; border: 1px solid #ffedd5; border-radius: 10px; padding: 15px;">
-                                <p style="font-weight: 700; color: #92400e; margin: 0 0 10px;">🥇 1° Puesto</p>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
-                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
-                                            id="rank1-name" placeholder="Ej: LUIS"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
-                                            type="text" id="rank1-branch" placeholder="Ej: Suc. Salta"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
-                                            type="number" id="rank1-units" placeholder="101" min="0"></div>
-                                </div>
-                            </div>
-                            <!-- Posición 2 -->
-                            <div
-                                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 15px;">
-                                <p style="font-weight: 700; color: #374151; margin: 0 0 10px;">🥈 2° Puesto</p>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
-                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
-                                            id="rank2-name" placeholder="Ej: EVANGELINA"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
-                                            type="text" id="rank2-branch" placeholder="Ej: Suc. Salta"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
-                                            type="number" id="rank2-units" placeholder="82" min="0"></div>
-                                </div>
-                            </div>
-                            <!-- Posición 3 -->
-                            <div
-                                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 15px;">
-                                <p style="font-weight: 700; color: #374151; margin: 0 0 10px;">🥉 3° Puesto</p>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
-                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
-                                            id="rank3-name" placeholder="Ej: IGNACIO"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
-                                            type="text" id="rank3-branch" placeholder="Ej: Suc. Metán"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
-                                            type="number" id="rank3-units" placeholder="74" min="0"></div>
-                                </div>
-                            </div>
-                            <!-- Posición 4 -->
-                            <div
-                                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 15px;">
-                                <p style="font-weight: 700; color: #6b7280; margin: 0 0 10px;">4️⃣ 4° Puesto</p>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
-                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
-                                            id="rank4-name" placeholder="Ej: FERNANDA"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
-                                            type="text" id="rank4-branch" placeholder="Ej: Suc. Manantial"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
-                                            type="number" id="rank4-units" placeholder="59" min="0"></div>
-                                </div>
-                            </div>
-                            <!-- Posición 5 -->
-                            <div
-                                style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 15px;">
-                                <p style="font-weight: 700; color: #6b7280; margin: 0 0 10px;">5️⃣ 5° Puesto</p>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 120px; gap: 10px;">
-                                    <div class="input-group" style="margin: 0;"><label>Nombre</label><input type="text"
-                                            id="rank5-name" placeholder="Ej: MATIAS"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Sucursal</label><input
-                                            type="text" id="rank5-branch" placeholder="Ej: Suc. Aguilares"></div>
-                                    <div class="input-group" style="margin: 0;"><label>Unidades</label><input
-                                            type="number" id="rank5-units" placeholder="47" min="0"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" style="margin-top: 20px;"><i class="fa-solid fa-save"></i> Guardar
-                            Ranking</button>
-                    </form>
-                </div>
-            </section>
 
         </main>
     </div>
@@ -1085,7 +897,7 @@
             initNotifications();
             initSocialConfig();
             initReviewConfig();
-            initContestConfig();
+
         }
 
         // Navigation Logic
@@ -1118,7 +930,7 @@
             if (sectionId === 'notifications') loadNotifications();
             if (sectionId === 'social-config') loadSocialConfig();
             if (sectionId === 'review-config') loadReviewConfig();
-            if (sectionId === 'contest-config') loadContestConfig();
+
 
             // Close mobile menu if open
             const sidebarNav = document.querySelector('.sidebar-nav');

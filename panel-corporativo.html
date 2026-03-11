@@ -1705,6 +1705,25 @@
         font-size: 1rem !important;
       }
     }
+
+    /* --- NORMALIZAR TÍTULOS DEL MODAL DE BASES DEL CONCURSO --- */
+    #contest-terms-body h1,
+    #contest-terms-body h2,
+    #contest-terms-body h3,
+    #contest-terms-body h4,
+    #contest-terms-body h5,
+    #contest-terms-body h6 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--brand);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 20px;
+      margin-bottom: 6px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #eee;
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -1855,8 +1874,9 @@
             style="text-align: center; padding: 30px 20px; position: relative; z-index: 1;">
             <!-- Image Container with Floating Animation -->
             <div style="margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; width: 100%;">
-              <img src="https://i.ibb.co/whSyPTRg/Adobe-Express-file.png" alt="Smartwatch Premio" class="floating-prize"
-                id="contest-prize-image">
+              <img src="" alt="Premio del Concurso" class="floating-prize"
+                id="contest-prize-image" style="opacity: 0; transition: opacity 0.4s ease;">
+
             </div>
             <p class="contest-card-text"
               style="font-size: 1.15rem; color: #374151; max-width: 600px; margin: 0 auto 15px; line-height: 1.6;">
@@ -3785,66 +3805,44 @@
   <div id="contest-details-modal" class="modal-overlay" style="z-index: 5000; display: none;">
     <div class="modal-content" style="max-width: 800px;">
       <div class="modal-header">
-        <h4 style="font-size: 1.3rem;" id="contest-terms-title-text">Bases del Concurso: "Desafío Atrim de Verano" 🚀
-        </h4>
+        <h4 style="font-size: 1.3rem;" id="contest-terms-title-text">Bases del Concurso: Desafío Eliane 🏆</h4>
         <button class="close-modal" onclick="closeContestModal()">&times;</button>
       </div>
       <div id="contest-terms-body" style="color: #374151; line-height: 1.6; font-size: 0.95rem;">
 
-        <h5
-          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-          1. VIGENCIA</h5>
+        <h5>1. VIGENCIA</h5>
         <p>El concurso tendrá una duración de <strong>1 mes</strong>, comenzando el día <strong>Lunes 2</strong> y
-          finalizando el <strong>Sábado 28 de Febrero</strong> inclusive.</p>
+          finalizando el <strong>martes 31 de marzo</strong> inclusive.</p>
 
-        <h5
-          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-          2. PARTICIPANTES</h5>
+        <h5>2. PARTICIPANTES</h5>
         <p>Podrán participar todos los integrantes del equipo de ventas de <strong>salones y cajas rápidas</strong> de
           las sucursales de Rosso Materiales.</p>
 
-        <h5
-          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-          3. DINÁMICA DEL CONCURSO</h5>
+        <h5>3. DINÁMICA DEL CONCURSO</h5>
+        <h5>2 GANADORES</h5>
+        <p><strong>Mecánica:</strong> Se dividirá a las sucursales en categorías A y B, de ambas categorías saldrá un ganador, este será el que logre vender más metros de pisos y revestimientos marca ELIANE, en el mes.</p>
+        <p><strong>Mínimo de Clasificación:</strong> Para poder optar al premio, el vendedor categoría A deberá alcanzar un piso mínimo de 150 mts, mientras que un vendedor categoría B tendrá un mínimo de 80 mts. <strong>COBRADAS Y ENTREGADAS.</strong> Las ventas por debajo de este número no serán consideradas para la premiación final.</p>
+        <p><strong>CATEGORÍA A:</strong> Monteros, Concepción, Manantial y Salta</p>
+        <p><strong>CATEGORÍA B:</strong> Aguilares, Famailla, Metán y Tafí del Valle</p>
+
+        <h5>4. EL PREMIO</h5>
+        <p>El vendedor que ocupe el primer puesto en el ranking de cada categoría (superando el mínimo establecido) recibirá:</p>
         <ul style="padding-left: 20px; list-style-type: disc;">
-          <li><strong>Mecánica:</strong> El ganador será aquel vendedor que logre la mayor cantidad de unidades vendidas
-            de productos de la marca ATRIM (en cualquiera de sus categorías/artículos) durante el periodo de vigencia.
-          </li>
-          <li><strong>Mínimo de Clasificación:</strong> Para poder optar al premio, el vendedor deberá alcanzar un piso
-            mínimo de <strong>100 unidades vendidas</strong>, <strong>COBRADAS Y ENTREGADAS</strong> de la marca ATRIM.
-            Las ventas por debajo de este número <strong>no serán consideradas</strong> para la premiación final.</li>
+          <li>Auriculares gamer + parlante portátil</li>
         </ul>
 
-        <h5
-          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-          4. EL PREMIO ⌚</h5>
-        <p>El vendedor que ocupe el primer puesto en el ranking de unidades vendidas (superando el mínimo de 100)
-          recibirá:</p>
+        <h5>5. CONDICIONES Y REGLAS GENERALES</h5>
         <ul style="padding-left: 20px; list-style-type: disc;">
-          <li><strong>Un Smartwatch GADNIC de última generación.</strong></li>
+          <li><strong>Cómputo de Ventas:</strong> Solo se contabilizarán las ventas efectivamente facturadas y entregadas dentro del periodo del concurso.</li>
+          <li><strong>Devoluciones:</strong> En caso de que un cliente realice la devolución de un producto dentro del periodo del concurso, dicha unidad será restada del conteo total del vendedor.</li>
+          <li><strong>Transparencia:</strong> Se compartirá un ranking parcial de forma semanal para que todos los participantes puedan seguir su progreso.</li>
+          <li><strong>Criterio de Desempate:</strong> En caso de empate en cantidad de unidades, resultará ganador el vendedor que haya obtenido el mayor monto de facturación total en pesos sobre esas unidades vendidas de Eliane.</li>
         </ul>
 
-        <h5
-          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-          5. CONDICIONES Y REGLAS GENERALES</h5>
-        <ol style="padding-left: 20px;">
-          <li><strong>Cómputo de Ventas:</strong> Solo se contabilizarán las ventas efectivamente facturadas y
-            entregadas dentro del periodo del concurso.</li>
-          <li><strong>Devoluciones:</strong> En caso de que un cliente realice la devolución de un producto dentro del
-            periodo del concurso, dicha unidad será restada del conteo total del vendedor.</li>
-          <li><strong>Transparencia:</strong> Se compartirá un ranking parcial de forma semanal para que todos los
-            participantes puedan seguir su progreso.</li>
-          <li><strong>Criterio de Desempate:</strong> En caso de empate en cantidad de unidades, resultará ganador el
-            vendedor que haya obtenido el mayor monto de facturación total en pesos sobre esas unidades vendidas de
-            Atrim.</li>
-        </ol>
-
-        <h5
-          style="color: var(--brand); font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-          6. PREMIACIÓN</h5>
-        <p>El anuncio oficial del ganador se realizará el día <strong>3 de Marzo</strong> a través de la <strong>APP DE
-            ROSSOMATERIALES</strong>.</p>
+        <h5>6. PREMIACIÓN</h5>
+        <p>El anuncio oficial del ganador se realizará a través de la <strong>APP DE ROSSOMATERIALES</strong>.</p>
       </div>
+
       <div style="margin-top: 30px; text-align: center;">
         <button onclick="closeContestModal()"
           style="padding: 10px 20px; background-color: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer;">Cerrar</button>
@@ -3983,18 +3981,13 @@
         // 1. Prize image
         if (data.prizeImageUrl) {
           const prizeImg = document.getElementById('contest-prize-image');
-          if (prizeImg) prizeImg.src = data.prizeImageUrl;
+          if (prizeImg) {
+            prizeImg.onload = () => { prizeImg.style.opacity = '1'; };
+            prizeImg.onerror = () => { prizeImg.style.opacity = '0'; };
+            prizeImg.src = data.prizeImageUrl;
+          }
         }
 
-        // 2. Terms modal title & body
-        if (data.termsTitle) {
-          const titleEl = document.getElementById('contest-terms-title-text');
-          if (titleEl) titleEl.textContent = data.termsTitle;
-        }
-        if (data.termsContent) {
-          const bodyEl = document.getElementById('contest-terms-body');
-          if (bodyEl) bodyEl.innerHTML = data.termsContent;
-        }
 
         // 3. Ranking Top 5
         if (data.ranking && Array.isArray(data.ranking)) {
