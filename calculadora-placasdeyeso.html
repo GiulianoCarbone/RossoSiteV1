@@ -340,7 +340,7 @@
                                 <td class="val" id="r-c-t2">0</td>
                             </tr>
                             <tr>
-                                <td>Cinta Durlock</td>
+                                <td>Cinta de Juntas</td>
                                 <td class="val" id="r-c-cin">0</td>
                             </tr>
                             <tr>
@@ -352,7 +352,7 @@
                                 <td class="val" id="r-c-fij">0</td>
                             </tr>
                             <tr>
-                                <td>Placas Durlock 9.5mm</td>
+                                <td>Placas de Yeso 9.5mm</td>
                                 <td class="val" id="r-c-pla">0</td>
                             </tr>
                         </tbody>
@@ -387,7 +387,7 @@
                                 <td class="val" id="r-rv-t2">0</td>
                             </tr>
                             <tr>
-                                <td>Cinta Durlock </td>
+                                <td>Cinta de Juntas </td>
                                 <td class="val" id="r-rv-cin">0</td>
                             </tr>
                             <tr>
@@ -399,7 +399,7 @@
                                 <td class="val" id="r-rv-fij">0</td>
                             </tr>
                             <tr>
-                                <td>Placas Durlock 9.5mm</td>
+                                <td>Placas de Yeso 9.5mm</td>
                                 <td class="val" id="r-rv-pla">0</td>
                             </tr>
                         </tbody>
@@ -438,7 +438,7 @@
                                 <td class="val" id="r-p-t2">0</td>
                             </tr>
                             <tr>
-                                <td>Cinta Durlock </td>
+                                <td>Cinta de Juntas </td>
                                 <td class="val" id="r-p-cin">0</td>
                             </tr>
                             <tr>
@@ -450,7 +450,7 @@
                                 <td class="val" id="r-p-fij">0</td>
                             </tr>
                             <tr>
-                                <td>Placas Durlock 12.5mm</td>
+                                <td>Placas de Yeso 12.5mm</td>
                                 <td class="val" id="r-p-pla">0</td>
                             </tr>
                         </tbody>
@@ -592,7 +592,7 @@
 
             if (tipo === 'cielorrasos') {
                 const m2 = document.getElementById('c-m2').value || 0;
-                texto = `*CÁLCULO CIELORRASO DURLOCK*\nSuperficie a cubrir: ${m2} m²\n\n`;
+                texto = `*CÁLCULO CIELORRASO PLACAS DE YESO*\nSuperficie a cubrir: ${m2} m²\n\n`;
                 items = [
                     ['Soleras 35mm', 'r-c-sol'],
                     ['Montantes 34mm', 'r-c-mon'],
@@ -607,7 +607,7 @@
                 const ml = document.getElementById('rv-ml').value || 0;
                 const alto = document.getElementById('rv-a').value || 0;
                 const total = (ml * alto).toFixed(2);
-                texto = `*CÁLCULO REVESTIMIENTO DURLOCK*\nMedidas: ${ml}ml x ${alto}m (Total: ${total} m²)\n\n`;
+                texto = `*CÁLCULO REVESTIMIENTO PLACAS DE YESO*\nMedidas: ${ml}ml x ${alto}m (Total: ${total} m²)\n\n`;
                 items = [
                     ['Perfil Omega', 'r-rv-ome'],
                     ['Tornillos T2', 'r-rv-t2'],
@@ -618,7 +618,7 @@
                 ];
             } else if (tipo === 'paredes') {
                 const m2 = document.getElementById('p-m2').value || 0;
-                texto = `*CÁLCULO PARED DURLOCK*\nSuperficie a cubrir: ${m2} m²\n\n`;
+                texto = `*CÁLCULO PARED PLACAS DE YESO*\nSuperficie a cubrir: ${m2} m²\n\n`;
                 items = [
                     ['Soleras 70mm', 'r-p-sol'],
                     ['Montantes 69mm', 'r-p-mon'],
