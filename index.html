@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -84,9 +84,13 @@
         <div class="dropdown">
           <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
           <div class="dropdown-menu">
-            <a href="/calculadora">Calculá los m²</a>
-            <a href="/checklist">Checklist de Materiales</a>
-            <a href="/glosario">Glosario</a>
+            <a href="visualizador-ia.html">Visualizador IA</a>
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
+            <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
+            <a href="calculadora-niveladores.html">Calculadora Niveladores</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
           </div>
         </div>
       </div>
@@ -107,7 +111,11 @@
         <div class="dropdown">
           <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
           <div class="dropdown-menu">
+            <a href="visualizador-ia.html">Visualizador IA</a>
             <a href="calculadora.html">Calculá los m²</a>
+            <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
+            <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
+            <a href="calculadora-niveladores.html">Calculadora Niveladores</a>
             <a href="checklist.html">Checklist de Materiales</a>
             <a href="glosario.html">Glosario</a>
           </div>
@@ -288,6 +296,38 @@
     <!-- ===== NUEVA SECCIÓN: UTILIDADES ===== -->
     <section class="utilities-section" style="padding: 40px 0; background-color: var(--surface)">
       <style>
+        .utilities-section {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .utilities-slider-container {
+          position: relative;
+          display: flex;
+          align-items: center;
+          padding: 0 40px;
+        }
+
+        .utilities-track {
+          display: flex;
+          gap: 20px;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scroll-behavior: smooth;
+          padding: 20px 5px 40px;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .utilities-track::-webkit-scrollbar {
+          display: none;
+        }
+
+        .utilities-track .card-link {
+          flex: 0 0 300px;
+          scroll-snap-align: start;
+          text-decoration: none;
+        }
+
         .utility-card {
           background-color: var(--card);
           border-radius: var(--radius);
@@ -297,83 +337,149 @@
           height: 100%;
           display: flex;
           flex-direction: column;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+          border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .utility-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+          transform: translateY(-10px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+          border-color: var(--accent);
         }
 
         .utility-card .icon {
           font-size: 3rem;
           color: var(--accent);
           margin-bottom: 20px;
-          transition: color 0.3s ease;
+          transition: transform 0.4s ease;
         }
 
         .utility-card:hover .icon {
+          transform: scale(1.1) rotate(5deg);
           color: var(--brand);
         }
 
         .utility-card h3 {
-          font-size: 1.3rem;
+          font-size: 1.25rem;
           font-weight: 700;
           color: var(--brand);
-          margin-bottom: 8px;
+          margin-bottom: 12px;
         }
 
         .utility-card p {
           color: var(--muted);
           line-height: 1.6;
+          font-size: 0.95rem;
+        }
+
+        .slider-nav-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 50px;
+          height: 50px;
+          background: white;
+          border: none;
+          border-radius: 50%;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+          cursor: pointer;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--brand);
+          transition: all 0.3s ease;
+          opacity: 0.8;
+        }
+
+        .slider-nav-btn:hover {
+          opacity: 1;
+          background: var(--accent);
+          color: white;
+          box-shadow: 0 6px 20px rgba(236, 100, 52, 0.3);
+        }
+
+        .slider-nav-btn.prev { left: 10px; }
+        .slider-nav-btn.next { right: 10px; }
+
+        @media (max-width: 768px) {
+          .utilities-slider-container { padding: 0 10px; }
+          .utilities-track .card-link { flex: 0 0 260px; }
+          .slider-nav-btn { display: none; }
         }
       </style>
-      <div class="container">
+
+      <div class="container container-wide">
         <h2 class="section-title" style="text-align: center; margin-bottom: 40px">
           Herramientas para tu Proyecto
         </h2>
-        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))">
-          <a href="visualizador-ia.html" class="card-link is-visible">
-            <div class="utility-card">
-              <div class="icon">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
+        
+        <div class="utilities-slider-container">
+          <button class="slider-nav-btn prev" aria-label="Anterior" onclick="document.querySelector('.utilities-track').scrollBy({left: -320, behavior: 'smooth'})">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          
+          <div class="utilities-track">
+            <a href="visualizador-ia.html" class="card-link">
+              <div class="utility-card">
+                <div class="icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <h3>Visualizador de Ambientes</h3>
+                <p>Subí una foto de tu espacio y mirá cómo quedaría con nuestros productos.</p>
               </div>
-              <h3>Visualizador de Ambientes</h3>
-              <p>
-                Subí una foto de tu espacio y mirá cómo quedaría con nuestros
-                productos.
-              </p>
-            </div>
-          </a>
-          <a href="calculadora.html" class="card-link is-visible">
-            <div class="utility-card">
-              <div class="icon"><i class="fa-solid fa-calculator"></i></div>
-              <h3>Calculadora de M²</h3>
-              <p>
-                Calculá la cantidad exacta de cajas que necesitás para tu piso
-                o pared.
-              </p>
-            </div>
-          </a>
-          <a href="checklist.html" class="card-link is-visible">
-            <div class="utility-card">
-              <div class="icon"><i class="fa-solid fa-list-check"></i></div>
-              <h3>Checklist de Obra</h3>
-              <p>
-                Listas de materiales por proyecto para que no te olvides de
-                nada.
-              </p>
-            </div>
-          </a>
-          <a href="glosario.html" class="card-link is-visible">
-            <div class="utility-card">
-              <div class="icon"><i class="fa-solid fa-book-atlas"></i></div>
-              <h3>Glosario de Construcción</h3>
-              <p>
-                ¿No entendés un término? Te lo explicamos de forma sencilla.
-              </p>
-            </div>
-          </a>
+            </a>
+            
+            <a href="calculadora.html" class="card-link">
+              <div class="utility-card">
+                <div class="icon"><i class="fa-solid fa-calculator"></i></div>
+                <h3>Calculadora de M²</h3>
+                <p>Calculá la cantidad exacta de cajas que necesitás para tu piso o pared.</p>
+              </div>
+            </a>
+            
+            <a href="calculadora-placasdeyeso.html" class="card-link">
+              <div class="utility-card">
+                <div class="icon"><i class="fa-solid fa-border-all"></i></div>
+                <h3>Calculadora Placas de Yeso</h3>
+                <p>Calculá los materiales para cielorrasos, revestimientos y paredes de yeso.</p>
+              </div>
+            </a>
+            
+            <a href="calculadora-viguetas.html" class="card-link">
+              <div class="utility-card">
+                <div class="icon"><i class="fa-solid fa-table-cells"></i></div>
+                <h3>Calculadora de Viguetas</h3>
+                <p>Calculá los materiales necesarios para tu losa con viguetas T21 o T180.</p>
+              </div>
+            </a>
+            
+            <a href="calculadora-niveladores.html" class="card-link">
+              <div class="utility-card">
+                <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
+                <h3>Calculadora de Niveladores</h3>
+                <p>Calculá los clips, cuñas y pinzas necesarias para tu colocación de cerámicos.</p>
+              </div>
+            </a>
+            
+            <a href="checklist.html" class="card-link">
+              <div class="utility-card">
+                <div class="icon"><i class="fa-solid fa-list-check"></i></div>
+                <h3>Checklist de Obra</h3>
+                <p>Listas de materiales por proyecto para que no te olvides de nada.</p>
+              </div>
+            </a>
+            
+            <a href="glosario.html" class="card-link">
+              <div class="utility-card">
+                <div class="icon"><i class="fa-solid fa-book-atlas"></i></div>
+                <h3>Glosario de Construcción</h3>
+                <p>¿No entendés un término? Te lo explicamos de forma sencilla.</p>
+              </div>
+            </a>
+          </div>
+          
+          <button class="slider-nav-btn next" aria-label="Siguiente" onclick="document.querySelector('.utilities-track').scrollBy({left: 320, behavior: 'smooth'})">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
         </div>
       </div>
     </section>
