@@ -399,13 +399,26 @@
           box-shadow: 0 6px 20px rgba(236, 100, 52, 0.3);
         }
 
-        .slider-nav-btn.prev { left: 10px; }
-        .slider-nav-btn.next { right: 10px; }
+        .slider-nav-btn.prev {
+          left: 10px;
+        }
+
+        .slider-nav-btn.next {
+          right: 10px;
+        }
 
         @media (max-width: 768px) {
-          .utilities-slider-container { padding: 0 10px; }
-          .utilities-track .card-link { flex: 0 0 260px; }
-          .slider-nav-btn { display: none; }
+          .utilities-slider-container {
+            padding: 0 10px;
+          }
+
+          .utilities-track .card-link {
+            flex: 0 0 260px;
+          }
+
+          .slider-nav-btn {
+            display: none;
+          }
         }
       </style>
 
@@ -413,12 +426,13 @@
         <h2 class="section-title" style="text-align: center; margin-bottom: 40px">
           Herramientas para tu Proyecto
         </h2>
-        
+
         <div class="utilities-slider-container">
-          <button class="slider-nav-btn prev" aria-label="Anterior" onclick="document.querySelector('.utilities-track').scrollBy({left: -320, behavior: 'smooth'})">
+          <button class="slider-nav-btn prev" aria-label="Anterior"
+            onclick="document.querySelector('.utilities-track').scrollBy({left: -320, behavior: 'smooth'})">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
-          
+
           <div class="utilities-track">
             <a href="visualizador-ia.html" class="card-link">
               <div class="utility-card">
@@ -427,7 +441,7 @@
                 <p>Subí una foto de tu espacio y mirá cómo quedaría con nuestros productos.</p>
               </div>
             </a>
-            
+
             <a href="calculadora.html" class="card-link">
               <div class="utility-card">
                 <div class="icon"><i class="fa-solid fa-calculator"></i></div>
@@ -435,7 +449,7 @@
                 <p>Calculá la cantidad exacta de cajas que necesitás para tu piso o pared.</p>
               </div>
             </a>
-            
+
             <a href="calculadora-placasdeyeso.html" class="card-link">
               <div class="utility-card">
                 <div class="icon"><i class="fa-solid fa-border-all"></i></div>
@@ -443,7 +457,7 @@
                 <p>Calculá los materiales para cielorrasos, revestimientos y paredes de yeso.</p>
               </div>
             </a>
-            
+
             <a href="calculadora-viguetas.html" class="card-link">
               <div class="utility-card">
                 <div class="icon"><i class="fa-solid fa-table-cells"></i></div>
@@ -451,7 +465,7 @@
                 <p>Calculá los materiales necesarios para tu losa con viguetas T21 o T180.</p>
               </div>
             </a>
-            
+
             <a href="calculadora-niveladores.html" class="card-link">
               <div class="utility-card">
                 <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
@@ -459,7 +473,7 @@
                 <p>Calculá los clips, cuñas y pinzas necesarias para tu colocación de cerámicos.</p>
               </div>
             </a>
-            
+
             <a href="checklist.html" class="card-link">
               <div class="utility-card">
                 <div class="icon"><i class="fa-solid fa-list-check"></i></div>
@@ -467,7 +481,7 @@
                 <p>Listas de materiales por proyecto para que no te olvides de nada.</p>
               </div>
             </a>
-            
+
             <a href="glosario.html" class="card-link">
               <div class="utility-card">
                 <div class="icon"><i class="fa-solid fa-book-atlas"></i></div>
@@ -476,8 +490,9 @@
               </div>
             </a>
           </div>
-          
-          <button class="slider-nav-btn next" aria-label="Siguiente" onclick="document.querySelector('.utilities-track').scrollBy({left: 320, behavior: 'smooth'})">
+
+          <button class="slider-nav-btn next" aria-label="Siguiente"
+            onclick="document.querySelector('.utilities-track').scrollBy({left: 320, behavior: 'smooth'})">
             <i class="fa-solid fa-chevron-right"></i>
           </button>
         </div>

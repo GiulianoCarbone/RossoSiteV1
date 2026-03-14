@@ -479,7 +479,10 @@
                     <i class="fa-solid fa-share-nodes"></i> Redes Sociales
                 </a>
                 <a class="nav-item" data-section="review-config">
-                    <i class="fa-solid fa-star"></i> Reseña Destacada
+                    <i class="fa-solid fa-comment-dots"></i> Reseña Destacada
+                </a>
+                <a class="nav-item" data-section="contest-config">
+                    <i class="fa-solid fa-trophy"></i> Configurar Concurso
                 </a>
 
                 <!-- Link to go back to main site -->
@@ -719,6 +722,132 @@
                 </div>
             </section>
 
+            <!-- CONTEST CONFIG SECTION -->
+            <section id="contest-config" class="content-section">
+                <div class="section-header">
+                    <h1>Configurar Concurso</h1>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
+                    <!-- Prize Image -->
+                    <div class="panel-card" style="padding: 20px; flex: 1; min-width: 300px;">
+                        <h3><i class="fa-solid fa-gift"></i> Imagen del Premio</h3>
+                        <form id="contest-prize-form">
+                            <div class="input-group">
+                                <label>URL Imagen</label>
+                                <input type="url" id="contest-prize-image-url" placeholder="https://..." required>
+                            </div>
+                            <div id="contest-prize-preview" style="display: none; margin-top: 10px;">
+                                <img id="contest-prize-img-preview" src="" style="max-width: 100%; border-radius: 8px;">
+                            </div>
+                            <button type="submit" style="margin-top: 10px;">Guardar Imagen</button>
+                        </form>
+                    </div>
+
+                    <!-- Countdown -->
+                    <div class="panel-card" style="padding: 20px; flex: 1; min-width: 300px;">
+                        <h3><i class="fa-solid fa-calendar-day"></i> Countdown</h3>
+                        <form id="contest-countdown-form">
+                            <div class="input-group">
+                                <label>Fecha de Finalización</label>
+                                <input type="datetime-local" id="contest-countdown-date" required>
+                            </div>
+                            <button type="submit" style="margin-top: 10px;">Guardar Fecha</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="panel-card" style="padding: 20px; margin-bottom: 20px;">
+                    <h3><i class="fa-solid fa-file-contract"></i> Bases del Concurso</h3>
+                    <form id="contest-terms-form">
+                        <div class="input-group">
+                            <label>Título (Ej: Desafío Eliane 🏆)</label>
+                            <input type="text" id="contest-terms-title" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Contenido</label>
+                            <textarea id="contest-terms-content" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" style="margin-top: 10px;">Guardar Bases</button>
+                    </form>
+                </div>
+
+                <!-- Visibility -->
+                <div class="panel-card" style="padding: 20px; margin-bottom: 20px;">
+                    <h3><i class="fa-solid fa-eye"></i> Visibilidad del Ranking</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px;">
+                        <label id="rstatus-label-hidden"
+                            style="cursor: pointer; padding: 15px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+                            <input type="radio" name="ranking-status" value="hidden" id="rstatus-hidden"
+                                style="display: none;">
+                            <div style="font-weight: 700;">Oculto</div>
+                            <small>No se muestra</small>
+                        </label>
+                        <label id="rstatus-label-coming_soon"
+                            style="cursor: pointer; padding: 15px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+                            <input type="radio" name="ranking-status" value="coming_soon" id="rstatus-coming_soon"
+                                style="display: none;">
+                            <div style="font-weight: 700;">Próximamente</div>
+                            <small>Cartel de aviso</small>
+                        </label>
+                        <label id="rstatus-label-visible"
+                            style="cursor: pointer; padding: 15px; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
+                            <input type="radio" name="ranking-status" value="visible" id="rstatus-visible"
+                                style="display: none;">
+                            <div style="font-weight: 700;">Visible</div>
+                            <small>Mostrar Top 5</small>
+                        </label>
+                    </div>
+                    <button id="save-ranking-status-btn" style="margin-top: 15px;">Guardar Visibilidad</button>
+                </div>
+
+                <!-- Ranking Inputs -->
+                <div class="panel-card" style="padding: 20px;">
+                    <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 (Ventas)</h3>
+                    <form id="contest-ranking-form">
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <!-- Rank 1 -->
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; background: #f9fafb; padding: 10px; border-radius: 8px;">
+                                <span style="font-weight: 800; color: #d95324;">1º</span>
+                                <input type="text" id="rank1-name" placeholder="Vendedor" value="FERNANDA">
+                                <input type="text" id="rank1-branch" placeholder="Sucursal" value="Manantial">
+                                <input type="number" id="rank1-units" placeholder="Metros" value="156">
+                            </div>
+                            <!-- Rank 2 -->
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
+                                <span style="font-weight: 800; color: #4b5563;">2º</span>
+                                <input type="text" id="rank2-name" placeholder="Vendedor" value="CESAR">
+                                <input type="text" id="rank2-branch" placeholder="Sucursal" value="Salta">
+                                <input type="number" id="rank2-units" placeholder="Metros" value="117">
+                            </div>
+                            <!-- Rank 3 -->
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
+                                <span style="font-weight: 800; color: #4b5563;">3º</span>
+                                <input type="text" id="rank3-name" placeholder="Vendedor" value="AGUSTIN">
+                                <input type="text" id="rank3-branch" placeholder="Sucursal" value="Metan">
+                                <input type="number" id="rank3-units" placeholder="Metros" value="62">
+                            </div>
+                            <!-- Rank 4 -->
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
+                                <span style="font-weight: 800; color: #9ca3af;">4º</span>
+                                <input type="text" id="rank4-name" placeholder="Vendedor" value="NICOLAS">
+                                <input type="text" id="rank4-branch" placeholder="Sucursal" value="Manantial">
+                                <input type="number" id="rank4-units" placeholder="Metros" value="50">
+                            </div>
+                            <!-- Rank 5 -->
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
+                                <span style="font-weight: 800; color: #9ca3af;">5º</span>
+                                <input type="text" id="rank5-name" placeholder="Vendedor" value="MATIAS">
+                                <input type="text" id="rank5-branch" placeholder="Sucursal" value="Aguilares">
+                                <input type="number" id="rank5-units" placeholder="Metros" value="12">
+                            </div>
+                        </div>
+                        <button type="submit" style="margin-top: 20px; background-color: #d95324; font-weight: 800;">ACTUALIZAR RANKING COMPLETO</button>
+                    </form>
+                </div>
+            </section>
+
 
 
 
@@ -897,7 +1026,7 @@
             initNotifications();
             initSocialConfig();
             initReviewConfig();
-
+            initContestConfig();
         }
 
         // Navigation Logic
@@ -930,6 +1059,7 @@
             if (sectionId === 'notifications') loadNotifications();
             if (sectionId === 'social-config') loadSocialConfig();
             if (sectionId === 'review-config') loadReviewConfig();
+            if (sectionId === 'contest-config') loadContestConfig();
 
 
             // Close mobile menu if open
