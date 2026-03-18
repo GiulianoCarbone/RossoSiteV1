@@ -1,4 +1,4 @@
-const CACHE_NAME = 'panel-vendedores-cache-v3';
+const CACHE_NAME = 'panel-vendedores-cache-v4';
 const urlsToCache = [
   '/panel-corporativo.html',
   '/style.css'
@@ -10,30 +10,31 @@ const urlsToCache = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Cache del panel abierta');
-        return cache.addAll(urlsToCache);
-      })
+      .then(cache => cache.addAll(urlsToCache))
   );
   self.skipWaiting();
 });
 
 /**
- * Activación: tomar control inmediato de todos los clientes
+ * Activación: tomar control inmediato
  */
 self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
 
 /**
- * Fetch: Responder desde caché o red
+ * Fetch: solo responder desde caché para archivos propios del sitio,
+ * dejar pasar todo lo demás (Firestore, APIs externas, etc.)
  */
 self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  // Solo interceptar requests del mismo origen y que no sean APIs
+  if (url.origin !== self.location.origin) return;
+  if (url.pathname.startsWith('/api/')) return;
+
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
+    caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
 
@@ -51,37 +52,37 @@ self.addEventListener('push', event => {
     }
   }
 
-  // Log para diagnosticar el formato exacto que manda n8n
   console.log('[SW] Push recibido, raw payload:', JSON.stringify(raw));
 
-  // n8n puede enviar el payload directo, dentro de "notification", o con "data" anidado
-  const payload = raw.notification || raw;
-  const nested  = payload.data || raw.data || {};
+  // n8n puede enviar el payload en distintos formatos
+  const payload  = raw.notification || raw;
+  const nested   = payload.data || raw.data || {};
 
   const title = payload.title   || raw.title   || 'Rosso Materiales';
   const body  = payload.body    || payload.message
              || raw.body        || raw.message
              || 'Tienes una nueva novedad';
-  const url   = nested.url      || nested.link
-             || payload.url     || payload.link
-             || raw.url         || raw.link
-             || '/panel-corporativo.html';
-  const icon  = payload.icon    || raw.icon    || '/assets/FAV.png';
+  const rawUrl = nested.url   || nested.link
+              || payload.url  || payload.link
+              || raw.url      || raw.link
+              || '/panel-corporativo.html';
 
-  console.log('[SW] Mostrando notificación — title:', title, '| body:', body, '| url:', url);
+  // Siempre usar URL absoluta para que notificationclick funcione en todos los navegadores
+  const origin = self.location.origin; // ej: https://rossomateriales.site
+  const absoluteUrl = rawUrl.startsWith('http') ? rawUrl : origin + rawUrl;
+
+  console.log('[SW] title:', title, '| body:', body, '| url:', absoluteUrl);
 
   const options = {
     body: body,
-    icon: icon,
+    icon: payload.icon || raw.icon || '/assets/FAV.png',
     badge: '/assets/FAV.png',
-    data: { url }
+    data: { url: absoluteUrl }
   };
 
   event.waitUntil(
     self.registration.showNotification(title, options).then(() => {
-      if (navigator.setAppBadge) {
-        navigator.setAppBadge(1).catch(() => {});
-      }
+      if (navigator.setAppBadge) navigator.setAppBadge(1).catch(() => {});
     })
   );
 });
@@ -95,11 +96,13 @@ self.addEventListener('notificationclick', event => {
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+      // Buscar si ya hay una pestaña abierta con esa URL (comparación flexible)
       for (let client of windowClients) {
-        if (client.url === urlToOpen && 'focus' in client) {
+        if (client.url.includes('panel-corporativo') && 'focus' in client) {
           return client.focus();
         }
       }
+      // Si no, abrir nueva pestaña con URL absoluta
       if (clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }

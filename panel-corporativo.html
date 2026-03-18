@@ -60,6 +60,10 @@
           const registration = await navigator.serviceWorker.register('sw-vendedores.js');
           console.log('Service Worker registrado:', registration.scope);
 
+          // Forzar actualización del SW en cada carga para que cambios tomen efecto
+          await registration.update();
+          console.log('Service Worker actualizado.');
+
           // Si ya tiene suscripción activa, la reenvía a n8n por si cambió
           const subscription = await registration.pushManager.getSubscription();
           if (subscription) {
