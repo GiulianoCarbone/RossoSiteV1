@@ -1495,10 +1495,11 @@
         async function sendPushNotification(title, message, link) {
             const N8N_PUSH_WEBHOOK = 'https://n8n-production-4e14.up.railway.app/webhook/send-push';
 
+            // Se usa 'body' (estándar Web Push) para que el SW lo lea directamente
             const body = {
                 title: title,
-                message: message,
-                link: link || '/'
+                body: message,    // ← era 'message', ahora 'body' (coincide con el SW)
+                link: link || '/panel-corporativo.html'
             };
 
             try {

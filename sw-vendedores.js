@@ -52,30 +52,55 @@ self.addEventListener('push', event => {
     }
   }
 
-  console.log('[SW] Push recibido, raw payload:', JSON.stringify(raw));
+  // ── LOG COMPLETO (ver en DevTools → Application → Service Workers → Console) ──
+  console.log('[SW] ════════════ PUSH RECIBIDO ════════════');
+  console.log('[SW] Raw completo:', JSON.stringify(raw, null, 2));
+  console.log('[SW] Claves en raw:', Object.keys(raw));
+  // ────────────────────────────────────────────────────────────────────────────
 
-  // n8n puede enviar el payload en distintos formatos
-  const payload  = raw.notification || raw;
-  const nested   = payload.data || raw.data || {};
+  // raw.data puede ser un objeto o un string JSON serializado → normalizarlo
+  let dataObj = raw.data || {};
+  if (typeof dataObj === 'string') {
+    try { dataObj = JSON.parse(dataObj); } catch (e) { dataObj = {}; }
+  }
 
-  const title = payload.title   || raw.title   || 'Rosso Materiales';
-  const body  = payload.body    || payload.message
-             || raw.body        || raw.message
-             || 'Tienes una nueva novedad';
-  const rawUrl = nested.url   || nested.link
-              || payload.url  || payload.link
-              || raw.url      || raw.link
+  // raw.notification puede tener sub-campos
+  const notif = raw.notification || {};
+
+  // Buscar title en TODOS los lugares posibles
+  const title = notif.title
+             || raw.title
+             || dataObj.title
+             || dataObj.notification?.title
+             || 'Rosso Materiales';
+
+  // Buscar body/message en TODOS los lugares posibles
+  const body = notif.body     || notif.message
+            || raw.body       || raw.message
+            || dataObj.body   || dataObj.message
+            || dataObj.notification?.body
+            || 'Tienes una nueva novedad';
+
+  // Buscar url/link en TODOS los lugares posibles
+  const rawUrl = dataObj.url    || dataObj.link
+              || notif.url      || notif.link
+              || raw.url        || raw.link
+              || dataObj.notification?.click_action
               || '/panel-corporativo.html';
 
-  // Siempre usar URL absoluta para que notificationclick funcione en todos los navegadores
-  const origin = self.location.origin; // ej: https://rossomateriales.site
-  const absoluteUrl = rawUrl.startsWith('http') ? rawUrl : origin + rawUrl;
+  console.log('[SW] → title:', title);
+  console.log('[SW] → body:', body);
+  console.log('[SW] → rawUrl:', rawUrl);
 
-  console.log('[SW] title:', title, '| body:', body, '| url:', absoluteUrl);
+  // URL absoluta usando el scope del SW (self.location.origin puede ser null)
+  const origin = new URL(self.registration.scope).origin;
+  const absoluteUrl = rawUrl.startsWith('http') ? rawUrl : origin + '/' + rawUrl.replace(/^\//, '');
+
+  console.log('[SW] → URL final:', absoluteUrl);
 
   const options = {
     body: body,
-    icon: payload.icon || raw.icon || '/assets/FAV.png',
+    icon: notif.icon || raw.icon || dataObj.icon || '/assets/FAV.png',
     badge: '/assets/FAV.png',
     data: { url: absoluteUrl }
   };
@@ -87,25 +112,38 @@ self.addEventListener('push', event => {
   );
 });
 
+
+
 /**
  * NOTIFICATION CLICK: Abre la URL vinculada a la notificación
  */
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  const urlToOpen = event.notification.data.url;
+
+  // URL destino: viene en data.url (absoluta) o fallback al panel-corporativo
+  const rawUrl = (event.notification.data && event.notification.data.url)
+    ? event.notification.data.url
+    : 'panel-corporativo.html';
+
+  // Garantizar URL absoluta usando el scope del SW
+  const origin = new URL(self.registration.scope).origin;
+  const urlToOpen = rawUrl.startsWith('http') ? rawUrl : origin + '/' + rawUrl.replace(/^\//, '');
+
+  console.log('[SW] notificationclick → abriendo:', urlToOpen);
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
       // Buscar si ya hay una pestaña abierta con esa URL (comparación flexible)
       for (let client of windowClients) {
         if (client.url.includes('panel-corporativo') && 'focus' in client) {
-          return client.focus();
+          client.focus();
+          // Navegar a la URL exacta por si está en otra sección
+          if ('navigate' in client) client.navigate(urlToOpen);
+          return;
         }
       }
-      // Si no, abrir nueva pestaña con URL absoluta
-      if (clients.openWindow) {
-        return clients.openWindow(urlToOpen);
-      }
+      // Si no hay pestaña abierta, abrir una nueva
+      return clients.openWindow(urlToOpen);
     })
   );
 });
