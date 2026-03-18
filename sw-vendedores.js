@@ -1,4 +1,4 @@
-const CACHE_NAME = 'panel-vendedores-cache-v2';
+const CACHE_NAME = 'panel-vendedores-cache-v3';
 const urlsToCache = [
   '/panel-corporativo.html',
   '/style.css'
@@ -19,6 +19,13 @@ self.addEventListener('install', event => {
 });
 
 /**
+ * Activación: tomar control inmediato de todos los clientes
+ */
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim());
+});
+
+/**
  * Fetch: Responder desde caché o red
  */
 self.addEventListener('fetch', event => {
@@ -34,27 +41,48 @@ self.addEventListener('fetch', event => {
  * PUSH EVENT: Maneja las notificaciones enviadas desde n8n
  */
 self.addEventListener('push', event => {
-  let data = { title: 'Notificación', body: 'Tienes un nuevo mensaje de Rosso Materiales', icon: '/assets/FAV.png' };
+  let raw = {};
 
   if (event.data) {
     try {
-      data = event.data.json();
+      raw = event.data.json();
     } catch (e) {
-      data.body = event.data.text();
+      raw = { body: event.data.text() };
     }
   }
 
+  // Log para diagnosticar el formato exacto que manda n8n
+  console.log('[SW] Push recibido, raw payload:', JSON.stringify(raw));
+
+  // n8n puede enviar el payload directo, dentro de "notification", o con "data" anidado
+  const payload = raw.notification || raw;
+  const nested  = payload.data || raw.data || {};
+
+  const title = payload.title   || raw.title   || 'Rosso Materiales';
+  const body  = payload.body    || payload.message
+             || raw.body        || raw.message
+             || 'Tienes una nueva novedad';
+  const url   = nested.url      || nested.link
+             || payload.url     || payload.link
+             || raw.url         || raw.link
+             || '/panel-corporativo.html';
+  const icon  = payload.icon    || raw.icon    || '/assets/FAV.png';
+
+  console.log('[SW] Mostrando notificación — title:', title, '| body:', body, '| url:', url);
+
   const options = {
-    body: data.body || data.message,
-    icon: data.icon || '/assets/FAV.png',
+    body: body,
+    icon: icon,
     badge: '/assets/FAV.png',
-    data: {
-      url: data.url || data.link || '/'
-    }
+    data: { url }
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title, options)
+    self.registration.showNotification(title, options).then(() => {
+      if (navigator.setAppBadge) {
+        navigator.setAppBadge(1).catch(() => {});
+      }
+    })
   );
 });
 
@@ -67,13 +95,11 @@ self.addEventListener('notificationclick', event => {
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-      // Si ya hay una ventana abierta con esa URL, le damos foco
       for (let client of windowClients) {
         if (client.url === urlToOpen && 'focus' in client) {
           return client.focus();
         }
       }
-      // Si no, abrimos una nueva
       if (clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }
