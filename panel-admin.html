@@ -1476,32 +1476,24 @@
             };
         }
 
-        // Función para enviar Push a OneSignal
+        // Función para enviar Push a n8n (reemplaza a OneSignal)
         async function sendPushNotification(title, message, link) {
-            const ONE_SIGNAL_APP_ID = "24c23510-f95c-49ca-873b-67dbfcff5740";
-            const REST_API_KEY = "tu clave aqui";
-
-            const headers = {
-                "Content-Type": "application/json; charset=utf-8",
-                "Authorization": `Basic ${REST_API_KEY}`
-            };
+            const N8N_PUSH_WEBHOOK = 'https://n8n-production-4e14.up.railway.app/webhook/e07f7815-5604-450f-a9cb-6523098f980e/send-push'; // <-- AJUSTAR URL DE n8n
 
             const body = {
-                app_id: ONE_SIGNAL_APP_ID,
-                headings: { "en": title, "es": title },
-                contents: { "en": message, "es": message },
-                included_segments: ["Total Subscriptions"], // Envía a todos los suscritos
-                url: link || undefined // Abre el link si existe
+                title: title,
+                message: message,
+                link: link || '/'
             };
 
             try {
-                const response = await fetch("https://onesignal.com/api/v1/notifications", {
+                const response = await fetch(N8N_PUSH_WEBHOOK, {
                     method: "POST",
-                    headers: headers,
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
                 });
                 const result = await response.json();
-                console.log("Push enviado:", result);
+                console.log("Push enviado a n8n:", result);
             } catch (error) {
                 console.error("Error enviando Push:", error);
             }

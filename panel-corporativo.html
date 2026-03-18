@@ -9,14 +9,120 @@
   <link rel="apple-touch-icon" href="assets/pwa.jpg">
   <link href="style.css" rel="stylesheet" />
   <link rel="manifest" href="manifest-vendedores.json" />
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <!-- PUSH NOTIFICATIONS (Custom n8n solution) -->
   <script>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(async function (OneSignal) {
-      await OneSignal.init({
-        appId: "24c23510-f95c-49ca-873b-67dbfcff5740",
-      });
-    });
+    const VAPID_PUBLIC_KEY = 'BFnMDV6tsGwhLkYCM8q3LVPxu5bttkTAHZKS_HeiBb_79OvGm_11EQxfJTHxPT7mXC3GJ1mSiksLDO367gLTIUQ';
+    const N8N_SUBSCRIPTION_URL = 'https://n8n-production-4e14.up.railway.app/webhook/push-subscription';
+
+    // Muestra el modal bonito cuando clic en la campana
+    async function solicitarPermiso() {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        mostrarToast('Tu navegador no soporta notificaciones push.', 'error');
+        return;
+      }
+      const registration = await navigator.serviceWorker.ready;
+      const existing = await registration.pushManager.getSubscription();
+      if (existing) {
+        mostrarToast('\uD83D\uDD14 Ya ten\u00e9s las notificaciones activadas.', 'info');
+        return;
+      }
+      // Mostrar modal propio antes del dialog del navegador
+      document.getElementById('push-permission-modal').style.display = 'flex';
+    }
+
+    async function activarNotificacionesDesdeModal() {
+      cerrarModalPermiso();
+      const registration = await navigator.serviceWorker.ready;
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        await subscribeUser(registration);
+        mostrarToast('\u2705 \u00a1Notificaciones activadas con \u00e9xito!', 'success');
+      } else {
+        mostrarToast('\u26A0\uFE0F Permiso denegado. Pod\u00e9s activarlo desde la configuraci\u00f3n del navegador.', 'error');
+      }
+    }
+
+    function cerrarModalPermiso() {
+      document.getElementById('push-permission-modal').style.display = 'none';
+    }
+
+    function mostrarToast(mensaje, tipo) {
+      const toast = document.getElementById('push-toast');
+      const toastMsg = document.getElementById('push-toast-msg');
+      toastMsg.textContent = mensaje;
+      toast.className = 'push-toast push-toast--' + tipo + ' push-toast--show';
+      setTimeout(() => { toast.className = 'push-toast'; }, 4000);
+    }
+
+    async function registerServiceWorker() {
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+        try {
+          const registration = await navigator.serviceWorker.register('sw-vendedores.js');
+          console.log('Service Worker registrado:', registration.scope);
+
+          // Si ya tiene suscripción activa, la reenvía a n8n por si cambió
+          const subscription = await registration.pushManager.getSubscription();
+          if (subscription) {
+            console.log('Usuario ya suscrito, re-enviando a n8n...');
+            sendSubscriptionToN8n(subscription);
+          } else {
+            console.log('Sin suscripción activa. Clic en la campana para activar notificaciones.');
+          }
+        } catch (error) {
+          console.error('Error al registrar Service Worker:', error);
+        }
+      }
+    }
+
+    async function subscribeUser(registration) {
+      try {
+        const subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+        });
+        console.log('Usuario suscrito correctamente:', subscription);
+        await sendSubscriptionToN8n(subscription);
+      } catch (error) {
+        if (Notification.permission === 'denied') {
+          console.warn('Permiso para notificaciones denegado.');
+        } else {
+          console.error('Error al suscribir al usuario:', error);
+        }
+      }
+    }
+
+    async function sendSubscriptionToN8n(subscription) {
+      const userData = JSON.parse(localStorage.getItem('vendedor_data') || '{}');
+      const userName = userData.nombre || 'Usuario Desconocido';
+      try {
+        await fetch(N8N_SUBSCRIPTION_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userName: userName,
+            subscription: subscription,
+            timestamp: new Date().toISOString()
+          })
+        });
+        console.log('Suscripción enviada a n8n correctamente.');
+      } catch (error) {
+        console.error('Error al enviar suscripción a n8n:', error);
+      }
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+
+    // Solo registra el SW al cargar; el permiso se pide al hacer click en la campana
+    registerServiceWorker();
   </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
@@ -1723,11 +1829,136 @@
       padding-bottom: 5px;
       border-bottom: 1px solid #eee;
     }
+
+    /* ====== PUSH PERMISSION MODAL ====== */
+    #push-permission-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      animation: fadeInBg 0.2s ease;
+    }
+    @keyframes fadeInBg {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    .push-modal-card {
+      background: white;
+      border-radius: 20px;
+      padding: 36px 32px;
+      max-width: 380px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      animation: slideUpModal 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes slideUpModal {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .push-modal-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+    .push-modal-card h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--brand);
+      margin: 0 0 10px;
+    }
+    .push-modal-card p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: 0 0 24px;
+      line-height: 1.5;
+    }
+    .push-modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .push-modal-btn-primary {
+      background: linear-gradient(135deg, var(--accent), #c2411c);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 28px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(236,100,52,0.3);
+    }
+    .push-modal-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(236,100,52,0.45);
+    }
+    .push-modal-btn-secondary {
+      background: #f3f4f6;
+      color: #6b7280;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 22px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .push-modal-btn-secondary:hover { background: #e5e7eb; }
+
+    /* ====== TOAST ====== */
+    .push-toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1f2937;
+      color: white;
+      padding: 13px 24px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      z-index: 10000;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .push-toast--show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .push-toast--success { background: #065f46; }
+    .push-toast--error   { background: #991b1b; }
+    .push-toast--info    { background: var(--brand); }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 
 <body>
+
+  <!-- ===== PUSH PERMISSION MODAL ===== -->
+  <div id="push-permission-modal" onclick="if(event.target===this) cerrarModalPermiso()">
+    <div class="push-modal-card">
+      <div class="push-modal-icon">🔔</div>
+      <h3>Activar Notificaciones</h3>
+      <p>Querés recibir alertas de <strong>Rosso Materiales</strong> en este dispositivo? Te avisaremos de novedades importantes al instante.</p>
+      <div class="push-modal-actions">
+        <button class="push-modal-btn-secondary" onclick="cerrarModalPermiso()">Ahora no</button>
+        <button class="push-modal-btn-primary" onclick="activarNotificacionesDesdeModal()">
+          <i class="fa-solid fa-bell"></i> Activar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST DE NOTIFICACIONES ===== -->
+  <div class="push-toast" id="push-toast">
+    <span id="push-toast-msg"></span>
+  </div>
   <div id="login-overlay">
     <div id="login-container">
       <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales Logo" class="logo" />
@@ -1832,7 +2063,8 @@
           <h1 id="welcome-message">Panel Corporativo</h1>
 
           <!-- INICIO NOTIFICACIONES -->
-          <div class="notification-wrapper" id="notification-wrapper">
+          <div class="notification-wrapper" id="notification-wrapper" onclick="solicitarPermiso()"
+            title="Activar notificaciones push">
             <i class="fa-solid fa-bell notification-bell"></i>
             <span class="notification-badge" id="notification-badge">0</span>
             <div class="notification-dropdown" id="notification-dropdown">
