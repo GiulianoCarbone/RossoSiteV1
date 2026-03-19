@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Exclusiva - Rosso Materiales & Eliane</title>
+    <meta name="description"
+        content="Confirmá tu asistencia para la inauguración del nuevo espacio Eliane en Rosso Materiales El Manantial.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1e2b5e;
+            --rosso-orange: #f15a24;
+            --eliane-red: #e31e24;
+            --bg-light: #f8f9fa;
+            --text-dark: #333;
+            --text-muted: #666;
+            --white: #ffffff;
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('assets/invitacion-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .invitation-card {
+            background: var(--white);
+            max-width: 600px;
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow-strong);
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            padding: 40px 40px 20px;
+            text-align: center;
+        }
+
+        .rosso-logo {
+            width: 180px;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 30px;
+        }
+
+        .main-title {
+            font-family: 'Outfit', sans-serif;
+            color: var(--primary-blue);
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .eliane-logo-img {
+            max-width: 250px;
+            width: 80%;
+            height: auto;
+            margin: 10px 0 25px;
+            display: inline-block;
+        }
+
+        .location-text {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .body-text {
+            padding: 0 40px;
+            text-align: center;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .info-grid {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            margin: 0 40px 30px;
+            padding: 25px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .info-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(30, 43, 94, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+        }
+
+        .info-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .info-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .location-link {
+            position: relative;
+            padding: 12px;
+            border-radius: 15px;
+            background: rgba(241, 90, 36, 0.05) !important;
+            border: 1.5px solid rgba(241, 90, 36, 0.2) !important;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            animation: pulse-highlight 2s infinite;
+        }
+
+        .location-link:hover {
+            background: rgba(241, 90, 36, 0.1) !important;
+            border-color: var(--rosso-orange) !important;
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(241, 90, 36, 0.15);
+        }
+
+        .location-link .info-icon {
+            background: var(--rosso-orange) !important;
+            color: white !important;
+            box-shadow: 0 4px 10px rgba(241, 90, 36, 0.3);
+        }
+
+        @keyframes pulse-highlight {
+            0% {
+                box-shadow: 0 0 0 0 rgba(241, 90, 36, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(241, 90, 36, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(241, 90, 36, 0);
+            }
+        }
+
+
+        .form-section {
+            background: var(--primary-blue);
+            padding: 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .form-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .confirmation-form {
+            display: grid;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--rosso-orange);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .submit-btn {
+            background: var(--rosso-orange);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(241, 90, 36, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(241, 90, 36, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .footer-note {
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            html, body {
+                height: 100% !important;
+                height: 100vh !important;
+                overflow: hidden !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                padding: 10px !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .invitation-card {
+                height: 100% !important;
+                max-height: 100vh !important;
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                border-radius: 20px !important;
+                margin: 0 !important;
+            }
+
+            .card-header {
+                padding: 15px 15px 5px !important;
+            }
+
+            .main-title {
+                font-size: 1.3rem !important;
+            }
+
+            .subtitle {
+                font-size: 0.95rem !important;
+                margin-bottom: 5px !important;
+            }
+
+            .eliane-logo-img {
+                max-width: 130px !important;
+                margin: 5px 0 10px !important;
+            }
+
+            .location-text {
+                font-size: 0.85rem !important;
+                margin-bottom: 10px !important;
+            }
+
+            .body-text {
+                display: none !important;
+            }
+
+            .info-grid {
+                margin: 0 15px 10px !important;
+                padding: 10px !important;
+                gap: 5px !important;
+                display: flex !important;
+                justify-content: space-around !important;
+                background: rgba(0,0,0,0.02) !important;
+            }
+
+            .info-item {
+                flex-direction: column !important;
+                text-align: center !important;
+                gap: 3px !important;
+                flex: 1 !important;
+            }
+
+            .location-link {
+                padding: 10px 5px !important;
+                border-radius: 12px !important;
+            }
+
+
+            .info-icon {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.9rem !important;
+                background: white !important;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important;
+            }
+
+            .location-link .info-icon {
+                background: var(--rosso-orange) !important;
+                color: white !important;
+            }
+
+
+            .info-content h4 {
+                font-size: 0.7rem !important;
+                line-height: 1.1 !important;
+            }
+
+            .info-content p {
+                display: none !important;
+            }
+
+            .form-section {
+                padding: 15px !important;
+                flex-grow: 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+            }
+
+            .form-title {
+                font-size: 1.1rem !important;
+                margin-bottom: 12px !important;
+            }
+
+            .form-input {
+                padding: 10px 10px 10px 40px !important;
+                font-size: 0.9rem !important;
+            }
+
+            .submit-btn {
+                padding: 12px !important;
+                font-size: 1rem !important;
+                margin-top: 5px !important;
+            }
+
+            .footer-note {
+                padding: 8px !important;
+                font-size: 0.75rem !important;
+            }
+
+            .rosso-logo {
+                width: 100px !important;
+                margin-bottom: 15px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="invitation-card">
+        <div class="card-header">
+            <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Logo" class="rosso-logo"
+                style="margin-bottom: 30px;">
+
+            <h1 class="main-title">ESTÁS INVITADO</h1>
+            <p class="subtitle">Descubrí el nuevo espacio</p>
+            <img src="assets/eliane-logo.png" alt="Eliane" class="eliane-logo-img">
+            <p class="location-text">en nuestra sucursal de <strong>El Manantial</strong></p>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                <div class="info-content">
+                    <h4>23 de abril - 18:00 hs</h4>
+                    <p>¡Te esperamos puntualmente!</p>
+                </div>
+            </div>
+            <a href="https://maps.app.goo.gl/zU1hXP7z1UxN4bMT7" target="_blank" class="info-item location-link" style="text-decoration: none; color: inherit;">
+                <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="info-content">
+                    <h4>Sucursal El Manantial</h4>
+                    <p>Ruta 305, Km 0.6 <span style="color: var(--rosso-orange); font-weight: 700; display: block; margin-top: 2px;">(Ver mapa)</span></p>
+
+                </div>
+            </a>
+            <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-martini-glass-citrus"></i></div>
+                <div class="info-content">
+                    <h4>Catering, Música & Presentación</h4>
+                    <p>Lanzamiento exclusivo de productos</p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="form-title">Confirmar Asistencia</h2>
+            <form class="confirmation-form" id="invitation-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" class="form-input" placeholder="Tu nombre completo" required id="name">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" class="form-input" placeholder="Tu correo electrónico" required id="email">
+                </div>
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    Confirmar mi lugar
+                </button>
+            </form>
+            <div id="success-message" style="display: none; margin-top: 20px; font-weight: 600; color: #4ade80;">
+                <i class="fa-solid fa-check-circle"></i> ¡Asistencia confirmada! Gracias.
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Te esperamos para compartir una gran tarde juntos
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+            authDomain: "backend-panel-vendedores.firebaseapp.com",
+            projectId: "backend-panel-vendedores",
+            storageBucket: "backend-panel-vendedores.firebasestorage.app",
+            messagingSenderId: "24873830395",
+            appId: "1:24873830395:web:ea6749407f991ee8226d5e",
+            measurementId: "G-E4Z0Y849KF",
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        document.getElementById('invitation-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('submit-btn');
+            const success = document.getElementById('success-message');
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            // Visual feedback
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Procesando...';
+            btn.style.opacity = '0.7';
+            btn.disabled = true;
+
+            try {
+                // Save to Firestore
+                await db.collection("invitaciones").add({
+                    nombre: name,
+                    email: email,
+                    fecha_confirmacion: firebase.firestore.FieldValue.serverTimestamp(),
+                    evento: "Inauguración Eliane El Manantial 23/04"
+                });
+
+                console.log('Confirmation saved to Firestore:', { name, email });
+
+                // Success state
+                document.getElementById('invitation-form').style.display = 'none';
+                success.style.display = 'block';
+                success.innerHTML = `<i class="fa-solid fa-check-circle"></i> ¡Gracias ${name.split(' ')[0]}! Hemos registrado tu asistencia.`;
+
+
+            } catch (error) {
+                console.error("Error saving to Firestore:", error);
+                btn.innerHTML = 'Confirmar mi lugar';
+                btn.style.opacity = '1';
+                btn.disabled = false;
+                alert("Hubo un problema al registrar tu asistencia. Por favor, intenta de nuevo.");
+            }
+        });
+    </script>
+</body>
+
+
+</html>
