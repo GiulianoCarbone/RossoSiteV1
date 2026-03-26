@@ -1839,15 +1839,23 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.55);
+      background: rgba(0, 0, 0, 0.55);
       z-index: 9999;
       justify-content: center;
       align-items: center;
       animation: fadeInBg 0.2s ease;
     }
+
     @keyframes fadeInBg {
-      from { opacity: 0; } to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
+
     .push-modal-card {
       background: white;
       border-radius: 20px;
@@ -1855,34 +1863,47 @@
       max-width: 380px;
       width: 90%;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-      animation: slideUpModal 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      animation: slideUpModal 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
+
     @keyframes slideUpModal {
-      from { opacity: 0; transform: translateY(30px) scale(0.95); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
+
     .push-modal-icon {
       font-size: 3rem;
       margin-bottom: 12px;
     }
+
     .push-modal-card h3 {
       font-size: 1.3rem;
       font-weight: 800;
       color: var(--brand);
       margin: 0 0 10px;
     }
+
     .push-modal-card p {
       font-size: 0.95rem;
       color: var(--muted);
       margin: 0 0 24px;
       line-height: 1.5;
     }
+
     .push-modal-actions {
       display: flex;
       gap: 12px;
       justify-content: center;
     }
+
     .push-modal-btn-primary {
       background: linear-gradient(135deg, var(--accent), #c2411c);
       color: white;
@@ -1893,12 +1914,14 @@
       font-size: 1rem;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 15px rgba(236,100,52,0.3);
+      box-shadow: 0 4px 15px rgba(236, 100, 52, 0.3);
     }
+
     .push-modal-btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(236,100,52,0.45);
+      box-shadow: 0 6px 20px rgba(236, 100, 52, 0.45);
     }
+
     .push-modal-btn-secondary {
       background: #f3f4f6;
       color: #6b7280;
@@ -1910,7 +1933,10 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    .push-modal-btn-secondary:hover { background: #e5e7eb; }
+
+    .push-modal-btn-secondary:hover {
+      background: #e5e7eb;
+    }
 
     /* ====== TOAST ====== */
     .push-toast {
@@ -1924,20 +1950,30 @@
       border-radius: 50px;
       font-size: 0.95rem;
       font-weight: 600;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
       z-index: 10000;
       opacity: 0;
       transition: opacity 0.3s ease, transform 0.3s ease;
       pointer-events: none;
       white-space: nowrap;
     }
+
     .push-toast--show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
-    .push-toast--success { background: #065f46; }
-    .push-toast--error   { background: #991b1b; }
-    .push-toast--info    { background: var(--brand); }
+
+    .push-toast--success {
+      background: #065f46;
+    }
+
+    .push-toast--error {
+      background: #991b1b;
+    }
+
+    .push-toast--info {
+      background: var(--brand);
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
@@ -1949,7 +1985,8 @@
     <div class="push-modal-card">
       <div class="push-modal-icon">🔔</div>
       <h3>Activar Notificaciones</h3>
-      <p>Querés recibir alertas de <strong>Rosso Materiales</strong> en este dispositivo? Te avisaremos de novedades importantes al instante.</p>
+      <p>Querés recibir alertas de <strong>Rosso Materiales</strong> en este dispositivo? Te avisaremos de novedades
+        importantes al instante.</p>
       <div class="push-modal-actions">
         <button class="push-modal-btn-secondary" onclick="cerrarModalPermiso()">Ahora no</button>
         <button class="push-modal-btn-primary" onclick="activarNotificacionesDesdeModal()">
@@ -2336,7 +2373,7 @@
           <div class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
-              <h3>Vendor Destacado</h3>
+              <h3>Vendedor Destacado</h3>
             </div>
           </div>
           <div class="panel-card-body employee-body">
