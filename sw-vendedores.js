@@ -1,6 +1,7 @@
-const CACHE_NAME = 'panel-vendedores-cache-v4';
+const CACHE_NAME = 'panel-vendedores-cache-v5';
 const urlsToCache = [
   '/panel-corporativo.html',
+  '/panel-admin.html',
   '/style.css'
 ];
 
@@ -32,9 +33,26 @@ self.addEventListener('fetch', event => {
   // Solo interceptar requests del mismo origen y que no sean APIs
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith('/api/')) return;
+  if (url.pathname.includes('firestore')) return;
 
+  // Estrategia: Network-First para garantizar que los cambios se vean si hay internet
+  // Si falla la red, intenta servir desde el caché.
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    fetch(event.request)
+      .then(networkResponse => {
+        // Solo cachear respuestas exitosas (status 200)
+        if (networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      })
+      .catch(() => {
+        // Si no hay red, buscar en el caché
+        return caches.match(event.request);
+      })
   );
 });
 
