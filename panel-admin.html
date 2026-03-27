@@ -808,48 +808,85 @@
 
                 <!-- Ranking Inputs -->
                 <div class="panel-card" style="padding: 20px;">
-                    <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 (Ventas)</h3>
-                    <form id="contest-ranking-form">
+                    <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 - CATEGORÍA A</h3>
+                    <form id="contest-ranking-a-form">
                         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                            <!-- Rank 1 -->
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; background: #f9fafb; padding: 10px; border-radius: 8px;">
+                            <!-- Rank 1-5 A -->
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; background: #fff7ed; padding: 10px; border-radius: 8px; border: 1px solid #ffedd5;">
                                 <span style="font-weight: 800; color: #d95324;">1º</span>
-                                <input type="text" id="rank1-name" placeholder="Vendedor" value="FERNANDA">
-                                <input type="text" id="rank1-branch" placeholder="Sucursal" value="Manantial">
-                                <input type="number" id="rank1-units" placeholder="Metros" value="156">
+                                <input type="text" id="rankA1-name" placeholder="Vendedor" value="FERNANDA">
+                                <input type="text" id="rankA1-branch" placeholder="Sucursal" value="MANANTIAL">
+                                <input type="number" id="rankA1-units" placeholder="Cant." value="284">
                             </div>
-                            <!-- Rank 2 -->
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #4b5563;">2º</span>
-                                <input type="text" id="rank2-name" placeholder="Vendedor" value="CESAR">
-                                <input type="text" id="rank2-branch" placeholder="Sucursal" value="Salta">
-                                <input type="number" id="rank2-units" placeholder="Metros" value="117">
+                                <input type="text" id="rankA2-name" placeholder="Vendedor" value="CESAR">
+                                <input type="text" id="rankA2-branch" placeholder="Sucursal" value="SALTA">
+                                <input type="number" id="rankA2-units" placeholder="Cant." value="186">
                             </div>
-                            <!-- Rank 3 -->
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #4b5563;">3º</span>
-                                <input type="text" id="rank3-name" placeholder="Vendedor" value="AGUSTIN">
-                                <input type="text" id="rank3-branch" placeholder="Sucursal" value="Metan">
-                                <input type="number" id="rank3-units" placeholder="Metros" value="62">
+                                <input type="text" id="rankA3-name" placeholder="Vendedor" value="NICOLAS">
+                                <input type="text" id="rankA3-branch" placeholder="Sucursal" value="MANANTIAL">
+                                <input type="number" id="rankA3-units" placeholder="Cant." value="151">
                             </div>
-                            <!-- Rank 4 -->
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #9ca3af;">4º</span>
-                                <input type="text" id="rank4-name" placeholder="Vendedor" value="NICOLAS">
-                                <input type="text" id="rank4-branch" placeholder="Sucursal" value="Manantial">
-                                <input type="number" id="rank4-units" placeholder="Metros" value="50">
+                                <input type="text" id="rankA4-name" placeholder="Vendedor" value="MARCOS">
+                                <input type="text" id="rankA4-branch" placeholder="Sucursal" value="MONTEROS">
+                                <input type="number" id="rankA4-units" placeholder="Cant." value="135">
                             </div>
-                            <!-- Rank 5 -->
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #9ca3af;">5º</span>
-                                <input type="text" id="rank5-name" placeholder="Vendedor" value="MATIAS">
-                                <input type="text" id="rank5-branch" placeholder="Sucursal" value="Aguilares">
-                                <input type="number" id="rank5-units" placeholder="Metros" value="12">
+                                <input type="text" id="rankA5-name" placeholder="Vendedor" value="EVANGELINA">
+                                <input type="text" id="rankA5-branch" placeholder="Sucursal" value="SALTA">
+                                <input type="number" id="rankA5-units" placeholder="Cant." value="74">
                             </div>
                         </div>
-                        <button type="submit" style="margin-top: 20px; background-color: #d95324; font-weight: 800;">ACTUALIZAR RANKING COMPLETO</button>
+                        <button type="submit" style="margin-top: 20px; background-color: #d95324; font-weight: 800;">ACTUALIZAR RANKING A</button>
                     </form>
                 </div>
+
+                <div class="panel-card" style="padding: 20px; margin-top: 30px;">
+                    <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 - CATEGORÍA B</h3>
+                    <form id="contest-ranking-b-form">
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <!-- Rank 1-5 B -->
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; background: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                                <span style="font-weight: 800; color: #d95324;">1º</span>
+                                <input type="text" id="rankB1-name" placeholder="Vendedor" value="AGUSTIN">
+                                <input type="text" id="rankB1-branch" placeholder="Sucursal" value="METAN">
+                                <input type="number" id="rankB1-units" placeholder="Cant." value="68">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
+                                <span style="font-weight: 800; color: #4b5563;">2º</span>
+                                <input type="text" id="rankB2-name" placeholder="Vendedor" value="MATIAS">
+                                <input type="text" id="rankB2-branch" placeholder="Sucursal" value="AGUILARES">
+                                <input type="number" id="rankB2-units" placeholder="Cant." value="23">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
+                                <span style="font-weight: 800; color: #4b5563;">3º</span>
+                                <input type="text" id="rankB3-name" placeholder="Vendedor" value="MATIAS">
+                                <input type="text" id="rankB3-branch" placeholder="Sucursal" value="TAFI DEL VALLE">
+                                <input type="number" id="rankB3-units" placeholder="Cant." value="20">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
+                                <span style="font-weight: 800; color: #9ca3af;">4º</span>
+                                <input type="text" id="rankB4-name" placeholder="Vendedor" value="MARCELO">
+                                <input type="text" id="rankB4-branch" placeholder="Sucursal" value="FAMAILLA">
+                                <input type="number" id="rankB4-units" placeholder="Cant." value="10">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
+                                <span style="font-weight: 800; color: #9ca3af;">5º</span>
+                                <input type="text" id="rankB5-name" placeholder="Vendedor" value="MAURO">
+                                <input type="text" id="rankB5-branch" placeholder="Sucursal" value="AGUILARES">
+                                <input type="number" id="rankB5-units" placeholder="Cant." value="5">
+                            </div>
+                        </div>
+                        <button type="submit" style="margin-top: 20px; background-color: #272e68; font-weight: 800;">ACTUALIZAR RANKING B</button>
+                    </form>
+                </div>
+
             </section>
 
             <!-- INVITATIONS SECTION -->
@@ -2017,23 +2054,43 @@
                 }
             });
 
-            // Ranking form
-            document.getElementById('contest-ranking-form').onsubmit = async (e) => {
+            // Ranking A form
+            document.getElementById('contest-ranking-a-form').onsubmit = async (e) => {
                 e.preventDefault();
-                const ranking = [];
+                const rankingA = [];
                 for (let i = 1; i <= 5; i++) {
-                    ranking.push({
-                        name: document.getElementById(`rank${i}-name`).value.trim(),
-                        branch: document.getElementById(`rank${i}-branch`).value.trim(),
-                        units: parseInt(document.getElementById(`rank${i}-units`).value) || 0,
+                    rankingA.push({
+                        name: document.getElementById(`rankA${i}-name`).value.trim(),
+                        branch: document.getElementById(`rankA${i}-branch`).value.trim(),
+                        units: parseInt(document.getElementById(`rankA${i}-units`).value) || 0,
                     });
                 }
                 try {
-                    await db.collection('config').doc('contest_config').set({ ranking }, { merge: true });
-                    alert('✅ Ranking actualizado correctamente.');
+                    await db.collection('config').doc('contest_config').set({ rankingA }, { merge: true });
+                    alert('✅ Ranking A actualizado correctamente.');
                 } catch (err) {
                     console.error(err);
-                    alert('Error al guardar el ranking.');
+                    alert('Error al guardar el ranking A.');
+                }
+            };
+
+            // Ranking B form
+            document.getElementById('contest-ranking-b-form').onsubmit = async (e) => {
+                e.preventDefault();
+                const rankingB = [];
+                for (let i = 1; i <= 5; i++) {
+                    rankingB.push({
+                        name: document.getElementById(`rankB${i}-name`).value.trim(),
+                        branch: document.getElementById(`rankB${i}-branch`).value.trim(),
+                        units: parseInt(document.getElementById(`rankB${i}-units`).value) || 0,
+                    });
+                }
+                try {
+                    await db.collection('config').doc('contest_config').set({ rankingB }, { merge: true });
+                    alert('✅ Ranking B actualizado correctamente.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al guardar el ranking B.');
                 }
             };
 
@@ -2085,14 +2142,24 @@
                     if (data.termsTitle) document.getElementById('contest-terms-title').value = data.termsTitle;
                     if (data.termsContent) document.getElementById('contest-terms-content').value = data.termsContent;
 
-                    // Ranking
-                    if (data.ranking && Array.isArray(data.ranking)) {
-                        data.ranking.forEach((item, index) => {
+                    // Ranking A
+                    if (data.rankingA && Array.isArray(data.rankingA)) {
+                        data.rankingA.forEach((item, index) => {
                             const i = index + 1;
                             if (i > 5) return;
-                            document.getElementById(`rank${i}-name`).value = item.name || '';
-                            document.getElementById(`rank${i}-branch`).value = item.branch || '';
-                            document.getElementById(`rank${i}-units`).value = item.units || '';
+                            document.getElementById(`rankA${i}-name`).value = item.name || '';
+                            document.getElementById(`rankA${i}-branch`).value = item.branch || '';
+                            document.getElementById(`rankA${i}-units`).value = item.units || '';
+                        });
+                    }
+                    // Ranking B
+                    if (data.rankingB && Array.isArray(data.rankingB)) {
+                        data.rankingB.forEach((item, index) => {
+                            const i = index + 1;
+                            if (i > 5) return;
+                            document.getElementById(`rankB${i}-name`).value = item.name || '';
+                            document.getElementById(`rankB${i}-branch`).value = item.branch || '';
+                            document.getElementById(`rankB${i}-units`).value = item.units || '';
                         });
                     }
                 }
