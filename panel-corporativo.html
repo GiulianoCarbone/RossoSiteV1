@@ -2153,8 +2153,8 @@
             <p class="contest-card-text"
               style="font-size: 1.15rem; color: #374151; max-width: 600px; margin: 0 auto 15px; line-height: 1.6;">
               <span class="contest-prominent-title"
-                style="display: block; font-size: 1.6rem; color: var(--accent); font-weight: 900; margin-bottom: 8px; text-transform: uppercase;">¡Participá
-                y ganá!</span>
+                style="display: block; font-size: 1.6rem; color: var(--accent); font-weight: 900; margin-bottom: 8px; text-transform: uppercase;">¡Desafío
+                Finalizado!</span>
               El vendedor con mayor cantidad de metros de pisos y revestimientos marca ELIANE vendidos gana un
               <strong>Auriculares gamer + parlante portátil</strong>.
             </p>
@@ -2171,6 +2171,10 @@
               <button id="ranking-btn" onclick="openRankingModal()"
                 style="padding: 14px 30px; background: white; color: var(--accent); border: 2px solid var(--accent); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: all 0.2s;">
                 <i class="fa-solid fa-ranking-star"></i> Ver Ranking
+              </button>
+              <button id="winners-btn" onclick="openWinnersModal()"
+                style="display: none; padding: 14px 30px; background: linear-gradient(to right, #059669, #10b981); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: all 0.2s; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
+                <i class="fa-solid fa-trophy"></i> Ver Ganadores
               </button>
             </div>
           </div>
@@ -4140,15 +4144,19 @@
         <button class="close-modal" onclick="event.stopPropagation(); closeRankingModal()">&times;</button>
       </div>
       <div id="contest-ranking-list" style="padding: 10px 0;">
-        <p style="text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 20px;">El Ranking se actualiza al finalizar cada semana</p>
-        
+        <p style="text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 20px;">El Ranking se actualiza
+          al finalizar cada semana</p>
+
         <div class="ranking-container-dual" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
           <!-- CATEGORY A -->
           <div class="ranking-column">
-            <h5 style="text-align: center; color: var(--accent); font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">Categoría A</h5>
+            <h5
+              style="text-align: center; color: var(--accent); font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">
+              Categoría A</h5>
             <div id="ranking-list-a">
               <!-- A1 -->
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #fff7ed; border-radius: 12px; margin-bottom: 8px; border: 1px solid #ffedd5;">
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #fff7ed; border-radius: 12px; margin-bottom: 8px; border: 1px solid #ffedd5;">
                 <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥇</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-1">-</div>
@@ -4156,7 +4164,8 @@
                 </div>
                 <div style="font-weight: 800; color: var(--accent); font-size: 1rem;" id="rankA-units-1">0</div>
               </div>
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
                 <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥈</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-2">-</div>
@@ -4164,7 +4173,8 @@
                 </div>
                 <div style="font-weight: 800; color: #4b5563; font-size: 1rem;" id="rankA-units-2">0</div>
               </div>
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
                 <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥉</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-3">-</div>
@@ -4172,16 +4182,20 @@
                 </div>
                 <div style="font-weight: 800; color: #4b5563; font-size: 1rem;" id="rankA-units-3">0</div>
               </div>
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
-                <span style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">4</span>
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
+                <span
+                  style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">4</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-4">-</div>
                   <div style="font-size: 0.75rem; color: #6b7280;" id="rankA-branch-4">-</div>
                 </div>
                 <div style="font-weight: 800; color: #6b7280; font-size: 1rem;" id="rankA-units-4">0</div>
               </div>
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; border: 1px solid #f3f4f6;">
-                <span style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">5</span>
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; border: 1px solid #f3f4f6;">
+                <span
+                  style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">5</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-5">-</div>
                   <div style="font-size: 0.75rem; color: #6b7280;" id="rankA-branch-5">-</div>
@@ -4193,10 +4207,13 @@
 
           <!-- CATEGORY B -->
           <div class="ranking-column">
-            <h5 style="text-align: center; color: #272e68; font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">Categoría B</h5>
+            <h5
+              style="text-align: center; color: #272e68; font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">
+              Categoría B</h5>
             <div id="ranking-list-b">
               <!-- B1 -->
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #eef2ff; border-radius: 12px; margin-bottom: 8px; border: 1px solid #e0e7ff;">
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #eef2ff; border-radius: 12px; margin-bottom: 8px; border: 1px solid #e0e7ff;">
                 <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥇</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-1">-</div>
@@ -4204,7 +4221,8 @@
                 </div>
                 <div style="font-weight: 800; color: #4338ca; font-size: 1rem;" id="rankB-units-1">0</div>
               </div>
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
                 <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥈</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-2">-</div>
@@ -4212,7 +4230,8 @@
                 </div>
                 <div style="font-weight: 800; color: #4b5563; font-size: 1rem;" id="rankB-units-2">0</div>
               </div>
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
                 <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥉</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-3">-</div>
@@ -4220,16 +4239,20 @@
                 </div>
                 <div style="font-weight: 800; color: #4b5563; font-size: 1rem;" id="rankB-units-3">0</div>
               </div>
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
-                <span style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">4</span>
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
+                <span
+                  style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">4</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-4">-</div>
                   <div style="font-size: 0.75rem; color: #6b7280;" id="rankB-branch-4">-</div>
                 </div>
                 <div style="font-weight: 800; color: #6b7280; font-size: 1rem;" id="rankB-units-4">0</div>
               </div>
-              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; border: 1px solid #f3f4f6;">
-                <span style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">5</span>
+              <div class="ranking-item"
+                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; border: 1px solid #f3f4f6;">
+                <span
+                  style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">5</span>
                 <div style="flex-grow: 1;">
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-5">-</div>
                   <div style="font-size: 0.75rem; color: #6b7280;" id="rankB-branch-5">-</div>
@@ -4252,6 +4275,57 @@
         <button onclick="event.stopPropagation(); closeRankingModal()"
           style="padding: 10px 20px; background-color: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer;">Cerrar</button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONTEST WINNERS -->
+  <div id="contest-winners-modal" class="modal-overlay" style="z-index: 5000; display: none;">
+    <div class="modal-content" style="max-width: 800px; width: 95%; background: linear-gradient(to bottom, #ffffff, #f0fdf4); overflow: hidden; border: none; border-radius: 20px;">
+      <div class="modal-header" style="background: transparent; padding: 20px 25px 10px; border: none;">
+        <h4 style="font-size: 1.6rem; color: #064e3b; font-weight: 900; text-align: center; width: 100%; letter-spacing: -0.5px;">¡Ganadores Desafío Eliane! 🥳</h4>
+        <button class="close-modal" onclick="closeWinnersModal()" style="color: #064e3b; font-size: 2rem;">&times;</button>
+      </div>
+      
+      <div style="padding: 10px 25px 30px; text-align: center;">
+        <p style="font-size: 1.1rem; color: #4b5563; margin-bottom: 35px; font-weight: 500;">Felicitamos a los vendedores que alcanzaron la cima en este desafío.</p>
+        
+        <div class="winners-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+          <!-- WINNER A -->
+          <div style="background: white; padding: 30px 20px; border-radius: 24px; border: 2px solid #3b82f6; box-shadow: 0 15px 35px rgba(59, 130, 246, 0.12); position: relative; transition: transform 0.3s ease;">
+            <div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #3b82f6; color: white; padding: 4px 18px; border-radius: 20px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; white-space: nowrap; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);">Categoría A</div>
+            <div style="font-size: 3.5rem; margin-bottom: 15px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));">🥇</div>
+            <h3 id="winner-a-display-name" style="font-size: 1.4rem; color: #1e3a8a; margin-bottom: 6px; font-weight: 900; line-height: 1.2;">-</h3>
+            <p id="winner-a-display-branch" style="color: #6b7280; font-size: 1rem; margin-bottom: 15px; font-weight: 600;">-</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <span id="winner-a-display-score" style="font-size: 1.8rem; color: #3b82f6; font-weight: 900; font-family: 'Inter', sans-serif;">0</span>
+              <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 700;">METROS</span>
+            </div>
+          </div>
+
+          <!-- WINNER B -->
+          <div style="background: white; padding: 30px 20px; border-radius: 24px; border: 2px solid #ec4899; box-shadow: 0 15px 35px rgba(236, 72, 153, 0.12); position: relative; transition: transform 0.3s ease;">
+            <div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #ec4899; color: white; padding: 4px 18px; border-radius: 20px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; white-space: nowrap; box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);">Categoría B</div>
+            <div style="font-size: 3.5rem; margin-bottom: 15px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));">🥇</div>
+            <h3 id="winner-b-display-name" style="font-size: 1.4rem; color: #831843; margin-bottom: 6px; font-weight: 900; line-height: 1.2;">-</h3>
+            <p id="winner-b-display-branch" style="color: #6b7280; font-size: 1rem; margin-bottom: 15px; font-weight: 600;">-</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <span id="winner-b-display-score" style="font-size: 1.8rem; color: #ec4899; font-weight: 900; font-family: 'Inter', sans-serif;">0</span>
+              <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 700;">METROS</span>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="closeWinnersModal()" style="margin-top: 45px; padding: 14px 50px; background: #059669; color: white; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 20px rgba(5, 150, 105, 0.2); font-size: 1rem;">Cerrar y Saludar 👋</button>
+      </div>
+      
+      <style>
+        @media (max-width: 600px) {
+          .winners-grid {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+          }
+        }
+      </style>
     </div>
   </div>
 
@@ -4296,7 +4370,20 @@
       if (e.target === document.getElementById('contest-ranking-modal')) {
         closeRankingModal();
       }
+      if (e.target === document.getElementById('contest-winners-modal')) {
+        closeWinnersModal();
+      }
     });
+
+    // Winners Modal Logic
+    function openWinnersModal() {
+      document.getElementById('contest-winners-modal').style.display = 'flex';
+      triggerConfetti(); // ¡Festejamos!
+    }
+
+    function closeWinnersModal() {
+      document.getElementById('contest-winners-modal').style.display = 'none';
+    }
 
     // Ranking Modal Logic
     function openRankingModal() {
@@ -4367,11 +4454,17 @@
           startCountdown(); // Reiniciar countdown con la nueva fecha
         }
 
-        // 5. Ranking button visibility
+        // 5. Button visibility and actions
         const rankingBtn = document.getElementById('ranking-btn');
+        const winnersABtn = document.getElementById('winners-a-btn');
+        const winnersBBtn = document.getElementById('winners-b-btn');
+
+        // Manage Ranking Button
         if (rankingBtn) {
-          const status = data.rankingStatus || 'visible'; // Fallback: visible
-          if (status === 'hidden') {
+          const showRanking = data.showRankingButton !== false; // Default true
+          const status = data.rankingStatus || 'visible';
+
+          if (!showRanking || status === 'hidden') {
             rankingBtn.style.display = 'none';
           } else if (status === 'coming_soon') {
             rankingBtn.style.display = '';
@@ -4380,16 +4473,31 @@
             rankingBtn.innerHTML = '<i class="fa-solid fa-clock"></i> Ranking próximamente';
             rankingBtn.style.opacity = '0.6';
             rankingBtn.style.cursor = 'not-allowed';
-            rankingBtn.title = 'El ranking estará disponible la próxima semana';
           } else {
-            // visible (default)
             rankingBtn.style.display = '';
             rankingBtn.disabled = false;
             rankingBtn.onclick = openRankingModal;
             rankingBtn.innerHTML = '<i class="fa-solid fa-ranking-star"></i> Ver Ranking';
             rankingBtn.style.opacity = '1';
             rankingBtn.style.cursor = 'pointer';
-            rankingBtn.title = '';
+          }
+        }
+
+        // Manage Winners Button and Modal Data
+        const winnersBtn = document.getElementById('winners-btn');
+        if (winnersBtn) {
+          const showWinners = data.showWinnersButton === true;
+          winnersBtn.style.display = showWinners ? 'flex' : 'none';
+          
+          if (showWinners) {
+            // Populate Modal Static Data
+            if (data.winnerAName) document.getElementById('winner-a-display-name').textContent = data.winnerAName;
+            if (data.winnerABranch) document.getElementById('winner-a-display-branch').textContent = data.winnerABranch;
+            if (data.winnerAScore) document.getElementById('winner-a-display-score').textContent = data.winnerAScore;
+            
+            if (data.winnerBName) document.getElementById('winner-b-display-name').textContent = data.winnerBName;
+            if (data.winnerBBranch) document.getElementById('winner-b-display-branch').textContent = data.winnerBBranch;
+            if (data.winnerBScore) document.getElementById('winner-b-display-score').textContent = data.winnerBScore;
           }
         }
       } catch (err) {

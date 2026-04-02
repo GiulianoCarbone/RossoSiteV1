@@ -806,6 +806,67 @@
                     <button id="save-ranking-status-btn" style="margin-top: 15px;">Guardar Visibilidad</button>
                 </div>
 
+                <!-- Button Visibility and Winners Config -->
+                <div class="panel-card" style="padding: 20px; margin-bottom: 20px;">
+                    <h3><i class="fa-solid fa-toggle-on"></i> Configuración de Botones</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                        <div class="input-group" style="display: flex; align-items: center; gap: 10px; background: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                            <input type="checkbox" id="show-ranking-btn" style="width: 20px; height: 20px; cursor: pointer;">
+                            <label for="show-ranking-btn" style="margin: 0; cursor: pointer; font-weight: 600;">Mostrar "Ver Ranking"</label>
+                        </div>
+                        <div class="input-group" style="display: flex; align-items: center; gap: 10px; background: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                            <input type="checkbox" id="show-winners-btn" style="width: 20px; height: 20px; cursor: pointer;">
+                            <label for="show-winners-btn" style="margin: 0; cursor: pointer; font-weight: 600;">Mostrar "Ver Ganadores"</label>
+                        </div>
+                    </div>
+
+                    <div id="winners-config-fields" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                        <h4 style="margin-bottom: 15px; color: var(--brand);">Configuración de Ganadores</h4>
+                        
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; background: #f0fdf4; padding: 10px; border-radius: 8px; border: 1px solid #dcfce7;">
+                            <input type="checkbox" id="show-winners-btn" style="width: 20px; height: 20px; cursor: pointer;">
+                            <label for="show-winners-btn" style="margin: 0; cursor: pointer; font-weight: 700; color: #166534;">Mostrar Botón "Ver Ganadores"</label>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <!-- Winner A Details -->
+                            <div style="background: #eff6ff; padding: 15px; border-radius: 8px; border: 1px solid #dbeafe;">
+                                <h5 style="color: #1e40af; margin-bottom: 10px; font-weight: 800;">GANADOR CATEGORÍA A</h5>
+                                <div class="input-group">
+                                    <label>Nombre del Ganador</label>
+                                    <input type="text" id="winner-a-name" placeholder="Ej: Juan Pérez">
+                                </div>
+                                <div class="input-group">
+                                    <label>Sucursal</label>
+                                    <input type="text" id="winner-a-branch" placeholder="Ej: Concepción">
+                                </div>
+                                <div class="input-group">
+                                    <label>Unidades / Puntos</label>
+                                    <input type="number" id="winner-a-score" placeholder="Ej: 245">
+                                </div>
+                            </div>
+
+                            <!-- Winner B Details -->
+                            <div style="background: #fdf2f8; padding: 15px; border-radius: 8px; border: 1px solid #fce7f3;">
+                                <h5 style="color: #9d174d; margin-bottom: 10px; font-weight: 800;">GANADOR CATEGORÍA B</h5>
+                                <div class="input-group">
+                                    <label>Nombre del Ganador</label>
+                                    <input type="text" id="winner-b-name" placeholder="Ej: María López">
+                                </div>
+                                <div class="input-group">
+                                    <label>Sucursal</label>
+                                    <input type="text" id="winner-b-branch" placeholder="Ej: Famailla">
+                                </div>
+                                <div class="input-group">
+                                    <label>Unidades / Puntos</label>
+                                    <input type="number" id="winner-b-score" placeholder="Ej: 198">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="save-buttons-config-btn" style="margin-top: 15px; background-color: #2563eb;">Guardar Configuración de Botones</button>
+                </div>
+
                 <!-- Ranking Inputs -->
                 <div class="panel-card" style="padding: 20px;">
                     <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 - CATEGORÍA A</h3>
@@ -2054,6 +2115,26 @@
                 }
             });
 
+            // Save buttons config button
+            document.getElementById('save-buttons-config-btn').addEventListener('click', async () => {
+                try {
+                    await db.collection('config').doc('contest_config').set({
+                        showRankingButton: document.getElementById('show-ranking-btn').checked,
+                        showWinnersButton: document.getElementById('show-winners-btn').checked,
+                        winnerAName: document.getElementById('winner-a-name').value,
+                        winnerABranch: document.getElementById('winner-a-branch').value,
+                        winnerAScore: document.getElementById('winner-a-score').value,
+                        winnerBName: document.getElementById('winner-b-name').value,
+                        winnerBBranch: document.getElementById('winner-b-branch').value,
+                        winnerBScore: document.getElementById('winner-b-score').value
+                    }, { merge: true });
+                    alert('✅ Configuración de ganadores guardada.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al guardar la configuración.');
+                }
+            });
+
             // Ranking A form
             document.getElementById('contest-ranking-a-form').onsubmit = async (e) => {
                 e.preventDefault();
@@ -2141,6 +2222,22 @@
                     // Terms
                     if (data.termsTitle) document.getElementById('contest-terms-title').value = data.termsTitle;
                     if (data.termsContent) document.getElementById('contest-terms-content').value = data.termsContent;
+
+                    // Button visibility and winners config
+                    if (data.showRankingButton !== undefined) document.getElementById('show-ranking-btn').checked = data.showRankingButton;
+                    else document.getElementById('show-ranking-btn').checked = true; // Default
+
+                    if (data.showWinnersButton !== undefined) document.getElementById('show-winners-btn').checked = data.showWinnersButton;
+
+                    // Winner A
+                    if (data.winnerAName) document.getElementById('winner-a-name').value = data.winnerAName;
+                    if (data.winnerABranch) document.getElementById('winner-a-branch').value = data.winnerABranch;
+                    if (data.winnerAScore) document.getElementById('winner-a-score').value = data.winnerAScore;
+
+                    // Winner B
+                    if (data.winnerBName) document.getElementById('winner-b-name').value = data.winnerBName;
+                    if (data.winnerBBranch) document.getElementById('winner-b-branch').value = data.winnerBBranch;
+                    if (data.winnerBScore) document.getElementById('winner-b-score').value = data.winnerBScore;
 
                     // Ranking A
                     if (data.rankingA && Array.isArray(data.rankingA)) {
