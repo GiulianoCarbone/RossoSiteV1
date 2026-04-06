@@ -754,7 +754,7 @@
                         <form id="contest-countdown-form">
                             <div class="input-group">
                                 <label>Fecha de Finalización</label>
-                                <input type="datetime-local" id="contest-countdown-date" required>
+                                <input type="datetime-local" id="contest-countdown-date" value="2026-04-30T23:59" required>
                             </div>
                             <button type="submit" style="margin-top: 10px;">Guardar Fecha</button>
                         </form>
@@ -766,12 +766,17 @@
                     <h3><i class="fa-solid fa-file-contract"></i> Bases del Concurso</h3>
                     <form id="contest-terms-form">
                         <div class="input-group">
-                            <label>Título (Ej: Desafío Eliane 🏆)</label>
-                            <input type="text" id="contest-terms-title" required>
+                            <label>Título (Ej: Desafío Isolant 🏆)</label>
+                            <input type="text" id="contest-terms-title" value="Desafío Isolant 🏆" required>
                         </div>
                         <div class="input-group">
                             <label>Contenido</label>
-                            <textarea id="contest-terms-content" rows="6" required></textarea>
+                            <textarea id="contest-terms-content" rows="6" required>Mecánica: Se dividirá a las sucursales en categorías A y B, de ambas categorías saldrá un ganador, este será el que logre vender más unidades de la marca ISOLANT, en el mes.
+Mínimo de Clasificación: Barrera de entrada sin mínimos.
+IMPORTANTE: Participan solo marca ISOLANT, NO PARTICIPA LINEA RUFI.
+CATEGORIA A: Monteros, Concepcion, Manantial y Salta.
+CATEGORIA B: Aguilares, Famailla, Metan y Tafi del Valle.
+PREMIO: 1 Parlante JBL portátil.</textarea>
                         </div>
                         <button type="submit" style="margin-top: 10px;">Guardar Bases</button>
                     </form>
@@ -875,33 +880,33 @@
                             <!-- Rank 1-5 A -->
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; background: #fff7ed; padding: 10px; border-radius: 8px; border: 1px solid #ffedd5;">
                                 <span style="font-weight: 800; color: #d95324;">1º</span>
-                                <input type="text" id="rankA1-name" placeholder="Vendedor" value="FERNANDA">
-                                <input type="text" id="rankA1-branch" placeholder="Sucursal" value="MANANTIAL">
-                                <input type="number" id="rankA1-units" placeholder="Cant." value="284">
+                                <input type="text" id="rankA1-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankA1-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankA1-units" placeholder="Cant." value="0">
                             </div>
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #4b5563;">2º</span>
-                                <input type="text" id="rankA2-name" placeholder="Vendedor" value="CESAR">
-                                <input type="text" id="rankA2-branch" placeholder="Sucursal" value="SALTA">
-                                <input type="number" id="rankA2-units" placeholder="Cant." value="186">
+                                <input type="text" id="rankA2-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankA2-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankA2-units" placeholder="Cant." value="0">
                             </div>
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #4b5563;">3º</span>
-                                <input type="text" id="rankA3-name" placeholder="Vendedor" value="NICOLAS">
-                                <input type="text" id="rankA3-branch" placeholder="Sucursal" value="MANANTIAL">
-                                <input type="number" id="rankA3-units" placeholder="Cant." value="151">
+                                <input type="text" id="rankA3-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankA3-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankA3-units" placeholder="Cant." value="0">
                             </div>
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #9ca3af;">4º</span>
-                                <input type="text" id="rankA4-name" placeholder="Vendedor" value="MARCOS">
-                                <input type="text" id="rankA4-branch" placeholder="Sucursal" value="MONTEROS">
-                                <input type="number" id="rankA4-units" placeholder="Cant." value="135">
+                                <input type="text" id="rankA4-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankA4-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankA4-units" placeholder="Cant." value="0">
                             </div>
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #9ca3af;">5º</span>
-                                <input type="text" id="rankA5-name" placeholder="Vendedor" value="EVANGELINA">
-                                <input type="text" id="rankA5-branch" placeholder="Sucursal" value="SALTA">
-                                <input type="number" id="rankA5-units" placeholder="Cant." value="74">
+                                <input type="text" id="rankA5-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankA5-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankA5-units" placeholder="Cant." value="0">
                             </div>
                         </div>
                         <button type="submit" style="margin-top: 20px; background-color: #d95324; font-weight: 800;">ACTUALIZAR RANKING A</button>
@@ -915,33 +920,33 @@
                             <!-- Rank 1-5 B -->
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; background: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb;">
                                 <span style="font-weight: 800; color: #d95324;">1º</span>
-                                <input type="text" id="rankB1-name" placeholder="Vendedor" value="AGUSTIN">
-                                <input type="text" id="rankB1-branch" placeholder="Sucursal" value="METAN">
-                                <input type="number" id="rankB1-units" placeholder="Cant." value="68">
+                                <input type="text" id="rankB1-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankB1-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankB1-units" placeholder="Cant." value="0">
                             </div>
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #4b5563;">2º</span>
-                                <input type="text" id="rankB2-name" placeholder="Vendedor" value="MATIAS">
-                                <input type="text" id="rankB2-branch" placeholder="Sucursal" value="AGUILARES">
-                                <input type="number" id="rankB2-units" placeholder="Cant." value="23">
+                                <input type="text" id="rankB2-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankB2-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankB2-units" placeholder="Cant." value="0">
                             </div>
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #4b5563;">3º</span>
-                                <input type="text" id="rankB3-name" placeholder="Vendedor" value="MATIAS">
-                                <input type="text" id="rankB3-branch" placeholder="Sucursal" value="TAFI DEL VALLE">
-                                <input type="number" id="rankB3-units" placeholder="Cant." value="20">
+                                <input type="text" id="rankB3-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankB3-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankB3-units" placeholder="Cant." value="0">
                             </div>
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #9ca3af;">4º</span>
-                                <input type="text" id="rankB4-name" placeholder="Vendedor" value="MARCELO">
-                                <input type="text" id="rankB4-branch" placeholder="Sucursal" value="FAMAILLA">
-                                <input type="number" id="rankB4-units" placeholder="Cant." value="10">
+                                <input type="text" id="rankB4-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankB4-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankB4-units" placeholder="Cant." value="0">
                             </div>
                             <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
                                 <span style="font-weight: 800; color: #9ca3af;">5º</span>
-                                <input type="text" id="rankB5-name" placeholder="Vendedor" value="MAURO">
-                                <input type="text" id="rankB5-branch" placeholder="Sucursal" value="AGUILARES">
-                                <input type="number" id="rankB5-units" placeholder="Cant." value="5">
+                                <input type="text" id="rankB5-name" placeholder="Vendedor" value="-">
+                                <input type="text" id="rankB5-branch" placeholder="Sucursal" value="-">
+                                <input type="number" id="rankB5-units" placeholder="Cant." value="0">
                             </div>
                         </div>
                         <button type="submit" style="margin-top: 20px; background-color: #272e68; font-weight: 800;">ACTUALIZAR RANKING B</button>
