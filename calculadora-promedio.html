@@ -375,6 +375,114 @@
             .res-value { font-size: 1.5rem; }
             .res-display { padding: 15px; }
         }
+
+        /* Legend Styles */
+        .legend-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+            border-left: 6px solid var(--accent);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .legend-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .legend-header h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        .legend-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: var(--brand);
+            font-weight: 500;
+        }
+
+        .legend-content .highlight {
+            background: #fff3f0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            font-weight: 700;
+            color: #d32f2f;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .legend-procedure {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .legend-procedure h4 {
+            color: var(--brand);
+            margin-bottom: 12px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 0;
+        }
+
+        .legend-list {
+            list-style: none;
+            padding-left: 5px;
+            margin: 0;
+        }
+
+        .legend-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+
+        .legend-list li::before {
+            content: "\f058";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .legend-email {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .legend-email:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            .legend-card { padding: 20px; margin-top: 20px; }
+            .legend-header h3 { font-size: 1rem; }
+            .legend-procedure { padding: 15px; }
+        }
     </style>
 </head>
 
@@ -487,6 +595,37 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leyenda Informativa -->
+            <div class="legend-card">
+                <div class="legend-header">
+                    <i class="fa-solid fa-circle-exclamation fa-2xl"></i>
+                    <h3>Información Importante</h3>
+                </div>
+                <div class="legend-content">
+                    <span class="highlight">
+                        ¡RECORDAR QUE TODOS LOS CHEQUES DEBEN ESTAR ENDOSADOS POR EL CLIENTE!
+                    </span>
+                    <p>
+                        Siempre que se haya posibilidad de recibir un cheque o echeq por una venta en sucursal, debe ser 
+                        consultada su recepción con el <strong>encargado de créditos y cobranzas</strong>, siguiendo las pautas de recepción.
+                    </p>
+                    
+                    <div class="legend-procedure">
+                        <h4><i class="fa-solid fa-clipboard-list"></i> Procedimiento para cheque físico:</h4>
+                        <p style="font-size: 0.9rem; margin-bottom: 10px; color: #64748b;">
+                            Enviar correo electrónico a 
+                            <a href="mailto:Ctasclientes@rossomateriales.com.ar" class="legend-email">Ctasclientes@rossomateriales.com.ar</a>, 
+                            con los siguientes datos:
+                        </p>
+                        <ul class="legend-list">
+                            <li>Foto del cheque (Frente y Dorso).</li>
+                            <li>Veraz del cliente.</li>
+                            <li>Informe sobre cheques denunciados del BCRA.</li>
+                        </ul>
                     </div>
                 </div>
             </div>

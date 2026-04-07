@@ -481,6 +481,9 @@
                 <a class="nav-item" data-section="review-config">
                     <i class="fa-solid fa-comment-dots"></i> Reseña Destacada
                 </a>
+                <a class="nav-item" data-section="vendedor-config">
+                    <i class="fa-solid fa-crown"></i> Vendedor Destacado
+                </a>
                 <a class="nav-item" data-section="contest-config">
                     <i class="fa-solid fa-trophy"></i> Configurar Concurso
                 </a>
@@ -488,6 +491,11 @@
                     <i class="fa-solid fa-id-card-clip"></i> Invitaciones
                 </a>
 
+
+                <!-- Catálogo -->
+                <a href="panel-catalogo.html" class="nav-item">
+                    <i class="fa-solid fa-box"></i> Catálogo
+                </a>
 
                 <!-- Link to go back to main site -->
                 <a href="panel-corporativo.html" class="nav-item">
@@ -722,6 +730,41 @@
                             <small>Nombre de la sucursal que recibió la reseña destacada.</small>
                         </div>
                         <button type="submit" style="margin-top: 10px;">Guardar Configuración</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- VENDEDOR CONFIG SECTION -->
+            <section id="vendedor-config" class="content-section">
+                <div class="section-header">
+                    <h1>Configurar Vendedor Destacado</h1>
+                </div>
+                <div class="panel-card" style="padding: 20px; max-width: 600px;">
+                    <p style="color: #6b7280; margin-bottom: 20px;">
+                        Modifica la imagen, el nombre y el logro/descripción para destacar a un vendedor en el panel principal.
+                    </p>
+                    <form id="vendedor-config-form">
+                        <div class="input-group">
+                            <label>URL Imagen del Vendedor</label>
+                            <input type="url" id="vendedor-image-url" placeholder="https://..." required>
+                            <small>Link directo a la foto del vendedor.</small>
+                        </div>
+                        <div class="input-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="vendedor-name-input" placeholder="Ej: Juan Pérez" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Descripción / Logro</label>
+                            <textarea id="vendedor-desc-input" rows="4" placeholder="Escribí aquí el logro o felicitaciones..." required></textarea>
+                            <small>Aparecerá como subtítulo en la tarjeta destacada.</small>
+                        </div>
+                        
+                        <div id="vendedor-preview" style="margin-bottom: 20px; text-align: center; border: 1px solid #ddd; padding: 10px; border-radius: 8px; display: none;">
+                            <p style="font-size: 0.8rem; color: #888;">Vista previa:</p>
+                            <img id="vendedor-img-preview" src="" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent);">
+                        </div>
+                        
+                        <button type="submit" style="margin-top: 10px;">Guardar Vendedor Destacado</button>
                     </form>
                 </div>
             </section>
@@ -1181,6 +1224,7 @@ PREMIO: 1 Parlante JBL portátil.</textarea>
             initNotifications();
             initSocialConfig();
             initReviewConfig();
+            initVendedorConfig();
             initContestConfig();
             initInvitations();
         }
@@ -1216,6 +1260,7 @@ PREMIO: 1 Parlante JBL portátil.</textarea>
             if (sectionId === 'notifications') loadNotifications();
             if (sectionId === 'social-config') loadSocialConfig();
             if (sectionId === 'review-config') loadReviewConfig();
+            if (sectionId === 'vendedor-config') loadVendedorConfig();
             if (sectionId === 'contest-config') loadContestConfig();
             if (sectionId === 'invitations') loadInvitations();
 
@@ -2020,6 +2065,62 @@ PREMIO: 1 Parlante JBL portátil.</textarea>
             }
         }
 
+        // --- VENDEDOR CONFIG LOGIC ---
+        function initVendedorConfig() {
+            const imgInput = document.getElementById("vendedor-image-url");
+            if (imgInput) {
+                imgInput.addEventListener("input", (e) => {
+                    const url = e.target.value.trim();
+                    const preview = document.getElementById("vendedor-preview");
+                    const previewImg = document.getElementById("vendedor-img-preview");
+                    if (url) {
+                        previewImg.src = url;
+                        preview.style.display = "block";
+                    } else {
+                        preview.style.display = "none";
+                    }
+                });
+            }
+
+            document.getElementById("vendedor-config-form").onsubmit = async (e) => {
+                e.preventDefault();
+                const data = {
+                    imageUrl: document.getElementById("vendedor-image-url").value,
+                    name: document.getElementById("vendedor-name-input").value,
+                    description: document.getElementById("vendedor-desc-input").value,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                };
+                try {
+                    await db.collection("config").doc("featured_vendedor").set(data);
+                    alert("¡Configuración de Vendedor Destacado guardada!");
+                } catch (error) {
+                    console.error("Error guardando vendedor:", error);
+                    alert("Error al guardar.");
+                }
+            };
+        }
+
+        async function loadVendedorConfig() {
+            try {
+                const doc = await db.collection("config").doc("featured_vendedor").get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById("vendedor-image-url").value = data.imageUrl || "";
+                    document.getElementById("vendedor-name-input").value = data.name || "";
+                    document.getElementById("vendedor-desc-input").value = data.description || "";
+                    
+                    if (data.imageUrl) {
+                        const preview = document.getElementById("vendedor-preview");
+                        const previewImg = document.getElementById("vendedor-img-preview");
+                        previewImg.src = data.imageUrl;
+                        preview.style.display = "block";
+                    }
+                }
+            } catch (error) {
+                console.error("Error cargando vendedor destacado:", error);
+            }
+        }
+
         // --- CONTEST CONFIG LOGIC ---
         function initContestConfig() {
             // Prize image preview on URL change
@@ -2311,6 +2412,7 @@ PREMIO: 1 Parlante JBL portátil.</textarea>
                 if (collection === 'trainings') loadTrainings();
                 if (collection === 'sugerencias') loadSuggestions();
                 if (collection === 'notifications') loadNotifications();
+                if (collection === 'vendedor-config') loadVendedorConfig();
                 if (collection === 'invitaciones') loadInvitations();
             }
         };

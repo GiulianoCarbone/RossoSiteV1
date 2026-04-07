@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Migración de Productos | Rosso Admin</title>
+  <link href="assets/FAV.png" rel="icon" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="todos_los_productos.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: #f4f7f6;
+      color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 40px;
+      width: 100%;
+      max-width: 700px;
+    }
+    .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .logo img { height: 36px; }
+    h1 { font-size: 1.4rem; font-weight: 700; color: #272e68; }
+    .subtitle { font-size: 0.9rem; color: #6b7280; margin-top: 4px; }
+
+    .warning {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 24px 0;
+      font-size: 0.88rem;
+      color: #92400e;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .warning strong { display: block; margin-bottom: 4px; color: #78350f; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-card .value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #272e68;
+    }
+    .stat-card .label {
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+    .stat-card.success .value { color: #16a34a; }
+    .stat-card.error .value   { color: #dc2626; }
+
+    .progress-wrap {
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #272e68, #ec6434);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .log-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      height: 220px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .log-box .ok   { color: #4ade80; }
+    .log-box .warn { color: #facc15; }
+    .log-box .err  { color: #f87171; }
+    .log-box .info { color: #93c5fd; }
+
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: #272e68; color: white; }
+    .btn-primary:hover:not(:disabled) { background: #1f244f; }
+    .btn-secondary { background: #e5e7eb; color: #374151; }
+    .btn-secondary:hover:not(:disabled) { background: #d1d5db; }
+    .btn-danger { background: #dc2626; color: white; }
+    .btn-danger:hover:not(:disabled) { background: #b91c1c; }
+
+    .result-banner {
+      display: none;
+      margin-top: 20px;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .result-banner.success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .result-banner.error   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+    a.back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.83rem;
+      color: #6b7280;
+      text-decoration: none;
+      margin-top: 24px;
+    }
+    a.back-link:hover { color: #272e68; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">
+    <img src="assets/LOGO.png" alt="Rosso" onerror="this.style.display='none'" />
+    <div>
+      <h1>Migración de Productos</h1>
+      <p class="subtitle">Carga inicial de productos a Firestore</p>
+    </div>
+  </div>
+
+  <div class="warning">
+    <span style="font-size:1.2rem">⚠️</span>
+    <div>
+      <strong>Herramienta de uso único</strong>
+      Esta página lee los 286 productos de <code>todos_los_productos.js</code>
+      y los sube a la colección <code>catalogo</code> en Firestore.
+      Usá <em>merge: true</em> — si un producto ya existe, no se sobreescribe.
+      Podés ejecutarla varias veces sin problema.
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <div class="value" id="stat-total">—</div>
+      <div class="label">Total productos</div>
+    </div>
+    <div class="stat-card success">
+      <div class="value" id="stat-ok">0</div>
+      <div class="label">Migrados</div>
+    </div>
+    <div class="stat-card error">
+      <div class="value" id="stat-err">0</div>
+      <div class="label">Con error</div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+
+  <div class="log-box" id="log">
+    <span class="info">→ Listo para migrar. Presioná "Iniciar Migración".</span>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" id="btn-migrar" onclick="iniciarMigracion()">
+      ▶ Migración completa
+    </button>
+    <button class="btn btn-secondary" id="btn-reparar" onclick="repararCategorias()">
+      🔧 Reparar categorías
+    </button>
+    <button class="btn btn-secondary" id="btn-verificar" onclick="verificarMigracion()">
+      🔍 Verificar
+    </button>
+    <button class="btn btn-danger" id="btn-limpiar" onclick="limpiarLog()" style="margin-left:auto">
+      Limpiar log
+    </button>
+  </div>
+  <p style="font-size:0.78rem;color:#6b7280;margin-top:10px">
+    <strong>Migración completa:</strong> sube todos los productos desde cero (usa merge, no sobreescribe campos manuales).<br>
+    <strong>Reparar categorías:</strong> solo actualiza los campos <code>categoria</code> y <code>subcategoria</code> de documentos existentes en Firestore.
+  </p>
+
+  <div class="result-banner" id="result-banner"></div>
+
+  <a href="panel-admin.html" class="back-link">← Volver al panel admin</a>
+</div>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+    authDomain: "backend-panel-vendedores.firebaseapp.com",
+    projectId: "backend-panel-vendedores",
+    storageBucket: "backend-panel-vendedores.firebasestorage.app",
+    messagingSenderId: "24873830395",
+    appId: "1:24873830395:web:ea6749407f991ee8226d5e"
+  };
+
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  /*
+   * MAPEO DE CATEGORÍAS: viejo (plano) → nuevo (jerárquico)
+   * Editá este objeto si querés ajustar el mapeo antes de migrar.
+   *
+   * "categoria_vieja": { categoria: "Nueva principal", subcategoria: "Subcategoría" }
+   */
+  const CATEGORY_MAP = {
+    'Guardas, Perfiles y Listeles': { categoria: 'Guardas y Perfiles',  subcategoria: 'Listeles' },
+    'Muebles de Baño':              { categoria: 'Muebles de Baño',     subcategoria: '' },
+    'Pintura Asfáltica y Membranas':{ categoria: 'Pinturas y Membranas',subcategoria: '' },
+    'Juegos de Baño':               { categoria: 'Juegos de Baño',      subcategoria: '' },
+    'De cocina':                    { categoria: 'Bachas',              subcategoria: 'De cocina' },
+    'De baño':                      { categoria: 'Bachas',              subcategoria: 'De baño' },
+    'Griferías de Baño':            { categoria: 'Griferías',           subcategoria: 'De baño' },
+    'Griferías de Cocina':          { categoria: 'Griferías',           subcategoria: 'De cocina' },
+    'Aberturas':                    { categoria: 'Aberturas',           subcategoria: '' },
+    'Porcelanatos':                 { categoria: 'Revestimientos',      subcategoria: 'Porcelanatos' },
+    'Cerámicos':                    { categoria: 'Revestimientos',      subcategoria: 'Cerámicos' },
+  };
+
+  function mapearCategoria(catOriginal) {
+    const mapped = CATEGORY_MAP[catOriginal];
+    if (mapped) return mapped;
+    // Si no hay mapeo definido, usar el valor original como categoría principal
+    return { categoria: catOriginal || 'Sin categoría', subcategoria: '' };
+  }
+
+  const logBox   = document.getElementById('log');
+  const statOk   = document.getElementById('stat-ok');
+  const statErr  = document.getElementById('stat-err');
+  const statTotal = document.getElementById('stat-total');
+  const progressFill = document.getElementById('progress-fill');
+  const banner   = document.getElementById('result-banner');
+
+  function log(msg, tipo = 'info') {
+    const span = document.createElement('span');
+    span.className = tipo;
+    span.textContent = msg;
+    logBox.appendChild(span);
+    logBox.appendChild(document.createElement('br'));
+    logBox.scrollTop = logBox.scrollHeight;
+  }
+
+  function limpiarLog() {
+    logBox.innerHTML = '<span class="info">→ Log limpiado.</span><br>';
+    banner.style.display = 'none';
+  }
+
+  function updateProgress(done, total) {
+    progressFill.style.width = `${Math.round((done / total) * 100)}%`;
+  }
+
+  async function iniciarMigracion() {
+    const btn = document.getElementById('btn-migrar');
+    btn.disabled = true;
+    banner.style.display = 'none';
+    limpiarLog();
+
+    if (typeof productos === 'undefined' || !Array.isArray(productos)) {
+      log('✗ Error: no se encontró el array "productos" de todos_los_productos.js', 'err');
+      btn.disabled = false;
+      return;
+    }
+
+    const total = productos.length;
+    statTotal.textContent = total;
+    statOk.textContent = '0';
+    statErr.textContent = '0';
+
+    log(`→ Iniciando migración de ${total} productos...`, 'info');
+
+    let ok = 0;
+    let errores = 0;
+    const BATCH_SIZE = 400; // Firestore max es 500
+
+    const ahora = firebase.firestore.FieldValue.serverTimestamp();
+
+    for (let i = 0; i < productos.length; i += BATCH_SIZE) {
+      const batch = db.batch();
+      const chunk = productos.slice(i, Math.min(i + BATCH_SIZE, productos.length));
+      const batchNum = Math.floor(i / BATCH_SIZE) + 1;
+
+      log(`→ Procesando lote ${batchNum} (${chunk.length} productos)...`, 'info');
+
+      let batchOk = 0;
+      for (const p of chunk) {
+        if (!p.sku) {
+          log(`  ⚠ Sin SKU: "${p.nombre}" — omitido`, 'warn');
+          errores++;
+          statErr.textContent = errores;
+          continue;
+        }
+
+        const { categoria, subcategoria } = mapearCategoria(p.categoria);
+        const ref = db.collection('catalogo').doc(String(p.sku));
+        batch.set(ref, {
+          nombre:        p.nombre || '',
+          sku:           String(p.sku),
+          categoria:     categoria,
+          subcategoria:  subcategoria,
+          marca:         '',
+          descripcion:   '',
+          unidad:        'm²',
+          imagenes:      [],
+          imagenLegacy:  p.imagen || '',
+          disponible:    true,
+          destacado:     false,
+          creadoEn:      ahora,
+          actualizadoEn: ahora
+        }, { merge: true });
+
+        batchOk++;
+      }
+
+      try {
+        await batch.commit();
+        ok += batchOk;
+        statOk.textContent = ok;
+        updateProgress(ok + errores, total);
+        log(`  ✓ Lote ${batchNum} subido correctamente (${batchOk} docs)`, 'ok');
+      } catch (e) {
+        errores += batchOk;
+        statErr.textContent = errores;
+        updateProgress(ok + errores, total);
+        log(`  ✗ Error en lote ${batchNum}: ${e.message}`, 'err');
+        console.error(e);
+      }
+    }
+
+    updateProgress(total, total);
+
+    if (errores === 0) {
+      log(`✓ Migración completa: ${ok} productos subidos sin errores.`, 'ok');
+      showBanner(`✓ Migración exitosa: ${ok} productos cargados en Firestore.`, 'success');
+    } else {
+      log(`⚠ Migración finalizada con ${errores} error(es). Revisá el log.`, 'warn');
+      showBanner(`⚠ Migración con errores: ${ok} ok / ${errores} fallidos.`, 'error');
+    }
+
+    btn.disabled = false;
+  }
+
+  async function verificarMigracion() {
+    const btn = document.getElementById('btn-verificar');
+    btn.disabled = true;
+    log('→ Verificando colección "catalogo" en Firestore...', 'info');
+
+    try {
+      const snap = await db.collection('catalogo').get();
+      const count = snap.size;
+      log(`✓ Se encontraron ${count} documentos en la colección "catalogo".`, 'ok');
+      showBanner(`✓ Firestore contiene ${count} productos en la colección "catalogo".`, 'success');
+    } catch (e) {
+      log(`✗ Error al verificar: ${e.message}`, 'err');
+      showBanner(`✗ Error al verificar: ${e.message}`, 'error');
+    }
+
+    btn.disabled = false;
+  }
+
+  async function repararCategorias() {
+    const btn = document.getElementById('btn-reparar');
+    btn.disabled = true;
+    banner.style.display = 'none';
+    limpiarLog();
+
+    if (typeof productos === 'undefined' || !Array.isArray(productos)) {
+      log('✗ Error: no se encontró el array "productos".', 'err');
+      btn.disabled = false;
+      return;
+    }
+
+    log('→ Reparando categorías en documentos existentes de Firestore...', 'info');
+    log('→ Solo se actualizan categoria y subcategoria. El resto de los campos no se toca.', 'info');
+
+    const total = productos.length;
+    statTotal.textContent = total;
+    statOk.textContent = '0';
+    statErr.textContent = '0';
+
+    let ok = 0, errores = 0;
+    const BATCH_SIZE = 400;
+
+    for (let i = 0; i < productos.length; i += BATCH_SIZE) {
+      const batch = db.batch();
+      const chunk = productos.slice(i, Math.min(i + BATCH_SIZE, productos.length));
+
+      for (const p of chunk) {
+        if (!p.sku) { errores++; statErr.textContent = errores; continue; }
+        const { categoria, subcategoria } = mapearCategoria(p.categoria);
+        const ref = db.collection('catalogo').doc(String(p.sku));
+        batch.update(ref, {
+          categoria,
+          subcategoria,
+          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+
+      try {
+        await batch.commit();
+        ok += chunk.length;
+        statOk.textContent = ok;
+        updateProgress(ok + errores, total);
+        log(`  ✓ Lote procesado (${chunk.length} docs)`, 'ok');
+      } catch (e) {
+        errores += chunk.length;
+        statErr.textContent = errores;
+        updateProgress(ok + errores, total);
+        log(`  ✗ Error: ${e.message}`, 'err');
+      }
+    }
+
+    updateProgress(total, total);
+    if (errores === 0) {
+      log(`✓ Categorías reparadas en ${ok} productos.`, 'ok');
+      showBanner(`✓ Categorías actualizadas en ${ok} productos en Firestore.`, 'success');
+    } else {
+      log(`⚠ Terminado con ${errores} error(es). Los docs que fallaron probablemente no existían aún — ejecutá primero "Migración completa".`, 'warn');
+      showBanner(`⚠ ${ok} ok / ${errores} errores. Ver log.`, 'error');
+    }
+    btn.disabled = false;
+  }
+
+  function showBanner(msg, tipo) {
+    banner.textContent = msg;
+    banner.className = `result-banner ${tipo}`;
+    banner.style.display = 'block';
+  }
+</script>
+</body>
+</html>
