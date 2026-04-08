@@ -3,218 +3,206 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Migración de Productos | Rosso Admin</title>
+  <title>Migrar Imágenes | Rosso Admin</title>
   <link href="assets/FAV.png" rel="icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="todos_los_productos.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: "Inter", system-ui, sans-serif;
-      background: #f4f7f6;
-      color: #1f2937;
-      min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 40px 16px;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand: #272e68; --brand-d: #1f244f; --accent: #ec6434;
+      --sidebar: #1f2937; --bg: #f4f7f6; --card: #ffffff;
+      --border: #e5e7eb; --text: #1f2937; --muted: #6b7280;
+      --success: #16a34a; --danger: #dc2626; --warn: #d97706;
+      --radius: 10px;
     }
-    .container {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      padding: 40px;
-      width: 100%;
-      max-width: 700px;
-    }
-    .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
-    .logo img { height: 36px; }
-    h1 { font-size: 1.4rem; font-weight: 700; color: #272e68; }
-    .subtitle { font-size: 0.9rem; color: #6b7280; margin-top: 4px; }
+    body { font-family: "Inter", system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
 
-    .warning {
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
-      border-radius: 8px;
-      padding: 14px 18px;
-      margin: 24px 0;
-      font-size: 0.88rem;
-      color: #92400e;
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-    .warning strong { display: block; margin-bottom: 4px; color: #78350f; }
+    /* ── SIDEBAR ── */
+    .sidebar { width: 220px; min-height: 100vh; background: var(--sidebar); color: #fff; display: flex; flex-direction: column; padding: 20px 0; flex-shrink: 0; }
+    .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; gap: 10px; }
+    .sidebar-header img { height: 32px; }
+    .sidebar-header span { font-weight: 700; font-size: 0.9rem; }
+    .sidebar-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: rgba(255,255,255,.7); text-decoration: none; font-size: 0.875rem; cursor: pointer; transition: background .15s, color .15s; }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,.1); color: #fff; }
+    .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,.1); font-size: 0.75rem; color: rgba(255,255,255,.5); display: flex; flex-direction: column; gap: 8px; }
+    .sidebar-footer button { background: rgba(255,255,255,.08); border: none; color: rgba(255,255,255,.7); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
+    .sidebar-footer button:hover { background: rgba(255,255,255,.15); }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    .stat-card {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 14px;
-      text-align: center;
-    }
-    .stat-card .value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #272e68;
-    }
-    .stat-card .label {
-      font-size: 0.78rem;
-      color: #6b7280;
-      margin-top: 2px;
-    }
-    .stat-card.success .value { color: #16a34a; }
-    .stat-card.error .value   { color: #dc2626; }
+    /* ── MAIN ── */
+    #main { flex: 1; padding: 32px; max-width: 920px; }
+    h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
 
-    .progress-wrap {
-      background: #e5e7eb;
-      border-radius: 999px;
-      height: 10px;
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #272e68, #ec6434);
-      border-radius: 999px;
-      transition: width 0.3s ease;
-    }
+    /* ── CARDS ── */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+    .card h2 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
 
-    .log-box {
-      background: #0f172a;
-      color: #e2e8f0;
-      border-radius: 8px;
-      padding: 16px;
-      height: 220px;
-      overflow-y: auto;
-      font-family: monospace;
-      font-size: 0.78rem;
-      line-height: 1.6;
-      margin-bottom: 24px;
-    }
-    .log-box .ok   { color: #4ade80; }
-    .log-box .warn { color: #facc15; }
-    .log-box .err  { color: #f87171; }
-    .log-box .info { color: #93c5fd; }
+    /* ── STATS ROW ── */
+    .stats-row { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .stat-box { flex: 1; min-width: 130px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
+    .stat-box .val { font-size: 2rem; font-weight: 800; line-height: 1; }
+    .stat-box .lbl { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+    .stat-box.warn .val { color: var(--warn); }
+    .stat-box.ok .val { color: var(--success); }
+    .stat-box.info .val { color: var(--brand); }
 
-    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn {
-      padding: 10px 24px;
-      border-radius: 8px;
-      border: none;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn-primary { background: #272e68; color: white; }
-    .btn-primary:hover:not(:disabled) { background: #1f244f; }
-    .btn-secondary { background: #e5e7eb; color: #374151; }
-    .btn-secondary:hover:not(:disabled) { background: #d1d5db; }
-    .btn-danger { background: #dc2626; color: white; }
-    .btn-danger:hover:not(:disabled) { background: #b91c1c; }
+    /* ── BUTTONS ── */
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; border: none; transition: opacity .15s, transform .1s; }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn-primary { background: var(--brand); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--brand-d); }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-outline { background: transparent; color: var(--brand); border: 1.5px solid var(--brand); }
 
-    .result-banner {
-      display: none;
-      margin-top: 20px;
-      padding: 14px 18px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-    .result-banner.success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
-    .result-banner.error   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    /* ── PROGRESS ── */
+    .progress-wrap { margin: 16px 0 4px; }
+    .progress-bar-bg { background: var(--border); border-radius: 99px; height: 10px; overflow: hidden; }
+    .progress-bar-fill { background: var(--accent); height: 100%; border-radius: 99px; transition: width .3s; width: 0%; }
+    .progress-label { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
 
-    a.back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.83rem;
-      color: #6b7280;
-      text-decoration: none;
-      margin-top: 24px;
-    }
-    a.back-link:hover { color: #272e68; }
+    /* ── LOG ── */
+    .log-box { background: #111827; border-radius: 8px; padding: 16px; max-height: 340px; overflow-y: auto; font-family: monospace; font-size: 0.78rem; line-height: 1.7; }
+    .log-line { display: block; }
+    .log-line.ok   { color: #4ade80; }
+    .log-line.err  { color: #f87171; }
+    .log-line.info { color: #93c5fd; }
+    .log-line.warn { color: #fbbf24; }
+    .log-line.muted{ color: #6b7280; }
+
+    /* ── TABLE ── */
+    .preview-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .preview-table th { background: var(--bg); padding: 8px 12px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--border); }
+    .preview-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .preview-table img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 0.72rem; font-weight: 600; }
+    .badge-warn { background: #fef3c7; color: #92400e; }
+    .badge-ok   { background: #dcfce7; color: #166534; }
+    .badge-err  { background: #fee2e2; color: #991b1b; }
+
+    .actions-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="logo">
+
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar">
+  <div class="sidebar-header">
     <img src="assets/LOGO.png" alt="Rosso" onerror="this.style.display='none'" />
-    <div>
-      <h1>Migración de Productos</h1>
-      <p class="subtitle">Carga inicial de productos a Firestore</p>
+    <span>Panel de Catálogo</span>
+  </div>
+  <div class="sidebar-nav">
+    <a class="nav-item" href="panel-catalogo.html">
+      <i class="fa-solid fa-box"></i> Productos
+    </a>
+    <a class="nav-item active">
+      <i class="fa-solid fa-upload"></i> Migrar imágenes
+    </a>
+    <a class="nav-item" href="panel-admin.html">
+      <i class="fa-solid fa-arrow-left"></i> Panel Admin
+    </a>
+  </div>
+  <div class="sidebar-footer">
+    <div>Rosso Materiales</div>
+    <button onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Salir</button>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<div id="main">
+  <h1><i class="fa-solid fa-cloud-arrow-up" style="color:var(--accent);margin-right:8px"></i>Migración de imágenes a Cloudinary</h1>
+  <p class="subtitle">Sube automáticamente todas las imágenes del CDN externo a tu cuenta de Cloudinary. Solo se migran los productos sin imagen propia.</p>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box info">
+      <div class="val" id="stat-total">—</div>
+      <div class="lbl">Total productos</div>
+    </div>
+    <div class="stat-box warn">
+      <div class="val" id="stat-pendientes">—</div>
+      <div class="lbl">Pendientes (solo CDN externo)</div>
+    </div>
+    <div class="stat-box ok">
+      <div class="val" id="stat-migrados">—</div>
+      <div class="lbl">Ya en Cloudinary</div>
+    </div>
+    <div class="stat-box">
+      <div class="val" id="stat-sinimagenes">—</div>
+      <div class="lbl">Sin imagen</div>
     </div>
   </div>
 
-  <div class="warning">
-    <span style="font-size:1.2rem">⚠️</span>
-    <div>
-      <strong>Herramienta de uso único</strong>
-      Esta página lee los 286 productos de <code>todos_los_productos.js</code>
-      y los sube a la colección <code>catalogo</code> en Firestore.
-      Usá <em>merge: true</em> — si un producto ya existe, no se sobreescribe.
-      Podés ejecutarla varias veces sin problema.
+  <!-- ACCIONES -->
+  <div class="card">
+    <h2><i class="fa-solid fa-play"></i> Iniciar migración</h2>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:16px">
+      El proceso descarga cada imagen desde el CDN externo, la sube a Cloudinary con el SKU como nombre, y actualiza el producto en Firestore.
+      <strong>Los productos que ya tienen imagen en Cloudinary no se tocan.</strong>
+    </p>
+    <div class="actions-row">
+      <button class="btn btn-primary" id="btn-scan" onclick="escanear()">
+        <i class="fa-solid fa-magnifying-glass"></i> Escanear productos
+      </button>
+      <button class="btn btn-primary" id="btn-migrar" onclick="iniciarMigracion()" disabled>
+        <i class="fa-solid fa-cloud-arrow-up"></i> Migrar todos
+      </button>
+      <button class="btn btn-outline" id="btn-stop" onclick="detener()" disabled>
+        <i class="fa-solid fa-stop"></i> Detener
+      </button>
+    </div>
+
+    <div class="progress-wrap" id="progress-wrap" style="display:none">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+      <div class="progress-label" id="progress-label">Preparando...</div>
     </div>
   </div>
 
-  <div class="stats">
-    <div class="stat-card">
-      <div class="value" id="stat-total">—</div>
-      <div class="label">Total productos</div>
+  <!-- PREVIEW TABLE -->
+  <div class="card" id="card-preview" style="display:none">
+    <h2>
+      <i class="fa-solid fa-list"></i> Productos pendientes
+      <span id="preview-count" style="font-weight:400;color:var(--muted);font-size:0.85rem"></span>
+    </h2>
+    <div style="overflow-x:auto">
+      <table class="preview-table">
+        <thead>
+          <tr>
+            <th>Imagen actual</th>
+            <th>SKU</th>
+            <th>Nombre</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="preview-tbody"></tbody>
+      </table>
     </div>
-    <div class="stat-card success">
-      <div class="value" id="stat-ok">0</div>
-      <div class="label">Migrados</div>
+  </div>
+
+  <!-- LOG -->
+  <div class="card" id="card-log" style="display:none">
+    <h2><i class="fa-solid fa-terminal"></i> Log</h2>
+    <div class="log-box" id="log-box"></div>
+    <div style="margin-top:12px;display:flex;gap:10px;align-items:center">
+      <button class="btn btn-outline" onclick="limpiarLog()" style="padding:6px 14px;font-size:0.8rem">
+        <i class="fa-solid fa-trash"></i> Limpiar
+      </button>
+      <span id="log-resumen" style="font-size:0.82rem;color:var(--muted)"></span>
     </div>
-    <div class="stat-card error">
-      <div class="value" id="stat-err">0</div>
-      <div class="label">Con error</div>
-    </div>
   </div>
-
-  <div class="progress-wrap">
-    <div class="progress-fill" id="progress-fill"></div>
-  </div>
-
-  <div class="log-box" id="log">
-    <span class="info">→ Listo para migrar. Presioná "Iniciar Migración".</span>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-primary" id="btn-migrar" onclick="iniciarMigracion()">
-      ▶ Migración completa
-    </button>
-    <button class="btn btn-secondary" id="btn-reparar" onclick="repararCategorias()">
-      🔧 Reparar categorías
-    </button>
-    <button class="btn btn-secondary" id="btn-verificar" onclick="verificarMigracion()">
-      🔍 Verificar
-    </button>
-    <button class="btn btn-danger" id="btn-limpiar" onclick="limpiarLog()" style="margin-left:auto">
-      Limpiar log
-    </button>
-  </div>
-  <p style="font-size:0.78rem;color:#6b7280;margin-top:10px">
-    <strong>Migración completa:</strong> sube todos los productos desde cero (usa merge, no sobreescribe campos manuales).<br>
-    <strong>Reparar categorías:</strong> solo actualiza los campos <code>categoria</code> y <code>subcategoria</code> de documentos existentes en Firestore.
-  </p>
-
-  <div class="result-banner" id="result-banner"></div>
-
-  <a href="panel-admin.html" class="back-link">← Volver al panel admin</a>
 </div>
 
 <script>
+  /* ── CONFIG ── */
+  const CLOUDINARY_CLOUD  = 'dbntmfmdv';
+  const CLOUDINARY_PRESET = 'rosso_productos';
+  const CLOUDINARY_FOLDER = 'rosso';
+  const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`;
+
+  /* ── FIREBASE ── */
   const firebaseConfig = {
     apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
     authDomain: "backend-panel-vendedores.firebaseapp.com",
@@ -223,237 +211,210 @@
     messagingSenderId: "24873830395",
     appId: "1:24873830395:web:ea6749407f991ee8226d5e"
   };
-
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  /*
-   * MAPEO DE CATEGORÍAS: viejo (plano) → nuevo (jerárquico)
-   * Editá este objeto si querés ajustar el mapeo antes de migrar.
-   *
-   * "categoria_vieja": { categoria: "Nueva principal", subcategoria: "Subcategoría" }
-   */
-  const CATEGORY_MAP = {
-    'Guardas, Perfiles y Listeles': { categoria: 'Guardas y Perfiles',  subcategoria: 'Listeles' },
-    'Muebles de Baño':              { categoria: 'Muebles de Baño',     subcategoria: '' },
-    'Pintura Asfáltica y Membranas':{ categoria: 'Pinturas y Membranas',subcategoria: '' },
-    'Juegos de Baño':               { categoria: 'Juegos de Baño',      subcategoria: '' },
-    'De cocina':                    { categoria: 'Bachas',              subcategoria: 'De cocina' },
-    'De baño':                      { categoria: 'Bachas',              subcategoria: 'De baño' },
-    'Griferías de Baño':            { categoria: 'Griferías',           subcategoria: 'De baño' },
-    'Griferías de Cocina':          { categoria: 'Griferías',           subcategoria: 'De cocina' },
-    'Aberturas':                    { categoria: 'Aberturas',           subcategoria: '' },
-    'Porcelanatos':                 { categoria: 'Revestimientos',      subcategoria: 'Porcelanatos' },
-    'Cerámicos':                    { categoria: 'Revestimientos',      subcategoria: 'Cerámicos' },
-  };
-
-  function mapearCategoria(catOriginal) {
-    const mapped = CATEGORY_MAP[catOriginal];
-    if (mapped) return mapped;
-    // Si no hay mapeo definido, usar el valor original como categoría principal
-    return { categoria: catOriginal || 'Sin categoría', subcategoria: '' };
+  /* ── AUTH (sessionStorage, igual que panel-catalogo) ── */
+  if (sessionStorage.getItem('adminAuth') !== 'true') {
+    window.location.href = 'panel-catalogo.html';
+  }
+  function logout() {
+    sessionStorage.removeItem('adminAuth');
+    window.location.href = 'panel-catalogo.html';
   }
 
-  const logBox   = document.getElementById('log');
-  const statOk   = document.getElementById('stat-ok');
-  const statErr  = document.getElementById('stat-err');
-  const statTotal = document.getElementById('stat-total');
-  const progressFill = document.getElementById('progress-fill');
-  const banner   = document.getElementById('result-banner');
+  /* ── ESTADO ── */
+  let productosPendientes = [];
+  let corriendo = false;
+  let detenido  = false;
+  let okCount   = 0;
+  let errCount  = 0;
 
+  /* ── HELPERS ── */
   function log(msg, tipo = 'info') {
-    const span = document.createElement('span');
-    span.className = tipo;
-    span.textContent = msg;
-    logBox.appendChild(span);
-    logBox.appendChild(document.createElement('br'));
-    logBox.scrollTop = logBox.scrollHeight;
+    const box  = document.getElementById('log-box');
+    const line = document.createElement('span');
+    line.className = `log-line ${tipo}`;
+    const ts = new Date().toLocaleTimeString('es-AR');
+    line.textContent = `[${ts}] ${msg}`;
+    box.appendChild(line);
+    box.scrollTop = box.scrollHeight;
   }
 
   function limpiarLog() {
-    logBox.innerHTML = '<span class="info">→ Log limpiado.</span><br>';
-    banner.style.display = 'none';
+    document.getElementById('log-box').innerHTML = '';
+    document.getElementById('log-resumen').textContent = '';
   }
 
-  function updateProgress(done, total) {
-    progressFill.style.width = `${Math.round((done / total) * 100)}%`;
+  function setProgress(n, total, label) {
+    const pct = total > 0 ? Math.round((n / total) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = label || `${n} / ${total} (${pct}%)`;
   }
 
-  async function iniciarMigracion() {
-    const btn = document.getElementById('btn-migrar');
-    btn.disabled = true;
-    banner.style.display = 'none';
-    limpiarLog();
-
-    if (typeof productos === 'undefined' || !Array.isArray(productos)) {
-      log('✗ Error: no se encontró el array "productos" de todos_los_productos.js', 'err');
-      btn.disabled = false;
-      return;
-    }
-
-    const total = productos.length;
-    statTotal.textContent = total;
-    statOk.textContent = '0';
-    statErr.textContent = '0';
-
-    log(`→ Iniciando migración de ${total} productos...`, 'info');
-
-    let ok = 0;
-    let errores = 0;
-    const BATCH_SIZE = 400; // Firestore max es 500
-
-    const ahora = firebase.firestore.FieldValue.serverTimestamp();
-
-    for (let i = 0; i < productos.length; i += BATCH_SIZE) {
-      const batch = db.batch();
-      const chunk = productos.slice(i, Math.min(i + BATCH_SIZE, productos.length));
-      const batchNum = Math.floor(i / BATCH_SIZE) + 1;
-
-      log(`→ Procesando lote ${batchNum} (${chunk.length} productos)...`, 'info');
-
-      let batchOk = 0;
-      for (const p of chunk) {
-        if (!p.sku) {
-          log(`  ⚠ Sin SKU: "${p.nombre}" — omitido`, 'warn');
-          errores++;
-          statErr.textContent = errores;
-          continue;
-        }
-
-        const { categoria, subcategoria } = mapearCategoria(p.categoria);
-        const ref = db.collection('catalogo').doc(String(p.sku));
-        batch.set(ref, {
-          nombre:        p.nombre || '',
-          sku:           String(p.sku),
-          categoria:     categoria,
-          subcategoria:  subcategoria,
-          marca:         '',
-          descripcion:   '',
-          unidad:        'm²',
-          imagenes:      [],
-          imagenLegacy:  p.imagen || '',
-          disponible:    true,
-          destacado:     false,
-          creadoEn:      ahora,
-          actualizadoEn: ahora
-        }, { merge: true });
-
-        batchOk++;
-      }
-
-      try {
-        await batch.commit();
-        ok += batchOk;
-        statOk.textContent = ok;
-        updateProgress(ok + errores, total);
-        log(`  ✓ Lote ${batchNum} subido correctamente (${batchOk} docs)`, 'ok');
-      } catch (e) {
-        errores += batchOk;
-        statErr.textContent = errores;
-        updateProgress(ok + errores, total);
-        log(`  ✗ Error en lote ${batchNum}: ${e.message}`, 'err');
-        console.error(e);
-      }
-    }
-
-    updateProgress(total, total);
-
-    if (errores === 0) {
-      log(`✓ Migración completa: ${ok} productos subidos sin errores.`, 'ok');
-      showBanner(`✓ Migración exitosa: ${ok} productos cargados en Firestore.`, 'success');
-    } else {
-      log(`⚠ Migración finalizada con ${errores} error(es). Revisá el log.`, 'warn');
-      showBanner(`⚠ Migración con errores: ${ok} ok / ${errores} fallidos.`, 'error');
-    }
-
-    btn.disabled = false;
+  function actualizarStats(total, pendientes, migrados, sinImg) {
+    document.getElementById('stat-total').textContent      = total;
+    document.getElementById('stat-pendientes').textContent = pendientes;
+    document.getElementById('stat-migrados').textContent   = migrados;
+    document.getElementById('stat-sinimagenes').textContent = sinImg;
   }
 
-  async function verificarMigracion() {
-    const btn = document.getElementById('btn-verificar');
-    btn.disabled = true;
-    log('→ Verificando colección "catalogo" en Firestore...', 'info');
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function setBadge(sku, estado) {
+    const el = document.getElementById('badge-' + sku);
+    if (!el) return;
+    const map = {
+      pendiente: ['badge-warn', 'Pendiente'],
+      cargando:  ['badge-warn', '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo…'],
+      ok:        ['badge-ok',   '✓ Migrado'],
+      err:       ['badge-err',  '✗ Error'],
+    };
+    const [cls, html] = map[estado] || ['', estado];
+    el.className = `badge ${cls}`;
+    el.innerHTML = html;
+  }
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  /* ── ESCANEAR ── */
+  async function escanear() {
+    const btnScan = document.getElementById('btn-scan');
+    btnScan.disabled = true;
+    btnScan.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Escaneando…';
+    productosPendientes = [];
 
     try {
-      const snap = await db.collection('catalogo').get();
-      const count = snap.size;
-      log(`✓ Se encontraron ${count} documentos en la colección "catalogo".`, 'ok');
-      showBanner(`✓ Firestore contiene ${count} productos en la colección "catalogo".`, 'success');
+      const snap  = await db.collection('catalogo').get();
+      const todos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      const conCloud  = todos.filter(p => p.imagenes && p.imagenes.length > 0);
+      const sinImg    = todos.filter(p => (!p.imagenes || p.imagenes.length === 0) && !p.imagenLegacy);
+      const pendientes = todos.filter(p => (!p.imagenes || p.imagenes.length === 0) && !!p.imagenLegacy);
+
+      actualizarStats(todos.length, pendientes.length, conCloud.length, sinImg.length);
+      productosPendientes = pendientes;
+
+      // Tabla
+      const tbody = document.getElementById('preview-tbody');
+      tbody.innerHTML = '';
+      pendientes.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.id = 'row-' + p.sku;
+        tr.innerHTML = `
+          <td><img src="${escHtml(p.imagenLegacy)}" alt="" onerror="this.src=''" loading="lazy" /></td>
+          <td><code>${escHtml(p.sku)}</code></td>
+          <td>${escHtml(p.nombre)}</td>
+          <td><span class="badge badge-warn" id="badge-${escHtml(p.sku)}">Pendiente</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('preview-count').textContent = `(${pendientes.length} productos)`;
+      document.getElementById('card-preview').style.display = pendientes.length > 0 ? '' : 'none';
+
+      if (pendientes.length > 0) {
+        document.getElementById('btn-migrar').disabled = false;
+        log(`Escaneo completo: ${pendientes.length} productos para migrar, ${conCloud.length} ya en Cloudinary.`, 'ok');
+      } else {
+        log('No hay productos pendientes. Todos ya tienen imagen en Cloudinary.', 'warn');
+        document.getElementById('btn-migrar').disabled = true;
+      }
+
     } catch (e) {
-      log(`✗ Error al verificar: ${e.message}`, 'err');
-      showBanner(`✗ Error al verificar: ${e.message}`, 'error');
+      log('Error al escanear: ' + e.message, 'err');
     }
 
-    btn.disabled = false;
+    btnScan.disabled = false;
+    btnScan.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Escanear productos';
   }
 
-  async function repararCategorias() {
-    const btn = document.getElementById('btn-reparar');
-    btn.disabled = true;
-    banner.style.display = 'none';
-    limpiarLog();
+  /* ── MIGRACIÓN ── */
+  async function iniciarMigracion() {
+    if (!productosPendientes.length || corriendo) return;
 
-    if (typeof productos === 'undefined' || !Array.isArray(productos)) {
-      log('✗ Error: no se encontró el array "productos".', 'err');
-      btn.disabled = false;
-      return;
-    }
+    corriendo = true;
+    detenido  = false;
+    okCount   = 0;
+    errCount  = 0;
 
-    log('→ Reparando categorías en documentos existentes de Firestore...', 'info');
-    log('→ Solo se actualizan categoria y subcategoria. El resto de los campos no se toca.', 'info');
+    document.getElementById('btn-migrar').disabled = true;
+    document.getElementById('btn-stop').disabled   = false;
+    document.getElementById('btn-scan').disabled   = true;
+    document.getElementById('progress-wrap').style.display = '';
+    document.getElementById('card-log').style.display      = '';
 
-    const total = productos.length;
-    statTotal.textContent = total;
-    statOk.textContent = '0';
-    statErr.textContent = '0';
+    const total = productosPendientes.length;
+    log(`Iniciando migración de ${total} productos…`, 'info');
 
-    let ok = 0, errores = 0;
-    const BATCH_SIZE = 400;
-
-    for (let i = 0; i < productos.length; i += BATCH_SIZE) {
-      const batch = db.batch();
-      const chunk = productos.slice(i, Math.min(i + BATCH_SIZE, productos.length));
-
-      for (const p of chunk) {
-        if (!p.sku) { errores++; statErr.textContent = errores; continue; }
-        const { categoria, subcategoria } = mapearCategoria(p.categoria);
-        const ref = db.collection('catalogo').doc(String(p.sku));
-        batch.update(ref, {
-          categoria,
-          subcategoria,
-          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
-        });
+    for (let i = 0; i < total; i++) {
+      if (detenido) {
+        log('Migración detenida por el usuario.', 'warn');
+        break;
       }
+
+      const p = productosPendientes[i];
+      setProgress(i, total, `Subiendo ${i + 1}/${total}: ${p.nombre}`);
+      setBadge(p.sku, 'cargando');
+      log(`→ [${p.sku}] ${p.nombre}`, 'info');
 
       try {
-        await batch.commit();
-        ok += chunk.length;
-        statOk.textContent = ok;
-        updateProgress(ok + errores, total);
-        log(`  ✓ Lote procesado (${chunk.length} docs)`, 'ok');
+        const publicId = await subirACloudinary(p.imagenLegacy, p.sku);
+        await db.collection('catalogo').doc(p.sku).update({
+          imagenes: [publicId],
+          imagenLegacy: '',
+          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        setBadge(p.sku, 'ok');
+        log(`   ✓ Guardado en Cloudinary como: ${publicId}`, 'ok');
+        okCount++;
       } catch (e) {
-        errores += chunk.length;
-        statErr.textContent = errores;
-        updateProgress(ok + errores, total);
-        log(`  ✗ Error: ${e.message}`, 'err');
+        setBadge(p.sku, 'err');
+        log(`   ✗ Error: ${e.message}`, 'err');
+        errCount++;
       }
+
+      await sleep(400); // pausa suave para no saturar la API
     }
 
-    updateProgress(total, total);
-    if (errores === 0) {
-      log(`✓ Categorías reparadas en ${ok} productos.`, 'ok');
-      showBanner(`✓ Categorías actualizadas en ${ok} productos en Firestore.`, 'success');
-    } else {
-      log(`⚠ Terminado con ${errores} error(es). Los docs que fallaron probablemente no existían aún — ejecutá primero "Migración completa".`, 'warn');
-      showBanner(`⚠ ${ok} ok / ${errores} errores. Ver log.`, 'error');
-    }
-    btn.disabled = false;
+    setProgress(total, total, `Finalizado — ${okCount} exitosos, ${errCount} errores`);
+    log(`━━━ Migración completa: ${okCount} OK · ${errCount} errores ━━━`, errCount === 0 ? 'ok' : 'warn');
+    document.getElementById('log-resumen').textContent = `${okCount} migrados correctamente · ${errCount} errores`;
+
+    corriendo = false;
+    document.getElementById('btn-stop').disabled = true;
+    document.getElementById('btn-scan').disabled = false;
+
+    // Refrescar stats automáticamente
+    await sleep(800);
+    await escanear();
   }
 
-  function showBanner(msg, tipo) {
-    banner.textContent = msg;
-    banner.className = `result-banner ${tipo}`;
-    banner.style.display = 'block';
+  async function subirACloudinary(url, sku) {
+    const body = new FormData();
+    body.append('file',           url);
+    body.append('upload_preset',  CLOUDINARY_PRESET);
+    body.append('folder',         CLOUDINARY_FOLDER);
+    body.append('public_id',      sku);
+
+    const res = await fetch(UPLOAD_URL, { method: 'POST', body });
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(`HTTP ${res.status}: ${txt.slice(0, 200)}`);
+    }
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    return data.public_id; // ej: "rosso/27221"
+  }
+
+  function detener() {
+    detenido = true;
+    document.getElementById('btn-stop').disabled = true;
+    log('Deteniendo después del producto actual…', 'warn');
   }
 </script>
 </body>

@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Producto | Rosso Materiales</title>
+  <link href="assets/FAV.png" rel="icon" />
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QBM51JZ19R"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-QBM51JZ19R');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    :root {
+      --brand:   #272e68;
+      --brand-d: #1f244f;
+      --accent:  #ec6434;
+      --bg:      #f9fafb;
+      --card:    #ffffff;
+      --border:  #e5e7eb;
+      --text:    #1f2937;
+      --muted:   #6b7280;
+      --radius:  10px;
+    }
+    body { background: var(--bg); color: var(--text); }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      padding: 14px 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--brand); text-decoration: underline; }
+    .breadcrumb i { font-size: 0.6rem; }
+
+    /* ── PRODUCT LAYOUT ── */
+    .pdp-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      padding: 0 0 48px;
+      align-items: start;
+    }
+
+    /* ── GALLERY ── */
+    .pdp-gallery {}
+    .gallery-main-wrap {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: white;
+      height: 480px;
+      max-height: 60vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .gallery-main-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 16px;
+      box-sizing: border-box;
+      transition: opacity .2s;
+    }
+    .gallery-placeholder {
+      font-size: 5rem;
+      color: #d1d5db;
+    }
+    .gallery-thumbs {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .gallery-thumb {
+      width: 68px; height: 68px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color .15s;
+      background: white;
+    }
+    .gallery-thumb.active { border-color: var(--brand); }
+    .gallery-thumb:hover  { border-color: #9ca3af; }
+
+    /* ── INFO ── */
+    .pdp-info {
+      position: sticky;
+      top: 20px;
+      align-self: start;
+    }
+    .pdp-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .pdp-badge {
+      font-size: 0.68rem; font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .pdp-badge.dest { background: var(--accent); color: white; }
+    .pdp-badge.cat  { background: #eff6ff; color: var(--brand); border: 1px solid #bfdbfe; }
+
+    .pdp-name {
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 800;
+      color: var(--brand);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .pdp-sku   { font-size: 0.75rem; color: var(--muted); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 6px; }
+    .pdp-marca { font-size: 0.88rem; color: var(--muted); margin-bottom: 16px; }
+
+    .pdp-divider { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+    .pdp-desc {
+      font-size: 0.93rem;
+      line-height: 1.7;
+      color: #374151;
+      margin-bottom: 16px;
+      white-space: pre-line;
+    }
+    .pdp-unidad {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Cantidad */
+    .qty-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .qty-label { font-size: 0.85rem; font-weight: 600; }
+    .qty-ctrl  {
+      display: flex; align-items: center;
+      border: 1.5px solid var(--border); border-radius: 9px; overflow: hidden;
+    }
+    .qty-btn {
+      background: #f3f4f6; border: none;
+      width: 36px; height: 36px;
+      font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .qty-btn:hover { background: #e5e7eb; }
+    .qty-input {
+      width: 48px; text-align: center;
+      border: none;
+      border-left: 1.5px solid var(--border);
+      border-right: 1.5px solid var(--border);
+      height: 36px; font-size: 0.95rem; font-family: inherit;
+      outline: none;
+      -moz-appearance: textfield;
+    }
+    .qty-input::-webkit-outer-spin-button,
+    .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+    /* Botones acción */
+    .pdp-actions { display: flex; flex-direction: column; gap: 10px; }
+    .btn-pdp-add {
+      padding: 14px;
+      background: var(--brand); color: white;
+      border: none; border-radius: 11px;
+      font-size: 0.95rem; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .15s, transform .1s;
+    }
+    .btn-pdp-add:hover  { background: var(--brand-d); }
+    .btn-pdp-add:active { transform: scale(.98); }
+    .btn-pdp-add.added  { background: #15803d; }
+    .btn-pdp-wp {
+      padding: 13px;
+      background: #22c55e; color: white;
+      border: none; border-radius: 11px;
+      font-size: 0.92rem; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .btn-pdp-wp:hover { background: #16a34a; }
+
+    /* ── RELATED ── */
+    .related-section { padding: 40px 0 60px; }
+    .related-section h2 {
+      font-size: 1.1rem; font-weight: 800;
+      color: var(--brand);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .rel-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow .2s, transform .15s;
+      display: flex;
+      flex-direction: column;
+    }
+    .rel-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.1); transform: translateY(-2px); }
+    .rel-img-wrap { position: relative; overflow: hidden; }
+    .rel-img {
+      width: 100%; height: 180px;
+      object-fit: cover; display: block;
+      transition: transform .3s;
+    }
+    .rel-card:hover .rel-img { transform: scale(1.04); }
+    .rel-img-placeholder {
+      width: 100%; height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      background: #f3f4f6; color: #d1d5db; font-size: 2.5rem;
+    }
+    .rel-body { padding: 12px 14px 14px; flex: 1; display: flex; flex-direction: column; }
+    .rel-sku  { font-size: 0.65rem; color: var(--muted); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 3px; }
+    .rel-name { font-size: 0.86rem; font-weight: 600; line-height: 1.3; flex: 1; margin-bottom: 10px; }
+    .rel-cat  { font-size: 0.7rem; color: var(--muted); background: #f3f4f6; display: inline-block; padding: 2px 8px; border-radius: 999px; margin-bottom: 10px; }
+    .rel-btn  {
+      padding: 8px;
+      background: var(--brand); color: white;
+      border: none; border-radius: 8px;
+      font-size: 0.8rem; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      transition: background .15s;
+    }
+    .rel-btn:hover { background: var(--brand-d); }
+    .rel-btn.added { background: #15803d; }
+
+    /* ── QUOTE PANEL ── */
+    .quote-panel {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 360px;
+      background: white;
+      box-shadow: -4px 0 24px rgba(0,0,0,.12);
+      z-index: 1100;
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform .3s ease;
+    }
+    .quote-panel.open { transform: translateX(0); }
+    .qp-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .qp-header h2 { font-size: 1rem; font-weight: 700; color: var(--brand); }
+    .qp-close { background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--muted); }
+    .qp-close:hover { color: var(--text); }
+    .qp-items { flex: 1; overflow-y: auto; padding: 12px 16px; }
+    .qp-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .qp-item-img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; background: #f3f4f6; flex-shrink: 0; }
+    .qp-item-info { flex: 1; min-width: 0; }
+    .qp-item-name { font-size: 0.83rem; font-weight: 600; line-height: 1.3; margin-bottom: 2px; }
+    .qp-item-sku  { font-size: 0.7rem; color: var(--muted); margin-bottom: 6px; }
+    .qp-qty-row   { display: flex; align-items: center; gap: 8px; }
+    .qp-qty-ctrl  { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .qp-qty-btn   { background: #f3f4f6; border: none; width: 26px; height: 26px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .qp-qty-btn:hover { background: #e5e7eb; }
+    .qp-qty-val   { width: 32px; text-align: center; border-left: 1px solid var(--border); border-right: 1px solid var(--border); height: 26px; line-height: 26px; font-size: 0.82rem; }
+    .qp-item-del  { background: none; border: none; color: #d1d5db; cursor: pointer; font-size: 1.1rem; padding: 4px; transition: color .15s; align-self: flex-start; }
+    .qp-item-del:hover { color: #dc2626; }
+    .qp-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 0.88rem; }
+    .qp-empty i { font-size: 2.5rem; display: block; margin-bottom: 12px; opacity: .3; }
+    .qp-footer { padding: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+    .qp-count { font-size: 0.82rem; color: var(--muted); text-align: center; }
+    .btn-wp-send {
+      padding: 13px; background: #22c55e; color: white;
+      border: none; border-radius: 10px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      text-decoration: none; transition: background .15s;
+    }
+    .btn-wp-send:hover { background: #16a34a; }
+    .btn-ir-catalogo {
+      padding: 10px; background: none; border: 1.5px solid var(--border);
+      border-radius: 9px; color: var(--brand); font-size: 0.82rem; font-weight: 600;
+      font-family: inherit; cursor: pointer; transition: all .15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-ir-catalogo:hover { background: #eff6ff; border-color: var(--brand); }
+    #panel-backdrop {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.35); z-index: 1050;
+    }
+    #panel-backdrop.open { display: block; }
+
+    /* ── FAB LISTA ── */
+    #quote-fab {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      background: var(--accent); color: white;
+      border: none; border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 0.92rem; font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(236,100,52,.4);
+      display: flex; align-items: center; gap: 10px;
+      z-index: 1060;
+      transition: transform .2s, box-shadow .2s;
+    }
+    #quote-fab:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(236,100,52,.45); }
+    #quote-fab.hidden { display: none; }
+    .fab-badge {
+      background: white; color: var(--accent);
+      border-radius: 999px;
+      width: 22px; height: 22px;
+      font-size: 0.72rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── LOADING / ERROR ── */
+    .pdp-loading {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--muted);
+    }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      display: inline-block; margin-bottom: 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .pdp-error {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--muted);
+    }
+    .pdp-error i { font-size: 3rem; display: block; margin-bottom: 16px; opacity: .3; }
+
+    /* ── RESPONSIVE ── */
+    #main-pdp { padding-top: var(--header-h); }
+    @media (max-width: 768px) {
+      #main-pdp { padding-top: 0; }
+      .main-header { display: none; }
+      .pdp-wrap { grid-template-columns: 1fr; gap: 24px; }
+      .related-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    }
+    @media (max-width: 480px) {
+      .gallery-thumb { width: 54px; height: 54px; }
+      #quote-fab { bottom: 16px; right: 16px; padding: 12px 16px; font-size: 0.84rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════════ -->
+<header class="main-header" role="banner">
+  <nav class="main-nav container" aria-label="Primaria">
+    <a href="index.html" class="logo" aria-label="Ir al inicio">
+      <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+    </a>
+    <div class="nav-links" id="nav-links">
+      <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+      <a href="catalogo.html" class="active"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+      <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+      <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
+      <div class="dropdown">
+        <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+        <div class="dropdown-menu">
+          <a href="visualizador-ia.html">Visualizador IA</a>
+          <a href="calculadora.html">Calculá los m²</a>
+          <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
+          <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
+          <a href="calculadora-niveladores.html">Calculadora Niveladores</a>
+          <a href="checklist.html">Checklist de Materiales</a>
+          <a href="glosario.html">Glosario</a>
+        </div>
+      </div>
+    </div>
+    <button id="mobile-menu-button" class="mobile-menu-btn" aria-label="Abrir menú">
+      <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+    <div id="mobile-menu" class="mobile-menu">
+      <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+      <a href="catalogo.html"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+      <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+      <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ══ CONTENIDO ════════════════════════════════════════════ -->
+<main id="main-pdp">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Ruta">
+      <a href="catalogo.html">Catálogo</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span id="bc-cat">—</span>
+      <i class="fa-solid fa-chevron-right" id="bc-sub-sep" style="display:none"></i>
+      <span id="bc-sub"></span>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span id="bc-nombre" style="color:var(--text);font-weight:600">Cargando...</span>
+    </nav>
+
+    <!-- Estado carga -->
+    <div class="pdp-loading" id="pdp-loading">
+      <div class="spinner"></div>
+      <p>Cargando producto...</p>
+    </div>
+
+    <!-- Estado error -->
+    <div class="pdp-error" id="pdp-error" style="display:none">
+      <i class="fa-solid fa-box-open"></i>
+      <p style="font-size:1rem;font-weight:600;margin-bottom:8px">Producto no encontrado</p>
+      <a href="catalogo.html" style="color:var(--accent);font-weight:600;font-size:0.88rem">← Volver al catálogo</a>
+    </div>
+
+    <!-- Producto -->
+    <div class="pdp-wrap" id="pdp-wrap" style="display:none">
+
+      <!-- Galería -->
+      <div class="pdp-gallery">
+        <div class="gallery-main-wrap" id="gallery-main-wrap">
+          <i class="fa-solid fa-image gallery-placeholder"></i>
+        </div>
+        <div class="gallery-thumbs" id="gallery-thumbs"></div>
+      </div>
+
+      <!-- Info -->
+      <div class="pdp-info">
+        <div class="pdp-badges" id="pdp-badges"></div>
+        <div class="pdp-sku"  id="pdp-sku"></div>
+        <h1 class="pdp-name" id="pdp-name"></h1>
+        <div class="pdp-marca" id="pdp-marca"></div>
+
+        <hr class="pdp-divider" />
+
+        <div class="pdp-desc"  id="pdp-desc"></div>
+        <div class="pdp-unidad" id="pdp-unidad"></div>
+
+        <div class="qty-row">
+          <span class="qty-label">Cantidad:</span>
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input class="qty-input" type="number" id="qty" value="1" min="1" max="999" />
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+        </div>
+
+        <div class="pdp-actions">
+          <button class="btn-pdp-add" id="btn-add" onclick="agregarALista()">
+            <i class="fa-solid fa-list-check"></i> Agregar a mi lista
+          </button>
+          <a class="btn-pdp-wp" id="btn-wp" href="#" target="_blank" rel="noopener">
+            <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Productos relacionados -->
+  <div class="related-section" id="related-section" style="display:none">
+    <div class="container">
+      <h2><i class="fa-solid fa-layer-group"></i> Productos relacionados</h2>
+      <div class="related-grid" id="related-grid"></div>
+    </div>
+  </div>
+</main>
+
+<!-- ══ QUOTE PANEL ═══════════════════════════════════════════ -->
+<div id="panel-backdrop" onclick="cerrarPanel()"></div>
+<aside class="quote-panel" id="quote-panel" aria-label="Lista de pedido">
+  <div class="qp-header">
+    <h2><i class="fa-solid fa-list-check" style="color:var(--accent);margin-right:8px"></i>Mi lista de pedido</h2>
+    <button class="qp-close" onclick="cerrarPanel()">×</button>
+  </div>
+  <div class="qp-items" id="qp-items"></div>
+  <div class="qp-footer">
+    <div class="qp-count" id="qp-count"></div>
+    <a class="btn-wp-send" id="btn-wp-send" href="#" target="_blank" rel="noopener">
+      <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
+    </a>
+    <button class="btn-ir-catalogo" onclick="window.location.href='catalogo.html'">
+      <i class="fa-solid fa-book-open"></i> Ver catálogo completo
+    </button>
+  </div>
+</aside>
+
+<!-- ══ FAB ═══════════════════════════════════════════════════ -->
+<button id="quote-fab" class="hidden" onclick="abrirPanel()">
+  <i class="fa-solid fa-list-check"></i>
+  Mi lista
+  <span class="fab-badge" id="fab-badge">0</span>
+</button>
+
+<script>
+  const WA_NUMBER        = '5493814146917';
+  const CLOUDINARY_CLOUD = 'dbntmfmdv';
+  const LISTA_KEY        = 'rosso_lista_pedido';
+  const MAX_RELATED      = 6;
+
+  /* ── Firebase ── */
+  const firebaseConfig = {
+    apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+    authDomain: "backend-panel-vendedores.firebaseapp.com",
+    projectId: "backend-panel-vendedores",
+    storageBucket: "backend-panel-vendedores.firebasestorage.app",
+    messagingSenderId: "24873830395",
+    appId: "1:24873830395:web:ea6749407f991ee8226d5e"
+  };
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  /* ── Estado ── */
+  let producto = null;
+  let lista    = cargarLista();
+
+  /* ── Utils ── */
+  function esc(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function cdnUrl(publicId, opts = 'w_800,h_800,c_fit,f_auto,q_auto') {
+    return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${opts}/${publicId}`;
+  }
+
+  function getImg(p, size = 'full') {
+    if (p.imagenes && p.imagenes.length > 0) {
+      const opts = size === 'full'
+        ? 'w_800,h_800,c_fit,f_auto,q_auto'
+        : 'w_300,h_300,c_fill,f_auto,q_auto';
+      return cdnUrl(p.imagenes[0], opts);
+    }
+    return p.imagenLegacy || '';
+  }
+
+  function cargarLista() {
+    try { return JSON.parse(localStorage.getItem(LISTA_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function guardarLista() {
+    localStorage.setItem(LISTA_KEY, JSON.stringify(lista));
+  }
+
+  /* ── FAB ── */
+  function actualizarFAB() {
+    const fab   = document.getElementById('quote-fab');
+    const badge = document.getElementById('fab-badge');
+    badge.textContent = lista.length;
+    fab.classList.toggle('hidden', lista.length === 0);
+  }
+
+  /* ── Panel ── */
+  function abrirPanel() {
+    renderPanel();
+    document.getElementById('quote-panel').classList.add('open');
+    document.getElementById('panel-backdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrarPanel() {
+    document.getElementById('quote-panel').classList.remove('open');
+    document.getElementById('panel-backdrop').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function renderPanel() {
+    const itemsEl = document.getElementById('qp-items');
+    const countEl = document.getElementById('qp-count');
+    const sendBtn = document.getElementById('btn-wp-send');
+
+    if (lista.length === 0) {
+      itemsEl.innerHTML = `<div class="qp-empty"><i class="fa-solid fa-list-check"></i><p>Tu lista está vacía.</p></div>`;
+      countEl.textContent = '';
+      sendBtn.href = '#'; sendBtn.style.opacity = '.5'; sendBtn.style.pointerEvents = 'none';
+      return;
+    }
+
+    itemsEl.innerHTML = lista.map(item => {
+      const img = item.imagenUrl
+        ? `<img class="qp-item-img" src="${esc(item.imagenUrl)}" alt="${esc(item.nombre)}" onerror="this.src=''" />`
+        : `<div class="qp-item-img" style="display:flex;align-items:center;justify-content:center;color:#d1d5db"><i class="fa-solid fa-image"></i></div>`;
+      return `
+        <div class="qp-item">
+          ${img}
+          <div class="qp-item-info">
+            <div class="qp-item-name">${esc(item.nombre)}</div>
+            <div class="qp-item-sku">SKU ${esc(item.sku)}</div>
+            <div class="qp-qty-row">
+              <div class="qp-qty-ctrl">
+                <button class="qp-qty-btn" onclick="cambiarCantidad('${esc(item.sku)}',-1)">−</button>
+                <div class="qp-qty-val">${item.cantidad}</div>
+                <button class="qp-qty-btn" onclick="cambiarCantidad('${esc(item.sku)}',1)">+</button>
+              </div>
+              ${item.unidad ? `<span style="font-size:0.72rem;color:var(--muted)">${esc(item.unidad)}</span>` : ''}
+            </div>
+          </div>
+          <button class="qp-item-del" onclick="quitarItem('${esc(item.sku)}')"><i class="fa-solid fa-xmark"></i></button>
+        </div>`;
+    }).join('');
+
+    countEl.textContent = `${lista.length} producto${lista.length !== 1 ? 's' : ''}`;
+
+    const lineas = lista.map(i =>
+      `• ${i.nombre} (SKU: ${i.sku})${i.unidad ? ' — ' + i.cantidad + ' ' + i.unidad : ' — Cantidad: ' + i.cantidad}`
+    ).join('\n');
+    const msg = encodeURIComponent(`Hola! Quiero consultar sobre los siguientes productos:\n\n${lineas}\n\n¿Cuál es la disponibilidad y precio de cada uno?\nMuchas gracias.`);
+    sendBtn.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+    sendBtn.style.opacity = '1'; sendBtn.style.pointerEvents = 'auto';
+  }
+
+  function cambiarCantidad(sku, delta) {
+    const item = lista.find(i => i.sku === sku);
+    if (!item) return;
+    item.cantidad = Math.max(1, item.cantidad + delta);
+    guardarLista();
+    renderPanel();
+  }
+
+  function quitarItem(sku) {
+    lista = lista.filter(i => i.sku !== sku);
+    guardarLista();
+    actualizarFAB();
+    renderPanel();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarPanel(); });
+
+  /* ── Cantidad ── */
+  function changeQty(delta) {
+    const input = document.getElementById('qty');
+    input.value = Math.max(1, (parseInt(input.value) || 1) + delta);
+  }
+
+  /* ── Agregar a lista ── */
+  function agregarALista() {
+    if (!producto) return;
+    const qty = parseInt(document.getElementById('qty').value) || 1;
+    const existente = lista.find(i => i.sku === producto.sku);
+    if (existente) {
+      existente.cantidad += qty;
+    } else {
+      lista.push({
+        sku:      producto.sku,
+        nombre:   producto.nombre,
+        cantidad: qty,
+        unidad:   producto.unidad || '',
+        cat:      [producto.categoria, producto.subcategoria].filter(Boolean).join(' › '),
+        imagenUrl: getImg(producto, 'thumb')
+      });
+    }
+    guardarLista();
+    actualizarFAB();
+    // Actualizar botón
+    const btn = document.getElementById('btn-add');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Agregado a tu lista';
+    btn.classList.add('added');
+  }
+
+  /* ── Galería ── */
+  function cambiarImagen(src, thumbEl) {
+    const main = document.getElementById('gallery-main-wrap');
+    main.innerHTML = `<img class="gallery-main-img" src="${src}" alt="${esc(producto.nombre)}" />`;
+    document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+    thumbEl.classList.add('active');
+  }
+
+  /* ── Render producto ── */
+  function renderProducto(p) {
+    producto = p;
+    document.title = `${p.nombre} | Rosso Materiales`;
+
+    // Breadcrumb
+    document.getElementById('bc-cat').textContent    = p.categoria || 'Catálogo';
+    document.getElementById('bc-nombre').textContent = p.nombre;
+    if (p.subcategoria) {
+      document.getElementById('bc-sub').textContent      = p.subcategoria;
+      document.getElementById('bc-sub-sep').style.display = '';
+    }
+
+    // Badges
+    const badgesEl = document.getElementById('pdp-badges');
+    badgesEl.innerHTML = '';
+    if (p.destacado) badgesEl.innerHTML += `<span class="pdp-badge dest"><i class="fa-solid fa-star"></i> Destacado</span>`;
+    if (p.categoria) badgesEl.innerHTML += `<span class="pdp-badge cat">${esc(p.categoria)}${p.subcategoria ? ' › ' + esc(p.subcategoria) : ''}</span>`;
+
+    // Info básica
+    document.getElementById('pdp-sku').textContent   = `SKU ${p.sku}`;
+    document.getElementById('pdp-name').textContent  = p.nombre;
+    document.getElementById('pdp-marca').textContent = p.marca ? `Marca: ${p.marca}` : '';
+    document.getElementById('pdp-marca').style.display = p.marca ? '' : 'none';
+
+    const descEl = document.getElementById('pdp-desc');
+    descEl.textContent  = p.descripcion || '';
+    descEl.style.display = p.descripcion ? '' : 'none';
+
+    const unidEl = document.getElementById('pdp-unidad');
+    if (p.unidad) {
+      unidEl.innerHTML = `<i class="fa-solid fa-ruler" style="color:var(--muted)"></i> Unidad de venta: <strong>${esc(p.unidad)}</strong>`;
+    } else {
+      unidEl.style.display = 'none';
+    }
+
+    // Galería
+    const mainWrap   = document.getElementById('gallery-main-wrap');
+    const thumbsWrap = document.getElementById('gallery-thumbs');
+
+    if (p.imagenes && p.imagenes.length > 0) {
+      mainWrap.innerHTML = `<img class="gallery-main-img"
+        src="${cdnUrl(p.imagenes[0], 'w_800,h_800,c_fit,f_auto,q_auto')}"
+        alt="${esc(p.nombre)}" />`;
+      thumbsWrap.innerHTML = p.imagenes.map((pid, i) =>
+        `<img class="gallery-thumb${i===0?' active':''}"
+          src="${cdnUrl(pid, 'w_140,h_140,c_fill,f_auto,q_auto')}"
+          alt="Imagen ${i+1}"
+          onclick="cambiarImagen('${cdnUrl(pid,'w_800,h_800,c_fit,f_auto,q_auto')}', this)" />`
+      ).join('');
+    } else if (p.imagenLegacy) {
+      mainWrap.innerHTML = `<img class="gallery-main-img" src="${esc(p.imagenLegacy)}" alt="${esc(p.nombre)}" />`;
+      thumbsWrap.innerHTML = `<img class="gallery-thumb active" src="${esc(p.imagenLegacy)}" alt="Imagen 1" />`;
+    }
+    // else queda el placeholder
+
+    // Botón agregar
+    const enLista = lista.some(i => i.sku === p.sku);
+    const btnAdd  = document.getElementById('btn-add');
+    if (enLista) {
+      btnAdd.innerHTML = '<i class="fa-solid fa-check"></i> Agregado a tu lista';
+      btnAdd.classList.add('added');
+    }
+
+    // WhatsApp
+    const msg = encodeURIComponent(
+      `Hola! Quiero consultar sobre este producto:\n\n• ${p.nombre} (SKU: ${p.sku})\n\n¿Cuál es la disponibilidad y precio?\nMuchas gracias.`
+    );
+    document.getElementById('btn-wp').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+
+    // Mostrar
+    document.getElementById('pdp-loading').style.display = 'none';
+    document.getElementById('pdp-wrap').style.display    = '';
+  }
+
+  /* ── Render relacionados ── */
+  function renderRelacionados(productos, catActual, skuActual) {
+    const relacionados = productos
+      .filter(p => p.sku !== skuActual && p.categoria === catActual && p.disponible !== false)
+      .slice(0, MAX_RELATED);
+
+    if (relacionados.length === 0) return;
+
+    const enLista = new Set(lista.map(i => i.sku));
+    const section = document.getElementById('related-section');
+    const grid    = document.getElementById('related-grid');
+
+    grid.innerHTML = relacionados.map(p => {
+      const img = getImg(p, 'card');
+      const imgEl = img
+        ? `<img class="rel-img" src="${esc(img)}" alt="${esc(p.nombre)}" loading="lazy"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex">`
+        : '';
+      const catLabel = [p.categoria, p.subcategoria].filter(Boolean).join(' › ');
+      const added = enLista.has(p.sku);
+      return `
+        <a class="rel-card" href="producto.html?sku=${encodeURIComponent(p.sku)}">
+          <div class="rel-img-wrap">
+            ${imgEl}
+            <div class="rel-img-placeholder" style="${img ? 'display:none' : ''}"><i class="fa-solid fa-image"></i></div>
+          </div>
+          <div class="rel-body">
+            <div class="rel-sku">SKU ${esc(p.sku)}</div>
+            <div class="rel-name">${esc(p.nombre)}</div>
+            <div class="rel-cat">${esc(catLabel || 'Sin categoría')}</div>
+            <button class="rel-btn${added?' added':''}"
+              onclick="event.preventDefault(); event.stopPropagation(); agregarRelacionado('${esc(p.sku)}', this)">
+              <i class="fa-solid ${added?'fa-check':'fa-plus'}"></i>
+              ${added ? 'En tu lista' : 'Agregar'}
+            </button>
+          </div>
+        </a>`;
+    }).join('');
+
+    section.style.display = '';
+  }
+
+  function agregarRelacionado(sku, btn) {
+    // Cargamos desde Firestore si no tenemos el producto en memoria
+    db.collection('catalogo').where('sku', '==', sku).limit(1).get().then(snap => {
+      if (snap.empty) return;
+      const p = { id: snap.docs[0].id, ...snap.docs[0].data() };
+      const existente = lista.find(i => i.sku === p.sku);
+      if (existente) { existente.cantidad += 1; }
+      else {
+        lista.push({ sku: p.sku, nombre: p.nombre, cantidad: 1, unidad: p.unidad || '',
+          cat: [p.categoria, p.subcategoria].filter(Boolean).join(' › '),
+          imagenUrl: getImg(p, 'thumb') });
+      }
+      guardarLista();
+      actualizarFAB();
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> En tu lista';
+      btn.classList.add('added');
+    });
+  }
+
+  /* ── Init ── */
+  async function init() {
+    const params = new URLSearchParams(window.location.search);
+    const sku    = params.get('sku');
+
+    if (!sku) {
+      document.getElementById('pdp-loading').style.display = 'none';
+      document.getElementById('pdp-error').style.display   = '';
+      return;
+    }
+
+    // ── 1. Intentar desde cache del catálogo (instantáneo) ──
+    try {
+      const raw = sessionStorage.getItem('rosso_catalog_cache');
+      if (raw) {
+        const catalogo = JSON.parse(raw);
+        const p = catalogo.find(x => x.sku === sku);
+        if (p) {
+          renderProducto(p);
+          renderRelacionados(catalogo, p.categoria, p.sku);
+          // Actualizar cache en segundo plano por si cambió el producto
+          _refrescarDesdeFirestore(sku, catalogo);
+          return;
+        }
+      }
+    } catch(e) { /* cache corrupto, caemos a Firestore */ }
+
+    // ── 2. Fallback: Firestore (primera visita o cache vacío) ──
+    try {
+      const snap = await db.collection('catalogo').where('sku', '==', sku).limit(1).get();
+
+      if (snap.empty) {
+        document.getElementById('pdp-loading').style.display = 'none';
+        document.getElementById('pdp-error').style.display   = '';
+        return;
+      }
+
+      const p = { id: snap.docs[0].id, ...snap.docs[0].data() };
+      renderProducto(p);
+
+      if (p.categoria) {
+        const relSnap = await db.collection('catalogo')
+          .where('categoria', '==', p.categoria)
+          .where('disponible', '==', true)
+          .limit(MAX_RELATED + 1)
+          .get();
+        renderRelacionados(
+          relSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+          p.categoria, p.sku
+        );
+      }
+    } catch(e) {
+      console.error(e);
+      document.getElementById('pdp-loading').style.display = 'none';
+      document.getElementById('pdp-error').style.display   = '';
+    }
+  }
+
+  // Refresca datos del producto en segundo plano sin bloquear la UI
+  function _refrescarDesdeFirestore(sku, catalogoCache) {
+    db.collection('catalogo').where('sku', '==', sku).limit(1).get()
+      .then(snap => {
+        if (snap.empty) return;
+        const fresh = { id: snap.docs[0].id, ...snap.docs[0].data() };
+        // Actualizar el cache con el dato fresco
+        const idx = catalogoCache.findIndex(x => x.sku === sku);
+        if (idx !== -1) {
+          try {
+            const c = { ...fresh };
+            if (c.creadoEn?.toDate)    c.creadoEn    = c.creadoEn.toDate().toISOString();
+            if (c.actualizadoEn?.toDate) c.actualizadoEn = c.actualizadoEn.toDate().toISOString();
+            catalogoCache[idx] = c;
+            sessionStorage.setItem('rosso_catalog_cache', JSON.stringify(catalogoCache));
+          } catch(e) {}
+        }
+      }).catch(() => {});
+  }
+
+  // Mobile menu
+  document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu')?.classList.toggle('active');
+  });
+
+  actualizarFAB();
+  init();
+</script>
+</body>
+</html>

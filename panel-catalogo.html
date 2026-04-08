@@ -1050,7 +1050,12 @@
           </div>
           <div class="field">
             <label>SKU *</label>
-            <input type="text" id="f-sku" placeholder="Ej: 45123" />
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="text" id="f-sku" placeholder="Ej: 45123" style="flex:1" />
+              <button type="button" id="btn-cambiar-sku" onclick="cambiarSku()" style="display:none;padding:8px 12px;background:var(--brand);color:#fff;border:none;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;white-space:nowrap">
+                <i class="fa-solid fa-pen"></i> Cambiar SKU
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1074,7 +1079,10 @@
             <label>Marca</label>
             <input type="text" id="f-marca" placeholder="Ej: San Lorenzo" />
           </div>
-          <div class="field"><!-- espacio --></div>
+          <div class="field">
+            <label>Precio <span style="font-weight:400;color:var(--muted);font-size:0.75rem">(solo se muestra en destacados)</span></label>
+            <input type="number" id="f-precio" placeholder="Ej: 4500" min="0" step="0.01" />
+          </div>
         </div>
 
         <div class="field-row">
@@ -1158,7 +1166,7 @@
     /* ══════════════════════════════════════════════════════════════
        CONFIGURACIÓN — COMPLETAR CON TUS DATOS DE CLOUDINARY
     ═══════════════════════════════════════════════════════════════ */
-    const CLOUDINARY_CLOUD_NAME = 'da8bae6f-633f-42ba-8093-d78b2e09af5a';   // ← reemplazá con tu cloud name
+    const CLOUDINARY_CLOUD_NAME = 'dbntmfmdv';   // ← reemplazá con tu cloud name
     const CLOUDINARY_UPLOAD_PRESET = 'rosso_productos'; // ← creá un unsigned preset con este nombre
 
     /* ══════════════════════════════════════════════════════════════
@@ -1460,10 +1468,12 @@
       document.getElementById('f-nombre').value = '';
       document.getElementById('f-sku').value = '';
       document.getElementById('f-sku').readOnly = false;
+      document.getElementById('btn-cambiar-sku').style.display = 'none';
       document.getElementById('f-categoria').value = '';
       document.getElementById('f-subcategoria').innerHTML = '<option value="">— Sin subcategoría —</option>';
       document.getElementById('f-subcategoria').disabled = true;
       document.getElementById('f-marca').value = '';
+      document.getElementById('f-precio').value = '';
       document.getElementById('f-unidad').value = 'm²';
       document.getElementById('f-descripcion').value = '';
       document.getElementById('f-disponible').checked = true;
@@ -1484,10 +1494,12 @@
       document.getElementById('f-nombre').value = p.nombre || '';
       document.getElementById('f-sku').value = p.sku || '';
       document.getElementById('f-sku').readOnly = true;
+      document.getElementById('btn-cambiar-sku').style.display = '';
       document.getElementById('f-categoria').value = p.categoria || '';
       actualizarSubcategorias(p.categoria || '');
       document.getElementById('f-subcategoria').value = p.subcategoria || '';
       document.getElementById('f-marca').value = p.marca || '';
+      document.getElementById('f-precio').value = p.precio != null ? p.precio : '';
       document.getElementById('f-unidad').value = p.unidad || 'm²';
       document.getElementById('f-descripcion').value = p.descripcion || '';
       document.getElementById('f-disponible').checked = p.disponible !== false;
@@ -1511,6 +1523,46 @@
 
     function cerrarModal() {
       document.getElementById('modal-producto').classList.remove('open');
+    }
+
+    async function cambiarSku() {
+      const skuActual = editandoId;
+      const nuevoSku = prompt(`SKU actual: ${skuActual}\n\nIngresá el nuevo SKU:`);
+      if (!nuevoSku || nuevoSku.trim() === '' || nuevoSku.trim() === skuActual) return;
+      const sku = nuevoSku.trim();
+
+      // Verificar que no exista ya
+      const existe = await db.collection('catalogo').doc(sku).get();
+      if (existe.exists) {
+        toast(`Ya existe un producto con SKU ${sku}.`, 'error');
+        return;
+      }
+
+      if (!confirm(`¿Renombrar SKU "${skuActual}" → "${sku}"?\n\nEsto crea el producto con el nuevo SKU y elimina el anterior.`)) return;
+
+      try {
+        // Obtener datos actuales
+        const docActual = await db.collection('catalogo').doc(skuActual).get();
+        const datos = docActual.data();
+        datos.sku = sku;
+        datos.actualizadoEn = firebase.firestore.FieldValue.serverTimestamp();
+
+        // Crear con nuevo SKU y eliminar el viejo
+        await db.collection('catalogo').doc(sku).set(datos);
+        await db.collection('catalogo').doc(skuActual).delete();
+
+        // Actualizar array local
+        const idx = todosLosProductos.findIndex(p => p.sku === skuActual);
+        if (idx !== -1) {
+          todosLosProductos[idx] = { ...datos, id: sku, sku };
+        }
+
+        toast(`SKU cambiado: ${skuActual} → ${sku}`, 'success');
+        cerrarModal();
+        renderProductos();
+      } catch (e) {
+        toast('Error al cambiar SKU: ' + e.message, 'error');
+      }
     }
 
     function renderImagenesModal() {
@@ -1547,6 +1599,8 @@
       const desc = document.getElementById('f-descripcion').value.trim();
       const disponible = document.getElementById('f-disponible').checked;
       const destacado = document.getElementById('f-destacado').checked;
+      const precioRaw = document.getElementById('f-precio').value;
+      const precio = precioRaw !== '' ? parseFloat(precioRaw) : null;
 
       if (!nombre) { toast('El nombre es obligatorio.', 'error'); return; }
       if (!sku) { toast('El SKU es obligatorio.', 'error'); return; }
@@ -1559,6 +1613,7 @@
       const data = {
         nombre, sku, categoria, subcategoria, marca, unidad,
         descripcion: desc,
+        precio: precio !== null ? precio : firebase.firestore.FieldValue.delete(),
         imagenes: imagenesModal,
         disponible, destacado,
         actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
