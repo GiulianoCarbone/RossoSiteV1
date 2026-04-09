@@ -2394,7 +2394,6 @@
       try {
         const cacheable = todosLosProductos.map(p => {
           const c = { ...p };
-          // Convertir Timestamps de Firestore a ISO string (no son serializables)
           if (c.creadoEn?.toDate) c.creadoEn = c.creadoEn.toDate().toISOString();
           if (c.actualizadoEn?.toDate) c.actualizadoEn = c.actualizadoEn.toDate().toISOString();
           return c;
