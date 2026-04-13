@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calculadora Cielorraso PVC Online Gratis | Materiales y Cantidades - Rosso Materiales</title>
+    <meta name="description"
+        content="Calculá gratis la cantidad exacta de placas PVC, perfiles, montantes, soleras, tornillos y fijaciones para tu cielorraso de PVC. Resultados instantáneos por dimensiones de ambiente." />
+    <meta name="keywords"
+        content="calculadora cielorraso PVC, calcular materiales cielorraso PVC, placas PVC perfilplas, montante 35mm, solera 35mm, tornillo T1 aguja, fijacion N8, union H PVC, modulacion cielorraso, presupuesto cielorraso PVC, calculadora materiales construccion, Rosso Materiales Tucumán" />
+    <link rel="canonical" href="https://www.rossomateriales.site/calculadora-cielorraso-pvc.html" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="author" content="Rosso Materiales" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Calculadora Cielorraso PVC | Rosso Materiales" />
+    <meta property="og:description"
+        content="Calculá gratis cuántas placas PVC, perfiles y tornillos necesitás para tu cielorraso. Resultados al instante." />
+    <meta property="og:url" content="https://www.rossomateriales.site/calculadora-cielorraso-pvc.html" />
+    <meta property="og:site_name" content="Rosso Materiales" />
+    <meta property="og:image" content="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" />
+    <meta property="og:locale" content="es_AR" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Calculadora Cielorraso PVC | Rosso Materiales" />
+    <meta name="twitter:description"
+        content="Herramienta gratuita para calcular materiales de cielorraso PVC: placas, perfiles, tornillos, fijaciones y más." />
+    <meta name="twitter:image" content="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Calculadora Cielorraso PVC - Rosso Materiales",
+        "description": "Herramienta online gratuita para calcular la cantidad exacta de materiales para cielorraso PVC: placas perfilplas, montantes, soleras, tornillos y fijaciones.",
+        "url": "https://www.rossomateriales.site/calculadora-cielorraso-pvc.html",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "ARS" },
+        "provider": {
+            "@type": "Organization",
+            "name": "Rosso Materiales",
+            "url": "https://www.rossomateriales.site",
+            "logo": "https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png"
+        }
+    }
+    </script>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QBM51JZ19R"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-QBM51JZ19R');
+    </script>
+
+    <link href="assets/FAV.png" rel="icon" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+        .calc-main {
+            padding: 140px 0 60px;
+            background-color: var(--surface);
+            min-height: 80vh;
+        }
+
+        /* ─── FORM ─── */
+        .pvc-layout {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 30px;
+            align-items: start;
+            margin-top: 30px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--accent);
+            position: sticky;
+            top: 120px;
+        }
+
+        .form-card h2 {
+            color: var(--brand);
+            font-size: 1.4rem;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-box {
+            margin-bottom: 18px;
+        }
+
+        .input-box label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 7px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+
+        .input-box input,
+        .input-box select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--ink);
+            outline: none;
+            transition: border-color .2s;
+            background: white;
+        }
+
+        .input-box input:focus,
+        .input-box select:focus {
+            border-color: var(--accent);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .hint {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .calc-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .calc-btn:hover { background: #d4592d; }
+
+        /* ─── RESULTS ─── */
+        .results-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .result-card-header {
+            background: var(--brand);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .result-card-header .num {
+            background: var(--accent);
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .result-table thead tr {
+            background: #f0f3f8;
+        }
+
+        .result-table thead th {
+            padding: 9px 16px;
+            text-align: left;
+            font-size: 0.78rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            font-weight: 600;
+        }
+
+        .result-table thead th.th-val,
+        .result-table thead th.th-unit {
+            text-align: right;
+        }
+
+        .result-table tbody tr {
+            border-bottom: 1px solid #f5f5f5;
+            transition: background .15s;
+        }
+
+        .result-table tbody tr:last-child { border-bottom: none; }
+        .result-table tbody tr:hover { background: #fafafa; }
+
+        .result-table td {
+            padding: 11px 16px;
+            font-size: 0.92rem;
+            color: var(--ink);
+        }
+
+        .result-table td.item-num {
+            color: var(--muted);
+            font-size: 0.8rem;
+            width: 40px;
+        }
+
+        .result-table td.val {
+            text-align: right;
+            font-weight: 700;
+            color: var(--brand);
+            font-size: 1rem;
+            width: 80px;
+        }
+
+        .result-table td.unit {
+            text-align: right;
+            color: var(--muted);
+            font-size: 0.82rem;
+            width: 120px;
+        }
+
+        /* ─── RESUMEN ─── */
+        .resumen-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .resumen-data {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .resumen-item {
+            text-align: center;
+        }
+
+        .resumen-item .r-val {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--brand);
+            line-height: 1;
+        }
+
+        .resumen-item .r-label {
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-top: 3px;
+            text-transform: uppercase;
+        }
+
+        .card-actions {
+            padding: 14px 16px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .action-btn {
+            padding: 8px 14px;
+            border: 1.5px solid var(--accent);
+            background: white;
+            color: var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover { background: var(--accent); color: white; }
+
+        .action-btn.btn-print {
+            border-color: var(--brand);
+            color: var(--brand);
+        }
+
+        .action-btn.btn-print:hover { background: var(--brand); color: white; }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state {
+            padding: 50px 20px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 14px;
+        }
+
+        .empty-state p { font-size: 0.95rem; }
+
+        /* ─── DISCLAIMER ─── */
+        .obs-box {
+            background: #f8f9fb;
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-size: 0.83rem;
+            color: var(--muted);
+            line-height: 1.7;
+            border: 1px solid #e8eaf0;
+        }
+
+        .obs-box strong { color: var(--ink); }
+
+        /* ─── PRINT ─── */
+        #print-container { display: none; }
+
+        @media print {
+            @page { size: A4; margin: 12mm 15mm; }
+
+            body * { visibility: hidden; }
+            body { margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+            #print-container { visibility: visible !important; display: block !important; position: absolute; left: 0; top: 0; width: 100%; background: white; }
+            #print-container * { visibility: visible; }
+
+            .p-header {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 2px solid #ec6434;
+                padding-bottom: 10px;
+                margin-bottom: 18px;
+            }
+
+            .p-logo { width: 130px; }
+
+            .p-title h1 {
+                font-size: 18pt;
+                color: #272e68;
+                margin: 0;
+                font-weight: 800;
+                text-align: right;
+            }
+
+            .p-title p { font-size: 8pt; color: #888; margin: 2px 0 0; text-align: right; }
+
+            .p-dato-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr;
+                gap: 4px 20px;
+                background: #f5f5f5;
+                border-radius: 6px;
+                padding: 12px 16px;
+                margin-bottom: 18px;
+                font-size: 9pt;
+            }
+
+            .p-dato-grid span { color: #555; }
+            .p-dato-grid strong { color: #272e68; }
+
+            .p-section { margin-bottom: 16px; }
+
+            .p-section h2 {
+                background: #272e68;
+                color: white;
+                padding: 6px 12px;
+                font-size: 10pt;
+                margin: 0 0 0;
+                border-radius: 4px 4px 0 0;
+                text-transform: uppercase;
+                letter-spacing: .04em;
+            }
+
+            .p-section table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 9.5pt;
+                border: 1px solid #ddd;
+                border-top: none;
+            }
+
+            .p-section thead th {
+                background: #f0f3f8;
+                padding: 6px 10px;
+                text-align: left;
+                font-size: 8pt;
+                color: #666;
+                text-transform: uppercase;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .p-section thead th.r { text-align: right; }
+
+            .p-section tbody td {
+                padding: 7px 10px;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .p-section tbody td.r { text-align: right; font-weight: 700; color: #272e68; }
+            .p-section tbody td.u { text-align: right; color: #888; font-size: 8.5pt; }
+            .p-section tbody td.n { color: #aaa; font-size: 8pt; }
+
+            .p-footer {
+                position: fixed;
+                bottom: 8mm;
+                left: 15mm;
+                right: 15mm;
+                border-top: 1px solid #ddd;
+                padding-top: 6px;
+                display: flex !important;
+                justify-content: space-between;
+                font-size: 7.5pt;
+                color: #aaa;
+            }
+
+            .p-obs {
+                font-size: 8pt;
+                color: #666;
+                line-height: 1.6;
+                border-top: 1px solid #eee;
+                padding-top: 10px;
+                margin-top: 6px;
+            }
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .pvc-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .form-card { position: static; }
+        }
+
+        @media (max-width: 768px) {
+            .calc-main { padding: 0 0 60px; }
+            .resumen-data { gap: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="main-header" role="banner">
+        <nav class="main-nav container" aria-label="Primaria">
+            <a href="/index.html" class="logo" aria-label="Ir al inicio">
+                <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales"
+                    class="logo-image" />
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+                <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+                <a href="/sucursales"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+                <a href="/nosotros"><i class="fa-solid fa-users"></i> Nosotros</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+                    <div class="dropdown-menu">
+                        <a href="calculadora.html">Calculá los m²</a>
+                        <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
+                        <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
+                        <a href="calculadora-niveladores.html">Calculadora Niveladores</a>
+                        <a href="calculadora-cielorraso-pvc.html">Cielorraso PVC</a>
+                        <a href="checklist.html">Checklist de Materiales</a>
+                        <a href="glosario.html">Glosario</a>
+                    </div>
+                </div>
+            </div>
+
+            <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false"
+                aria-label="Abrir menú">
+                <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
+            </button>
+
+            <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
+                <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+                <a href="https://catalogo.rossomateriales.site"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+                <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+                <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+                    <div class="dropdown-menu">
+                        <a href="calculadora.html">Calculá los m²</a>
+                        <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
+                        <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
+                        <a href="calculadora-niveladores.html">Calculadora Niveladores</a>
+                        <a href="calculadora-cielorraso-pvc.html">Cielorraso PVC</a>
+                        <a href="checklist.html">Checklist de Materiales</a>
+                        <a href="glosario.html">Glosario</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="calc-main">
+        <div class="container">
+
+            <div style="text-align:center; margin-bottom:36px;">
+                <h1 class="section-title">Calculadora de Cielorraso PVC</h1>
+                <p class="section-subtitle"
+                    style="color:var(--muted);max-width:660px;margin:12px auto 0;line-height:1.7;font-size:1.05rem;">
+                    Ingresá las medidas del ambiente y obtené la cantidad exacta de placas, perfiles, tornillos y
+                    fijaciones para tu <strong>cielorraso de PVC</strong>.
+                </p>
+            </div>
+
+            <div class="pvc-layout">
+
+                <!-- ── FORMULARIO ── -->
+                <div class="form-card">
+                    <h2><i class="fa-solid fa-ruler-combined" style="color:var(--accent)"></i> Datos del Ambiente</h2>
+
+                    <div class="input-row">
+                        <div class="input-box">
+                            <label>Lado menor (m)</label>
+                            <input type="number" id="lado-menor" placeholder="Ej: 3" min="0.5" step="0.1"
+                                oninput="calcular()" />
+                        </div>
+                        <div class="input-box">
+                            <label>Lado mayor (m)</label>
+                            <input type="number" id="lado-mayor" placeholder="Ej: 4" min="0.5" step="0.1"
+                                oninput="calcular()" />
+                        </div>
+                    </div>
+
+                    <div class="input-box">
+                        <label>Altura de velas (m)</label>
+                        <input type="number" id="altura-velas" placeholder="Ej: 1" value="1" min="0.1" step="0.1"
+                            oninput="calcular()" />
+                        <p class="hint">Distancia entre la losa y el cielorraso terminado.</p>
+                    </div>
+
+                    <div class="input-box">
+                        <label>Modulación (m)</label>
+                        <select id="modulacion" onchange="calcular()">
+                            <option value="0.50">0.50 m</option>
+                        </select>
+                        <p class="hint">Separación entre estructuras portantes.</p>
+                    </div>
+
+                    <div class="input-box">
+                        <label>Largo de tablas PVC (m)</label>
+                        <select id="largo-pvc" onchange="calcular()">
+                            <option value="4">4 m</option>
+                            <option value="6">6 m</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <label>Desperdicio (%)</label>
+                        <input type="number" id="desperdicio" value="5" min="0" max="30" step="1"
+                            oninput="calcular()" />
+                        <p class="hint">Se recomienda un 5% adicional.</p>
+                    </div>
+
+                    <button class="calc-btn" onclick="calcular()">
+                        <i class="fa-solid fa-calculator"></i> Calcular materiales
+                    </button>
+                </div>
+
+                <!-- ── RESULTADOS ── -->
+                <div class="results-col" id="results-col">
+
+                    <!-- Estado vacío -->
+                    <div class="empty-state" id="empty-state">
+                        <i class="fa-solid fa-table-cells-large"></i>
+                        <p>Ingresá las medidas del ambiente<br>para ver los materiales necesarios.</p>
+                    </div>
+
+                    <!-- Resumen (oculto hasta calcular) -->
+                    <div class="resumen-card" id="resumen-card" style="display:none;">
+                        <div class="resumen-data">
+                            <div class="resumen-item">
+                                <div class="r-val" id="res-area">—</div>
+                                <div class="r-label">Superficie (m²)</div>
+                            </div>
+                            <div class="resumen-item">
+                                <div class="r-val" id="res-perim">—</div>
+                                <div class="r-label">Perímetro (m)</div>
+                            </div>
+                            <div class="resumen-item">
+                                <div class="r-val" id="res-mod">—</div>
+                                <div class="r-label">Modulación</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:8px;">
+                            <button class="action-btn" onclick="copiarResultados()">
+                                <i class="fa-regular fa-copy"></i> Copiar
+                            </button>
+                            <button class="action-btn btn-print" onclick="imprimir()">
+                                <i class="fa-solid fa-print"></i> Imprimir
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sección 1: Perfiles Drywall -->
+                    <div class="result-card" id="card-drywall" style="display:none;">
+                        <div class="result-card-header">
+                            <span class="num">1</span> Perfiles Drywall
+                        </div>
+                        <table class="result-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px">Ítem</th>
+                                    <th>Descripción</th>
+                                    <th class="th-val">Total</th>
+                                    <th class="th-unit">Unidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="item-num">1.1</td>
+                                    <td>Montante 35mm</td>
+                                    <td class="val" id="r-montante">—</td>
+                                    <td class="unit">unidades de 2,6 m</td>
+                                </tr>
+                                <tr>
+                                    <td class="item-num">1.2</td>
+                                    <td>Solera 35mm</td>
+                                    <td class="val" id="r-solera">—</td>
+                                    <td class="unit">unidades de 2,6 m</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Sección 2: Fijaciones -->
+                    <div class="result-card" id="card-fijaciones" style="display:none;">
+                        <div class="result-card-header">
+                            <span class="num">2</span> Fijaciones
+                        </div>
+                        <table class="result-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px">Ítem</th>
+                                    <th>Descripción</th>
+                                    <th class="th-val">Total</th>
+                                    <th class="th-unit">Unidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="item-num">2.1</td>
+                                    <td>Tornillo T1 Aguja</td>
+                                    <td class="val" id="r-t1">—</td>
+                                    <td class="unit">unidades</td>
+                                </tr>
+                                <tr>
+                                    <td class="item-num">2.2</td>
+                                    <td>Fijación N°8 – Tornillo + Tarugo c/tope</td>
+                                    <td class="val" id="r-fij8">—</td>
+                                    <td class="unit">unidades</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Sección 3: Cielorraso PVC -->
+                    <div class="result-card" id="card-pvc" style="display:none;">
+                        <div class="result-card-header">
+                            <span class="num">3</span> Cielorraso PVC
+                        </div>
+                        <table class="result-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px">Ítem</th>
+                                    <th>Descripción</th>
+                                    <th class="th-val">Total</th>
+                                    <th class="th-unit">Unidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="item-num">3.1</td>
+                                    <td>Placas de PVC Perfilplas</td>
+                                    <td class="val" id="r-placas">—</td>
+                                    <td class="unit" id="r-placas-unit">unidades</td>
+                                </tr>
+                                <tr>
+                                    <td class="item-num">3.2</td>
+                                    <td>Perimetral</td>
+                                    <td class="val" id="r-perimetral">—</td>
+                                    <td class="unit">unidades de 3 m</td>
+                                </tr>
+                                <tr>
+                                    <td class="item-num">3.3</td>
+                                    <td>Unión H</td>
+                                    <td class="val" id="r-unionh">—</td>
+                                    <td class="unit">unidades de 3 m</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="card-actions">
+                            <button class="action-btn" onclick="copiarResultados()">
+                                <i class="fa-regular fa-copy"></i> Copiar todo
+                            </button>
+                            <button class="action-btn btn-print" onclick="imprimir()">
+                                <i class="fa-solid fa-print"></i> Imprimir
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Observaciones -->
+                    <div class="obs-box" id="obs-box" style="display:none;">
+                        <strong>Observaciones:</strong><br>
+                        * Modulación adoptada: <span id="obs-mod">0,50 m</span><br>
+                        * El cómputo incluye un porcentaje adicional por desperdicio.<br>
+                        * Los valores son orientativos. El cálculo definitivo debe ser realizado por un profesional.
+                        Rosso Materiales no se hace responsable por el uso de la información fuera de este alcance.
+                    </div>
+
+                </div><!-- /results-col -->
+            </div><!-- /pvc-layout -->
+        </div><!-- /container -->
+    </main>
+
+    <!-- ── PRINT CONTAINER ── -->
+    <div id="print-container">
+        <div class="p-header">
+            <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" class="p-logo" alt="Rosso Materiales" />
+            <div class="p-title">
+                <h1>Calculadora Cielorraso PVC</h1>
+                <p id="p-fecha"></p>
+            </div>
+        </div>
+
+        <div class="p-dato-grid" id="p-datos"></div>
+
+        <div class="p-section">
+            <h2>1 — Perfiles Drywall</h2>
+            <table>
+                <thead><tr><th class="n">Ítem</th><th>Descripción</th><th class="r">Total</th><th class="r">Unidad</th></tr></thead>
+                <tbody>
+                    <tr><td class="n">1.1</td><td>Montante 35mm</td><td class="r" id="p-montante">—</td><td class="u">unidades de 2,6 m</td></tr>
+                    <tr><td class="n">1.2</td><td>Solera 35mm</td><td class="r" id="p-solera">—</td><td class="u">unidades de 2,6 m</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="p-section">
+            <h2>2 — Fijaciones</h2>
+            <table>
+                <thead><tr><th class="n">Ítem</th><th>Descripción</th><th class="r">Total</th><th class="r">Unidad</th></tr></thead>
+                <tbody>
+                    <tr><td class="n">2.1</td><td>Tornillo T1 Aguja</td><td class="r" id="p-t1">—</td><td class="u">unidades</td></tr>
+                    <tr><td class="n">2.2</td><td>Fijación N°8 – Tornillo + Tarugo c/tope</td><td class="r" id="p-fij8">—</td><td class="u">unidades</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="p-section">
+            <h2>3 — Cielorraso PVC</h2>
+            <table>
+                <thead><tr><th class="n">Ítem</th><th>Descripción</th><th class="r">Total</th><th class="r">Unidad</th></tr></thead>
+                <tbody>
+                    <tr><td class="n">3.1</td><td>Placas de PVC Perfilplas</td><td class="r" id="p-placas">—</td><td class="u" id="p-placas-unit">unidades</td></tr>
+                    <tr><td class="n">3.2</td><td>Perimetral</td><td class="r" id="p-perimetral">—</td><td class="u">unidades de 3 m</td></tr>
+                    <tr><td class="n">3.3</td><td>Unión H</td><td class="r" id="p-unionh">—</td><td class="u">unidades de 3 m</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="p-obs">
+            * Modulación adoptada: <span id="p-obs-mod">0,50 m</span> &nbsp;|&nbsp;
+            * El cómputo incluye porcentaje adicional por desperdicio. &nbsp;|&nbsp;
+            * Cálculo orientativo. El cálculo definitivo debe ser realizado por un profesional habilitado.
+        </div>
+
+        <div class="p-footer">
+            <span>Rosso Materiales — www.rossomateriales.site</span>
+            <span id="p-footer-fecha"></span>
+        </div>
+    </div>
+
+    <footer style="background:var(--brand);color:white;text-align:center;padding:28px 20px;font-size:0.9rem;">
+        <p>© 2025 Rosso Materiales · Tucumán y Salta · Todos los derechos reservados</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+    // ─────────────────────────────────────────────
+    //  CONSTANTES DEL SISTEMA PVC
+    // ─────────────────────────────────────────────
+    const ANCHO_TABLA_PVC   = 0.20;   // m — ancho estándar de tabla perfilplas
+    const LARGO_BARRA_PERFIL = 2.6;   // m — largo estándar de montante/solera
+    const LARGO_PERIMETRAL   = 3.0;   // m — largo estándar de perfil perimetral
+    const LARGO_UNION_H      = 3.0;   // m — largo estándar de unión H
+
+    // ─────────────────────────────────────────────
+    //  HELPERS
+    // ─────────────────────────────────────────────
+    const ceil = Math.ceil;
+    const floor = Math.floor;
+
+    function set(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+    }
+
+    function show(id, visible) {
+        const el = document.getElementById(id);
+        if (el) el.style.display = visible ? '' : 'none';
+    }
+
+    // ─────────────────────────────────────────────
+    //  CÁLCULO PRINCIPAL
+    // ─────────────────────────────────────────────
+    function calcular() {
+        const lMenor  = parseFloat(document.getElementById('lado-menor').value);
+        const lMayor  = parseFloat(document.getElementById('lado-mayor').value);
+        const altVela = parseFloat(document.getElementById('altura-velas').value)  || 1;
+        const mod     = parseFloat(document.getElementById('modulacion').value)    || 0.5;
+        const largoPVC= parseFloat(document.getElementById('largo-pvc').value)     || 4;
+        const desp    = parseFloat(document.getElementById('desperdicio').value);
+        const despFac = 1 + (isNaN(desp) ? 0.05 : desp / 100);
+
+        // Validación mínima
+        if (!lMenor || !lMayor || lMenor <= 0 || lMayor <= 0) {
+            show('empty-state', true);
+            show('resumen-card', false);
+            show('card-drywall', false);
+            show('card-fijaciones', false);
+            show('card-pvc', false);
+            show('obs-box', false);
+            return;
+        }
+
+        const area      = lMenor * lMayor;
+        const perimetro = 2 * (lMenor + lMayor);
+
+        // ── 1. PERFILES DRYWALL ──────────────────
+
+        // Velas interiores: puntos de cuelgue internos (sin tocar los bordes)
+        // Las posiciones son: mod, 2·mod, ..., hasta < lado
+        const velasX = floor(lMenor / mod) - 1;   // puntos interiores en el lado menor
+        const velasY = floor(lMayor / mod) - 1;   // puntos interiores en el lado mayor
+        const totalVelas = Math.max(velasX, 0) * Math.max(velasY, 0);
+
+        // Piezas de montante por barra de 2.6m (cortadas a altura de vela)
+        const piezasPorBarra = floor(LARGO_BARRA_PERFIL / altVela);
+        const montantes = piezasPorBarra > 0
+            ? ceil(totalVelas / piezasPorBarra)
+            : totalVelas;
+
+        // Soleras: se usan en el perímetro → ceil(perímetro / 2.6)
+        const soleras = ceil(perimetro / LARGO_BARRA_PERFIL);
+
+        // ── 2. FIJACIONES ────────────────────────
+
+        // Tornillos T1 Aguja: fijan las tablas PVC a los perfiles omega.
+        // Se cuenta el cruce de cada tabla con cada runner (incluyendo bordes).
+        // Tablas corriendo a lo largo del lado menor, runners espaciados a mod a lo largo del lado mayor
+        const numRunners  = floor(lMayor / mod) + 1;   // runners totales incl. bordes (lado mayor)
+        const numTablasCrudo = ceil(lMenor / ANCHO_TABLA_PVC);   // tablas a lo largo del lado menor
+        const numTablasConDesp = ceil(numTablasCrudo * despFac);
+        const tornillosT1 = numTablasConDesp * numRunners;
+
+        // Fijación N°8: anclan el perfil perimetral a la pared.
+        // Una fijación cada modulación a lo largo de cada pieza de perimetral.
+        const piezasPerimetral = ceil(perimetro / LARGO_PERIMETRAL);
+        const fijPorPieza      = floor(LARGO_PERIMETRAL / mod);
+        const fijaciones8      = piezasPerimetral * fijPorPieza;
+
+        // ── 3. CIELORRASO PVC ────────────────────
+
+        // Tablas PVC corren paralelas al LADO MENOR.
+        // Cada tabla de "largoPVC" metros se corta a lMenor → piezas por tabla física
+        const piezasPorTablaFisica = floor(largoPVC / lMenor);
+        // Cantidad de piezas necesarias a lo largo del lado mayor (con desperdicio)
+        const piezasNecesarias = ceil(ceil(lMayor / ANCHO_TABLA_PVC) * despFac);
+        // Tablas físicas a comprar
+        const tablasFisicas = piezasPorTablaFisica > 0
+            ? ceil(piezasNecesarias / piezasPorTablaFisica)
+            : piezasNecesarias;
+
+        // Perimetral: perfil de borde
+        const perimetral = piezasPerimetral;
+
+        // Unión H: sólo si la tabla no alcanza el largo del lado menor
+        // (necesitamos empalmar en el tramo del lado menor)
+        let unionH = 0;
+        if (largoPVC < lMenor) {
+            // Cantidad de empalmes por fila × cantidad de filas
+            const empalmesPorFila = ceil(lMenor / largoPVC) - 1;
+            const filas           = ceil(lMayor / ANCHO_TABLA_PVC);
+            const mLinealUnionH   = empalmesPorFila * filas * ANCHO_TABLA_PVC; // m lineales de unión
+            unionH                = ceil(mLinealUnionH / LARGO_UNION_H);
+        }
+
+        // ── MOSTRAR ──────────────────────────────
+        show('empty-state', false);
+        show('resumen-card', true);
+        show('card-drywall', true);
+        show('card-fijaciones', true);
+        show('card-pvc', true);
+        show('obs-box', true);
+
+        // Resumen
+        set('res-area',  area.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }));
+        set('res-perim', perimetro.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }));
+        set('res-mod',   mod.toFixed(2).replace('.', ',') + ' m');
+
+        // Sección 1
+        set('r-montante', montantes);
+        set('r-solera',   soleras);
+
+        // Sección 2
+        set('r-t1',   tornillosT1);
+        set('r-fij8', fijaciones8);
+
+        // Sección 3
+        const unitLabel = `unidades de ${largoPVC} m`;
+        set('r-placas',      tablasFisicas);
+        set('r-placas-unit', unitLabel);
+        set('r-perimetral',  perimetral);
+        set('r-unionh',      unionH);
+
+        // Observaciones
+        set('obs-mod', mod.toFixed(2).replace('.', ',') + ' m');
+
+        // Guardar para impresión/copia
+        window._pvcResultados = {
+            lMenor, lMayor, altVela, mod, largoPVC, desp: isNaN(desp) ? 5 : desp,
+            area, perimetro,
+            montantes, soleras,
+            tornillosT1, fijaciones8,
+            tablasFisicas, perimetral, unionH
+        };
+    }
+
+    // ─────────────────────────────────────────────
+    //  COPIAR AL PORTAPAPELES
+    // ─────────────────────────────────────────────
+    function copiarResultados() {
+        const r = window._pvcResultados;
+        if (!r) return;
+
+        const texto = [
+            '=== CIELORRASO PVC — ROSSO MATERIALES ===',
+            `Ambiente: ${r.lMenor} m × ${r.lMayor} m | Área: ${r.area} m² | Perímetro: ${r.perimetro} m`,
+            `Modulación: ${r.mod} m | Altura velas: ${r.altVela} m | Largo PVC: ${r.largoPVC} m | Desperdicio: ${r.desp}%`,
+            '',
+            '--- 1. PERFILES DRYWALL ---',
+            `Montante 35mm:   ${r.montantes} u (barras de 2,6 m)`,
+            `Solera 35mm:     ${r.soleras} u (barras de 2,6 m)`,
+            '',
+            '--- 2. FIJACIONES ---',
+            `Tornillo T1 Aguja:              ${r.tornillosT1} u`,
+            `Fijación N°8 (Tornillo+Tarugo): ${r.fijaciones8} u`,
+            '',
+            '--- 3. CIELORRASO PVC ---',
+            `Placas PVC Perfilplas: ${r.tablasFisicas} u (${r.largoPVC} m c/u)`,
+            `Perimetral:            ${r.perimetral} u (3 m c/u)`,
+            `Unión H:               ${r.unionH} u (3 m c/u)`,
+            '',
+            '* Calculadora de Rosso Materiales — www.rossomateriales.site'
+        ].join('\n');
+
+        navigator.clipboard.writeText(texto).then(() => {
+            const btn = event.currentTarget;
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> ¡Copiado!';
+            setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        }).catch(() => {
+            alert('No se pudo copiar. Seleccioná el texto manualmente.');
+        });
+    }
+
+    // ─────────────────────────────────────────────
+    //  IMPRIMIR
+    // ─────────────────────────────────────────────
+    function imprimir() {
+        const r = window._pvcResultados;
+        if (!r) return;
+
+        const ahora = new Date();
+        const fechaStr = ahora.toLocaleDateString('es-AR', { day:'2-digit', month:'2-digit', year:'numeric' });
+        const horaStr  = ahora.toLocaleTimeString('es-AR', { hour:'2-digit', minute:'2-digit' });
+
+        set('p-fecha',       `Generado el ${fechaStr} a las ${horaStr}`);
+        set('p-footer-fecha', `${fechaStr} ${horaStr}`);
+
+        document.getElementById('p-datos').innerHTML = `
+            <div><span>Lado menor:</span> <strong>${r.lMenor} m</strong></div>
+            <div><span>Lado mayor:</span> <strong>${r.lMayor} m</strong></div>
+            <div><span>Área:</span> <strong>${r.area} m²</strong></div>
+            <div><span>Perímetro:</span> <strong>${r.perimetro} m</strong></div>
+            <div><span>Altura de velas:</span> <strong>${r.altVela} m</strong></div>
+            <div><span>Modulación:</span> <strong>${r.mod} m</strong></div>
+            <div><span>Largo tablas PVC:</span> <strong>${r.largoPVC} m</strong></div>
+            <div><span>Desperdicio:</span> <strong>${r.desp}%</strong></div>
+        `;
+
+        set('p-montante',    r.montantes);
+        set('p-solera',      r.soleras);
+        set('p-t1',          r.tornillosT1);
+        set('p-fij8',        r.fijaciones8);
+        set('p-placas',      r.tablasFisicas);
+        set('p-placas-unit', `unidades de ${r.largoPVC} m`);
+        set('p-perimetral',  r.perimetral);
+        set('p-unionh',      r.unionH);
+        set('p-obs-mod',     r.mod.toFixed(2).replace('.', ',') + ' m');
+
+        window.print();
+    }
+
+    // Calcular al cargar si hay valores por defecto
+    calcular();
+    </script>
+
+</body>
+</html>

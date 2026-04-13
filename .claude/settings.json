@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e ':*)"
+      "Bash(node -e ':*)",
+      "WebFetch(domain:calculador.adbarbieri.com)",
+      "Bash(xargs -I{} sed -i 's|<a href=\"calculadora-niveladores.html\">Calculadora Niveladores</a>|<a href=\"calculadora-niveladores.html\">Calculadora Niveladores</a>\\\\n                        <a href=\"calculadora-cielorraso-pvc.html\">Cielorraso PVC</a>|g' {})"
     ]
   }
 }

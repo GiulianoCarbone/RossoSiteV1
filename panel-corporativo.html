@@ -2302,6 +2302,15 @@
                   <p>Calculá clips, cuñas y pinzas para colocación de cerámicos</p>
                 </div>
               </a>
+              <a href="calculadora-cielorraso-pvc.html" target="_blank" class="calculator-option">
+                <div class="calculator-option-icon">
+                  <i class="fa-solid fa-border-top-left"></i>
+                </div>
+                <div class="calculator-option-text">
+                  <h3>Cielorraso PVC</h3>
+                  <p>Calculá placas, perfiles, montantes, soleras y tornillos para tu cielorraso</p>
+                </div>
+              </a>
               <a href="calculadora-promedio.html" target="_blank" class="calculator-option">
                 <div class="calculator-option-icon">
                   <i class="fa-solid fa-calendar-check"></i>
@@ -3320,76 +3329,102 @@
       }
 
       // --- LÓGICA DE NOTIFICACIONES (SEPARADA) ---
+      let _notifDocs = [];
+      let _newsDocs = [];
+
+      function renderNotificationBell() {
+        const notificationList = document.getElementById("notification-list");
+        const emptyMsg = document.getElementById("empty-notifications-msg");
+        if (!notificationList) return;
+
+        const lastVisit = parseInt(localStorage.getItem('lastNotificationVisit') || '0', 10);
+
+        // Combinar y normalizar ambas fuentes
+        const combined = [
+          ..._notifDocs.map(n => ({ ...n, _source: 'notif', _text: n.message || '' })),
+          ..._newsDocs.map(n => ({ ...n, _source: 'news', _text: n.description || '' }))
+        ];
+
+        // Ordenar por timestamp descendente
+        combined.sort((a, b) => {
+          const ta = a.timestamp ? a.timestamp.toMillis() : 0;
+          const tb = b.timestamp ? b.timestamp.toMillis() : 0;
+          return tb - ta;
+        });
+
+        // Contar no leídas (cualquier item más nuevo que lastVisit)
+        let newCount = combined.filter(n => n.timestamp && n.timestamp.toMillis() > lastVisit).length;
+
+        // Renderizar top 5
+        const top5 = combined.slice(0, 5);
+        notificationList.innerHTML = "";
+
+        if (top5.length === 0) {
+          if (emptyMsg) emptyMsg.style.display = 'block';
+        } else {
+          if (emptyMsg) emptyMsg.style.display = 'none';
+          top5.forEach(n => {
+            const li = document.createElement('li');
+            li.className = 'notification-item';
+
+            // Formato de fecha
+            let timeString = "";
+            if (n.timestamp) {
+              const date = n.timestamp.toDate();
+              timeString = date.toLocaleDateString() + " " + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            // Badge de fuente
+            const sourceTag = n._source === 'news'
+              ? `<span style="font-size:0.7em;background:var(--brand);color:#fff;border-radius:3px;padding:1px 5px;margin-left:5px;vertical-align:middle;">${n.categoria || 'Noticia'}</span>`
+              : '';
+
+            let contentHTML = `
+              <span class="notification-title">${n.title || ''}${sourceTag}</span>
+              <span class="notification-desc" style="font-size: 0.85em; color: #555; display:block;">${n._text}</span>
+              <span class="notification-time">${timeString}</span>
+            `;
+
+            if (n.link) {
+              li.style.cursor = "pointer";
+              li.onclick = () => {
+                if (n._source === 'news') {
+                  registerNewsClick(n.id);
+                } else {
+                  markSingleNotificationAsRead(n.id);
+                }
+                window.open(n.link, '_blank');
+              };
+              contentHTML += `<span style="font-size: 0.8em; color: var(--accent); display:block; margin-top: 2px;"><i class="fa-solid fa-link"></i> Abrir enlace</span>`;
+            }
+
+            li.innerHTML = contentHTML;
+            notificationList.appendChild(li);
+          });
+        }
+
+        setAppBadge(newCount);
+      }
+
       function populateNotifications() {
         db.collection("notifications")
           .orderBy("timestamp", "desc")
-          .limit(10) // Traemos las ultimas 10
-          .onSnapshot((querySnapshot) => {
-            const notificationList = document.getElementById("notification-list");
-            const emptyMsg = document.getElementById("empty-notifications-msg");
-            if (!notificationList) return;
-
-            notificationList.innerHTML = "";
-            let newCount = 0;
-            let allNotifications = [];
-            const lastVisit = localStorage.getItem('lastNotificationVisit') || 0;
-
-            querySnapshot.forEach((doc) => {
-              const notif = doc.data();
-              const notifId = doc.id;
-              allNotifications.push({ ...notif, id: notifId });
-
-              // Conteo de no leídas
-              if (notif.timestamp && notif.timestamp.toMillis() > lastVisit) {
-                newCount++;
-              }
-            });
-
-            // Renderizado (Top 5)
-            const top5 = allNotifications.slice(0, 5);
-
-            if (top5.length === 0) {
-              if (emptyMsg) emptyMsg.style.display = 'block';
-            } else {
-              if (emptyMsg) emptyMsg.style.display = 'none';
-              top5.forEach(n => {
-                const li = document.createElement('li');
-                li.className = 'notification-item';
-
-                // Formato de fecha
-                let timeString = "";
-                if (n.timestamp) {
-                  const date = n.timestamp.toDate();
-                  timeString = date.toLocaleDateString() + " " + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                }
-
-                // Si tiene link, hacemos que el contenido sea clickeable o agregamos un anchor
-                let contentHTML = `
-                    <span class="notification-title">${n.title}</span>
-                    <span class="notification-desc" style="font-size: 0.85em; color: #555; display:block;">${n.message}</span>
-                    <span class="notification-time">${timeString}</span>
-                `;
-
-                if (n.link) {
-                  li.style.cursor = "pointer";
-                  // LÓGICA HÍBRIDA: Click Tracking
-                  li.onclick = () => {
-                    markSingleNotificationAsRead(n.id);
-                    window.open(n.link, '_blank');
-                  };
-                  contentHTML += `<span style="font-size: 0.8em; color: var(--accent); display:block; margin-top: 2px;"><i class="fa-solid fa-link"></i> Abrir enlace</span>`;
-                }
-
-                li.innerHTML = contentHTML;
-                notificationList.appendChild(li);
-              });
-            }
-
-            // Actualizar Badge
-            setAppBadge(newCount);
-
+          .limit(10)
+          .onSnapshot((snap) => {
+            _notifDocs = snap.docs.map(d => ({ ...d.data(), id: d.id }));
+            renderNotificationBell();
           }, (error) => {
             console.error("Error al obtener notificaciones: ", error);
+          });
+
+        db.collection("news")
+          .orderBy("timestamp", "desc")
+          .limit(10)
+          .onSnapshot((snap) => {
+            _newsDocs = snap.docs.map(d => ({ ...d.data(), id: d.id }));
+            renderNotificationBell();
+          }, (error) => {
+            console.error("Error al obtener noticias para campana: ", error);
           });
       }
 
