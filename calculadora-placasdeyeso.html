@@ -512,6 +512,8 @@
                                 class="fa-regular fa-copy"></i> Copiar</button>
                         <button class="action-btn btn-print" onclick="imprimirTarjeta('card-cielorrasos')"><i
                                 class="fa-solid fa-print"></i> Imprimir</button>
+                        <button class="action-btn" onclick="pedirPresupuestoWhatsApp('cielorrasos')"><i
+                                class="fa-brands fa-whatsapp"></i> Pedí tu presupuesto</button>
                     </div>
                 </div>
 
@@ -559,6 +561,8 @@
                                 class="fa-regular fa-copy"></i> Copiar</button>
                         <button class="action-btn btn-print" onclick="imprimirTarjeta('card-revestimientos')"><i
                                 class="fa-solid fa-print"></i> Imprimir</button>
+                        <button class="action-btn" onclick="pedirPresupuestoWhatsApp('revestimientos')"><i
+                                class="fa-brands fa-whatsapp"></i> Pedí tu presupuesto</button>
                     </div>
                 </div>
 
@@ -610,6 +614,8 @@
                             Copiar</button>
                         <button class="action-btn btn-print" onclick="imprimirTarjeta('card-paredes')"><i
                                 class="fa-solid fa-print"></i> Imprimir</button>
+                        <button class="action-btn" onclick="pedirPresupuestoWhatsApp('paredes')"><i class="fa-brands fa-whatsapp"></i>
+                            Pedí tu presupuesto</button>
                     </div>
                 </div>
             </div>
@@ -967,6 +973,62 @@
             }).catch(err => {
                 console.error('Error al copiar: ', err);
             });
+        }
+
+        function pedirPresupuestoWhatsApp(tipo) {
+            let texto = "";
+            let items = [];
+
+            if (tipo === 'cielorrasos') {
+                const m2 = document.getElementById('c-m2').value || 0;
+                texto = `*PRESUPUESTO DE MATERIALES - CIELORRASO PLACAS DE YESO*\nSuperficie a cubrir: ${m2} m²\n\n`;
+                items = [
+                    ['Soleras 35mm', 'r-c-sol'],
+                    ['Montantes 34mm', 'r-c-mon'],
+                    ['Tornillos T1', 'r-c-t1'],
+                    ['Tornillos T2', 'r-c-t2'],
+                    ['Cinta', 'r-c-cin'],
+                    ['Masilla', 'r-c-mas'],
+                    ['Fijaciones', 'r-c-fij'],
+                    ['Placas 9.5mm', 'r-c-pla']
+                ];
+            } else if (tipo === 'revestimientos') {
+                const ml = document.getElementById('rv-ml').value || 0;
+                const alto = document.getElementById('rv-a').value || 0;
+                const total = (ml * alto).toFixed(2);
+                texto = `*PRESUPUESTO DE MATERIALES - REVESTIMIENTO PLACAS DE YESO*\nMedidas: ${ml}ml x ${alto}m (Total: ${total} m²)\n\n`;
+                items = [
+                    ['Perfil Omega', 'r-rv-ome'],
+                    ['Tornillos T2', 'r-rv-t2'],
+                    ['Cinta', 'r-rv-cin'],
+                    ['Masilla', 'r-rv-mas'],
+                    ['Fijaciones', 'r-rv-fij'],
+                    ['Placas 9.5mm', 'r-rv-pla']
+                ];
+            } else if (tipo === 'paredes') {
+                const m2 = document.getElementById('p-m2').value || 0;
+                texto = `*PRESUPUESTO DE MATERIALES - PARED PLACAS DE YESO*\nSuperficie a cubrir: ${m2} m²\n\n`;
+                items = [
+                    ['Soleras 70mm', 'r-p-sol'],
+                    ['Montantes 69mm', 'r-p-mon'],
+                    ['Tornillos T1', 'r-p-t1'],
+                    ['Tornillos T2', 'r-p-t2'],
+                    ['Cinta', 'r-p-cin'],
+                    ['Masilla', 'r-p-mas'],
+                    ['Fijaciones', 'r-p-fij'],
+                    ['Placas 12.5mm', 'r-p-pla']
+                ];
+            }
+
+            items.forEach(item => {
+                const val = document.getElementById(item[1]).innerText;
+                texto += `• ${item[0]}: ${val}\n`;
+            });
+
+            texto += `\n¡Hola! Quisiera pedir un presupuesto con estos cálculos.`;
+
+            const WA_NUMBER = '5493814146917';
+            window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(texto)}`, '_blank');
         }
     </script>
 

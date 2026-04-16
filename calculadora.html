@@ -452,6 +452,8 @@
                             Copiar</button>
                         <button class="action-btn btn-print" onclick="imprimirResultado()"><i
                                 class="fa-solid fa-print"></i> Imprimir</button>
+                        <button class="action-btn" onclick="pedirPresupuestoWhatsApp()"><i
+                                class="fa-brands fa-whatsapp"></i> Pedí tu presupuesto</button>
                     </div>
                 </div>
             </div>
@@ -644,6 +646,22 @@
 
             // Imprimir
             window.print();
+        }
+
+        function pedirPresupuestoWhatsApp() {
+            if (!lastCalculation) {
+                alert('Por favor, realizá un cálculo primero.');
+                return;
+            }
+            const WA_NUMBER = '5493814146917';
+            const texto = `*PRESUPUESTO DE MATERIALES - Pisos y Revestimientos*\n\n` +
+                `Superficie: ${lastCalculation.largo}m x ${lastCalculation.ancho}m = ${lastCalculation.superficieTotal} m²\n` +
+                `Rendimiento por caja: ${lastCalculation.rendimiento} m²\n\n` +
+                `*RESULTADO: ${lastCalculation.cajasNecesarias} cajas*\n` +
+                `_(Incluye 10% extra por desperdicios y cortes)_\n\n` +
+                `¡Hola! Quisiera pedir un presupuesto con estos cálculos.`;
+
+            window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(texto)}`, '_blank');
         }
     </script>
     <script src="script.js"></script>

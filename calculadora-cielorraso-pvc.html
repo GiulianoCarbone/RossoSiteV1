@@ -641,6 +641,9 @@
                             <button class="action-btn btn-print" onclick="imprimir()">
                                 <i class="fa-solid fa-print"></i> Imprimir
                             </button>
+                            <button class="action-btn" onclick="pedirPresupuestoWhatsApp()">
+                                <i class="fa-brands fa-whatsapp"></i> Pedí tu presupuesto
+                            </button>
                         </div>
                     </div>
 
@@ -747,6 +750,9 @@
                             </button>
                             <button class="action-btn btn-print" onclick="imprimir()">
                                 <i class="fa-solid fa-print"></i> Imprimir
+                            </button>
+                            <button class="action-btn" onclick="pedirPresupuestoWhatsApp()">
+                                <i class="fa-brands fa-whatsapp"></i> Pedí tu presupuesto
                             </button>
                         </div>
                     </div>
@@ -1054,6 +1060,41 @@
         set('p-obs-mod',     r.mod.toFixed(2).replace('.', ',') + ' m');
 
         window.print();
+    }
+
+    // ─────────────────────────────────────────────
+    //  WHATSAPP
+    // ─────────────────────────────────────────────
+    function pedirPresupuestoWhatsApp() {
+        const r = window._pvcResultados;
+        if (!r) {
+            alert('Por favor, realizá un cálculo primero.');
+            return;
+        }
+
+        const WA_NUMBER = '5493814146917';
+        const texto = [
+            '*PRESUPUESTO DE MATERIALES - CIELORRASO PVC*',
+            `Ambiente: ${r.lMenor} m × ${r.lMayor} m | Área: ${r.area} m² | Perímetro: ${r.perimetro} m`,
+            `Modulación: ${r.mod} m | Altura velas: ${r.altVela} m | Largo PVC: ${r.largoPVC} m`,
+            '',
+            '*--- 1. PERFILES DRYWALL ---*',
+            `• Montante 35mm:   ${r.montantes} u (barras de 2.6 m)`,
+            `• Solera 35mm:     ${r.soleras} u (barras de 2.6 m)`,
+            '',
+            '*--- 2. FIJACIONES ---*',
+            `• Tornillo T1 Aguja:              ${r.tornillosT1} u`,
+            `• Fijación N°8 (Tornillo+Tarugo): ${r.fijaciones8} u`,
+            '',
+            '*--- 3. CIELORRASO PVC ---*',
+            `• Placas PVC Perfilplas: ${r.tablasFisicas} u (${r.largoPVC} m c/u)`,
+            `• Perimetral:            ${r.perimetral} u (3 m c/u)`,
+            `• Unión H:               ${r.unionH} u (3 m c/u)`,
+            '',
+            `¡Hola! Quisiera pedir un presupuesto con estos cálculos.`
+        ].join('\n');
+
+        window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(texto)}`, '_blank');
     }
 
     // Calcular al cargar si hay valores por defecto
