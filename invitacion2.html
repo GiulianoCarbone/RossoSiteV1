@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recordatorio Exclusivo - Rosso Materiales & Eliane</title>
+    <meta name="description"
+        content="Recordatorio de evento en el nuevo espacio Eliane en Rosso Materiales El Manantial.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;700;800;900&family=Montserrat:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1e2b5e;
+            --rosso-orange: #f15a24;
+            --eliane-red: #e31e24;
+            --bg-light: #f8f9fa;
+            --text-dark: #333;
+            --text-muted: #666;
+            --white: #ffffff;
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('assets/invitacion-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .invitation-card {
+            background: var(--white);
+            max-width: 600px;
+            width: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow-strong);
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            padding: 40px 40px 20px;
+            text-align: center;
+        }
+
+        .rosso-logo {
+            width: 180px;
+            margin-bottom: 25px;
+        }
+
+        .badge-recordatorio {
+            background: var(--rosso-orange);
+            color: #fff;
+            font-size: 0.75rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(241, 90, 36, 0.25);
+            animation: pulse-reminder 2s infinite;
+        }
+
+        @keyframes pulse-reminder {
+            0% {
+                box-shadow: 0 0 0 0 rgba(241, 90, 36, 0.6);
+            }
+
+            70% {
+                box-shadow: 0 0 0 12px rgba(241, 90, 36, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(241, 90, 36, 0);
+            }
+        }
+
+        .main-title {
+            font-family: 'Outfit', sans-serif;
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .eliane-logo-img {
+            max-width: 200px;
+            width: 65%;
+            height: auto;
+            margin: 5px 0 15px;
+            display: inline-block;
+        }
+
+        /* ── INFO ROW / GRID ── */
+        .info-grid {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            margin: 0 40px 20px;
+            padding: 25px;
+            display: grid;
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .info-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(30, 43, 94, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .info-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .info-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* ── PARKING SECTION ── */
+        .parking-section {
+            padding: 0 40px 20px;
+        }
+
+        .parking-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .parking-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--rosso-orange);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(241, 90, 36, 0.3);
+        }
+
+        .parking-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .parking-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ── CROQUIS SVG ANIMATIONS ── */
+        .croquis-wrap {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            background: #f7f4f0;
+            margin-bottom: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            line-height: 0;
+            /* Ensures no tiny gap below SVG */
+        }
+
+        @keyframes driveIn {
+            0% {
+                transform: translate(390px, 0px) rotate(0deg);
+                opacity: 0;
+            }
+
+            8% {
+                transform: translate(320px, 0px) rotate(0deg);
+                opacity: 1;
+            }
+
+            42% {
+                transform: translate(50px, 0px) rotate(0deg);
+                opacity: 1;
+            }
+
+            54% {
+                transform: translate(50px, -28px) rotate(88deg);
+                opacity: 1;
+            }
+
+            64% {
+                transform: translate(50px, -55px) rotate(90deg);
+                opacity: 1;
+            }
+
+            74% {
+                transform: translate(50px, -70px) rotate(90deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translate(390px, 0px) rotate(0deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes arrowBlink {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes spotAppear {
+
+            0%,
+            55% {
+                fill: #e5e0d8;
+            }
+
+            60%,
+            90% {
+                fill: #c5e8c8;
+            }
+
+            95%,
+            100% {
+                fill: #e5e0d8;
+            }
+        }
+
+        .car-anim {
+            animation: driveIn 9s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .arrow-blink {
+            animation: arrowBlink 1s ease-in-out infinite;
+        }
+
+        .arrow-blink:nth-child(2) {
+            animation-delay: 0.25s;
+        }
+
+        .arrow-blink:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+
+        .spot-anim {
+            animation: spotAppear 4.5s ease-in-out infinite;
+        }
+
+        .spot-anim:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .spot-anim:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        /* ── FOOTER ── */
+        .footer-note {
+            background: var(--primary-blue);
+            color: white;
+            padding: 35px 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .closing-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--rosso-orange);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-shadow: 0 4px 20px rgba(241, 90, 36, 0.45);
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .closing-subtitle {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-note strong {
+            color: var(--white);
+        }
+
+        @media (max-width: 600px) {
+
+            html,
+            body {
+                height: 100% !important;
+                height: 100vh !important;
+                overflow: hidden !important;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                padding: 10px !important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .invitation-card {
+                height: 100% !important;
+                max-height: 100vh !important;
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                border-radius: 20px !important;
+                margin: 0 !important;
+                overflow-y: auto !important;
+                /* Permitir scroll si es muy alto */
+            }
+
+            .card-header {
+                padding: 20px 20px 10px !important;
+            }
+
+            .rosso-logo {
+                width: 130px !important;
+                margin-bottom: 15px !important;
+            }
+
+            .badge-recordatorio {
+                font-size: 0.65rem !important;
+                padding: 5px 12px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .main-title {
+                font-size: 1.3rem !important;
+                margin-bottom: 5px !important;
+            }
+
+            .subtitle {
+                font-size: 0.9rem !important;
+                margin-bottom: 10px !important;
+            }
+
+            .eliane-logo-img {
+                max-width: 130px !important;
+                margin: 0 0 10px !important;
+            }
+
+            .info-grid {
+                margin: 0 15px 10px !important;
+                padding: 12px !important;
+                gap: 10px !important;
+                display: flex !important;
+                justify-content: space-around !important;
+                background: rgba(0, 0, 0, 0.02) !important;
+            }
+
+            .info-item {
+                flex-direction: column !important;
+                text-align: center !important;
+                gap: 5px !important;
+                flex: 1 !important;
+            }
+
+            .info-icon {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.9rem !important;
+                background: white !important;
+                color: var(--primary-blue) !important;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+            }
+
+            a.info-item .info-icon {
+                background: var(--rosso-orange) !important;
+                color: white !important;
+            }
+
+            .info-content h4 {
+                font-size: 0.75rem !important;
+                line-height: 1.1 !important;
+            }
+
+            .info-content p {
+                font-size: 0.7rem !important;
+                margin-top: 3px !important;
+            }
+
+            .parking-section {
+                padding: 0 15px 15px !important;
+                flex-grow: 1;
+            }
+
+            .parking-header {
+                margin-bottom: 10px !important;
+                gap: 10px !important;
+            }
+
+            .parking-icon {
+                width: 35px !important;
+                height: 35px !important;
+                font-size: 1.1rem !important;
+            }
+
+            .parking-title {
+                font-size: 0.9rem !important;
+            }
+
+            .parking-desc {
+                font-size: 0.8rem !important;
+            }
+
+            .croquis-wrap {
+                margin-bottom: 0 !important;
+                border-radius: 15px !important;
+            }
+
+            .footer-note {
+                padding: 25px 20px !important;
+            }
+
+            .closing-title {
+                font-size: 1.6rem !important;
+            }
+
+            .closing-subtitle {
+                font-size: 0.8rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="invitation-card">
+
+        <!-- HEADER -->
+        <div class="card-header">
+            <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Logo" class="rosso-logo">
+            <br>
+            <div class="badge-recordatorio">⏰ Recordatorio</div>
+            <!-- <h1 class="main-title">EVENTO ELIANE</h1> -->
+            <p class="subtitle">Descubrí nuestro nuevo espacio</p>
+            <img src="assets/eliane-logo.png" alt="Eliane" class="eliane-logo-img">
+        </div>
+
+        <!-- INFO GRID -->
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                <div class="info-content">
+                    <h4>23 de abril - 18:30 hs</h4>
+                    <p>¡Te esperamos puntualmente!</p>
+                </div>
+            </div>
+            <a href="https://maps.app.goo.gl/rmFkZoq4Bk7XJXin6" target="_blank" class="info-item"
+                style="text-decoration: none; color: inherit; padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.02); transition: background 0.2s;">
+                <div class="info-icon" style="background: var(--rosso-orange); color: white;"><i
+                        class="fa-solid fa-location-dot"></i></div>
+                <div class="info-content">
+                    <h4>Rosso El Manantial</h4>
+                    <p>Ruta 301, Km 0.6 <span style="color: var(--rosso-orange); font-weight: 700;">(Ver mapa)</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+
+        <!-- PARKING -->
+        <div class="parking-section">
+            <div class="parking-header">
+                <div class="parking-icon">P</div>
+                <div>
+                    <div class="parking-title">Estacionamiento disponible</div>
+                    <div class="parking-desc">Amplio predio al lado de la sucursal</div>
+                </div>
+            </div>
+
+            <!-- CROQUIS -->
+            <div class="croquis-wrap">
+                <svg width="100%" viewBox="0 0 464 220" xmlns="http://www.w3.org/2000/svg" role="img">
+                    <title>Croquis de ubicación del estacionamiento</title>
+                    <desc>Vista aérea mostrando la sucursal Rosso El Manantial y el estacionamiento al costado</desc>
+
+                    <!-- FONDO -->
+                    <rect width="464" height="220" fill="#edeae4" />
+
+                    <!-- BOULEVARD / AV. KIRCHNER (parte inferior) -->
+                    <rect x="0" y="175" width="464" height="45" fill="#c9c3b8" />
+                    <!-- líneas de carril -->
+                    <line x1="0" y1="195" x2="464" y2="195" stroke="#b8b0a5" stroke-width="1" />
+                    <!-- línea central discontinua -->
+                    <line x1="0" y1="185" x2="464" y2="185" stroke="white" stroke-width="1.5" stroke-dasharray="14 10"
+                        opacity="0.7" />
+
+                    <!-- VEREDA FRENTE -->
+                    <rect x="0" y="163" width="464" height="12" fill="#d6d0c7" />
+                    <!-- césped de boulevard -->
+                    <rect x="0" y="155" width="464" height="8" fill="#9cba7a" opacity="0.7" />
+
+                    <!-- TEXTO CALLE -->
+                    <text x="232" y="209" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9"
+                        font-weight="600" fill="#8a8278" letter-spacing="1">Ruta 301, Km 0.6 </text>
+
+                    <!-- PLAYA DE ESTACIONAMIENTO (izquierda-centro) -->
+                    <rect x="18" y="40" width="230" height="115" rx="4" fill="#ddd8cf" />
+                    <!-- líneas de cajones -->
+                    <line x1="18" y1="75" x2="248" y2="75" stroke="#c8c2b8" stroke-width="0.8" />
+                    <line x1="18" y1="110" x2="248" y2="110" stroke="#c8c2b8" stroke-width="0.8" />
+                    <line x1="60" y1="40" x2="60" y2="155" stroke="#c8c2b8" stroke-width="0.8" />
+                    <line x1="102" y1="40" x2="102" y2="155" stroke="#c8c2b8" stroke-width="0.8" />
+                    <line x1="144" y1="40" x2="144" y2="155" stroke="#c8c2b8" stroke-width="0.8" />
+                    <line x1="186" y1="40" x2="186" y2="155" stroke="#c8c2b8" stroke-width="0.8" />
+
+                    <!-- cajones animados -->
+                    <rect class="spot-anim" x="63" y="78" width="37" height="30" rx="2" />
+                    <rect class="spot-anim" x="105" y="78" width="37" height="30" rx="2"
+                        style="animation-delay:0.15s" />
+                    <rect class="spot-anim" x="147" y="78" width="37" height="30" rx="2" style="animation-delay:0.3s" />
+
+                    <!-- ENTRADA AL PREDIO (flecha animada desde la calle) -->
+                    <g class="arrow-blink">
+                        <polygon points="133,163 128,152 138,152" fill="#DF6A2E" />
+                    </g>
+                    <g class="arrow-blink" style="animation-delay:0.25s">
+                        <polygon points="133,153 128,142 138,142" fill="#DF6A2E" opacity="0.7" />
+                    </g>
+                    <g class="arrow-blink" style="animation-delay:0.5s">
+                        <polygon points="133,143 128,132 138,132" fill="#DF6A2E" opacity="0.4" />
+                    </g>
+
+                    <!-- ETIQUETA ESTACIONAMIENTO -->
+                    <rect x="90" y="158" width="86" height="14" rx="3" fill="#1C3558" opacity="0.12" />
+                    <text x="133" y="168" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="8"
+                        font-weight="700" fill="#1C3558">ESTACIONAMIENTO</text>
+
+                    <!-- EDIFICIO ROSSO -->
+                    <rect x="258" y="35" width="190" height="128" rx="5" fill="#3d4146" />
+                    <!-- frente naranja -->
+                    <rect x="258" y="35" width="50" height="128" rx="0" fill="#DF6A2E" />
+                    <rect x="258" y="35" width="5" height="128" fill="#c5521e" />
+                    <!-- ventana grande -->
+                    <rect x="272" y="65" width="30" height="40" rx="2" fill="rgba(255,255,255,0.15)" />
+                    <!-- techo / detalle gris -->
+                    <rect x="308" y="45" width="130" height="118" rx="0" fill="#4a4f56" />
+                    <!-- logo oval Rosso -->
+                    <ellipse cx="370" cy="90" rx="42" ry="24" fill="#DF6A2E" opacity="0.9" />
+                    <text x="370" y="94" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="12"
+                        font-weight="800" fill="white">ROSSO</text>
+                    <!-- portón -->
+                    <rect x="320" y="110" width="50" height="53" rx="2" fill="#2a2e33" />
+                    <line x1="345" y1="110" x2="345" y2="163" stroke="#1a1e23" stroke-width="1" />
+                    <!-- acceso peatonal -->
+                    <rect x="390" y="130" width="20" height="33" rx="1" fill="#2a2e33" />
+
+                    <!-- LABEL EDIFICIO -->
+                    <text x="353" y="20" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="9"
+                        font-weight="700" fill="#1C3558">SUCURSAL EL MANANTIAL</text>
+
+                    <!-- COCHE ANIMADO — sobre la calzada -->
+                    <g class="car-anim">
+                        <!-- cuerpo -->
+                        <rect x="55" y="178" width="56" height="22" rx="5" fill="#1C3558" />
+                        <!-- techo -->
+                        <rect x="66" y="167" width="34" height="13" rx="4" fill="#1C3558" opacity="0.85" />
+                        <!-- parabrisas -->
+                        <rect x="68" y="168" width="13" height="10" rx="2" fill="#87b4d4" opacity="0.7" />
+                        <rect x="83" y="168" width="13" height="10" rx="2" fill="#87b4d4" opacity="0.6" />
+                        <!-- ruedas -->
+                        <circle cx="70" cy="200" r="5" fill="#222" />
+                        <circle cx="70" cy="200" r="2.5" fill="#777" />
+                        <circle cx="100" cy="200" r="5" fill="#222" />
+                        <circle cx="100" cy="200" r="2.5" fill="#777" />
+                        <!-- faro delantero (izquierda = frente) -->
+                        <rect x="53" y="182" width="4" height="5" rx="1" fill="#ffd966" opacity="0.9" />
+                    </g>
+
+                    <!-- NORTE (opcional, pequeño) -->
+                    <text x="448" y="18" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="8"
+                        font-weight="700" fill="#aaa">N</text>
+                    <line x1="448" y1="20" x2="448" y2="30" stroke="#aaa" stroke-width="1" />
+                    <polygon points="448,20 445,28 451,28" fill="#aaa" />
+
+                </svg>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-note">
+            <h2 class="closing-title">¡Te esperamos!</h2>
+            <div class="closing-subtitle">Rosso Materiales &amp; Eliane</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

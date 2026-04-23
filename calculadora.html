@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculadora de Metros Cuadrados para Pisos y Revestimientos Online Gratis | Rosso Materiales</title>
+    <title>Calculadora de Metros Cuadrados, Pegamento y Pastina | Rosso Materiales</title>
     <meta name="description"
-        content="Calculá gratis cuántas cajas de cerámicos, porcelanatos o pisos necesitás para tu obra. Ingresá largo, ancho y rendimiento por caja. Resultado instantáneo con 10% de desperdicio incluido." />
+        content="Calculá gratis cuántas cajas de cerámicos, bolsas de pegamento y pastina necesitás para tu obra. Resultado instantáneo con 10% de desperdicio incluido." />
     <meta name="keywords"
-        content="calculadora metros cuadrados, calcular cajas de cerámicos, cuántas cajas de piso necesito, calculadora m2 pisos, calculadora revestimientos, metros cuadrados pared, rendimiento por caja cerámicos, calculadora porcelanato, calcular superficie pisos, materiales construcción, corralón materiales Tucumán, Rosso Materiales" />
+        content="calculadora metros cuadrados, calcular cajas de cerámicos, bolsas de pegamento, calcular pastina, cuántas cajas de piso necesito, calculadora m2 pisos, calculadora revestimientos, metros cuadrados pared, rendimiento por caja cerámicos, calculadora porcelanato, calcular superficie pisos, materiales construcción, corralón materiales Tucumán, Rosso Materiales" />
     <link rel="canonical" href="https://www.rossomateriales.site/calculadora.html" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <meta name="author" content="Rosso Materiales" />
@@ -232,6 +232,40 @@
         .result-box .disclaimer {
             font-size: 0.9rem;
             color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .additional-materials {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .material-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .material-item i {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .material-item h4 {
+            font-size: 0.9rem;
+            color: var(--brand);
+            margin-bottom: 5px;
+        }
+
+        .material-item p {
+            font-size: 1.2rem !important;
+            margin: 0 !important;
         }
 
         .result-actions {
@@ -449,8 +483,8 @@
     <main>
         <section class="calculator-section">
             <div class="calculator-container">
-                <h1 class="calculator-title">Calculadora de Metros Cuadrados para Pisos y Revestimientos</h1>
-                <p class="calculator-subtitle">Calculá cuántas cajas de cerámicos, porcelanatos o pisos necesitás para tu obra. Ingresá las medidas de la superficie y el rendimiento por caja.</p>
+                <h1 class="calculator-title">Calculadora de Metros Cuadrados, Pegamento y Pastina</h1>
+                <p class="calculator-subtitle">Calculá cuántas cajas de cerámicos, bolsas de pegamento y pastina necesitás para tu obra. Ingresá las medidas de la superficie y el rendimiento por caja.</p>
 
                 <form id="calculator-form" onsubmit="return false;">
                     <div class="form-grid">
@@ -472,8 +506,26 @@
 
                 <div id="result" class="result-box">
                     <h3>Vas a necesitar:</h3>
-                    <p id="result-text">0 cajas</p>
+                    <div style="margin-bottom: 20px;">
+                        <p id="result-text">0 cajas</p>
+                        <span id="result-m2" style="color: var(--muted); font-weight: 600;">0 m² totales</span>
+                    </div>
+                    
                     <p class="disclaimer">Recomendamos comprar un 10% extra por desperdicios y cortes.</p>
+
+                    <div class="additional-materials">
+                        <div class="material-item">
+                            <i class="fa-solid fa-fill-drip"></i>
+                            <h4>Pegamento (25kg)</h4>
+                            <p id="result-pegamento">0 bolsas</p>
+                        </div>
+                        <div class="material-item">
+                            <i class="fa-solid fa-brush"></i>
+                            <h4>Pastina (1kg)</h4>
+                            <p id="result-pastina">0 unidades</p>
+                        </div>
+                    </div>
+
                     <div class="result-actions">
                         <button class="action-btn" onclick="copiarResultado()"><i class="fa-regular fa-copy"></i>
                             Copiar</button>
@@ -613,6 +665,12 @@
             const superficieTotal = largo * ancho;
             const superficieConDesperdicio = superficieTotal * 1.10; // Añadimos un 10%
             const cajasNecesarias = Math.ceil(superficieConDesperdicio / rendimiento); // Redondeamos hacia arriba
+            
+            // Cálculos adicionales
+            // Pegamento: aprox 5kg por m2. Bolsa de 25kg.
+            const bolsasPegamento = Math.ceil((superficieConDesperdicio * 5) / 25);
+            // Pastina: aprox 0.5kg por m2. Envase de 1kg.
+            const unidadesPastina = Math.ceil(superficieConDesperdicio * 0.5);
 
             // 4. Guardar los datos del cálculo
             lastCalculation = {
@@ -620,11 +678,17 @@
                 ancho,
                 rendimiento,
                 superficieTotal: superficieTotal.toFixed(2),
-                cajasNecesarias
+                superficieConDesperdicio: superficieConDesperdicio.toFixed(2),
+                cajasNecesarias,
+                bolsasPegamento,
+                unidadesPastina
             };
 
             // 5. Mostrar el resultado
             document.getElementById('result-text').innerText = `${cajasNecesarias} cajas`;
+            document.getElementById('result-m2').innerText = `${superficieConDesperdicio.toFixed(2)} m² (inc. 10% desc.)`;
+            document.getElementById('result-pegamento').innerText = `${bolsasPegamento} bolsas`;
+            document.getElementById('result-pastina').innerText = `${unidadesPastina} unidades`;
             document.getElementById('result').style.display = 'block';
         }
 
@@ -636,9 +700,13 @@
 
             const texto = `PRESUPUESTO DE MATERIALES - Pisos y Revestimientos\n\n` +
                 `Superficie: ${lastCalculation.largo}m x ${lastCalculation.ancho}m = ${lastCalculation.superficieTotal} m²\n` +
+                `Superficie a cubrir (inc. 10%): ${lastCalculation.superficieConDesperdicio} m²\n` +
                 `Rendimiento por caja: ${lastCalculation.rendimiento} m²\n\n` +
-                `RESULTADO: ${lastCalculation.cajasNecesarias} cajas\n\n` +
-                `(Incluye 10% extra por desperdicios y cortes)`;
+                `RESULTADOS:\n` +
+                `- Cajas: ${lastCalculation.cajasNecesarias}\n` +
+                `- Pegamento (25kg): ${lastCalculation.bolsasPegamento} bolsas\n` +
+                `- Pastina (1kg): ${lastCalculation.unidadesPastina} unidades\n\n` +
+                `(Cálculos incluyen 10% extra por desperdicios y cortes)`;
 
             navigator.clipboard.writeText(texto).then(() => {
                 alert('¡Resultado copiado al portapapeles!');
@@ -662,7 +730,11 @@
                     <p><strong>Largo:</strong> ${lastCalculation.largo} metros</p>
                     <p><strong>Ancho:</strong> ${lastCalculation.ancho} metros</p>
                     <p><strong>Superficie total:</strong> ${lastCalculation.superficieTotal} m²</p>
+                    <p><strong>Superficie c/ desperdicio:</strong> ${lastCalculation.superficieConDesperdicio} m²</p>
                     <p><strong>Rendimiento por caja:</strong> ${lastCalculation.rendimiento} m²</p>
+                    <hr style="margin: 10px 0; border: none; border-top: 1px solid #ddd;">
+                    <p><strong>Pegamento (25kg):</strong> ${lastCalculation.bolsasPegamento} bolsas</p>
+                    <p><strong>Pastina (1kg):</strong> ${lastCalculation.unidadesPastina} unidades</p>
                     <p style="margin-top:15px; font-style:italic; color:#666;">* Incluye 10% extra por desperdicios y cortes</p>
                 </div>
             `;
@@ -683,8 +755,12 @@
             const WA_NUMBER = '5493814146917';
             const texto = `*PRESUPUESTO DE MATERIALES - Pisos y Revestimientos*\n\n` +
                 `Superficie: ${lastCalculation.largo}m x ${lastCalculation.ancho}m = ${lastCalculation.superficieTotal} m²\n` +
+                `Superficie c/ desperdicio: ${lastCalculation.superficieConDesperdicio} m²\n` +
                 `Rendimiento por caja: ${lastCalculation.rendimiento} m²\n\n` +
-                `*RESULTADO: ${lastCalculation.cajasNecesarias} cajas*\n` +
+                `*RESULTADOS:*\n` +
+                `✅ *Cajas:* ${lastCalculation.cajasNecesarias}\n` +
+                `✅ *Pegamento (25kg):* ${lastCalculation.bolsasPegamento} bolsas\n` +
+                `✅ *Pastina (1kg):* ${lastCalculation.unidadesPastina} unidades\n\n` +
                 `_(Incluye 10% extra por desperdicios y cortes)_\n\n` +
                 `¡Hola! Quisiera pedir un presupuesto con estos cálculos.`;
 

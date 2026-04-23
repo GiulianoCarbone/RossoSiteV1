@@ -199,6 +199,70 @@
     }
     .btn-pdp-wp:hover { background: #16a34a; }
 
+    /* Calculadora */
+    .btn-pdp-calc {
+      padding: 13px;
+      background: white; color: var(--brand);
+      border: 1.5px solid var(--brand); border-radius: 11px;
+      font-size: 0.92rem; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all .15s;
+      margin-top: 5px;
+    }
+    .btn-pdp-calc:hover { background: #eff6ff; }
+
+    /* Modal Calculadora */
+    .modal-calc {
+      position: fixed; inset: 0; z-index: 2000;
+      display: none; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-calc.open { display: flex; }
+    .modal-calc-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
+    .modal-calc-content {
+      position: relative; background: white; width: 100%; max-width: 500px;
+      border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      overflow: hidden; animation: modalIn 0.3s ease-out;
+    }
+    @keyframes modalIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    
+    .mc-header { padding: 20px; background: var(--brand); color: white; display: flex; justify-content: space-between; align-items: center; }
+    .mc-header h2 { font-size: 1.2rem; margin: 0; }
+    .mc-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; opacity: 0.8; transition: opacity 0.2s; }
+    .mc-close:hover { opacity: 1; }
+
+    .mc-body { padding: 24px; max-height: 80vh; overflow-y: auto; }
+    .mc-field { margin-bottom: 20px; }
+    .mc-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+    .mc-input-wrap { position: relative; display: flex; align-items: center; }
+    .mc-input-wrap i { position: absolute; left: 14px; color: var(--muted); }
+    .mc-input {
+      width: 100%; padding: 12px 12px 12px 40px; border: 1.5px solid var(--border);
+      border-radius: 10px; font-family: inherit; font-size: 1rem; outline: none; transition: border-color 0.2s;
+    }
+    .mc-input:focus { border-color: var(--brand); }
+
+    .mc-results {
+      background: #f8fafc; border-radius: 14px; padding: 20px; margin-top: 24px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .mc-result-main { grid-column: 1 / -1; background: var(--brand); color: white; padding: 16px; border-radius: 10px; text-align: center; margin-bottom: 8px; }
+    .mc-result-main span { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+    .mc-result-main strong { font-size: 1.8rem; }
+
+    .mc-card { background: white; border: 1px solid var(--border); padding: 12px; border-radius: 10px; text-align: center; }
+    .mc-card i { color: var(--accent); margin-bottom: 6px; font-size: 1.1rem; }
+    .mc-card span { display: block; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; }
+    .mc-card strong { font-size: 1.1rem; color: var(--brand); }
+
+    .mc-footer { padding: 0 24px 24px; display: flex; gap: 10px; }
+    .btn-mc-apply {
+      flex: 1; padding: 14px; background: var(--brand); color: white; border: none;
+      border-radius: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-mc-apply:hover { background: var(--brand-d); }
+
     /* ── RELATED ── */
     .related-section { padding: 40px 0 60px; }
     .related-section h2 {
@@ -479,6 +543,9 @@
           <a class="btn-pdp-wp" id="btn-wp" href="#" target="_blank" rel="noopener">
             <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp
           </a>
+          <button class="btn-pdp-calc" id="btn-calc" onclick="abrirCalculadora()" style="display:none">
+            <i class="fa-solid fa-calculator"></i> Calcular m², pegamento y pastina
+          </button>
         </div>
       </div>
 
@@ -520,6 +587,60 @@
   <span class="fab-badge" id="fab-badge">0</span>
 </button>
 
+<!-- ══ MODAL CALCULADORA ════════════════════════════════════ -->
+<div class="modal-calc" id="modal-calc">
+  <div class="modal-calc-overlay" onclick="cerrarCalculadora()"></div>
+  <div class="modal-calc-content">
+    <div class="mc-header">
+      <h2><i class="fa-solid fa-calculator"></i> Calculadora de Proyecto</h2>
+      <button class="mc-close" onclick="cerrarCalculadora()">×</button>
+    </div>
+    <div class="mc-body">
+      <div class="mc-field">
+        <label class="mc-label">Superficie a cubrir (m²)</label>
+        <div class="mc-input-wrap">
+          <i class="fa-solid fa-expand"></i>
+          <input type="number" id="mc-m2" class="mc-input" placeholder="Ej: 25.5" oninput="runMc()" />
+        </div>
+      </div>
+      <div class="mc-field">
+        <label class="mc-label">Rendimiento por caja (m²/caja) - <small id="mc-rend-info">Opcional</small></label>
+        <div class="mc-input-wrap">
+          <i class="fa-solid fa-box-open"></i>
+          <input type="number" id="mc-rend" class="mc-input" placeholder="Ej: 2.14" value="2" oninput="runMc()" />
+        </div>
+      </div>
+
+      <div class="mc-results">
+        <div class="mc-result-main">
+          <span>Cajas Necesarias (+10% extra)</span>
+          <strong id="res-cajas">-</strong>
+        </div>
+        <div class="mc-card">
+          <i class="fa-solid fa-fill-drip"></i>
+          <span>Pegamento (25kg)</span>
+          <strong id="res-peg">-</strong>
+        </div>
+        <div class="mc-card">
+          <i class="fa-solid fa-brush"></i>
+          <span>Pastina (1kg)</span>
+          <strong id="res-pas">-</strong>
+        </div>
+        <div class="mc-card" style="grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 10px 20px;">
+          <div>
+            <span>m² Totales a comprar</span>
+            <strong id="res-m2-total">-</strong>
+          </div>
+          <i class="fa-solid fa-circle-info" style="margin:0; opacity:0.5"></i>
+        </div>
+      </div>
+    </div>
+    <div class="mc-footer">
+      <button class="btn-mc-apply" onclick="aplicarCalculo()">Hacer pedido por esta cantidad</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const WA_NUMBER        = '5493814146917';
   const CLOUDINARY_CLOUD = 'dbntmfmdv';
@@ -550,15 +671,15 @@
       .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
-  function cdnUrl(publicId, opts = 'w_800,h_800,c_fit,f_auto,q_auto') {
+  function cdnUrl(publicId, opts = 'w_700,h_700,c_fit,f_auto,q_auto:good,fl_lossy') {
     return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${opts}/${publicId}`;
   }
 
   function getImg(p, size = 'full') {
     if (p.imagenes && p.imagenes.length > 0) {
       const opts = size === 'full'
-        ? 'w_800,h_800,c_fit,f_auto,q_auto'
-        : 'w_300,h_300,c_fill,f_auto,q_auto';
+        ? 'w_700,h_700,c_fit,f_auto,q_auto:good,fl_lossy'
+        : 'w_260,h_260,c_fill,f_auto,q_auto:eco,fl_lossy';
       return cdnUrl(p.imagenes[0], opts);
     }
     return p.imagenLegacy || '';
@@ -738,13 +859,13 @@
 
     if (p.imagenes && p.imagenes.length > 0) {
       mainWrap.innerHTML = `<img class="gallery-main-img"
-        src="${cdnUrl(p.imagenes[0], 'w_800,h_800,c_fit,f_auto,q_auto')}"
+        src="${cdnUrl(p.imagenes[0], 'w_700,h_700,c_fit,f_auto,q_auto:good,fl_lossy')}"
         alt="${esc(p.nombre)}" />`;
       thumbsWrap.innerHTML = p.imagenes.map((pid, i) =>
         `<img class="gallery-thumb${i===0?' active':''}"
           src="${cdnUrl(pid, 'w_140,h_140,c_fill,f_auto,q_auto')}"
           alt="Imagen ${i+1}"
-          onclick="cambiarImagen('${cdnUrl(pid,'w_800,h_800,c_fit,f_auto,q_auto')}', this)" />`
+          onclick="cambiarImagen('${cdnUrl(pid,'w_700,h_700,c_fit,f_auto,q_auto:good,fl_lossy')}', this)" />`
       ).join('');
     } else if (p.imagenLegacy) {
       mainWrap.innerHTML = `<img class="gallery-main-img" src="${esc(p.imagenLegacy)}" alt="${esc(p.nombre)}" />`;
@@ -766,9 +887,67 @@
     );
     document.getElementById('btn-wp').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
+    // Mostrar botón calculadora si es Pisos/Revestimientos
+    const catLower = (p.categoria || "").toLowerCase();
+    const esPiso = catLower.includes("pisos") || 
+                   catLower.includes("revestimiento") || 
+                   catLower.includes("cerámico") || 
+                   catLower.includes("porcelanato") ||
+                   catLower.includes("porcelanatos") ||
+                   catLower.includes("cerámicos");
+    
+    document.getElementById('btn-calc').style.display = esPiso ? 'flex' : 'none';
+
     // Mostrar
     document.getElementById('pdp-loading').style.display = 'none';
     document.getElementById('pdp-wrap').style.display    = '';
+  }
+
+  /* ── Calculadora Modal ── */
+  let calculoCajas = 1;
+
+  function abrirCalculadora() {
+    document.getElementById('modal-calc').classList.add('open');
+    document.getElementById('mc-m2').focus();
+  }
+  function cerrarCalculadora() {
+    document.getElementById('modal-calc').classList.remove('open');
+  }
+
+  function runMc() {
+    const m2   = parseFloat(document.getElementById('mc-m2').value)   || 0;
+    const rend = parseFloat(document.getElementById('mc-rend').value) || 1;
+    
+    if (m2 <= 0) {
+      document.getElementById('res-cajas').textContent = '-';
+      document.getElementById('res-peg').textContent   = '-';
+      document.getElementById('res-pas').textContent   = '-';
+      document.getElementById('res-m2-total').textContent = '-';
+      return;
+    }
+
+    const superficieConDesperdicio = m2 * 1.10;
+    const cajas = Math.ceil(superficieConDesperdicio / rend);
+    const peg   = Math.ceil(superficieConDesperdicio / 5);   // 1 bolsa cada 5m2
+    const pas   = Math.ceil(superficieConDesperdicio * 0.5); // 1kg cada 2m2
+    
+    calculoCajas = cajas;
+
+    document.getElementById('res-cajas').textContent = cajas;
+    document.getElementById('res-peg').textContent   = `${peg} ${peg === 1 ? 'bolsa' : 'bolsas'}`;
+    document.getElementById('res-pas').textContent   = `${pas} ${pas === 1 ? 'unidad' : 'unidades'}`;
+    document.getElementById('res-m2-total').textContent = (cajas * rend).toFixed(2) + ' m²';
+  }
+
+  function aplicarCalculo() {
+    if (calculoCajas < 1) return;
+    document.getElementById('qty').value = calculoCajas;
+    if (producto) {
+      producto.unidad = 'Cajas'; // Cambiamos temporalmente la unidad para que se vea en la lista
+    }
+    agregarALista();
+    cerrarCalculadora();
+    abrirPanel();
   }
 
   /* ── Render relacionados ── */

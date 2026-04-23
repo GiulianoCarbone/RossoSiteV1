@@ -47,8 +47,13 @@
 
     /* ── LAYOUT ─────────────────────────────────────── */
     body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
     }
 
     /* ── HERO SLIDER ────────────────────────────────── */
@@ -266,21 +271,22 @@
       background: white;
       border: 1.5px solid var(--border);
       border-radius: 50%;
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       color: var(--brand);
-      font-size: 0.8rem;
-      transition: all .15s;
+      font-size: 0.9rem;
+      transition: all .2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     .carousel-btn:hover {
       background: var(--brand);
       color: white;
       border-color: var(--brand);
+      transform: scale(1.1);
     }
 
     .carousel-btn:disabled {
@@ -355,23 +361,40 @@
       position: absolute;
       top: 8px;
       left: 8px;
-      background: var(--accent);
+      background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
       color: white;
-      font-size: 0.6rem;
+      font-size: 0.65rem;
       font-weight: 800;
-      padding: 4px 9px;
+      padding: 5px 10px;
       border-radius: 999px;
       letter-spacing: .06em;
       text-transform: uppercase;
-      box-shadow: 0 2px 8px rgba(236, 100, 52, .4);
+      box-shadow: 0 4px 12px rgba(255, 75, 43, 0.4);
       z-index: 1;
       display: flex;
       align-items: center;
       gap: 4px;
+      animation: pulse-badge 2s infinite;
+    }
+
+    @keyframes pulse-badge {
+      0% { box-shadow: 0 0 0 0 rgba(255, 75, 43, 0.6); }
+      70% { box-shadow: 0 0 0 6px rgba(255, 75, 43, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 75, 43, 0); }
+    }
+
+    .fc-badge i {
+      animation: flicker 1.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { transform: rotate(-5deg); opacity: 0.85; }
+      50% { transform: rotate(5deg); opacity: 1; }
+      100% { transform: rotate(-2deg); opacity: 0.9; }
     }
 
     .fc-body {
-      padding: 10px 12px 12px;
+      padding: 12px 14px 14px;
       display: flex;
       flex-direction: column;
       flex: 1;
@@ -388,48 +411,51 @@
     }
 
     .fc-name {
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      line-height: 1.3;
-      margin-bottom: 4px;
+      line-height: 1.35;
+      margin-bottom: 6px;
       color: var(--text);
-      flex: 1;
     }
 
     .fc-cat {
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       color: var(--muted);
-      margin-bottom: 0;
+      margin-bottom: auto; /* Empuja el botón y precio hacia abajo */
     }
     .fc-price {
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 1.05rem;
+      font-weight: 800;
       color: var(--accent);
-      margin-top: 6px;
+      margin-top: 10px;
     }
 
     .fc-btn {
       width: 100%;
-      margin-top: 10px;
-      padding: 8px;
+      margin-top: 12px;
+      padding: 10px;
       background: var(--brand);
       color: white;
       border: none;
-      border-radius: 7px;
-      font-size: 0.76rem;
-      font-weight: 600;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
       cursor: pointer;
       font-family: inherit;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-      transition: background .15s;
+      gap: 6px;
+      transition: background .15s, transform .1s;
       flex-shrink: 0;
     }
 
     .fc-btn:hover {
       background: var(--brand-d);
+    }
+    
+    .fc-btn:active {
+      transform: scale(0.97);
     }
 
     .fc-btn.added {
@@ -747,6 +773,8 @@
       inset: 0;
       background: rgba(39, 46, 104, 0.55);
       display: flex;
+      flex-direction: column;
+      gap: 8px;
       align-items: center;
       justify-content: center;
       opacity: 0;
@@ -776,6 +804,37 @@
     .prod-overlay-btn:hover {
       transform: scale(1.05);
     }
+
+    .prod-overlay-link {
+      font-size: 0.76rem;
+      color: rgba(255, 255, 255, 0.82);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color .15s;
+    }
+
+    .prod-overlay-link:hover { color: white; }
+
+    .modal-btn-full {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: #f0f2f5;
+      color: var(--brand);
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: background .15s;
+      margin-bottom: 8px;
+      border: 1.5px solid var(--border);
+    }
+
+    .modal-btn-full:hover { background: #e5e7eb; }
 
     .badge-dest {
       position: absolute;
@@ -1767,6 +1826,14 @@
       display: block;
     }
 
+    /* ── MAX-WIDTH OVERRIDE para pantallas anchas ───── */
+    .catalog-search-bar .container,
+    .featured-section .container,
+    .filter-strip .container,
+    .catalog-body .container {
+      max-width: 1500px;
+    }
+
     /* ── RESPONSIVE ─────────────────────────────────── */
     @media (max-width: 900px) {
       .cat-sidebar {
@@ -2058,6 +2125,9 @@
             </div>
           </div>
 
+          <a class="modal-btn-full" id="modal-btn-full" href="#">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver producto completo
+          </a>
           <button class="modal-btn-add" id="modal-btn-add" onclick="agregarDesdeModal()">
             <i class="fa-solid fa-list-check"></i> Agregar a mi lista
           </button>
@@ -2174,14 +2244,14 @@
     /* ══════════════════════════════════════════════════════════
        CLOUDINARY
     ══════════════════════════════════════════════════════════ */
-    function cdnUrl(publicId, opts = 'w_400,h_400,c_fill,f_auto,q_auto') {
+    function cdnUrl(publicId, opts = 'w_280,h_280,c_fill,f_auto,q_auto:eco,fl_lossy') {
       return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${opts}/${publicId}`;
     }
     function getImgSrc(p, size = 'card') {
       if (p.imagenes && p.imagenes.length > 0) {
         const opts = size === 'card'
-          ? 'w_400,h_300,c_fill,f_auto,q_auto'
-          : 'w_600,h_500,c_fit,f_auto,q_auto';
+          ? 'w_280,h_210,c_fill,f_auto,q_auto:eco,fl_lossy'
+          : 'w_520,h_440,c_fit,f_auto,q_auto:good,fl_lossy';
         return cdnUrl(p.imagenes[0], opts);
       }
       return p.imagenLegacy || '';
@@ -2339,6 +2409,25 @@
        CARGA INICIAL
     ══════════════════════════════════════════════════════════ */
     async function init() {
+      // Si hay caché, mostrar instantáneo y refrescar en background
+      const cached = sessionStorage.getItem('rosso_catalog_cache');
+      if (cached) {
+        try {
+          todosLosProductos = JSON.parse(cached);
+          const ls = document.getElementById('loading-state');
+          if (ls) ls.style.display = 'none';
+          document.getElementById('product-grid').style.display = '';
+          // Cargar categorías y renderizar con datos cacheados
+          await cargarCategorias();
+          renderSidebar();
+          renderCarousel();
+          filtrarProductos();
+          setView(vistaActual);
+          // Refrescar datos en background silenciosamente
+          cargarProductos(true);
+          return;
+        } catch (e) { /* caché corrupta, ignorar y cargar normal */ }
+      }
       mostrarSkeleton();
       await Promise.all([cargarCategorias(), cargarProductos()]);
       setView(vistaActual);
@@ -2365,7 +2454,7 @@
       poblarMobileSelects();
     }
 
-    async function cargarProductos() {
+    async function cargarProductos(silencioso = false) {
       try {
         const snap = await db.collection('catalogo')
           .where('disponible', '==', true)
@@ -2381,14 +2470,21 @@
             .filter(p => p.disponible !== false);
         } catch (e2) {
           console.error('Error cargando productos:', e2);
+          return;
         }
       }
-      const ls = document.getElementById('loading-state');
-      if (ls) ls.style.display = 'none';
-      document.getElementById('product-grid').style.display = '';
-      renderSidebar();
-      renderCarousel();
-      filtrarProductos();
+      if (!silencioso) {
+        const ls = document.getElementById('loading-state');
+        if (ls) ls.style.display = 'none';
+        document.getElementById('product-grid').style.display = '';
+        renderSidebar();
+        renderCarousel();
+        filtrarProductos();
+      } else {
+        // Refrescar en background: actualizar grilla y caché sin interrumpir al usuario
+        renderSidebar();
+        filtrarProductos();
+      }
 
       // Guardar en sessionStorage para que producto.html cargue instantáneo
       try {
@@ -2637,15 +2733,18 @@
         const added = enLista.has(p.sku);
         const url = `producto.html?sku=${encodeURIComponent(p.sku)}`;
         return `
-        <a class="prod-card" href="${url}" style="text-decoration:none;color:inherit;display:block">
+        <div class="prod-card" onclick="location.href='${url}'" style="cursor:pointer">
           ${p.destacado ? '<span class="badge-dest"><i class="fa-solid fa-star" style="font-size:.55rem"></i> Destacado</span>' : ''}
           <div class="prod-img-wrap">
             ${imgEl}
             <div class="prod-img-placeholder" style="${img ? 'display:none' : ''}"><i class="fa-solid fa-image"></i></div>
             <div class="prod-overlay">
-              <span class="prod-overlay-btn">
-                <i class="fa-solid fa-eye"></i> Ver detalle
+              <span class="prod-overlay-btn" onclick="event.stopPropagation(); abrirModal('${esc(p.sku)}')">
+                <i class="fa-solid fa-eye"></i> Vista rápida
               </span>
+              <a class="prod-overlay-link" href="${url}" onclick="event.stopPropagation()">
+                Ver página completa <i class="fa-solid fa-arrow-right" style="font-size:.65rem"></i>
+              </a>
             </div>
           </div>
           <div class="prod-body">
@@ -2653,12 +2752,12 @@
             ${p.marca ? `<div class="prod-marca">${esc(p.marca)}</div>` : ''}
             <div class="prod-cat">${esc(catLabel || 'Sin categoría')}</div>
             <button class="btn-add${added ? ' added' : ''}"
-              onclick="event.preventDefault(); event.stopPropagation(); agregarALista('${esc(p.sku)}')">
+              onclick="event.stopPropagation(); agregarALista('${esc(p.sku)}')">
               <i class="fa-solid ${added ? 'fa-check' : 'fa-plus'}"></i>
               ${added ? 'En tu lista' : 'Agregar a lista'}
             </button>
           </div>
-        </a>`;
+        </div>`;
       }).join('');
 
       lmWrap.style.display = mostrando < total ? 'block' : 'none';
@@ -2684,7 +2783,7 @@
 
       if (p.imagenes && p.imagenes.length > 0) {
         mainWrap.innerHTML = `<img id="gallery-main-img" class="gallery-main"
-        src="${cdnUrl(p.imagenes[0], 'w_600,h_500,c_fit,f_auto,q_auto')}"
+        src="${cdnUrl(p.imagenes[0], 'w_520,h_440,c_fit,f_auto,q_auto:good,fl_lossy')}"
         alt="${esc(p.nombre)}" />`;
         thumbsWrap.innerHTML = p.imagenes.map((pid, i) => `
         <img class="gallery-thumb${i === 0 ? ' active' : ''}"
@@ -2728,6 +2827,7 @@
         `¿Cuál es la disponibilidad y precio?\nMuchas gracias.`
       );
       document.getElementById('modal-btn-wp').href = `https://wa.me/${WA_NUMBER}?text=${wpMsg}`;
+      document.getElementById('modal-btn-full').href = `producto.html?sku=${encodeURIComponent(p.sku)}`;
 
       document.getElementById('product-modal').classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -2735,7 +2835,7 @@
 
     function cambiarImagen(publicId, thumbEl) {
       const mainImg = document.getElementById('gallery-main-img');
-      if (mainImg) mainImg.src = cdnUrl(publicId, 'w_600,h_500,c_fit,f_auto,q_auto');
+      if (mainImg) mainImg.src = cdnUrl(publicId, 'w_520,h_440,c_fit,f_auto,q_auto:good,fl_lossy');
       document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
       thumbEl.classList.add('active');
     }
