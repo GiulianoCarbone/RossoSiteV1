@@ -521,8 +521,8 @@
                         </div>
                         <div class="material-item">
                             <i class="fa-solid fa-brush"></i>
-                            <h4>Pastina (1kg)</h4>
-                            <p id="result-pastina">0 unidades</p>
+                            <h4>Pastina (2kg)</h4>
+                            <p id="result-pastina">0 bolsas</p>
                         </div>
                     </div>
 
@@ -669,8 +669,8 @@
             // Cálculos adicionales
             // Pegamento: aprox 5kg por m2. Bolsa de 25kg.
             const bolsasPegamento = Math.ceil((superficieConDesperdicio * 5) / 25);
-            // Pastina: aprox 0.5kg por m2. Envase de 1kg.
-            const unidadesPastina = Math.ceil(superficieConDesperdicio * 0.5);
+            // Pastina: aprox 0.5kg por m2. Envase de 2kg.
+            const unidadesPastina = Math.ceil((superficieConDesperdicio * 0.5) / 2);
 
             // 4. Guardar los datos del cálculo
             lastCalculation = {
@@ -688,7 +688,7 @@
             document.getElementById('result-text').innerText = `${cajasNecesarias} cajas`;
             document.getElementById('result-m2').innerText = `${superficieConDesperdicio.toFixed(2)} m² (inc. 10% desc.)`;
             document.getElementById('result-pegamento').innerText = `${bolsasPegamento} bolsas`;
-            document.getElementById('result-pastina').innerText = `${unidadesPastina} unidades`;
+            document.getElementById('result-pastina').innerText = `${unidadesPastina} bolsas`;
             document.getElementById('result').style.display = 'block';
         }
 
@@ -705,7 +705,7 @@
                 `RESULTADOS:\n` +
                 `- Cajas: ${lastCalculation.cajasNecesarias}\n` +
                 `- Pegamento (25kg): ${lastCalculation.bolsasPegamento} bolsas\n` +
-                `- Pastina (1kg): ${lastCalculation.unidadesPastina} unidades\n\n` +
+                `- Pastina (2kg): ${lastCalculation.unidadesPastina} bolsas\n\n` +
                 `(Cálculos incluyen 10% extra por desperdicios y cortes)`;
 
             navigator.clipboard.writeText(texto).then(() => {
@@ -734,7 +734,7 @@
                     <p><strong>Rendimiento por caja:</strong> ${lastCalculation.rendimiento} m²</p>
                     <hr style="margin: 10px 0; border: none; border-top: 1px solid #ddd;">
                     <p><strong>Pegamento (25kg):</strong> ${lastCalculation.bolsasPegamento} bolsas</p>
-                    <p><strong>Pastina (1kg):</strong> ${lastCalculation.unidadesPastina} unidades</p>
+                    <p><strong>Pastina (2kg):</strong> ${lastCalculation.unidadesPastina} bolsas</p>
                     <p style="margin-top:15px; font-style:italic; color:#666;">* Incluye 10% extra por desperdicios y cortes</p>
                 </div>
             `;
@@ -760,7 +760,7 @@
                 `*RESULTADOS:*\n` +
                 `✅ *Cajas:* ${lastCalculation.cajasNecesarias}\n` +
                 `✅ *Pegamento (25kg):* ${lastCalculation.bolsasPegamento} bolsas\n` +
-                `✅ *Pastina (1kg):* ${lastCalculation.unidadesPastina} unidades\n\n` +
+                `✅ *Pastina (2kg):* ${lastCalculation.unidadesPastina} bolsas\n\n` +
                 `_(Incluye 10% extra por desperdicios y cortes)_\n\n` +
                 `¡Hola! Quisiera pedir un presupuesto con estos cálculos.`;
 

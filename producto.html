@@ -177,14 +177,17 @@
     .pdp-actions { display: flex; flex-direction: column; gap: 10px; }
     .btn-pdp-add {
       padding: 14px;
-      background: var(--brand); color: white;
+      background: linear-gradient(135deg, var(--accent) 0%, #ff7b4f 100%); color: white;
       border: none; border-radius: 11px;
       font-size: 0.95rem; font-weight: 700;
       font-family: inherit; cursor: pointer;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: background .15s, transform .1s;
+      transition: box-shadow .15s, transform .1s;
     }
-    .btn-pdp-add:hover  { background: var(--brand-d); }
+    .btn-pdp-add:hover  {
+      box-shadow: 0 4px 12px rgba(236, 100, 52, 0.35);
+      background: linear-gradient(135deg, #f27244 0%, #ff8b63 100%);
+    }
     .btn-pdp-add:active { transform: scale(.98); }
     .btn-pdp-add.added  { background: #15803d; }
     .btn-pdp-wp {
@@ -258,10 +261,14 @@
 
     .mc-footer { padding: 0 24px 24px; display: flex; gap: 10px; }
     .btn-mc-apply {
-      flex: 1; padding: 14px; background: var(--brand); color: white; border: none;
-      border-radius: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s;
+      flex: 1; padding: 14px; background: linear-gradient(135deg, var(--accent) 0%, #ff7b4f 100%); color: white; border: none;
+      border-radius: 12px; font-weight: 700; cursor: pointer; transition: box-shadow 0.2s, transform 0.1s;
     }
-    .btn-mc-apply:hover { background: var(--brand-d); }
+    .btn-mc-apply:hover {
+      box-shadow: 0 4px 12px rgba(236, 100, 52, 0.35);
+      background: linear-gradient(135deg, #f27244 0%, #ff8b63 100%);
+    }
+    .btn-mc-apply:active { transform: scale(.98); }
 
     /* ── RELATED ── */
     .related-section { padding: 40px 0 60px; }
@@ -307,14 +314,18 @@
     .rel-cat  { font-size: 0.7rem; color: var(--muted); background: #f3f4f6; display: inline-block; padding: 2px 8px; border-radius: 999px; margin-bottom: 10px; }
     .rel-btn  {
       padding: 8px;
-      background: var(--brand); color: white;
+      background: linear-gradient(135deg, var(--accent) 0%, #ff7b4f 100%); color: white;
       border: none; border-radius: 8px;
       font-size: 0.8rem; font-weight: 600;
       font-family: inherit; cursor: pointer;
       display: flex; align-items: center; justify-content: center; gap: 5px;
-      transition: background .15s;
+      transition: box-shadow .15s, transform .1s;
     }
-    .rel-btn:hover { background: var(--brand-d); }
+    .rel-btn:hover {
+      box-shadow: 0 4px 12px rgba(236, 100, 52, 0.35);
+      background: linear-gradient(135deg, #f27244 0%, #ff8b63 100%);
+    }
+    .rel-btn:active { transform: scale(.97); }
     .rel-btn.added { background: #15803d; }
 
     /* ── QUOTE PANEL ── */
@@ -623,7 +634,7 @@
         </div>
         <div class="mc-card">
           <i class="fa-solid fa-brush"></i>
-          <span>Pastina (1kg)</span>
+          <span>Pastina (2kg)</span>
           <strong id="res-pas">-</strong>
         </div>
         <div class="mc-card" style="grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 10px 20px;">
@@ -929,13 +940,13 @@
     const superficieConDesperdicio = m2 * 1.10;
     const cajas = Math.ceil(superficieConDesperdicio / rend);
     const peg   = Math.ceil(superficieConDesperdicio / 5);   // 1 bolsa cada 5m2
-    const pas   = Math.ceil(superficieConDesperdicio * 0.5); // 1kg cada 2m2
+    const pas   = Math.ceil((superficieConDesperdicio * 0.5) / 2); // Bolsa 2kg (0.5kg/m2)
     
     calculoCajas = cajas;
 
     document.getElementById('res-cajas').textContent = cajas;
     document.getElementById('res-peg').textContent   = `${peg} ${peg === 1 ? 'bolsa' : 'bolsas'}`;
-    document.getElementById('res-pas').textContent   = `${pas} ${pas === 1 ? 'unidad' : 'unidades'}`;
+    document.getElementById('res-pas').textContent   = `${pas} ${pas === 1 ? 'bolsa' : 'bolsas'}`;
     document.getElementById('res-m2-total').textContent = (cajas * rend).toFixed(2) + ' m²';
   }
 
