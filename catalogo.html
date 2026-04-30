@@ -52,7 +52,10 @@
       color: var(--text);
     }
 
-    button, input, select, textarea {
+    button,
+    input,
+    select,
+    textarea {
       font-family: inherit;
     }
 
@@ -241,12 +244,20 @@
       opacity: 1;
       transition: max-height .4s ease, opacity .3s ease, padding .4s ease;
     }
+
     .featured-section.hidden {
       max-height: 0;
       opacity: 0;
       padding-top: 0;
       padding-bottom: 0;
       border-bottom-color: transparent;
+    }
+
+    .featured-content-wrapper {
+      width: max-content;
+      max-width: 100%;
+      margin: 0 auto;
+      position: relative;
     }
 
     .featured-header {
@@ -284,8 +295,8 @@
       gap: 12px;
       flex-wrap: wrap;
       padding: 6px 14px;
-      background: linear-gradient(135deg, rgba(39,46,104,0.06) 0%, rgba(236,100,52,0.06) 100%);
-      border: 1px solid rgba(236,100,52,0.18);
+      background: linear-gradient(135deg, rgba(39, 46, 104, 0.06) 0%, rgba(236, 100, 52, 0.06) 100%);
+      border: 1px solid rgba(236, 100, 52, 0.18);
       border-radius: 10px;
     }
 
@@ -303,7 +314,6 @@
 
     .countdown-label i {
       color: var(--accent);
-      animation: pulse-badge 2s infinite;
     }
 
     .countdown-blocks {
@@ -321,7 +331,7 @@
       border-radius: 8px;
       padding: 5px 10px;
       min-width: 48px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
     }
 
     .cd-num {
@@ -356,8 +366,8 @@
     }
 
     .countdown-wrap.expired {
-      background: linear-gradient(135deg, rgba(220,38,38,0.05) 0%, rgba(220,38,38,0.08) 100%);
-      border-color: rgba(220,38,38,0.2);
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.05) 0%, rgba(220, 38, 38, 0.08) 100%);
+      border-color: rgba(220, 38, 38, 0.2);
     }
 
     .cd-expired-text {
@@ -367,16 +377,65 @@
     }
 
     @keyframes lightning-flicker {
-      0%   { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px var(--accent)); }
-      10%  { opacity: 0.8; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px var(--accent)); }
-      15%  { opacity: 1; transform: scale(1.2) rotate(10deg); filter: drop-shadow(0 0 10px var(--accent)); }
-      20%  { opacity: 0.9; transform: scale(1.1) rotate(5deg); filter: drop-shadow(0 0 6px var(--accent)); }
-      25%  { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px var(--accent)); }
-      60%  { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px var(--accent)); }
-      70%  { opacity: 0.7; transform: scale(0.9) rotate(-10deg); filter: drop-shadow(0 0 2px var(--accent)); }
-      75%  { opacity: 1; transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 8px var(--accent)); }
-      80%  { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px var(--accent)); }
-      100% { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px var(--accent)); }
+      0% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+
+      10% {
+        opacity: 0.8;
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+
+      15% {
+        opacity: 1;
+        transform: scale(1.2) rotate(10deg);
+        filter: drop-shadow(0 0 10px var(--accent));
+      }
+
+      20% {
+        opacity: 0.9;
+        transform: scale(1.1) rotate(5deg);
+        filter: drop-shadow(0 0 6px var(--accent));
+      }
+
+      25% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+
+      60% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+
+      70% {
+        opacity: 0.7;
+        transform: scale(0.9) rotate(-10deg);
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+
+      75% {
+        opacity: 1;
+        transform: scale(1.15) rotate(5deg);
+        filter: drop-shadow(0 0 8px var(--accent));
+      }
+
+      80% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 0 2px var(--accent));
+      }
     }
 
     .carousel-container {
@@ -385,26 +444,31 @@
 
     .carousel-btn {
       position: absolute;
-      top: 50%;
+      top: calc(50% - 12px);
       transform: translateY(-50%);
       z-index: 10;
       background: white;
       border: 1.5px solid var(--border);
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       color: var(--brand);
-      font-size: 0.95rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: all .2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      font-size: 1.05rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    .carousel-btn.prev-btn { left: -16px; }
-    .carousel-btn.next-btn { right: -16px; }
+    .carousel-btn.prev-btn {
+      left: -22px;
+    }
+
+    .carousel-btn.next-btn {
+      right: -22px;
+    }
 
     .carousel-btn:hover {
       background: var(--brand);
@@ -414,13 +478,16 @@
     }
 
     .carousel-btn:disabled {
-      opacity: .35;
+      opacity: 0;
+      visibility: hidden;
       cursor: default;
       pointer-events: none;
     }
 
     @media (max-width: 768px) {
-      .carousel-btn { display: none; }
+      .carousel-btn {
+        display: none;
+      }
     }
 
     .carousel-track-wrap {
@@ -458,14 +525,6 @@
       flex-direction: column;
     }
 
-    /* Centra el carrusel cuando hay pocos items, pero mantiene alineación a la izquierda si hace scroll */
-    .fc-card:first-child {
-      margin-left: auto;
-    }
-    .fc-card:last-child {
-      margin-right: auto;
-    }
-
     .fc-card:hover {
       box-shadow: 0 16px 32px rgba(236, 100, 52, 0.12);
       transform: translateY(-4px);
@@ -498,7 +557,7 @@
       align-items: center;
       justify-content: center;
       background: #f9fafb;
-      background-image: 
+      background-image:
         radial-gradient(var(--border) 1px, transparent 1px),
         radial-gradient(var(--border) 1px, transparent 1px);
       background-size: 20px 20px;
@@ -530,9 +589,17 @@
     }
 
     @keyframes pulse-badge {
-      0% { box-shadow: 0 0 0 0 rgba(255, 75, 43, 0.6); }
-      70% { box-shadow: 0 0 0 6px rgba(255, 75, 43, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 75, 43, 0); }
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 75, 43, 0.6);
+      }
+
+      70% {
+        box-shadow: 0 0 0 6px rgba(255, 75, 43, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 75, 43, 0);
+      }
     }
 
     .fc-badge i {
@@ -540,9 +607,20 @@
     }
 
     @keyframes flicker {
-      0% { transform: rotate(-5deg); opacity: 0.85; }
-      50% { transform: rotate(5deg); opacity: 1; }
-      100% { transform: rotate(-2deg); opacity: 0.9; }
+      0% {
+        transform: rotate(-5deg);
+        opacity: 0.85;
+      }
+
+      50% {
+        transform: rotate(5deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: rotate(-2deg);
+        opacity: 0.9;
+      }
     }
 
     .fc-body {
@@ -577,9 +655,11 @@
       display: inline-block;
       padding: 3px 10px;
       border-radius: 999px;
-      margin-bottom: auto; /* Empuja el botón y precio hacia abajo */
+      margin-bottom: auto;
+      /* Empuja el botón y precio hacia abajo */
       align-self: flex-start;
     }
+
     .fc-price {
       font-size: 1.05rem;
       font-weight: 800;
@@ -611,7 +691,7 @@
       box-shadow: 0 4px 12px rgba(236, 100, 52, 0.35);
       background: linear-gradient(135deg, #f27244 0%, #ff8b63 100%);
     }
-    
+
     .fc-btn:active {
       transform: scale(0.97);
     }
@@ -677,9 +757,9 @@
     }
 
     .filter-chip {
-      background: rgba(39,46,104,0.08);
+      background: rgba(39, 46, 104, 0.08);
       color: var(--brand);
-      border: 1px solid rgba(39,46,104,0.18);
+      border: 1px solid rgba(39, 46, 104, 0.18);
       border-radius: 999px;
       padding: 3px 10px 3px 12px;
       font-size: 0.75rem;
@@ -692,14 +772,14 @@
     }
 
     .filter-chip:hover {
-      background: rgba(39,46,104,0.14);
+      background: rgba(39, 46, 104, 0.14);
     }
 
     .result-count {
       margin-left: auto;
       font-size: 0.78rem;
       color: var(--brand);
-      background: rgba(39,46,104,0.07);
+      background: rgba(39, 46, 104, 0.07);
       padding: 3px 10px;
       border-radius: 999px;
       font-weight: 600;
@@ -726,7 +806,8 @@
       border-radius: var(--radius);
       padding: 16px;
       position: sticky;
-      top: calc(var(--header-h, 120px) + 84px); /* Debajo del nav + filtro */
+      top: calc(var(--header-h, 120px) + 84px);
+      /* Debajo del nav + filtro */
       max-height: calc(100vh - var(--header-h, 120px) - 100px);
       overflow-y: auto;
     }
@@ -735,13 +816,16 @@
     .cat-sidebar::-webkit-scrollbar {
       width: 5px;
     }
+
     .cat-sidebar::-webkit-scrollbar-track {
       background: transparent;
     }
+
     .cat-sidebar::-webkit-scrollbar-thumb {
       background: #e5e7eb;
       border-radius: 10px;
     }
+
     .cat-sidebar::-webkit-scrollbar-thumb:hover {
       background: #d1d5db;
     }
@@ -936,16 +1020,16 @@
       border-radius: var(--radius);
       overflow: hidden;
       cursor: pointer;
-      transition: box-shadow .25s, transform .2s, border-color .2s;
       position: relative;
       display: flex;
       flex-direction: column;
+      transition: box-shadow .3s ease, transform .3s ease, border-color .3s ease;
     }
 
     .prod-card:hover {
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.11);
-      transform: translateY(-3px);
-      border-color: #d1d5db;
+      box-shadow: 0 16px 32px rgba(236, 100, 52, 0.12);
+      transform: translateY(-4px);
+      border-color: rgba(236, 100, 52, 0.4);
     }
 
     /* Imagen con overlay */
@@ -975,7 +1059,7 @@
       align-items: center;
       justify-content: center;
       background: #f9fafb;
-      background-image: 
+      background-image:
         radial-gradient(var(--border) 1px, transparent 1px),
         radial-gradient(var(--border) 1px, transparent 1px);
       background-size: 20px 20px;
@@ -1032,7 +1116,9 @@
       transition: color .15s;
     }
 
-    .prod-overlay-link:hover { color: white; }
+    .prod-overlay-link:hover {
+      color: white;
+    }
 
     .modal-btn-full {
       display: flex;
@@ -1051,7 +1137,9 @@
       border: 1.5px solid var(--border);
     }
 
-    .modal-btn-full:hover { background: #e5e7eb; }
+    .modal-btn-full:hover {
+      background: #e5e7eb;
+    }
 
     .badge-dest {
       position: absolute;
@@ -1394,6 +1482,7 @@
       font-family: inherit;
       transition: background .15s, transform .15s;
     }
+
     .btn-empty-reset:hover {
       background: var(--brand-d);
       transform: translateY(-1px);
@@ -2150,14 +2239,15 @@
         top: 0;
         z-index: 1100;
         padding: 12px 0;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       }
 
       .filter-strip {
-        top: 68px; /* Height of the sticky search bar on mobile */
+        top: 68px;
+        /* Height of the sticky search bar on mobile */
         z-index: 1050;
       }
-      
+
       .catalog-search-bar .container {
         display: flex;
         align-items: center;
@@ -2179,7 +2269,7 @@
         flex: 1;
         margin: 0;
       }
-      
+
       .search-bar input {
         padding: 12px 35px 12px 42px;
         font-size: 0.95rem;
@@ -2349,47 +2439,49 @@
   <!-- ══ CARRUSEL DESTACADOS ══════════════════════════════════ -->
   <section class="featured-section hidden" id="featured-section">
     <div class="container">
-      <div class="featured-header">
-        <h2><i class="fa-solid fa-bolt lightning-icon"></i> Ofertas Express</h2>
-        <!-- COUNTDOWN OFERTAS -->
-        <div class="countdown-wrap" id="countdown-wrap" style="display:none" role="timer" aria-live="polite">
-          <span class="countdown-label">
-            <i class="fa-solid fa-circle-dot"></i> Estas ofertas terminan en
-          </span>
-          <div class="countdown-blocks">
-            <div class="cd-block" id="cd-days">
-              <span class="cd-num" id="cd-d">00</span>
-              <span class="cd-unit">días</span>
-            </div>
-            <span class="cd-sep">:</span>
-            <div class="cd-block" id="cd-hours">
-              <span class="cd-num" id="cd-h">00</span>
-              <span class="cd-unit">horas</span>
-            </div>
-            <span class="cd-sep">:</span>
-            <div class="cd-block" id="cd-mins">
-              <span class="cd-num" id="cd-m">00</span>
-              <span class="cd-unit">min</span>
-            </div>
-            <span class="cd-sep">:</span>
-            <div class="cd-block" id="cd-secs">
-              <span class="cd-num" id="cd-s">00</span>
-              <span class="cd-unit">seg</span>
+      <div class="featured-content-wrapper">
+        <div class="featured-header">
+          <h2><i class="fa-solid fa-bolt lightning-icon"></i> Ofertas Express</h2>
+          <!-- COUNTDOWN OFERTAS -->
+          <div class="countdown-wrap" id="countdown-wrap" style="display:none" role="timer" aria-live="polite">
+            <span class="countdown-label">
+              Estas ofertas terminan en
+            </span>
+            <div class="countdown-blocks">
+              <div class="cd-block" id="cd-days">
+                <span class="cd-num" id="cd-d">00</span>
+                <span class="cd-unit">días</span>
+              </div>
+              <span class="cd-sep">:</span>
+              <div class="cd-block" id="cd-hours">
+                <span class="cd-num" id="cd-h">00</span>
+                <span class="cd-unit">horas</span>
+              </div>
+              <span class="cd-sep">:</span>
+              <div class="cd-block" id="cd-mins">
+                <span class="cd-num" id="cd-m">00</span>
+                <span class="cd-unit">min</span>
+              </div>
+              <span class="cd-sep">:</span>
+              <div class="cd-block" id="cd-secs">
+                <span class="cd-num" id="cd-s">00</span>
+                <span class="cd-unit">seg</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="carousel-container">
-        <button class="carousel-btn prev-btn" id="car-prev" onclick="carouselMove(-1)" aria-label="Anterior">
-          <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <div class="carousel-track-wrap">
-          <div class="carousel-track" id="carousel-track"></div>
+        <div class="carousel-container">
+          <button class="carousel-btn prev-btn" id="car-prev" onclick="carouselMove(-1)" aria-label="Anterior">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="carousel-track-wrap">
+            <div class="carousel-track" id="carousel-track"></div>
+          </div>
+          <button class="carousel-btn next-btn" id="car-next" onclick="carouselMove(1)" aria-label="Siguiente">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
         </div>
-        <button class="carousel-btn next-btn" id="car-next" onclick="carouselMove(1)" aria-label="Siguiente">
-          <i class="fa-solid fa-chevron-right"></i>
-        </button>
       </div>
     </div>
   </section>
@@ -2617,18 +2709,18 @@
         if (!fechaFinStr) return;
 
         // Intentar parsear la fecha, maneja tanto Firestore Timestamp como String ISO
-        const target = (fechaFinStr && typeof fechaFinStr.toDate === 'function') 
-          ? fechaFinStr.toDate() 
+        const target = (fechaFinStr && typeof fechaFinStr.toDate === 'function')
+          ? fechaFinStr.toDate()
           : new Date(fechaFinStr);
-        
+
         if (isNaN(target)) return;
 
         const wrap = document.getElementById('countdown-wrap');
-        if(!wrap) return;
+        if (!wrap) return;
         wrap.style.display = 'flex';
 
         function tick() {
-          const now  = new Date();
+          const now = new Date();
           const diff = target - now;
 
           if (diff <= 0) {
@@ -2638,21 +2730,21 @@
             return;
           }
 
-          const days  = Math.floor(diff / 86400000);
+          const days = Math.floor(diff / 86400000);
           const hours = Math.floor((diff % 86400000) / 3600000);
-          const mins  = Math.floor((diff % 3600000) / 60000);
-          const secs  = Math.floor((diff % 60000) / 1000);
+          const mins = Math.floor((diff % 3600000) / 60000);
+          const secs = Math.floor((diff % 60000) / 1000);
 
           const isUrgent = diff < 86400000;
-          ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(function(id) {
+          ['cd-days', 'cd-hours', 'cd-mins', 'cd-secs'].forEach(function (id) {
             const el = document.getElementById(id);
             if (el) el.classList.toggle('urgent', isUrgent);
           });
 
-          const elD = document.getElementById('cd-d'); if (elD) elD.textContent = String(days).padStart(2,'0');
-          const elH = document.getElementById('cd-h'); if (elH) elH.textContent = String(hours).padStart(2,'0');
-          const elM = document.getElementById('cd-m'); if (elM) elM.textContent = String(mins).padStart(2,'0');
-          const elS = document.getElementById('cd-s'); if (elS) elS.textContent = String(secs).padStart(2,'0');
+          const elD = document.getElementById('cd-d'); if (elD) elD.textContent = String(days).padStart(2, '0');
+          const elH = document.getElementById('cd-h'); if (elH) elH.textContent = String(hours).padStart(2, '0');
+          const elM = document.getElementById('cd-m'); if (elM) elM.textContent = String(mins).padStart(2, '0');
+          const elS = document.getElementById('cd-s'); if (elS) elS.textContent = String(secs).padStart(2, '0');
         }
 
         tick();
@@ -2765,17 +2857,17 @@
       const enLista = new Set(lista.map(i => i.sku));
 
       track.innerHTML = destacados.map(p => cardHtml(p, enLista)).join('');
-      
+
       const wrap = document.querySelector('.carousel-track-wrap');
       const btnPrev = document.getElementById('car-prev');
       const btnNext = document.getElementById('car-next');
-      
+
       const checkScroll = () => {
         if (!wrap) return;
         btnPrev.disabled = wrap.scrollLeft <= 0;
         btnNext.disabled = Math.ceil(wrap.scrollLeft) >= wrap.scrollWidth - wrap.clientWidth;
       };
-      
+
       wrap.addEventListener('scroll', checkScroll, { passive: true });
       setTimeout(checkScroll, 100);
     }
