@@ -135,8 +135,8 @@
     }
 
     .sidebar-section-label {
-      font-size: 0.62rem; font-weight: 700; color: #4b5563;
-      text-transform: uppercase; letter-spacing: 0.08em;
+      font-size: 0.62rem; font-weight: 700; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.1em;
       padding: 16px 20px 6px;
     }
 
@@ -145,13 +145,13 @@
     .nav-item {
       display: flex; align-items: center; gap: 11px;
       padding: 10px 18px; cursor: pointer;
-      font-size: 0.85rem; color: #9ca3af;
-      text-decoration: none; border-left: 2px solid transparent;
-      transition: all 0.15s; border-radius: 0;
+      font-size: 0.85rem; color: #c9cdd4;
+      text-decoration: none;
+      transition: all 0.15s;
       margin: 1px 8px; border-radius: 8px; border-left: none;
     }
 
-    .nav-item:hover { background: var(--sidebar-hover); color: #e5e7eb; }
+    .nav-item:hover { background: var(--sidebar-hover); color: #f3f4f6; }
 
     .nav-item.active {
       background: rgba(236,100,52,0.15); color: white;
@@ -205,7 +205,7 @@
     .topbar-title .icon-wrap i { color: var(--accent); font-size: 0.9rem; }
 
     .topbar-title h1 {
-      font-size: 1rem; font-weight: 700; color: var(--brand);
+      font-size: 1.1rem; font-weight: 800; color: var(--brand); letter-spacing: -0.01em;
     }
 
     .search-wrap { flex: 1; min-width: 200px; max-width: 320px; position: relative; }
@@ -334,19 +334,27 @@
 
     .product-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
 
-    .product-card.inactive { opacity: 0.6; }
+    /* Estado inactivo: sólo la imagen se desvanece, el texto sigue legible */
+    .product-card.inactive .card-img-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.52);
+      pointer-events: none; z-index: 1;
+    }
+    .product-card.inactive .card-name { color: var(--muted); }
+    .product-card.inactive .card-sku  { opacity: 0.7; }
 
     .card-img-wrap { position: relative; overflow: hidden; }
 
     .card-img {
-      width: 100%; height: 155px; object-fit: cover; display: block;
+      width: 100%; height: 178px; object-fit: cover; display: block;
       background: #f3f4f6; transition: transform 0.3s;
     }
 
     .product-card:hover .card-img { transform: scale(1.03); }
 
     .card-img-placeholder {
-      width: 100%; height: 155px; background: linear-gradient(135deg, #f3f4f6 0%, #e9ebee 100%);
+      width: 100%; height: 178px; background: linear-gradient(135deg, #f3f4f6 0%, #e9ebee 100%);
       display: flex; align-items: center; justify-content: center;
       color: #d1d5db; font-size: 2rem;
     }
@@ -402,7 +410,7 @@
     }
 
     .card-cat {
-      font-size: 0.72rem; color: var(--muted); background: #f0f2f5;
+      font-size: 0.72rem; color: #4b5563; background: #f0f2f5;
       display: inline-flex; align-items: center; gap: 4px;
       padding: 2px 8px; border-radius: 999px;
     }
@@ -412,7 +420,7 @@
     /* Mobile action buttons (shown when no hover) */
     .card-actions-mobile {
       display: none; gap: 6px; padding: 8px 13px 11px;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--border); flex-wrap: wrap;
     }
 
     /* ── CARD: LIST MODE ──────────────────────────────────────── */
@@ -424,15 +432,15 @@
     #product-grid.list-view .product-card:hover { transform: none; }
 
     #product-grid.list-view .card-img-wrap {
-      width: 70px; height: 70px; flex-shrink: 0; border-radius: 0;
+      width: 90px; height: 90px; flex-shrink: 0; border-radius: 0;
     }
 
     #product-grid.list-view .card-img {
-      width: 70px; height: 70px; object-fit: cover; border-radius: 0;
+      width: 90px; height: 90px; object-fit: cover; border-radius: 0;
     }
 
     #product-grid.list-view .card-img-placeholder {
-      width: 70px; height: 70px; font-size: 1.2rem;
+      width: 90px; height: 90px; font-size: 1.4rem;
     }
 
     #product-grid.list-view .card-overlay { border-radius: 0; }
@@ -450,15 +458,18 @@
     .btn-sm {
       border: none; border-radius: 7px;
       padding: 6px 12px; font-size: 0.76rem; font-weight: 600;
-      cursor: pointer; transition: opacity 0.15s; white-space: nowrap;
+      cursor: pointer; transition: all 0.15s; white-space: nowrap;
       display: flex; align-items: center; gap: 5px;
     }
 
-    .btn-sm.edit   { background: #eff6ff; color: #1d4ed8; }
-    .btn-sm.toggle { background: #f0fdf4; color: #166534; }
+    .btn-sm.edit   { background: rgba(39,46,104,0.09); color: var(--brand); }
+    .btn-sm.edit:hover { background: rgba(39,46,104,0.16); }
+    .btn-sm.toggle { background: rgba(22,163,74,0.1); color: #15803d; }
+    .btn-sm.toggle:hover { background: rgba(22,163,74,0.18); }
     .btn-sm.toggle.off { background: #f3f4f6; color: var(--muted); }
-    .btn-sm.del    { background: #fee2e2; color: #991b1b; }
-    .btn-sm:hover  { opacity: 0.75; }
+    .btn-sm.toggle.off:hover { background: #e9ebee; }
+    .btn-sm.del    { background: rgba(220,38,38,0.09); color: var(--danger); }
+    .btn-sm.del:hover { background: rgba(220,38,38,0.16); }
 
     /* ── EMPTY STATE ──────────────────────────────────────────── */
     #empty-state {
@@ -539,10 +550,10 @@
     .modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; }
 
     .modal-section-label {
-      font-size: 0.68rem; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.08em;
-      padding-bottom: 4px; border-bottom: 1px solid var(--border);
-      margin-bottom: 2px;
+      font-size: 0.72rem; font-weight: 800; color: var(--brand-d);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding-bottom: 6px; border-bottom: 2px solid rgba(39,46,104,0.12);
+      margin-bottom: 4px;
     }
 
     .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -602,7 +613,14 @@
     }
 
     .img-preview-list {
-      display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; min-height: 80px;
+      display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;
+      min-height: 96px; padding: 10px;
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      background: #fafafa; align-items: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .img-preview-list:has(.img-thumb-wrap) {
+      border-color: transparent; background: transparent; padding: 0;
     }
 
     .img-thumb {
@@ -739,16 +757,53 @@
 
     .btn-sub-del:hover { background: #fee2e2; color: var(--danger); }
 
+    /* ── MOBILE NAV BAR ───────────────────────────────────────── */
+    .mobile-nav-bar {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--sidebar); border-top: 1px solid rgba(255,255,255,0.08);
+      z-index: 200; padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+    }
+
+    .mobile-nav-bar-inner {
+      display: flex; justify-content: space-around; align-items: center;
+    }
+
+    .mob-nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      padding: 6px 16px; color: #9ca3af; font-size: 0.65rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      cursor: pointer; text-decoration: none; transition: color 0.15s;
+      border-radius: 8px;
+    }
+
+    .mob-nav-item i { font-size: 1.1rem; }
+
+    .mob-nav-item.active { color: var(--accent); }
+    .mob-nav-item:hover  { color: #e5e7eb; }
+
+    .mob-nav-item.new-product {
+      background: var(--accent); color: white;
+      border-radius: 12px; padding: 8px 20px;
+    }
+    .mob-nav-item.new-product:hover { background: var(--accent-d); }
+
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 768px) {
       #sidebar { display: none; }
+      .mobile-nav-bar { display: block; }
       .topbar  { padding: 10px 14px; }
       .filter-bar  { padding: 8px 14px; }
       .stats-bar   { padding: 8px 14px; }
-      .grid-area   { padding: 14px; }
+      .grid-area   { padding: 14px; padding-bottom: 80px; }
       .field-row   { grid-template-columns: 1fr; }
 
-      #product-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 10px; }
+      #product-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+
+      .topbar-title h1 { font-size: 0.95rem; }
+      .search-wrap { min-width: 0; flex: 1; }
+      .btn-new span { display: none; }
 
       .card-overlay { display: none; }
       .card-actions-mobile { display: flex; }
@@ -792,6 +847,9 @@
         </a>
         <a class="nav-item" id="nav-categorias" onclick="setView('categorias')">
           <i class="fa-solid fa-tags"></i> Categorías
+        </a>
+        <a class="nav-item" id="nav-config" onclick="setView('config')">
+          <i class="fa-solid fa-gear"></i> Configuración
         </a>
         <div class="sidebar-section-label">Herramientas</div>
         <a class="nav-item" href="migrar-productos.html">
@@ -842,7 +900,7 @@
             </button>
           </div>
           <button class="btn-new" onclick="abrirModalNuevo()">
-            <i class="fa-solid fa-plus"></i> Nuevo producto
+            <i class="fa-solid fa-plus"></i> <span>Nuevo producto</span>
           </button>
         </div>
       </div>
@@ -958,8 +1016,72 @@
           </div>
         </div>
       </div>
+
+      <!-- VISTA CONFIGURACIÓN -->
+      <div class="grid-area" id="view-config" style="display:none">
+        <div style="max-width:520px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <div style="width:32px;height:32px;background:rgba(236,100,52,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <i class="fa-solid fa-gear" style="color:var(--accent);font-size:0.85rem"></i>
+            </div>
+            <h2 style="font-size:1rem;font-weight:700;color:var(--brand)">Configuración General</h2>
+          </div>
+          <p style="font-size:0.82rem;color:var(--muted);margin-bottom:22px;margin-left:42px">
+            Ajustes globales del catálogo público.
+          </p>
+
+          <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.02)">
+            <h3 style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px">
+              <i class="fa-solid fa-bolt" style="color:var(--accent)"></i> Ofertas Express
+            </h3>
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px">Configurá la fecha límite para las ofertas destacadas. Esto mostrará una cuenta regresiva en el catálogo.</p>
+            
+            <div class="field" style="margin-bottom:12px">
+              <label for="config-ofertas-fecha" style="font-size:0.8rem;font-weight:600;margin-bottom:6px;display:block">Fecha de finalización (hasta las 23:59hs)</label>
+              <input type="date" id="config-ofertas-fecha" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:0.9rem;outline:none" />
+            </div>
+            
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <button onclick="guardarConfigOfertas()" style="background:var(--brand);color:white;border:none;border-radius:8px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;flex:1;justify-content:center;transition:background 0.2s">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar fecha
+              </button>
+              <button onclick="limpiarConfigOfertas()" style="background:#f3f4f6;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;flex:1;justify-content:center;transition:background 0.2s">
+                <i class="fa-solid fa-trash"></i> Quitar ofertas
+              </button>
+            </div>
+            <div id="config-ofertas-msg" style="margin-top:12px;font-size:0.8rem;font-weight:600;display:none;padding:8px 12px;border-radius:6px;text-align:center"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
+
+  <!-- MOBILE NAV BAR -->
+  <nav class="mobile-nav-bar" aria-label="Navegación móvil">
+    <div class="mobile-nav-bar-inner">
+      <a class="mob-nav-item active" id="mob-nav-productos" onclick="setView('productos')">
+        <i class="fa-solid fa-box"></i>
+        Productos
+      </a>
+      <a class="mob-nav-item" id="mob-nav-categorias" onclick="setView('categorias')">
+        <i class="fa-solid fa-tags"></i>
+        Categorías
+      </a>
+      <a class="mob-nav-item" id="mob-nav-config" onclick="setView('config')">
+        <i class="fa-solid fa-gear"></i>
+        Config
+      </a>
+      <a class="mob-nav-item new-product" onclick="abrirModalNuevo()">
+        <i class="fa-solid fa-plus"></i>
+        Nuevo
+      </a>
+      <a class="mob-nav-item" href="panel-admin.html">
+        <i class="fa-solid fa-arrow-left"></i>
+        Panel
+      </a>
+    </div>
+  </nav>
 
   <!-- MODAL: AGREGAR / EDITAR -->
   <div class="modal-overlay" id="modal-producto">
@@ -1981,10 +2103,148 @@
        NAVEGACIÓN DE VISTAS
     ═══════════════════════════════════════════════════════════════ */
     function setView(v) {
-      document.getElementById('view-productos').style.display  = v === 'productos'  ? '' : 'none';
-      document.getElementById('view-categorias').style.display = v === 'categorias' ? '' : 'none';
-      document.getElementById('nav-productos').classList.toggle('active',  v === 'productos');
-      document.getElementById('nav-categorias').classList.toggle('active', v === 'categorias');
+      ['productos', 'categorias', 'config'].forEach(vista => {
+        const viewEl = document.getElementById(`view-${vista}`);
+        if (viewEl) viewEl.style.display = (v === vista) ? 'block' : 'none';
+        
+        const navEl = document.getElementById(`nav-${vista}`);
+        if (navEl) navEl.classList.toggle('active', v === vista);
+        
+        const mobNavEl = document.getElementById(`mob-nav-${vista}`);
+        if (mobNavEl) mobNavEl.classList.toggle('active', v === vista);
+      });
+      
+      const topbarEl = document.querySelector('.topbar-title');
+      const filterBar = document.querySelector('.filter-bar');
+      const statsBar = document.querySelector('.stats-bar');
+
+      if (v === 'productos') {
+        topbarEl.innerHTML = `<div class="icon-wrap"><i class="fa-solid fa-box"></i></div><h1>Productos</h1>`;
+        document.querySelector('.search-wrap').style.visibility = 'visible';
+        document.getElementById('filter-cat-top').style.visibility = 'visible';
+        document.querySelector('.topbar-right').style.visibility = 'visible';
+        if (filterBar) filterBar.style.display = 'flex';
+        if (statsBar) statsBar.style.display = 'flex';
+      } else if (v === 'categorias') {
+        topbarEl.innerHTML = `<div class="icon-wrap" style="background:rgba(236,100,52,0.1);color:var(--accent)"><i class="fa-solid fa-tags"></i></div><h1>Categorías</h1>`;
+        document.querySelector('.search-wrap').style.visibility = 'hidden';
+        document.getElementById('filter-cat-top').style.visibility = 'hidden';
+        document.querySelector('.topbar-right').style.visibility = 'hidden';
+        if (filterBar) filterBar.style.display = 'none';
+        if (statsBar) statsBar.style.display = 'none';
+      } else if (v === 'config') {
+        topbarEl.innerHTML = `<div class="icon-wrap" style="background:rgba(236,100,52,0.1);color:var(--accent)"><i class="fa-solid fa-gear"></i></div><h1>Configuración</h1>`;
+        document.querySelector('.search-wrap').style.visibility = 'hidden';
+        document.getElementById('filter-cat-top').style.visibility = 'hidden';
+        document.querySelector('.topbar-right').style.visibility = 'hidden';
+        if (filterBar) filterBar.style.display = 'none';
+        if (statsBar) statsBar.style.display = 'none';
+        cargarConfigOfertas();
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       CONFIGURACIÓN DE OFERTAS
+    ═══════════════════════════════════════════════════════════════ */
+    async function cargarConfigOfertas() {
+      const input = document.getElementById('config-ofertas-fecha');
+      try {
+        const doc = await db.collection('config').doc('ofertas').get();
+        if (doc.exists) {
+          const data = doc.data();
+          if (data.fechaFin) {
+            // Convertir la fecha a formato de input datetime-local
+            const d = data.fechaFin.toDate ? data.fechaFin.toDate() : new Date(data.fechaFin);
+            if (!isNaN(d)) {
+              // Extraer solo la fecha (YYYY-MM-DD)
+              const tzOffset = d.getTimezoneOffset() * 60000;
+              const localISODate = new Date(d - tzOffset).toISOString().slice(0,10);
+              input.value = localISODate;
+            }
+          } else {
+            input.value = '';
+          }
+        }
+      } catch (e) {
+        console.error('Error cargando config ofertas:', e);
+      }
+    }
+
+    async function guardarConfigOfertas() {
+      const input = document.getElementById('config-ofertas-fecha');
+      const msg = document.getElementById('config-ofertas-msg');
+      
+      if (!input.value) {
+        msg.textContent = 'Seleccioná una fecha válida.';
+        msg.style.display = 'block';
+        msg.style.background = '#fef2f2';
+        msg.style.color = '#dc2626';
+        msg.style.border = '1px solid #fecaca';
+        return;
+      }
+
+      // Asignar el final del día automáticamente
+      const dateObj = new Date(input.value + "T23:59:59");
+      if (isNaN(dateObj)) return;
+
+      try {
+        msg.textContent = 'Guardando...';
+        msg.style.display = 'block';
+        msg.style.background = '#f3f4f6';
+        msg.style.color = '#4b5563';
+        msg.style.border = 'none';
+
+        // Usamos string ISO para mejor compatibilidad entre JS y Firestore
+        await db.collection('config').doc('ofertas').set({
+          fechaFin: dateObj.toISOString(),
+          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        msg.textContent = '¡Fecha guardada con éxito!';
+        msg.style.background = '#f0fdf4';
+        msg.style.color = '#16a34a';
+        msg.style.border = '1px solid #bbf7d0';
+        
+        setTimeout(() => msg.style.display = 'none', 3000);
+      } catch (e) {
+        console.error('Error guardando config ofertas:', e);
+        msg.textContent = 'Error al guardar la fecha.';
+        msg.style.background = '#fef2f2';
+        msg.style.color = '#dc2626';
+        msg.style.border = '1px solid #fecaca';
+      }
+    }
+
+    async function limpiarConfigOfertas() {
+      const input = document.getElementById('config-ofertas-fecha');
+      const msg = document.getElementById('config-ofertas-msg');
+      input.value = '';
+
+      try {
+        msg.textContent = 'Borrando...';
+        msg.style.display = 'block';
+        msg.style.background = '#f3f4f6';
+        msg.style.color = '#4b5563';
+        msg.style.border = 'none';
+
+        await db.collection('config').doc('ofertas').set({
+          fechaFin: null,
+          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        msg.textContent = '¡Ofertas quitadas del catálogo!';
+        msg.style.background = '#f0fdf4';
+        msg.style.color = '#16a34a';
+        msg.style.border = '1px solid #bbf7d0';
+
+        setTimeout(() => msg.style.display = 'none', 3000);
+      } catch (e) {
+        console.error('Error limpiando config ofertas:', e);
+        msg.textContent = 'Error al quitar ofertas.';
+        msg.style.background = '#fef2f2';
+        msg.style.color = '#dc2626';
+        msg.style.border = '1px solid #fecaca';
+      }
     }
 
     /* ══════════════════════════════════════════════════════════════

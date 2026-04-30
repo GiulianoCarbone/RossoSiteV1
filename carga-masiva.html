@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,17 +10,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
-        body { font-family: "Inter", sans-serif; }
+        body {
+            font-family: "Inter", sans-serif;
+        }
+
         /* Style for the details summary arrow */
         summary::marker {
             display: none;
             content: "";
         }
+
         details[open] .details-arrow {
             transform: rotate(180deg);
         }
     </style>
 </head>
+
 <body class="bg-gray-100 py-12 px-4">
 
     <div class="w-full max-w-4xl mx-auto space-y-12">
@@ -29,15 +35,19 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4">Agregar Nuevo Vendedor</h2>
             <form id="add-vendedor-form" class="grid md:grid-cols-3 gap-4 items-end">
                 <div class="md:col-span-1">
-                    <label for="new-vendedor-nombre" class="block text-sm font-medium text-gray-700">Nombre y Apellido</label>
-                    <input type="text" id="new-vendedor-nombre" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
+                    <label for="new-vendedor-nombre" class="block text-sm font-medium text-gray-700">Nombre y
+                        Apellido</label>
+                    <input type="text" id="new-vendedor-nombre" required
+                        class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
                 </div>
                 <div class="md:col-span-1">
                     <label for="new-vendedor-dni" class="block text-sm font-medium text-gray-700">DNI</label>
-                    <input type="text" id="new-vendedor-dni" required class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
+                    <input type="text" id="new-vendedor-dni" required
+                        class="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
                 </div>
                 <div class="md:col-span-1">
-                    <button type="submit" id="add-vendedor-btn" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                    <button type="submit" id="add-vendedor-btn"
+                        class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
                         <i class="fa-solid fa-user-plus"></i>
                         <span>Guardar Vendedor</span>
                     </button>
@@ -45,60 +55,31 @@
             </form>
             <div id="add-vendedor-status" class="mt-3 text-sm min-h-[20px]"></div>
         </div>
-        
-        <!-- SECCIÓN DE CARGA MASIVA -->
-        <div class="bg-white rounded-xl shadow-lg p-8">
-            <div class="flex flex-col items-center">
-                <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales Logo" class="w-48 mb-4">
-                <h1 class="text-2xl font-bold text-gray-800 mb-2">Carga Masiva de Vendedores</h1>
-                <p class="text-gray-600 text-center mb-6">Pegá la lista de vendedores en formato JSON y hacé clic en "Cargar Vendedores".</p>
-            </div>
-
-            <div class="mb-4">
-                <label for="vendedores-json" class="block text-sm font-medium text-gray-700 mb-2">
-                    Datos de Vendedores (formato JSON):
-                </label>
-                <textarea id="vendedores-json" rows="10" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500" placeholder='[
-    {
-        "nombre": "Juan Perez",
-        "dni": "12345678"
-    },
-    {
-        "nombre": "Maria Garcia",
-        "dni": "87654321"
-    }
-]'></textarea>
-                <p class="text-xs text-gray-500 mt-1">Asegurate de que el formato sea exactamente como en el ejemplo.</p>
-            </div>
-
-            <button id="upload-button" class="w-full bg-orange-600 text-white font-bold py-3 px-4 rounded-md hover:bg-orange-700 transition-colors flex items-center justify-center gap-2">
-                <i class="fa-solid fa-upload"></i>
-                Cargar Vendedores a la Base de Datos
-            </button>
-
-            <div id="status" class="mt-6 text-sm text-gray-700 bg-gray-50 rounded-md p-4 max-h-48 overflow-y-auto">
-                <p>Esperando datos para cargar...</p>
-            </div>
-        </div>
-
         <!-- SECCIÓN DE GESTIÓN DE VENDEDORES -->
         <div class="bg-white rounded-xl shadow-lg p-8">
-             <details open>
+            <details open>
                 <summary class="text-2xl font-bold text-gray-800 text-center cursor-pointer list-none">
                     <div class="flex items-center justify-center hover:text-orange-600">
                         <span>Vendedores Actuales</span>
-                        <svg class="w-5 h-5 ml-2 transition-transform transform details-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        <svg class="w-5 h-5 ml-2 transition-transform transform details-arrow"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
                     </div>
                 </summary>
                 <div class="mt-6 border-t pt-6">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
                         <div class="relative w-full md:w-1/2">
                             <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            <input type="text" id="search-vendedores" placeholder="Buscar por nombre o DNI..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
+                            <input type="text" id="search-vendedores" placeholder="Buscar por nombre o DNI..."
+                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
                         </div>
                         <div class="flex items-center gap-4">
-                            <p id="vendedor-count" class="text-sm text-gray-600 font-medium w-full md:w-auto text-left md:text-right"></p>
-                            <button id="export-csv-btn" class="bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition-colors flex items-center justify-center gap-2 text-sm" title="Exportar lista a CSV">
+                            <p id="vendedor-count"
+                                class="text-sm text-gray-600 font-medium w-full md:w-auto text-left md:text-right"></p>
+                            <button id="export-csv-btn"
+                                class="bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition-colors flex items-center justify-center gap-2 text-sm"
+                                title="Exportar lista a CSV">
                                 <i class="fa-solid fa-file-csv"></i> Exportar</button>
                         </div>
                     </div>
@@ -108,6 +89,48 @@
                 </div>
             </details>
         </div>
+        <!-- SECCIÓN DE CARGA MASIVA -->
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <div class="flex flex-col items-center">
+                <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales Logo"
+                    class="w-48 mb-4">
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Carga Masiva de Vendedores</h1>
+                <p class="text-gray-600 text-center mb-6">Pegá la lista de vendedores en formato JSON y hacé clic en
+                    "Cargar Vendedores".</p>
+            </div>
+
+            <div class="mb-4">
+                <label for="vendedores-json" class="block text-sm font-medium text-gray-700 mb-2">
+                    Datos de Vendedores (formato JSON):
+                </label>
+                <textarea id="vendedores-json" rows="10"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    placeholder='[
+    {
+        "nombre": "Juan Perez",
+        "dni": "12345678"
+    },
+    {
+        "nombre": "Maria Garcia",
+        "dni": "87654321"
+    }
+]'></textarea>
+                <p class="text-xs text-gray-500 mt-1">Asegurate de que el formato sea exactamente como en el ejemplo.
+                </p>
+            </div>
+
+            <button id="upload-button"
+                class="w-full bg-orange-600 text-white font-bold py-3 px-4 rounded-md hover:bg-orange-700 transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-upload"></i>
+                Cargar Vendedores a la Base de Datos
+            </button>
+
+            <div id="status" class="mt-6 text-sm text-gray-700 bg-gray-50 rounded-md p-4 max-h-48 overflow-y-auto">
+                <p>Esperando datos para cargar...</p>
+            </div>
+        </div>
+
+
 
     </div>
 
@@ -126,7 +149,7 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        
+
         const vendedoresListDiv = document.getElementById('vendedores-list');
         const statusDiv = document.getElementById('status');
         const uploadButton = document.getElementById('upload-button');
@@ -147,7 +170,7 @@
                     vendedoresListDiv.innerHTML = '<p class="text-center text-gray-500">No hay vendedores cargados.</p>';
                     return;
                 }
-                
+
                 allVendedores = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderVendedores(allVendedores);
 
@@ -168,11 +191,11 @@
             }
 
             vendedores.forEach(vendedor => {
-                    const vendedorEl = document.createElement('div');
-                    vendedorEl.className = 'bg-gray-50 p-3 rounded-md border';
-                    vendedorEl.dataset.id = vendedor.id;
+                const vendedorEl = document.createElement('div');
+                vendedorEl.className = 'bg-gray-50 p-3 rounded-md border';
+                vendedorEl.dataset.id = vendedor.id;
 
-                    vendedorEl.innerHTML = `
+                vendedorEl.innerHTML = `
                         <!-- View Mode -->
                         <div class="view-mode flex items-center justify-between">
                             <div>
@@ -198,14 +221,14 @@
                             </div>
                         </div>
                     `;
-                    vendedoresListDiv.appendChild(vendedorEl);
+                vendedoresListDiv.appendChild(vendedorEl);
             });
         }
 
         // --- EVENTO PARA EL BUSCADOR ---
         searchInput.addEventListener('input', () => {
             const query = searchInput.value.toLowerCase();
-            const filtered = allVendedores.filter(v => 
+            const filtered = allVendedores.filter(v =>
                 v.nombre.toLowerCase().includes(query) || v.dni.includes(query)
             );
             renderVendedores(filtered);
@@ -273,10 +296,10 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            
+
             const date = new Date().toISOString().slice(0, 10);
             link.setAttribute("download", `lista_vendedores_${date}.csv`);
-            
+
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -287,7 +310,7 @@
         vendedoresListDiv.addEventListener('click', async (e) => {
             const vendedorItem = e.target.closest('[data-id]');
             if (!vendedorItem) return;
-            
+
             const docId = vendedorItem.dataset.id;
             const viewMode = vendedorItem.querySelector('.view-mode');
             const editMode = vendedorItem.querySelector('.edit-mode');
@@ -350,7 +373,7 @@
         // --- LÓGICA DE CARGA MASIVA ---
         uploadButton.addEventListener('click', async () => {
             const jsonText = document.getElementById('vendedores-json').value;
-            
+
             if (!jsonText) {
                 statusDiv.innerHTML = '<p class="text-red-600 font-semibold">El campo de datos está vacío.</p>';
                 return;
@@ -405,7 +428,7 @@
             statusDiv.innerHTML += `<hr class="my-2"><p class="font-bold">Proceso finalizado. ${successCount} cargados, ${errorCount} errores.</p>`;
             uploadButton.disabled = false;
             uploadButton.innerHTML = '<i class="fa-solid fa-upload"></i> Cargar Vendedores a la Base de Datos';
-            
+
             fetchAndDisplayVendedores();
             document.getElementById('vendedores-json').value = '';
         });
@@ -414,4 +437,5 @@
         document.addEventListener('DOMContentLoaded', fetchAndDisplayVendedores);
     </script>
 </body>
+
 </html>
