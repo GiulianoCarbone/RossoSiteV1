@@ -2901,6 +2901,9 @@
        CARGA INICIAL
     ══════════════════════════════════════════════════════════ */
     async function init() {
+      // Analytics: Visita al catálogo
+      trackEvent('visits');
+
       // Si hay caché, mostrar instantáneo y refrescar en background
       const cached = sessionStorage.getItem('rosso_catalog_cache');
       if (cached) {
@@ -3498,6 +3501,7 @@
         `Hola! Quiero consultar sobre los siguientes productos:\n\n${lineas}\n\n¿Cuál es la disponibilidad y precio de cada uno?\nMuchas gracias.`
       );
       sendBtn.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+      sendBtn.onclick = () => trackEvent('contacts');
       sendBtn.style.opacity = '1';
       sendBtn.style.pointerEvents = 'auto';
       document.getElementById('btn-email-send').disabled = false;
@@ -3685,6 +3689,26 @@
     /* ══════════════════════════════════════════════════════════
        ARRANCAR
     ══════════════════════════════════════════════════════════ */
+    /* ══════════════════════════════════════════════════════════
+       ANALYTICS TRACKER
+    ══════════════════════════════════════════════════════════ */
+    async function trackEvent(type, metadata = {}) {
+      try {
+        const today = new Date().toISOString().split('T')[0];
+        const batch = db.batch();
+        batch.set(db.collection('analytics').doc('global'), { [type]: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+        batch.set(db.collection('analytics_daily').doc(today), { [type]: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+        if (type === 'visit' && metadata.sku) {
+          batch.set(db.collection('analytics_products').doc(metadata.sku), {
+            visits: firebase.firestore.FieldValue.increment(1),
+            nombre: metadata.nombre || '',
+            imagen: metadata.imagen || ''
+          }, { merge: true });
+        }
+        await batch.commit();
+      } catch (e) { console.warn('Analytics disabled or error:', e); }
+    }
+
     actualizarFAB(); // restaurar FAB si hay lista guardada
     init();
   </script>

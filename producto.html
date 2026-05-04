@@ -551,7 +551,7 @@
           <button class="btn-pdp-add" id="btn-add" onclick="agregarALista()">
             <i class="fa-solid fa-list-check"></i> Agregar a mi lista
           </button>
-          <a class="btn-pdp-wp" id="btn-wp" href="#" target="_blank" rel="noopener">
+          <a class="btn-pdp-wp" id="btn-wp" href="#" target="_blank" rel="noopener" onclick="trackEvent('contacts')">
             <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp
           </a>
           <button class="btn-pdp-calc" id="btn-calc" onclick="abrirCalculadora()" style="display:none">
@@ -582,7 +582,7 @@
   <div class="qp-items" id="qp-items"></div>
   <div class="qp-footer">
     <div class="qp-count" id="qp-count"></div>
-    <a class="btn-wp-send" id="btn-wp-send" href="#" target="_blank" rel="noopener">
+    <a class="btn-wp-send" id="btn-wp-send" href="#" target="_blank" rel="noopener" onclick="trackEvent('contacts')">
       <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
     </a>
     <button class="btn-ir-catalogo" onclick="window.location.href='catalogo.html'">
@@ -910,8 +910,14 @@
     document.getElementById('btn-calc').style.display = esPiso ? 'flex' : 'none';
 
     // Mostrar
-    document.getElementById('pdp-loading').style.display = 'none';
     document.getElementById('pdp-wrap').style.display    = '';
+
+    // Tracking: Visita al producto
+    trackEvent('visit', {
+      sku: p.sku,
+      nombre: p.nombre,
+      imagen: getImg(p, 'thumb')
+    });
   }
 
   /* ── Calculadora Modal ── */
@@ -1024,6 +1030,9 @@
 
   /* ── Init ── */
   async function init() {
+    // Tracking global
+    trackEvent('visits');
+
     const params = new URLSearchParams(window.location.search);
     const sku    = params.get('sku');
 
@@ -1098,6 +1107,26 @@
           } catch(e) {}
         }
       }).catch(() => {});
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     ANALYTICS TRACKER
+  ══════════════════════════════════════════════════════════ */
+  async function trackEvent(type, metadata = {}) {
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      const batch = db.batch();
+      batch.set(db.collection('analytics').doc('global'), { [type]: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+      batch.set(db.collection('analytics_daily').doc(today), { [type]: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+      if (type === 'visit' && metadata.sku) {
+        batch.set(db.collection('analytics_products').doc(metadata.sku), {
+          visits: firebase.firestore.FieldValue.increment(1),
+          nombre: metadata.nombre || '',
+          imagen: metadata.imagen || ''
+        }, { merge: true });
+      }
+      await batch.commit();
+    } catch (e) { console.warn('Analytics error:', e); }
   }
 
   // Mobile menu
