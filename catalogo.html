@@ -74,11 +74,16 @@
       max-height: 560px;
     }
 
+    .hero-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.65s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
     .hero-slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity .65s ease;
+      flex: 0 0 100%;
+      height: 100%;
     }
 
     .hero-slide img {
@@ -87,10 +92,6 @@
       object-fit: cover;
       object-position: center center;
       display: block;
-    }
-
-    .hero-slide.active {
-      opacity: 1;
     }
 
     /* Flechas — sobre fondo blanco semitransparente, se ven sobre cualquier imagen */
@@ -2390,14 +2391,16 @@
     <div class="hero-slider" id="hero-slider">
 
       <!-- ✏️ Slides: reemplazá src con la imagen de la promo actual -->
-      <div class="hero-slide active">
-        <img src="assets/SLIDER/Slider-catalogo.jpg" alt="Promoción actual" />
-      </div>
-      <div class="hero-slide ">
-        <img src="assets/SLIDER/Slider-catalogo1.jpg" alt="Promoción actual" />
-      </div>
-      <div class="hero-slide ">
-        <img src="assets/SLIDER/Slider-catalogo2.jpg" alt="Promoción actual" />
+      <div class="hero-track" id="hero-track">
+        <div class="hero-slide active">
+          <img src="assets/SLIDER/Slider-catalogo.jpg" alt="Promoción actual" />
+        </div>
+        <div class="hero-slide">
+          <img src="assets/SLIDER/Slider-catalogo1.jpg" alt="Promoción actual" />
+        </div>
+        <div class="hero-slide">
+          <img src="assets/SLIDER/Slider-catalogo2.jpg" alt="Promoción actual" />
+        </div>
       </div>
       <!-- Controles -->
       <button class="slider-arrow prev" onclick="heroSlide(-1)" aria-label="Anterior">
@@ -2793,11 +2796,10 @@
       });
 
       function goTo(n) {
-        slides[current].classList.remove('active');
         dotsEl.children[current].classList.remove('active');
         current = (n + slides.length) % slides.length;
-        slides[current].classList.add('active');
         dotsEl.children[current].classList.add('active');
+        document.getElementById('hero-track').style.transform = `translateX(-${current * 100}%)`;
       }
 
       function next() { goTo(current + 1); }
