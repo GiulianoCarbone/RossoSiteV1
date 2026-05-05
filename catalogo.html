@@ -642,7 +642,7 @@
       font-weight: 600;
       line-height: 1.35;
       margin-bottom: 6px;
-      color: var(--text);
+      color: #374151;
     }
 
     .fc-cat {
@@ -735,7 +735,7 @@
     }
 
     .mobile-filters-row {
-      display: flex;
+      display: none;
       gap: 10px;
       width: 100%;
     }
@@ -1066,17 +1066,92 @@
       opacity: 0.7;
     }
 
+    /* ── SLIDER CARD ── */
+    .prod-img-slider {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .prod-img-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
+    }
+
+    .prod-img-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .prod-img-slide {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      scroll-snap-align: start;
+    }
+
+    .prod-img-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .prod-slider-btn {
+      display: none !important;
+    }
+
+    .prod-slider-dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 5;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 4px 8px;
+      border-radius: 20px;
+      backdrop-filter: blur(2px);
+    }
+
+    .prod-slider-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      transition: all 0.2s;
+    }
+
+    .prod-slider-dot.active {
+      background: white;
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+      .prod-slider-btn {
+        display: none !important;
+      }
+    }
+
     .prod-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(39, 46, 104, 0.55);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(2px);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transition: opacity .25s;
+      transition: all .35s ease;
+      z-index: 10;
     }
 
     .prod-card:hover .prod-overlay {
@@ -1088,33 +1163,50 @@
       color: var(--brand);
       border: none;
       border-radius: 999px;
-      padding: 9px 20px;
-      font-size: 0.82rem;
+      padding: 10px 22px;
+      font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 7px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      transition: transform .15s;
+      gap: 8px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      transition: all .25s;
+      transform: translateY(15px);
+    }
+
+    .prod-card:hover .prod-overlay-btn {
+      transform: translateY(0);
     }
 
     .prod-overlay-btn:hover {
-      transform: scale(1.05);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+      background: var(--brand);
+      color: white;
     }
 
     .prod-overlay-link {
-      font-size: 0.76rem;
-      color: rgba(255, 255, 255, 0.82);
+      font-size: 0.78rem;
+      color: var(--brand);
       text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 5px;
-      transition: color .15s;
+      gap: 6px;
+      font-weight: 700;
+      transition: all .25s;
+      transform: translateY(15px);
+      opacity: 0.8;
+    }
+
+    .prod-card:hover .prod-overlay-link {
+      transform: translateY(0);
+      transition-delay: 0.05s;
     }
 
     .prod-overlay-link:hover {
-      color: white;
+      opacity: 1;
+      text-decoration: underline;
     }
 
     .modal-btn-full {
@@ -1171,7 +1263,7 @@
     .prod-name {
       font-size: 0.95rem;
       font-weight: 700;
-      color: #111827;
+      color: #374151;
       line-height: 1.35;
       margin-bottom: 4px;
       display: -webkit-box;
@@ -1546,14 +1638,58 @@
       background: #f3f4f6;
       position: relative;
       min-height: 360px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gallery-main-wrap {
+      position: relative;
+      width: 100%;
+      height: 340px;
+      overflow: hidden;
     }
 
     .gallery-main {
       width: 100%;
-      height: 340px;
+      height: 100%;
       object-fit: contain;
       display: block;
       padding: 12px;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Arrows for modal gallery */
+    .gallery-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(4px);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      color: var(--brand);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: all 0.2s;
+    }
+
+    .gallery-nav-btn:hover {
+      background: white;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .gallery-nav-btn.prev {
+      left: 12px;
+    }
+
+    .gallery-nav-btn.next {
+      right: 12px;
     }
 
     .gallery-main-placeholder {
@@ -1625,7 +1761,7 @@
     .modal-name {
       font-size: 1.2rem;
       font-weight: 800;
-      color: var(--brand);
+      color: #374151;
       line-height: 1.25;
       margin-bottom: 8px;
     }
@@ -2217,6 +2353,10 @@
       .catalog-body .container {
         display: block;
       }
+
+      .mobile-filters-row {
+        display: flex;
+      }
     }
 
     @media (max-width: 768px) {
@@ -2563,8 +2703,12 @@
       <div class="prod-modal-inner">
         <!-- Gallery -->
         <div class="modal-gallery">
-          <div id="gallery-main-wrap">
-            <div class="gallery-main-placeholder" id="gallery-placeholder"><i class="fa-solid fa-image"></i></div>
+          <div id="gallery-main-wrap" class="gallery-main-wrap" ontouchstart="handleTouchStart(event)" ontouchend="handleTouchEnd(event)">
+            <button class="gallery-nav-btn prev" id="modal-nav-prev" onclick="moveModalGallery(-1)" style="display:none"><i class="fa-solid fa-chevron-left"></i></button>
+            <div id="gallery-main-container">
+              <div class="gallery-main-placeholder" id="gallery-placeholder"><i class="fa-solid fa-image"></i></div>
+            </div>
+            <button class="gallery-nav-btn next" id="modal-nav-next" onclick="moveModalGallery(1)" style="display:none"><i class="fa-solid fa-chevron-right"></i></button>
           </div>
           <div class="gallery-thumbs" id="gallery-thumbs"></div>
         </div>
@@ -2777,6 +2921,46 @@
       return p.imagenLegacy || '';
     }
 
+    /* ── PRODUCT SLIDER UTILS ── */
+    window.moveProdSlider = function (btn, dir) {
+      const track = btn.parentElement.querySelector('.prod-img-track');
+      if (!track) return;
+      const width = track.offsetWidth;
+      track.scrollBy({ left: width * dir, behavior: 'smooth' });
+    };
+
+    window.handleProdSliderScroll = function (track) {
+      const index = Math.round(track.scrollLeft / track.offsetWidth);
+      const dots = track.parentElement.querySelectorAll('.prod-slider-dot');
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    };
+
+    function renderProdImg(p, isCarousel = false) {
+      if (p.imagenes && p.imagenes.length > 1) {
+        const dots = p.imagenes.map((_, i) => `<div class="prod-slider-dot${i === 0 ? ' active' : ''}"></div>`).join('');
+        const slides = p.imagenes.map(pid => `
+          <div class="prod-img-slide">
+            <img src="${cdnUrl(pid, 'w_280,h_210,c_fill,f_auto,q_auto:eco,fl_lossy')}" alt="${esc(p.nombre)}" loading="lazy">
+          </div>
+        `).join('');
+
+        return `
+          <div class="prod-img-slider">
+            <div class="prod-img-track" onscroll="handleProdSliderScroll(this)">
+              ${slides}
+            </div>
+            <div class="prod-slider-dots">${dots}</div>
+          </div>
+        `;
+      }
+
+      const img = getImgSrc(p, 'card');
+      return img
+        ? `<img class="${isCarousel ? 'fc-img' : 'prod-img'}" src="${esc(img)}" alt="${esc(p.nombre)}" loading="lazy"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : '';
+    }
+
     /* ══════════════════════════════════════════════════════════
        HERO SLIDER
     ══════════════════════════════════════════════════════════ */
@@ -2815,18 +2999,15 @@
        CARRUSEL DESTACADOS
     ══════════════════════════════════════════════════════════ */
     function cardHtml(p, enLista) {
-      const img = getImgSrc(p, 'card');
-      const imgEl = img
-        ? `<img class="fc-img" src="${esc(img)}" alt="${esc(p.nombre)}" loading="lazy"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-        : '';
+      const imgContent = renderProdImg(p, true);
+      const hasImg = !!getImgSrc(p, 'card');
       const catLabel = [p.categoria, p.subcategoria].filter(Boolean).join(' › ');
       const added = enLista.has(p.sku);
       return `
       <a class="fc-card" href="producto.html?sku=${encodeURIComponent(p.sku)}" style="text-decoration:none;color:inherit">
         <div class="fc-img-wrap">
-          ${imgEl}
-          <div class="fc-img-placeholder" style="${img ? 'display:none' : ''}"><i class="fa-solid fa-image"></i></div>
+          ${imgContent}
+          <div class="fc-img-placeholder" style="${hasImg ? 'display:none' : ''}"><i class="fa-solid fa-image"></i></div>
           <div class="fc-badge"><i class="fa-solid fa-fire" style="font-size:.55rem"></i> Oferta</div>
         </div>
         <div class="fc-body">
@@ -3224,11 +3405,8 @@
       grid.classList.toggle('list-view', vistaActual === 'list');
 
       grid.innerHTML = slice.map(p => {
-        const img = getImgSrc(p, 'card');
-        const imgEl = img
-          ? `<img class="prod-img" src="${esc(img)}" alt="${esc(p.nombre)}" loading="lazy"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-          : '';
+        const imgContent = renderProdImg(p);
+        const hasImg = !!getImgSrc(p, 'card');
         const catLabel = [p.categoria, p.subcategoria].filter(Boolean).join(' › ');
         const added = enLista.has(p.sku);
         const url = `producto.html?sku=${encodeURIComponent(p.sku)}`;
@@ -3236,8 +3414,8 @@
         <div class="prod-card" onclick="location.href='${url}'" style="cursor:pointer">
           ${p.destacado ? '<span class="badge-dest"><i class="fa-solid fa-star" style="font-size:.55rem"></i> Destacado</span>' : ''}
           <div class="prod-img-wrap">
-            ${imgEl}
-            <div class="prod-img-placeholder" style="${img ? 'display:none' : ''}"><i class="fa-solid fa-image"></i></div>
+            ${imgContent}
+            <div class="prod-img-placeholder" style="${hasImg ? 'display:none' : ''}"><i class="fa-solid fa-image"></i></div>
             <div class="prod-overlay">
               <span class="prod-overlay-btn" onclick="event.stopPropagation(); abrirModal('${esc(p.sku)}')">
                 <i class="fa-solid fa-eye"></i> Vista rápida
@@ -3273,31 +3451,62 @@
     /* ══════════════════════════════════════════════════════════
        MODAL DE PRODUCTO
     ══════════════════════════════════════════════════════════ */
+    let modalImgIndex = 0;
+    function moveModalGallery(dir) {
+      if (!productoModal) return;
+      const imgs = productoModal.imagenes || (productoModal.imagenLegacy ? [productoModal.imagenLegacy] : []);
+      if (imgs.length <= 1) return;
+
+      modalImgIndex = (modalImgIndex + dir + imgs.length) % imgs.length;
+      const pid = imgs[modalImgIndex];
+      const thumbs = document.querySelectorAll('.gallery-thumb');
+      cambiarImagen(pid, thumbs[modalImgIndex]);
+    }
+
+    let touchStartX = 0;
+    window.handleTouchStart = function (e) { touchStartX = e.changedTouches[0].screenX; };
+    window.handleTouchEnd = function (e) {
+      const touchEndX = e.changedTouches[0].screenX;
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 50) {
+        moveModalGallery(diff > 0 ? -1 : 1);
+      }
+    };
+
     function abrirModal(sku) {
       const p = todosLosProductos.find(x => x.sku === sku);
       if (!p) return;
       productoModal = p;
+      modalImgIndex = 0;
 
       // Gallery
       const thumbsWrap = document.getElementById('gallery-thumbs');
-      const mainWrap = document.getElementById('gallery-main-wrap');
+      const mainContainer = document.getElementById('gallery-main-container');
+      const prevBtn = document.getElementById('modal-nav-prev');
+      const nextBtn = document.getElementById('modal-nav-next');
+
+      const imgs = p.imagenes || (p.imagenLegacy ? [p.imagenLegacy] : []);
+      const hasMultiple = imgs.length > 1;
+
+      if (prevBtn) prevBtn.style.display = hasMultiple ? 'flex' : 'none';
+      if (nextBtn) nextBtn.style.display = hasMultiple ? 'flex' : 'none';
 
       if (p.imagenes && p.imagenes.length > 0) {
-        mainWrap.innerHTML = `<img id="gallery-main-img" class="gallery-main"
+        mainContainer.innerHTML = `<img id="gallery-main-img" class="gallery-main"
         src="${cdnUrl(p.imagenes[0], 'w_520,h_440,c_fit,f_auto,q_auto:good,fl_lossy')}"
         alt="${esc(p.nombre)}" />`;
         thumbsWrap.innerHTML = p.imagenes.map((pid, i) => `
         <img class="gallery-thumb${i === 0 ? ' active' : ''}"
           src="${cdnUrl(pid, 'w_120,h_120,c_fill,f_auto,q_auto')}"
           alt="Imagen ${i + 1}"
-          onclick="cambiarImagen('${pid}', this)" />`).join('');
+          onclick="modalImgIndex=${i}; cambiarImagen('${pid}', this)" />`).join('');
       } else if (p.imagenLegacy) {
-        mainWrap.innerHTML = `<img id="gallery-main-img" class="gallery-main"
+        mainContainer.innerHTML = `<img id="gallery-main-img" class="gallery-main"
         src="${esc(p.imagenLegacy)}" alt="${esc(p.nombre)}" />`;
         thumbsWrap.innerHTML = `<img class="gallery-thumb active"
         src="${esc(p.imagenLegacy)}" alt="Imagen 1" />`;
       } else {
-        mainWrap.innerHTML = `<div class="gallery-main-placeholder">
+        mainContainer.innerHTML = `<div class="gallery-main-placeholder">
         <i class="fa-solid fa-image"></i></div>`;
         thumbsWrap.innerHTML = '';
       }
@@ -3334,11 +3543,15 @@
       document.body.style.overflow = 'hidden';
     }
 
-    function cambiarImagen(publicId, thumbEl) {
+    function cambiarImagen(pid, thumbEl) {
       const mainImg = document.getElementById('gallery-main-img');
-      if (mainImg) mainImg.src = cdnUrl(publicId, 'w_520,h_440,c_fit,f_auto,q_auto:good,fl_lossy');
+      if (!mainImg || !productoModal) return;
+
+      const isLegacy = !productoModal.imagenes || productoModal.imagenes.length === 0;
+      mainImg.src = isLegacy ? pid : cdnUrl(pid, 'w_520,h_440,c_fit,f_auto,q_auto:good,fl_lossy');
+
       document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-      thumbEl.classList.add('active');
+      if (thumbEl) thumbEl.classList.add('active');
     }
 
     function cerrarModal() {
