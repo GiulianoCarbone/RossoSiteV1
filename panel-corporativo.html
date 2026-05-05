@@ -2138,25 +2138,24 @@
               <span class="panel-card-icon"><i class="fa-solid fa-trophy"
                   style="animation: none; color: var(--accent);"></i></span>
               <h3 style="color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
-                Desafío
-                Isolant </h3>
+                Desafio Mundial 🇦🇷</h3>
             </div>
           </div>
           <div class="panel-card-body contest-card-body"
             style="text-align: center; padding: 30px 20px; position: relative; z-index: 1;">
             <!-- Image Container with Floating Animation -->
             <div style="margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; width: 100%;">
-              <img src="https://i.ibb.co/KzGfB7pV/jbl-speaker.png" alt="Premio del Concurso" class="floating-prize"
-                id="contest-prize-image" style="opacity: 0; transition: opacity 0.4s ease;">
+              <img src="" alt="Premio del Concurso - Camiseta Argentina" class="floating-prize" id="contest-prize-image"
+                style="opacity: 0; transition: opacity 0.4s ease;">
 
             </div>
             <p class="contest-card-text"
               style="font-size: 1.15rem; color: #374151; max-width: 600px; margin: 0 auto 15px; line-height: 1.6;">
               <span class="contest-prominent-title"
-                style="display: block; font-size: 1.6rem; color: var(--accent); font-weight: 900; margin-bottom: 8px; text-transform: uppercase;">¡Desafío
-                Isolant!</span>
-              El vendedor con mayor cantidad de unidades de la marca <strong>ISOLANT</strong> vendidas gana un
-              <strong>Parlante JBL portátil</strong>.
+                style="display: block; font-size: 1.6rem; color: var(--accent); font-weight: 900; margin-bottom: 8px; text-transform: uppercase;">¡Desafio
+                Mundial! 🇦🇷</span>
+              El vendedor con mayor cantidad de <strong>metros de porcelanato</strong> vendidos gana una
+              <strong>Camiseta original Adidas de la Selección Argentina</strong>.
             </p>
             <!-- SUBTLE COUNTDOWN -->
             <p id="countdown-timer" style="font-size: 0.9rem; color: #6b7280; margin-bottom: 25px; font-weight: 500;">
@@ -4148,7 +4147,7 @@
   <div id="contest-details-modal" class="modal-overlay" style="z-index: 5000; display: none;">
     <div class="modal-content" style="max-width: 800px;">
       <div class="modal-header">
-        <h4 style="font-size: 1.3rem;" id="contest-terms-title-text">Bases del Concurso: Desafío Isolant 🏆</h4>
+        <h4 style="font-size: 1.3rem;" id="contest-terms-title-text">Bases del Concurso: Desafio Mundial ⚽</h4>
         <button class="close-modal" onclick="closeContestModal()">&times;</button>
       </div>
       <div id="contest-terms-body" style="color: #374151; line-height: 1.6; font-size: 0.95rem;">
@@ -4164,9 +4163,10 @@
         <h5>3. DINÁMICA DEL CONCURSO</h5>
         <h5>2 GANADORES</h5>
         <p><strong>Mecánica:</strong> Se dividirá a las sucursales en categorías A y B, de ambas categorías saldrá un
-          ganador, este será el que logre vender más unidades de la marca <strong>ISOLANT</strong>, en el mes.</p>
+          ganador, este será el que logre vender más metros de <strong>porcelanato</strong>, en el mes.</p>
         <p><strong>Mínimo de Clasificación:</strong> Barrera de entrada sin mínimos.</p>
-        <p style="color: #dc2626; font-weight: 700;">IMPORTANTE: Participan solo marca ISOLANT, NO PARTICIPA LINEA RUFI.
+        <p style="color: #dc2626; font-weight: 700;">IMPORTANTE: Participan todas las marcas de porcelanato, con la
+          excepción de <strong>SAN PIETRO</strong>.
         </p>
         <p><strong>CATEGORÍA A:</strong> Monteros, Concepción, Manantial y Salta</p>
         <p><strong>CATEGORÍA B:</strong> Aguilares, Famailla, Metán y Tafí del Valle</p>
@@ -4174,7 +4174,7 @@
         <h5>4. EL PREMIO</h5>
         <p>El vendedor que ocupe el primer puesto en el ranking de cada categoría recibirá:</p>
         <ul style="padding-left: 20px; list-style-type: disc;">
-          <li>1 Parlante JBL portátil</li>
+          <li>1 Camiseta original marca Adidas de la Selección Argentina</li>
         </ul>
 
         <h5>5. CONDICIONES Y REGLAS GENERALES</h5>
@@ -4204,7 +4204,7 @@
   <div id="contest-ranking-modal" class="modal-overlay" style="z-index: 5000; display: none;">
     <div class="modal-content" style="max-width: 900px; width: 95%;">
       <div class="modal-header">
-        <h4 style="font-size: 1.3rem;">Ranking Desafío Isolant 🏆</h4>
+        <h4 style="font-size: 1.3rem;">Ranking Desafio Mundial 🇦🇷</h4>
         <button class="close-modal" onclick="event.stopPropagation(); closeRankingModal()">&times;</button>
       </div>
       <div id="contest-ranking-list" style="padding: 10px 0;">
@@ -4349,7 +4349,7 @@
       <div class="modal-header" style="background: transparent; padding: 20px 25px 10px; border: none;">
         <h4
           style="font-size: 1.6rem; color: #064e3b; font-weight: 900; text-align: center; width: 100%; letter-spacing: -0.5px;">
-          ¡Ganadores Desafío Isolant! 🥳</h4>
+          ¡Ganadores Desafio Mundial! 🥳</h4>
         <button class="close-modal" onclick="closeWinnersModal()"
           style="color: #064e3b; font-size: 2rem;">&times;</button>
       </div>
@@ -4591,7 +4591,7 @@
     }
 
     // Countdown Logic
-    let countdownTargetDate = new Date("April 30, 2026 23:59:59").getTime(); // Fallback hardcodeado
+    let countdownTargetDate = new Date("May 31, 2026 23:59:59").getTime(); // Fallback hardcodeado
     let countdownInterval = null;
 
     function updateCountdown() {
