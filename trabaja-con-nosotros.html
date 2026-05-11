@@ -22,10 +22,6 @@
   <link href="style.css" rel="stylesheet" />
 
   <style>
-    main {
-      padding-top: 72px;
-    }
-
     /* ── Hero ── */
     .trabaja-hero {
       position: relative;
@@ -151,6 +147,17 @@
     .trabaja-stat span {
       font-size: 0.85rem;
       color: #6b7280;
+    }
+
+    .trabaja-stat {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .trabaja-stat.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ── Body layout ── */
@@ -449,7 +456,10 @@
   <main>
     <!-- Hero -->
     <section class="trabaja-hero">
-      <img src="assets/SLIDER/banner-trabaja.webp" alt="Trabajá con Rosso Materiales" class="trabaja-hero-img" />
+      <picture>
+        <source media="(max-width: 768px)" srcset="assets/SLIDER/mobile-contacto.webp" />
+        <img src="assets/SLIDER/banner-trabaja.webp" alt="Trabajá con Rosso Materiales" class="trabaja-hero-img" />
+      </picture>
       <div class="trabaja-hero-overlay">
         <div class="trabaja-hero-badge">
           <i class="fa-solid fa-briefcase"></i>
@@ -469,19 +479,19 @@
     <div class="trabaja-stats">
       <div class="trabaja-stats-grid">
         <div class="trabaja-stat">
-          <strong>+30</strong>
+          <strong data-target="30" data-prefix="+">+30</strong>
           <span>años de trayectoria</span>
         </div>
         <div class="trabaja-stat">
-          <strong>2</strong>
+          <strong data-target="2">2</strong>
           <span>provincias: Tucumán y Salta</span>
         </div>
         <div class="trabaja-stat">
-          <strong>+8</strong>
+          <strong data-target="8" data-prefix="+">+8</strong>
           <span>sucursales activas</span>
         </div>
         <div class="trabaja-stat">
-          <strong>100%</strong>
+          <strong data-target="100" data-suffix="%">100%</strong>
           <span>empresa familiar</span>
         </div>
       </div>
@@ -573,6 +583,56 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    // Ajusta el padding-top del main según la altura real del header fijo
+    function ajustarMain() {
+      const header = document.querySelector('.main-header');
+      document.querySelector('main').style.paddingTop = header.offsetHeight + 'px';
+    }
+    ajustarMain();
+    window.addEventListener('resize', ajustarMain);
+  </script>
+  <script>
+    const stats = document.querySelectorAll('.trabaja-stat');
+
+    function animateCounter(el, delay) {
+      const strong = el.querySelector('strong[data-target]');
+      if (!strong) return;
+      const target = +strong.dataset.target;
+      const prefix = strong.dataset.prefix || '';
+      const suffix = strong.dataset.suffix || '';
+      const duration = 1800;
+
+      setTimeout(() => {
+        const startTime = performance.now();
+        function step(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // ease-out expo: arranca rápido y frena muy suave al final
+          const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+          strong.textContent = prefix + Math.floor(ease * target) + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+          else strong.textContent = prefix + target + suffix;
+        }
+        requestAnimationFrame(step);
+      }, delay);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          stats.forEach((stat, i) => {
+            const delay = i * 120;
+            setTimeout(() => stat.classList.add('visible'), delay);
+            animateCounter(stat, delay + 80);
+          });
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(document.querySelector('.trabaja-stats'));
+  </script>
 </body>
 
 </html>
