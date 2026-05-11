@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trabajá con Nosotros | Rosso Materiales</title>
+  <meta name="description"
+    content="Sumate al equipo de Rosso Materiales. Somos una empresa familiar con más de 30 años de trayectoria en la venta de materiales para la construcción en el norte argentino.">
+  <link href="assets/FAV.png" rel="icon">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QBM51JZ19R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-QBM51JZ19R');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link href="style.css" rel="stylesheet" />
+
+  <style>
+    main {
+      padding-top: 72px;
+    }
+
+    /* ── Hero ── */
+    .trabaja-hero {
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      text-align: center;
+      max-height: 420px;
+    }
+
+    .trabaja-hero-img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .trabaja-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(39,46,104,0.82) 0%, rgba(26,32,80,0.75) 60%, rgba(236,100,52,0.45) 150%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .trabaja-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(236, 100, 52, 0.2);
+      border: 1px solid rgba(236, 100, 52, 0.4);
+      color: #f9a07a;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .trabaja-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .trabaja-hero h1 span {
+      color: #ec6434;
+    }
+
+    .trabaja-hero p {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      max-width: 560px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .trabaja-hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ec6434;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      position: relative;
+    }
+
+    .trabaja-hero-cta:hover {
+      background: #d4572a;
+      transform: translateY(-2px);
+    }
+
+    /* ── Stats strip ── */
+    .trabaja-stats {
+      background: #fff;
+      border-bottom: 1px solid #e8eaf0;
+      padding: 28px 24px;
+    }
+
+    .trabaja-stats-grid {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      max-width: 800px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .trabaja-stat {
+      flex: 1;
+      min-width: 160px;
+      text-align: center;
+      padding: 12px 24px;
+      border-right: 1px solid #e8eaf0;
+    }
+
+    .trabaja-stat:last-child {
+      border-right: none;
+    }
+
+    .trabaja-stat strong {
+      display: block;
+      font-size: 2rem;
+      font-weight: 800;
+      color: #272e68;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .trabaja-stat span {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    /* ── Body layout ── */
+    .trabaja-body {
+      background: #f9fafb;
+      padding: 64px 24px;
+    }
+
+    .trabaja-body-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    /* ── Section heading ── */
+    .trabaja-section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .trabaja-section-label h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #272e68;
+      margin: 0;
+    }
+
+    .trabaja-section-label .label-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, #ec6434, transparent);
+    }
+
+    /* ── Benefits grid ── */
+    .trabaja-benefits {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 56px;
+    }
+
+    .benefit-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 24px;
+      box-shadow: 0 2px 12px rgba(39, 46, 104, 0.07);
+      border: 1px solid #e8eaf0;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(39, 46, 104, 0.12);
+    }
+
+    .benefit-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #272e68, #3a44a0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .benefit-icon i {
+      color: #fff;
+      font-size: 1.1rem;
+    }
+
+    .benefit-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #272e68;
+      margin-bottom: 8px;
+    }
+
+    .benefit-card p {
+      font-size: 0.9rem;
+      color: #6b7280;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ── Two-column layout ── */
+    .trabaja-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+
+    .trabaja-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 36px;
+      box-shadow: 0 2px 12px rgba(39, 46, 104, 0.07);
+      border: 1px solid #e8eaf0;
+    }
+
+    .trabaja-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #272e68;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .trabaja-card h3 i {
+      color: #ec6434;
+    }
+
+    .trabaja-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .trabaja-checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 0.95rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    .trabaja-checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .trabaja-checklist li::before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ec6434;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+      background-size: 12px;
+      background-repeat: no-repeat;
+      background-position: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .trabaja-card p {
+      font-size: 0.95rem;
+      color: #6b7280;
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    /* ── CTA section ── */
+    .trabaja-cta-section {
+      background: linear-gradient(135deg, #272e68, #1a2050);
+      border-radius: 20px;
+      padding: 52px 40px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .trabaja-cta-section h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .trabaja-cta-section p {
+      font-size: 1rem;
+      opacity: 0.8;
+      max-width: 480px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    .trabaja-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #ec6434;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 16px 36px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .trabaja-cta-btn:hover {
+      background: #d4572a;
+      transform: translateY(-2px);
+    }
+
+    .trabaja-cta-mail {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      opacity: 0.55;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .trabaja-two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .trabaja-stat {
+        border-right: none;
+        border-bottom: 1px solid #e8eaf0;
+        padding: 16px;
+      }
+
+      .trabaja-stat:last-child {
+        border-bottom: none;
+      }
+
+      .trabaja-cta-section {
+        padding: 40px 24px;
+      }
+
+      .trabaja-card {
+        padding: 24px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .trabaja-hero-overlay {
+        padding: 28px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="main-header" role="banner">
+    <nav class="main-nav container" aria-label="Primaria">
+      <a href="/" class="logo" aria-label="Ir al inicio">
+        <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+        <a href="catalogo.html"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+        <a href="/sucursales"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+        <a href="/nosotros"><i class="fa-solid fa-users"></i> Nosotros</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+          <div class="dropdown-menu">
+            <a href="visualizador-ia.html">Visualizador IA</a>
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
+            <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
+            <a href="calculadora-niveladores.html">Calculadora Niveladores</a>
+            <a href="calculadora-cielorraso-pvc.html">Cielorraso PVC</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
+          </div>
+        </div>
+      </div>
+
+      <button id="mobile-menu-button" class="mobile-menu-btn" aria-controls="mobile-menu" aria-expanded="false"
+        aria-label="Abrir menú">
+        <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+
+      <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
+        <a href="https://rossomateriales.netlify.app"><i class="fa-solid fa-tags"></i> Promociones</a>
+        <a href="catalogo.html"><i class="fa-solid fa-book-open"></i> Catálogo</a>
+        <a href="sucursales.html"><i class="fa-solid fa-map-location-dot"></i> Sucursales</a>
+        <a href="nosotros.html"><i class="fa-solid fa-users"></i> Nosotros</a>
+        <div class="dropdown">
+          <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
+          <div class="dropdown-menu">
+            <a href="visualizador-ia.html">Visualizador IA</a>
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
+            <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
+            <a href="calculadora-niveladores.html">Calculadora Niveladores</a>
+            <a href="calculadora-cielorraso-pvc.html">Cielorraso PVC</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="trabaja-hero">
+      <img src="assets/SLIDER/banner-trabaja.webp" alt="Trabajá con Rosso Materiales" class="trabaja-hero-img" />
+      <div class="trabaja-hero-overlay">
+        <div class="trabaja-hero-badge">
+          <i class="fa-solid fa-briefcase"></i>
+          Sumate al equipo
+        </div>
+        <h1>Construí tu futuro<br>con <span>Nosotros</span></h1>
+        <p>Somos una empresa familiar tucumana con más de 30 años en el rubro. Buscamos personas comprometidas que quieran crecer junto a nosotros.</p>
+        <a class="trabaja-hero-cta"
+          href="mailto:selecciones@rossomateriales.com.ar?subject=Postulación%20espontánea%20-%20CV">
+          <i class="fa-solid fa-envelope"></i>
+          Enviar mi CV
+        </a>
+      </div>
+    </section>
+
+    <!-- Stats strip -->
+    <div class="trabaja-stats">
+      <div class="trabaja-stats-grid">
+        <div class="trabaja-stat">
+          <strong>+30</strong>
+          <span>años de trayectoria</span>
+        </div>
+        <div class="trabaja-stat">
+          <strong>2</strong>
+          <span>provincias: Tucumán y Salta</span>
+        </div>
+        <div class="trabaja-stat">
+          <strong>+8</strong>
+          <span>sucursales activas</span>
+        </div>
+        <div class="trabaja-stat">
+          <strong>100%</strong>
+          <span>empresa familiar</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="trabaja-body">
+      <div class="trabaja-body-inner">
+
+        <!-- Benefits -->
+        <div class="trabaja-section-label">
+          <h2>¿Por qué trabajar con nosotros?</h2>
+          <div class="label-line"></div>
+        </div>
+
+        <div class="trabaja-benefits">
+          <div class="benefit-card">
+            <div class="benefit-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3>Estabilidad laboral</h3>
+            <p>Empresa sólida con más de tres décadas en el mercado y crecimiento sostenido.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <h3>Crecimiento profesional</h3>
+            <p>Posibilidades reales de desarrollo dentro de una organización en expansión.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon"><i class="fa-solid fa-people-group"></i></div>
+            <h3>Buen ambiente de trabajo</h3>
+            <p>Equipo comprometido, trato cercano y cultura de respeto en cada sucursal.</p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <h3>Presencia regional</h3>
+            <p>Operamos en Tucumán y Salta, con múltiples sucursales y oportunidades en distintas zonas.</p>
+          </div>
+        </div>
+
+        <!-- Two columns -->
+        <div class="trabaja-section-label">
+          <h2>Lo que buscamos y cómo postularse</h2>
+          <div class="label-line"></div>
+        </div>
+
+        <div class="trabaja-two-col">
+          <div class="trabaja-card">
+            <h3><i class="fa-solid fa-star"></i> ¿Qué perfil buscamos?</h3>
+            <ul class="trabaja-checklist">
+              <li>Actitud, compromiso y ganas de aprender</li>
+              <li>Orientación al cliente y trabajo en equipo</li>
+              <li>Interés en el rubro de la construcción</li>
+              <li>Responsabilidad y proactividad en el día a día</li>
+              <li>Disponibilidad horaria según el puesto</li>
+            </ul>
+          </div>
+          <div class="trabaja-card">
+            <h3><i class="fa-solid fa-circle-info"></i> ¿Cómo funciona el proceso?</h3>
+            <p>
+              Recibimos postulaciones de forma permanente. Envianos tu CV al correo de Capital Humano indicando en el
+              asunto el área o puesto de tu interés.<br><br>
+              Revisamos cada postulación y te contactamos si tu perfil coincide con una búsqueda activa o futura. No
+              hace falta que haya una oferta publicada para postularte.
+            </p>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="trabaja-cta-section">
+          <h2>¿Listo para sumarte?</h2>
+          <p>Envianos tu CV y formá parte de una empresa que apuesta al talento local tucumano y salteño.</p>
+          <a class="trabaja-cta-btn"
+            href="mailto:selecciones@rossomateriales.com.ar?subject=Postulación%20espontánea%20-%20CV">
+            <i class="fa-solid fa-envelope"></i>
+            Enviar mi CV
+          </a>
+          <p class="trabaja-cta-mail">selecciones@rossomateriales.com.ar</p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="main-footer">
+    <div class="container">
+      <p>&copy; 2025 Rosso Materiales. Todos los derechos reservados.</p>
+      <p style="margin-top:8px;font-size:0.88rem;"><a href="trabaja-con-nosotros.html"
+          style="color:var(--accent);text-decoration:none;">Trabajá con nosotros</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
