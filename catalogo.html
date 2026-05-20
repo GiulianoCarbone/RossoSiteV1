@@ -59,19 +59,28 @@
       font-family: inherit;
     }
 
+    /* ── HEADER COMPACTO (sin marquee) ─────────────── */
+    .main-header       { height: 68px; }
+    .logo-image        { height: 46px; }
+    #mobile-menu       { top: 68px; }
+    .catalog-search-bar {
+      position: sticky;
+      top: 68px;
+      z-index: 150;
+    }
+    .filter-strip      { top: 156px; }
+
     /* ── HERO SLIDER ────────────────────────────────── */
     .catalog-hero {
       background: var(--brand-d);
-      margin-top: var(--header-h, 120px);
+      margin-top: 68px;
     }
 
     .hero-slider {
       position: relative;
       width: 100%;
       overflow: hidden;
-      /* Imagen 1920×1080 — ratio 16:9, se adapta al ancho disponible */
-      aspect-ratio: 16 / 9;
-      max-height: 560px;
+      height: 420px;
     }
 
     .hero-track {
@@ -2402,8 +2411,8 @@
       }
 
       .hero-slider {
+        height: auto;
         aspect-ratio: 16 / 9;
-        max-height: none;
       }
 
       .fc-card {
@@ -2483,6 +2492,7 @@
         height: 130px;
       }
     }
+
   </style>
 </head>
 
@@ -2532,10 +2542,8 @@
 
       <!-- ✏️ Slides: reemplazá src con la imagen de la promo actual -->
       <div class="hero-track" id="hero-track">
+
         <div class="hero-slide active">
-          <img src="assets/SLIDER/banner rossosale..webp" alt="Promoción actual" />
-        </div>
-        <div class="hero-slide">
           <img src="assets/SLIDER/Slider-catalogo.jpg" alt="Promoción actual" />
         </div>
         <div class="hero-slide">

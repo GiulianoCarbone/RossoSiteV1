@@ -2016,6 +2016,33 @@
               style="margin-top:12px;font-size:0.8rem;font-weight:600;display:none;padding:8px 12px;border-radius:6px;text-align:center">
             </div>
           </div>
+
+          <!-- ── IMÁGENES DEL HERO SLIDER ── -->
+          <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.02);margin-top:16px">
+            <h3 style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px">
+              <i class="fa-solid fa-images" style="color:var(--accent)"></i> Imágenes del Hero Slider
+            </h3>
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px">Pegá la URL directa de cada imagen. Los cambios se guardan para todos los visitantes del catálogo.</p>
+
+            <div id="slider-slides-list"></div>
+
+            <button onclick="sliderAddSlide()"
+              style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--brand);background:none;border:1px dashed var(--brand);border-radius:8px;padding:8px 14px;cursor:pointer;width:100%;justify-content:center;margin-top:4px;transition:background .15s"
+              onmouseover="this.style.background='#f0f3ff'" onmouseout="this.style.background='none'">
+              <i class="fa-solid fa-plus"></i> Agregar slide
+            </button>
+
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <button onclick="guardarConfigSlider()"
+                style="background:var(--brand);color:white;border:none;border-radius:8px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;flex:1;justify-content:center;transition:background 0.2s"
+                id="btn-slider-save">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar imágenes
+              </button>
+            </div>
+            <div id="config-slider-msg"
+              style="margin-top:12px;font-size:0.8rem;font-weight:600;display:none;padding:8px 12px;border-radius:6px;text-align:center">
+            </div>
+          </div>
         </div>
       </div>
 
@@ -3219,6 +3246,7 @@
         if (filterBar) filterBar.style.display = 'none';
         if (statsBar) statsBar.style.display = 'none';
         cargarConfigOfertas();
+        cargarConfigSlider();
       }
     }
 
@@ -3324,6 +3352,111 @@
         msg.style.color = '#dc2626';
         msg.style.border = '1px solid #fecaca';
       }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       CONFIGURACIÓN — SLIDER DEL CATÁLOGO
+    ═══════════════════════════════════════════════════════════════ */
+    let sliderSlides = [];
+
+    async function cargarConfigSlider() {
+      try {
+        const doc = await db.collection('config').doc('catalogoSlider').get();
+        sliderSlides = (doc.exists && Array.isArray(doc.data().slides) && doc.data().slides.length > 0)
+          ? doc.data().slides
+          : ['', '', ''];
+      } catch (e) {
+        sliderSlides = ['', '', ''];
+      }
+      renderSliderSlides();
+    }
+
+    function renderSliderSlides() {
+      const list = document.getElementById('slider-slides-list');
+      if (!list) return;
+      list.innerHTML = sliderSlides.map((url, i) => `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px" data-idx="${i}">
+          <span style="font-size:0.72rem;color:var(--muted);font-weight:600;white-space:nowrap;min-width:50px">Slide ${i + 1}</span>
+          <input type="url" value="${escHtml(url)}" placeholder="https://..."
+            style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;outline:none;transition:border-color .2s;min-width:0"
+            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" />
+          ${sliderSlides.length > 1
+            ? `<button onclick="sliderRemoveSlide(${i})" title="Eliminar slide"
+                style="background:none;border:1px solid #fca5a5;border-radius:6px;color:#ef4444;width:28px;height:28px;font-size:0.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s"
+                onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
+                <i class="fa-solid fa-xmark"></i>
+              </button>`
+            : ''}
+        </div>
+      `).join('');
+    }
+
+    function syncSliderFromInputs() {
+      document.querySelectorAll('#slider-slides-list [data-idx]').forEach((row, i) => {
+        const val = row.querySelector('input')?.value.trim();
+        if (val !== undefined) sliderSlides[i] = val;
+      });
+    }
+
+    function sliderAddSlide() {
+      syncSliderFromInputs();
+      sliderSlides.push('');
+      renderSliderSlides();
+      const rows = document.querySelectorAll('#slider-slides-list [data-idx]');
+      if (rows.length) rows[rows.length - 1].querySelector('input')?.focus();
+    }
+
+    function sliderRemoveSlide(i) {
+      syncSliderFromInputs();
+      sliderSlides.splice(i, 1);
+      renderSliderSlides();
+    }
+
+    async function guardarConfigSlider() {
+      syncSliderFromInputs();
+      const urls = sliderSlides.filter(u => u.trim());
+      const msg = document.getElementById('config-slider-msg');
+      const btn = document.getElementById('btn-slider-save');
+
+      if (urls.length === 0) {
+        msg.textContent = 'Agregá al menos una URL de imagen.';
+        msg.style.display = 'block';
+        msg.style.background = '#fef2f2';
+        msg.style.color = '#dc2626';
+        msg.style.border = '1px solid #fecaca';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+
+      try {
+        await db.collection('config').doc('catalogoSlider').set({
+          slides: urls,
+          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        sliderSlides = urls;
+        renderSliderSlides();
+        msg.textContent = '¡Imágenes guardadas! Los cambios se verán en el catálogo.';
+        msg.style.display = 'block';
+        msg.style.background = '#f0fdf4';
+        msg.style.color = '#16a34a';
+        msg.style.border = '1px solid #bbf7d0';
+        setTimeout(() => msg.style.display = 'none', 3500);
+      } catch (e) {
+        msg.textContent = 'Error al guardar: ' + e.message;
+        msg.style.display = 'block';
+        msg.style.background = '#fef2f2';
+        msg.style.color = '#dc2626';
+        msg.style.border = '1px solid #fecaca';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar imágenes';
+      }
+    }
+
+    function escHtml(str) {
+      return String(str || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     }
 
     /* ══════════════════════════════════════════════════════════════
