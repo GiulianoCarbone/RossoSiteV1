@@ -2822,7 +2822,7 @@
       const data = {
         nombre, sku, categoria, subcategoria, marca, unidad,
         descripcion: desc,
-        precio: precio !== null ? precio : firebase.firestore.FieldValue.delete(),
+        precio: destacado && precio !== null ? precio : firebase.firestore.FieldValue.delete(),
         imagenes: imagenesModal,
         disponible, destacado,
         actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
@@ -2839,6 +2839,7 @@
           if (exists.exists) { toast(`Ya existe un producto con SKU ${sku}.`, 'error'); return; }
           data.creadoEn = firebase.firestore.FieldValue.serverTimestamp();
           data.imagenLegacy = '';
+          if (!destacado || precio === null) delete data.precio;
           await db.collection('catalogo').doc(sku).set(data);
           todosLosProductos.push({ id: sku, ...data });
           toast('Producto creado.', 'success');
@@ -3636,12 +3637,6 @@
       }
     });
 
-    // Cerrar modal haciendo click fuera
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-      overlay.addEventListener('click', e => {
-        if (e.target === overlay) { cerrarModal(); cerrarConfirm(); }
-      });
-    });
   </script>
 </body>
 
