@@ -2183,6 +2183,38 @@
     </div>
   </nav>
 
+  <!-- MODAL: CAMBIAR SKU -->
+  <div class="modal-overlay" id="modal-sku" style="z-index:1100">
+    <div class="modal" style="max-width:420px">
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-barcode"></i> Cambiar SKU</h2>
+        <button class="modal-close" onclick="cerrarModalSku()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div style="padding:24px">
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:16px">
+          SKU actual: <strong id="sku-actual-label" style="color:var(--text)"></strong>
+        </p>
+        <label style="display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:6px">Nuevo SKU</label>
+        <input id="input-nuevo-sku" type="text" placeholder="Ingresá el nuevo SKU"
+          style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color .2s"
+          onfocus="this.style.borderColor='var(--brand)'"
+          onblur="this.style.borderColor='var(--border)'"
+          onkeydown="if(event.key==='Enter')confirmarCambioSku()" />
+        <div id="sku-error" style="color:#dc2626;font-size:.78rem;margin-top:6px;display:none"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+          <button onclick="cerrarModalSku()"
+            style="padding:9px 20px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--text);font-size:.85rem;font-weight:600;cursor:pointer">
+            Cancelar
+          </button>
+          <button onclick="confirmarCambioSku()"
+            style="padding:9px 20px;border:none;border-radius:8px;background:var(--brand);color:white;font-size:.85rem;font-weight:600;cursor:pointer">
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: AGREGAR / EDITAR -->
   <div class="modal-overlay" id="modal-producto">
     <div class="modal">
@@ -2747,16 +2779,32 @@
       document.getElementById('modal-producto').classList.remove('open');
     }
 
-    async function cambiarSku() {
+    function cambiarSku() {
+      document.getElementById('sku-actual-label').textContent = editandoId;
+      document.getElementById('input-nuevo-sku').value = '';
+      document.getElementById('sku-error').style.display = 'none';
+      document.getElementById('modal-sku').classList.add('open');
+      setTimeout(() => document.getElementById('input-nuevo-sku').focus(), 100);
+    }
+
+    function cerrarModalSku() {
+      document.getElementById('modal-sku').classList.remove('open');
+    }
+
+    async function confirmarCambioSku() {
       const skuActual = editandoId;
-      const nuevoSku = prompt(`SKU actual: ${skuActual}\n\nIngresá el nuevo SKU:`);
-      if (!nuevoSku || nuevoSku.trim() === '' || nuevoSku.trim() === skuActual) return;
-      const sku = nuevoSku.trim();
+      const nuevoSku = document.getElementById('input-nuevo-sku').value.trim();
+      const errorEl = document.getElementById('sku-error');
 
+      if (!nuevoSku) { errorEl.textContent = 'Ingresá un SKU.'; errorEl.style.display = 'block'; return; }
+      if (nuevoSku === skuActual) { errorEl.textContent = 'El SKU es igual al actual.'; errorEl.style.display = 'block'; return; }
+      errorEl.style.display = 'none';
+
+      const sku = nuevoSku;
       const existe = await db.collection('catalogo').doc(sku).get();
-      if (existe.exists) { toast(`Ya existe un producto con SKU ${sku}.`, 'error'); return; }
+      if (existe.exists) { errorEl.textContent = `Ya existe un producto con SKU ${sku}.`; errorEl.style.display = 'block'; return; }
 
-      if (!confirm(`¿Renombrar SKU "${skuActual}" → "${sku}"?\n\nEsto crea el producto con el nuevo SKU y elimina el anterior.`)) return;
+      cerrarModalSku();
 
       try {
         const docActual = await db.collection('catalogo').doc(skuActual).get();
@@ -2785,13 +2833,28 @@
         return;
       }
       list.innerHTML = imagenesModal.map((pid, i) => `
-      <div class="img-thumb-wrap">
+      <div class="img-thumb-wrap" style="position:relative">
         <img class="img-thumb"
           src="${cloudinaryUrl(pid, 'w_160,h_160,c_fill,f_auto,q_auto:eco,fl_lossy')}"
           alt="Imagen ${i + 1}"
           onerror="this.src=''" />
         <button class="remove-img" onclick="removerImagen(${i})">×</button>
+        ${i === 0
+          ? `<span title="Imagen de portada" style="position:absolute;bottom:4px;left:4px;background:#f59e0b;color:white;font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:999px;pointer-events:none">
+               <i class="fa-solid fa-star" style="font-size:.55rem"></i> Portada
+             </span>`
+          : `<button onclick="setPrincipal(${i})" title="Usar como portada"
+               style="position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,0.55);color:white;font-size:.6rem;font-weight:600;padding:2px 7px;border-radius:999px;border:none;cursor:pointer;backdrop-filter:blur(2px)">
+               <i class="fa-regular fa-star" style="font-size:.55rem"></i> Portada
+             </button>`
+        }
       </div>`).join('');
+    }
+
+    function setPrincipal(idx) {
+      const [img] = imagenesModal.splice(idx, 1);
+      imagenesModal.unshift(img);
+      renderImagenesModal();
     }
 
     function removerImagen(idx) {
