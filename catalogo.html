@@ -552,7 +552,10 @@
     .fc-img {
       width: 100%;
       height: 190px;
-      object-fit: cover;
+      object-fit: contain;
+      background: #ffffff;
+      padding: 8px;
+      box-sizing: border-box;
       display: block;
       transition: transform .5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
@@ -1043,6 +1046,9 @@
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
+      border-radius: 10px;
+      margin: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
     }
 
     .prod-img {
@@ -1050,12 +1056,11 @@
       height: 200px;
       object-fit: cover;
       display: block;
-      background: #f3f4f6;
-      transition: transform .35s ease;
+      background: #ffffff;
     }
 
     .prod-card:hover .prod-img {
-      transform: scale(1.04);
+      opacity: 0.9;
     }
 
     .prod-img-placeholder {
@@ -1081,6 +1086,7 @@
       width: 100%;
       height: 200px;
       overflow: hidden;
+      border-radius: 10px;
     }
 
     .prod-img-track {
@@ -1109,6 +1115,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      background: #ffffff;
     }
 
     .prod-slider-btn {
@@ -1270,8 +1277,8 @@
     }
 
     .prod-name {
-      font-size: 0.95rem;
-      font-weight: 700;
+      font-size: 0.84rem;
+      font-weight: 600;
       color: #374151;
       line-height: 1.35;
       margin-bottom: 4px;
@@ -1359,9 +1366,10 @@
     #product-grid.list-view .prod-img {
       width: 120px;
       height: 110px;
-      object-fit: cover;
+      object-fit: contain;
       border-radius: 0;
       aspect-ratio: unset;
+      padding: 4px;
     }
 
     #product-grid.list-view .prod-img-placeholder {
@@ -1644,7 +1652,7 @@
 
     /* Gallery */
     .modal-gallery {
-      background: #f3f4f6;
+      background: #ffffff;
       position: relative;
       min-height: 360px;
       display: flex;
@@ -2922,13 +2930,13 @@
     /* ══════════════════════════════════════════════════════════
        CLOUDINARY
     ══════════════════════════════════════════════════════════ */
-    function cdnUrl(publicId, opts = 'w_280,h_280,c_fill,f_auto,q_auto:eco,fl_lossy') {
+    function cdnUrl(publicId, opts = 'w_280,h_280,c_fit,f_auto,q_auto:eco,fl_lossy') {
       return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/upload/${opts}/${publicId}`;
     }
     function getImgSrc(p, size = 'card') {
       if (p.imagenes && p.imagenes.length > 0) {
         const opts = size === 'card'
-          ? 'w_280,h_210,c_fill,f_auto,q_auto:eco,fl_lossy'
+          ? 'w_280,h_210,c_fit,f_auto,q_auto:eco,fl_lossy'
           : 'w_520,h_440,c_fit,f_auto,q_auto:good,fl_lossy';
         return cdnUrl(p.imagenes[0], opts);
       }
@@ -2954,7 +2962,7 @@
         const dots = p.imagenes.map((_, i) => `<div class="prod-slider-dot${i === 0 ? ' active' : ''}"></div>`).join('');
         const slides = p.imagenes.map(pid => `
           <div class="prod-img-slide">
-            <img src="${cdnUrl(pid, 'w_280,h_210,c_fill,f_auto,q_auto:eco,fl_lossy')}" alt="${esc(p.nombre)}" loading="lazy">
+            <img src="${cdnUrl(pid, 'w_280,h_210,c_fit,f_auto,q_auto:eco,fl_lossy')}" alt="${esc(p.nombre)}" loading="lazy">
           </div>
         `).join('');
 
