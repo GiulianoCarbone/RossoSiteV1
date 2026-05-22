@@ -2977,12 +2977,11 @@
         </div>
         <div class="fc-body">
           <div class="fc-name">${esc(p.nombre)}</div>
-          <div class="fc-cat">${esc(catLabel || 'Sin categoría')}</div>
           ${p.precio != null ? `<div class="fc-price">$${Number(p.precio).toLocaleString('es-AR')}</div>` : ''}
           <button class="fc-btn${added ? ' added' : ''}"
             onclick="event.preventDefault(); event.stopPropagation(); agregarALista('${esc(p.sku)}')">
             <i class="fa-solid ${added ? 'fa-check' : 'fa-plus'}"></i>
-            ${added ? 'En tu lista' : 'Agregar'}
+            ${added ? 'En tu lista' : 'Agregar a lista'}
           </button>
         </div>
       </a>`;
