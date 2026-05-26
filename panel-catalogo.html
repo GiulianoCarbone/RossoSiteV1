@@ -2024,7 +2024,7 @@
           <!-- ── IMÁGENES DEL HERO SLIDER ── -->
           <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.02);margin-top:16px">
             <h3 style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px">
-              <i class="fa-solid fa-images" style="color:var(--accent)"></i> Imágenes del Hero Slider
+              <i class="fa-solid fa-desktop" style="color:var(--accent)"></i> Imágenes del Hero Slider — Desktop
             </h3>
             <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px">Pegá la URL directa de cada imagen. Los cambios se guardan para todos los visitantes del catálogo.</p>
 
@@ -2047,6 +2047,34 @@
               style="margin-top:12px;font-size:0.8rem;font-weight:600;display:none;padding:8px 12px;border-radius:6px;text-align:center">
             </div>
           </div>
+
+          <!-- ── IMÁGENES DEL HERO SLIDER — MOBILE ── -->
+          <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.02);margin-top:16px">
+            <h3 style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px">
+              <i class="fa-solid fa-mobile-screen" style="color:var(--accent)"></i> Imágenes del Hero Slider — Mobile
+            </h3>
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px">Imágenes para dispositivos móviles. Se muestran solo en pantallas pequeñas (formato vertical recomendado).</p>
+
+            <div id="slider-slides-list-mobile"></div>
+
+            <button onclick="sliderAddSlideMobile()"
+              style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--brand);background:none;border:1px dashed var(--brand);border-radius:8px;padding:8px 14px;cursor:pointer;width:100%;justify-content:center;margin-top:4px;transition:background .15s"
+              onmouseover="this.style.background='#f0f3ff'" onmouseout="this.style.background='none'">
+              <i class="fa-solid fa-plus"></i> Agregar slide mobile
+            </button>
+
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <button onclick="guardarConfigSliderMobile()"
+                style="background:var(--brand);color:white;border:none;border-radius:8px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;flex:1;justify-content:center;transition:background 0.2s"
+                id="btn-slider-save-mobile">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar imágenes mobile
+              </button>
+            </div>
+            <div id="config-slider-msg-mobile"
+              style="margin-top:12px;font-size:0.8rem;font-weight:600;display:none;padding:8px 12px;border-radius:6px;text-align:center">
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -3426,17 +3454,22 @@
        CONFIGURACIÓN — SLIDER DEL CATÁLOGO
     ═══════════════════════════════════════════════════════════════ */
     let sliderSlides = [];
+    let sliderSlidesMobile = [];
 
     async function cargarConfigSlider() {
       try {
         const doc = await db.collection('config').doc('catalogoSlider').get();
-        sliderSlides = (doc.exists && Array.isArray(doc.data().slides) && doc.data().slides.length > 0)
-          ? doc.data().slides
-          : ['', '', ''];
+        const data = doc.exists ? doc.data() : {};
+        sliderSlides = (Array.isArray(data.slides) && data.slides.length > 0)
+          ? data.slides : ['', '', ''];
+        sliderSlidesMobile = (Array.isArray(data.slidesMobile) && data.slidesMobile.length > 0)
+          ? data.slidesMobile : ['', '', ''];
       } catch (e) {
         sliderSlides = ['', '', ''];
+        sliderSlidesMobile = ['', '', ''];
       }
       renderSliderSlides();
+      renderSliderSlidesMobile();
     }
 
     function renderSliderSlides() {
@@ -3520,6 +3553,91 @@
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar imágenes';
+      }
+    }
+
+    /* — MOBILE SLIDER — */
+    function renderSliderSlidesMobile() {
+      const list = document.getElementById('slider-slides-list-mobile');
+      if (!list) return;
+      list.innerHTML = sliderSlidesMobile.map((url, i) => `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px" data-idx="${i}">
+          <span style="font-size:0.72rem;color:var(--muted);font-weight:600;white-space:nowrap;min-width:50px">Slide ${i + 1}</span>
+          <input type="url" value="${escHtml(url)}" placeholder="https://..."
+            style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;outline:none;transition:border-color .2s;min-width:0"
+            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" />
+          ${sliderSlidesMobile.length > 1
+            ? `<button onclick="sliderRemoveSlideMobile(${i})" title="Eliminar slide"
+                style="background:none;border:1px solid #fca5a5;border-radius:6px;color:#ef4444;width:28px;height:28px;font-size:0.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s"
+                onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
+                <i class="fa-solid fa-xmark"></i>
+              </button>`
+            : ''}
+        </div>
+      `).join('');
+    }
+
+    function syncSliderMobileFromInputs() {
+      document.querySelectorAll('#slider-slides-list-mobile [data-idx]').forEach((row, i) => {
+        const val = row.querySelector('input')?.value.trim();
+        if (val !== undefined) sliderSlidesMobile[i] = val;
+      });
+    }
+
+    function sliderAddSlideMobile() {
+      syncSliderMobileFromInputs();
+      sliderSlidesMobile.push('');
+      renderSliderSlidesMobile();
+      const rows = document.querySelectorAll('#slider-slides-list-mobile [data-idx]');
+      if (rows.length) rows[rows.length - 1].querySelector('input')?.focus();
+    }
+
+    function sliderRemoveSlideMobile(i) {
+      syncSliderMobileFromInputs();
+      sliderSlidesMobile.splice(i, 1);
+      renderSliderSlidesMobile();
+    }
+
+    async function guardarConfigSliderMobile() {
+      syncSliderMobileFromInputs();
+      const urls = sliderSlidesMobile.filter(u => u.trim());
+      const msg = document.getElementById('config-slider-msg-mobile');
+      const btn = document.getElementById('btn-slider-save-mobile');
+
+      if (urls.length === 0) {
+        msg.textContent = 'Agregá al menos una URL de imagen.';
+        msg.style.display = 'block';
+        msg.style.background = '#fef2f2';
+        msg.style.color = '#dc2626';
+        msg.style.border = '1px solid #fecaca';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+
+      try {
+        await db.collection('config').doc('catalogoSlider').set(
+          { slidesMobile: urls, actualizadoEn: firebase.firestore.FieldValue.serverTimestamp() },
+          { merge: true }
+        );
+        sliderSlidesMobile = urls;
+        renderSliderSlidesMobile();
+        msg.textContent = '¡Imágenes mobile guardadas!';
+        msg.style.display = 'block';
+        msg.style.background = '#f0fdf4';
+        msg.style.color = '#16a34a';
+        msg.style.border = '1px solid #bbf7d0';
+        setTimeout(() => msg.style.display = 'none', 3500);
+      } catch (e) {
+        msg.textContent = 'Error al guardar: ' + e.message;
+        msg.style.display = 'block';
+        msg.style.background = '#fef2f2';
+        msg.style.color = '#dc2626';
+        msg.style.border = '1px solid #fecaca';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar imágenes mobile';
       }
     }
 
