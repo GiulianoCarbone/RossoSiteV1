@@ -70,17 +70,24 @@
     }
     .filter-strip      { top: 156px; }
 
-    /* ── HERO SLIDER ────────────────────────────────── */
+    /* ── HERO SLIDER (Floating Card Style) ────────────────── */
     .catalog-hero {
-      background: var(--brand-d);
+      background: var(--bg);
+      padding: 24px 0 12px;
       margin-top: 68px;
     }
 
     .hero-slider {
       position: relative;
-      width: 100%;
+      width: 90%;
+      max-width: 1500px;
+      margin: 0 auto;
       overflow: hidden;
-      height: 420px;
+      height: auto;
+      aspect-ratio: 1728 / 576;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      background: #ffffff;
     }
 
     .hero-track {
@@ -2368,6 +2375,9 @@
       .hero-slider {
         height: auto;
         aspect-ratio: 16 / 9;
+        width: 100%;
+        border-radius: 0;
+        box-shadow: none;
       }
 
       .fc-card {
@@ -2390,6 +2400,7 @@
 
       .catalog-hero {
         margin-top: 0;
+        padding: 0;
       }
     }
 
@@ -2512,18 +2523,7 @@
     <div class="hero-slider" id="hero-slider">
 
       <!-- ✏️ Slides: reemplazá src con la imagen de la promo actual -->
-      <div class="hero-track" id="hero-track">
-
-        <div class="hero-slide active">
-          <img src="assets/SLIDER/Slider-catalogo.jpg" alt="Promoción actual" />
-        </div>
-        <div class="hero-slide">
-          <img src="assets/SLIDER/Slider-catalogo1.jpg" alt="Promoción actual" />
-        </div>
-        <div class="hero-slide">
-          <img src="assets/SLIDER/Slider-catalogo2.jpg" alt="Promoción actual" />
-        </div>
-      </div>
+      <div class="hero-track" id="hero-track"></div>
       <!-- Controles -->
       <button class="slider-arrow prev" onclick="heroSlide(-1)" aria-label="Anterior">
         <i class="fa-solid fa-chevron-left"></i>
@@ -2949,36 +2949,65 @@
     /* ══════════════════════════════════════════════════════════
        HERO SLIDER
     ══════════════════════════════════════════════════════════ */
-    (function () {
-      const slides = document.querySelectorAll('.hero-slide');
+    async function cargarHeroSlider() {
+      const track = document.getElementById('hero-track');
       const dotsEl = document.getElementById('hero-dots');
+      if (!track || !dotsEl) return;
+
+      const FALLBACK = [
+        'assets/SLIDER/Slider-catalogo.jpg',
+        'assets/SLIDER/Slider-catalogo1.jpg',
+        'assets/SLIDER/Slider-catalogo2.jpg'
+      ];
+
+      let urls = [];
+      try {
+        const doc = await db.collection('config').doc('catalogoSlider').get();
+        if (doc.exists) {
+          const data = doc.data();
+          const isMobile = window.innerWidth < 768;
+          const mobileUrls = (data.slidesMobile || []).filter(u => u.trim());
+          const desktopUrls = (data.slides || []).filter(u => u.trim());
+          urls = (isMobile && mobileUrls.length > 0) ? mobileUrls : desktopUrls;
+        }
+      } catch (e) {}
+
+      if (urls.length === 0) urls = FALLBACK;
+
+      track.innerHTML = urls.map((url, i) => `
+        <div class="hero-slide${i === 0 ? ' active' : ''}">
+          <img src="${url}" alt="Slide ${i + 1}" loading="${i === 0 ? 'eager' : 'lazy'}" />
+        </div>
+      `).join('');
+
+      const slides = track.querySelectorAll('.hero-slide');
+      dotsEl.innerHTML = '';
       let current = 0;
       let timer;
 
-      // Crear dots
       slides.forEach((_, i) => {
         const d = document.createElement('button');
         d.className = 'slider-dot' + (i === 0 ? ' active' : '');
         d.setAttribute('aria-label', `Slide ${i + 1}`);
-        d.onclick = () => goTo(i);
+        d.onclick = () => { goTo(i); resetTimer(); };
         dotsEl.appendChild(d);
       });
 
       function goTo(n) {
-        dotsEl.children[current].classList.remove('active');
+        if (dotsEl.children[current]) dotsEl.children[current].classList.remove('active');
         current = (n + slides.length) % slides.length;
-        dotsEl.children[current].classList.add('active');
-        document.getElementById('hero-track').style.transform = `translateX(-${current * 100}%)`;
+        if (dotsEl.children[current]) dotsEl.children[current].classList.add('active');
+        track.style.transform = `translateX(-${current * 100}%)`;
       }
 
-      function next() { goTo(current + 1); }
-
-      function resetTimer() { clearInterval(timer); timer = setInterval(next, 5000); }
+      function resetTimer() { clearInterval(timer); timer = setInterval(() => goTo(current + 1), 5000); }
 
       window.heroSlide = function (dir) { goTo(current + dir); resetTimer(); };
 
       resetTimer();
-    })();
+    }
+
+    cargarHeroSlider();
 
     /* ══════════════════════════════════════════════════════════
        CARRUSEL DESTACADOS
