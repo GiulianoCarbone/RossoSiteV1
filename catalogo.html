@@ -1877,6 +1877,94 @@
       background: #16a34a;
     }
 
+    /* Suggestions in Product Modal */
+    .modal-suggestions {
+      padding: 24px 28px 28px;
+      border-top: 1px solid #e5e7eb;
+      background: #fafafa;
+    }
+
+    .suggestions-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--brand);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .suggestions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .suggestion-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .suggestion-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border-color: var(--brand);
+    }
+
+    .suggestion-img-wrap {
+      width: 100%;
+      aspect-ratio: 4/3;
+      margin-bottom: 8px;
+      background: #f9fafb;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .suggestion-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .suggestion-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #374151;
+      line-height: 1.3;
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      height: 2.6em;
+    }
+
+    .suggestion-price {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: auto;
+    }
+
+    .suggestion-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: #d1d5db;
+      width: 100%;
+      height: 100%;
+    }
+
     /* ── QUOTE PANEL ────────────────────────────────── */
     .quote-panel {
       position: fixed;
@@ -2419,6 +2507,15 @@
         grid-template-columns: 1fr;
       }
 
+      .suggestions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .modal-suggestions {
+        padding: 16px;
+      }
+
       .modal-gallery {
         min-height: auto;
       }
@@ -2725,6 +2822,11 @@
             <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp
           </a>
         </div>
+      </div>
+      <!-- Sugerencias -->
+      <div class="modal-suggestions" id="modal-suggestions-section" style="display:none">
+        <h4 class="suggestions-title">Productos recomendados</h4>
+        <div class="suggestions-grid" id="m-sugerencias"></div>
       </div>
     </div>
   </div>
@@ -3543,8 +3645,75 @@
       document.getElementById('modal-btn-wp').href = `https://wa.me/${WA_NUMBER}?text=${wpMsg}`;
       document.getElementById('modal-btn-full').href = `producto.html?sku=${encodeURIComponent(p.sku)}`;
 
+      // Cargar sugerencias de productos
+      cargarSugerencias(p);
+
       document.getElementById('product-modal').classList.add('open');
       document.body.style.overflow = 'hidden';
+    }
+
+    function cargarSugerencias(p) {
+      const sugerenciasWrap = document.getElementById('m-sugerencias');
+      const sugerenciasSection = document.getElementById('modal-suggestions-section');
+      if (!sugerenciasWrap || !sugerenciasSection) return;
+
+      let sugeridos = [];
+
+      // Prioridad 1: Misma subcategoría y categoría (excluyendo el producto actual)
+      if (p.categoria || p.subcategoria) {
+        sugeridos = todosLosProductos.filter(x => 
+          x.sku !== p.sku && 
+          x.categoria === p.categoria && 
+          x.subcategoria === p.subcategoria
+        );
+      }
+
+      // Prioridad 2: Misma categoría (excluyendo el producto actual y los ya sugeridos)
+      if (sugeridos.length < 4 && p.categoria) {
+        const extraMismaCat = todosLosProductos.filter(x => 
+          x.sku !== p.sku && 
+          x.categoria === p.categoria && 
+          !sugeridos.some(s => s.sku === x.sku)
+        );
+        sugeridos = sugeridos.concat(extraMismaCat);
+      }
+
+      // Prioridad 3: Otros productos (destacados primero, excluyendo el producto actual y los ya sugeridos)
+      if (sugeridos.length < 4) {
+        const extraOtros = todosLosProductos.filter(x => 
+          x.sku !== p.sku && 
+          !sugeridos.some(s => s.sku === x.sku)
+        ).sort((a, b) => (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0));
+        sugeridos = sugeridos.concat(extraOtros);
+      }
+
+      // Limitar a máximo 4 sugerencias
+      sugeridos = sugeridos.slice(0, 4);
+
+      if (sugeridos.length === 0) {
+        sugerenciasSection.style.display = 'none';
+        return;
+      }
+      sugerenciasSection.style.display = 'block';
+
+      sugerenciasWrap.innerHTML = sugeridos.map(s => {
+        const hasImg = s.imagenes && s.imagenes.length > 0;
+        const imgUrl = hasImg ? cdnUrl(s.imagenes[0], 'w_150,h_112,c_fit,f_auto,q_auto:eco,fl_lossy') : (s.imagenLegacy || '');
+        const imgHtml = imgUrl 
+          ? `<img src="${esc(imgUrl)}" alt="${esc(s.nombre)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          : '';
+        
+        return `
+        <div class="suggestion-card" onclick="abrirModal('${esc(s.sku)}'); document.getElementById('product-modal').scrollTop = 0;">
+          <div class="suggestion-img-wrap">
+            ${imgHtml}
+            <div class="suggestion-placeholder" style="${imgUrl ? 'display:none' : 'display:flex'}"><i class="fa-solid fa-image"></i></div>
+          </div>
+          <div class="suggestion-name">${esc(s.nombre)}</div>
+          ${s.precio != null ? `<div class="suggestion-price">$ ${Number(s.precio).toLocaleString('es-AR')}</div>` : ''}
+        </div>
+        `;
+      }).join('');
     }
 
     function cambiarImagen(pid, thumbEl) {
@@ -3562,6 +3731,11 @@
       document.getElementById('product-modal').classList.remove('open');
       document.body.style.overflow = '';
       productoModal = null;
+      // Limpiar sugerencias
+      const sugerenciasWrap = document.getElementById('m-sugerencias');
+      const sugerenciasSection = document.getElementById('modal-suggestions-section');
+      if (sugerenciasWrap) sugerenciasWrap.innerHTML = '';
+      if (sugerenciasSection) sugerenciasSection.style.display = 'none';
     }
 
     function changeQty(delta) {
