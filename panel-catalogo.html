@@ -2081,14 +2081,25 @@
       <!-- VISTA ESTADÍSTICAS -->
       <div class="grid-area" id="view-stats" style="display:none">
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
           <h2 style="font-size:1.1rem;font-weight:700;color:var(--brand)">Dashboard de Rendimiento</h2>
-          <select id="stats-date-range" onchange="initStatsCharts()"
-            style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; font-family: inherit; cursor:pointer">
-            <option value="7" selected>Últimos 7 días</option>
-            <option value="15">Últimos 15 días</option>
-            <option value="30">Últimos 30 días</option>
-          </select>
+          <div style="display:flex; align-items:center; gap: 8px; flex-wrap: wrap;">
+            <select id="stats-date-range" onchange="initStatsCharts()"
+              style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; font-family: inherit; cursor:pointer">
+              <option value="7" selected>Últimos 7 días</option>
+              <option value="15">Últimos 15 días</option>
+              <option value="30">Últimos 30 días</option>
+              <option value="custom">Personalizado...</option>
+            </select>
+            
+            <div id="custom-date-container" style="display:none; align-items:center; gap: 6px;">
+              <input type="date" id="stats-start-date" onchange="initStatsCharts()"
+                style="padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; font-family: inherit; cursor:pointer" />
+              <span style="font-size:0.8rem; color:var(--muted)">al</span>
+              <input type="date" id="stats-end-date" onchange="initStatsCharts()"
+                style="padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; font-family: inherit; cursor:pointer" />
+            </div>
+          </div>
         </div>
 
         <div class="stats-grid">
@@ -3650,15 +3661,84 @@
     ═══════════════════════════════════════════════════════════════ */
     let visitsChartInstance = null;
 
+    function toggleCustomDateRange() {
+      const select = document.getElementById('stats-date-range');
+      const container = document.getElementById('custom-date-container');
+      if (!select || !container) return;
+      if (select.value === 'custom') {
+        container.style.display = 'flex';
+      } else {
+        container.style.display = 'none';
+      }
+    }
+
     async function initStatsCharts() {
       const ctx = document.getElementById('visitsChart')?.getContext('2d');
       if (!ctx) return;
 
+      toggleCustomDateRange();
+
       const daysSelect = document.getElementById('stats-date-range');
-      const days = daysSelect ? parseInt(daysSelect.value) : 7;
+      const isCustom = daysSelect && daysSelect.value === 'custom';
+
+      let lastXDays = [];
+      const labels = [];
+      const dataVisits = [];
+      let subtitleText = '';
+
+      if (isCustom) {
+        let startVal = document.getElementById('stats-start-date').value;
+        let endVal = document.getElementById('stats-end-date').value;
+
+        if (!startVal || !endVal) {
+          const today = new Date();
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(today.getDate() - 30);
+          
+          startVal = thirtyDaysAgo.toISOString().split('T')[0];
+          endVal = today.toISOString().split('T')[0];
+          
+          document.getElementById('stats-start-date').value = startVal;
+          document.getElementById('stats-end-date').value = endVal;
+        }
+
+        const start = new Date(startVal + "T00:00:00");
+        const end = new Date(endVal + "T00:00:00");
+
+        if (start > end) {
+          toast('La fecha de inicio no puede ser posterior a la de fin.', 'error');
+          return;
+        }
+
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        if (diffDays > 90) {
+          toast('El rango máximo permitido es de 90 días.', 'error');
+          return;
+        }
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          lastXDays.push(d.toISOString().split('T')[0]);
+          labels.push(d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' }));
+        }
+
+        const formatF = (dateObj) => dateObj.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        subtitleText = `Desde ${formatF(start)} hasta ${formatF(end)}`;
+      } else {
+        const days = daysSelect ? parseInt(daysSelect.value) : 7;
+        subtitleText = `Últimos ${days} días`;
+
+        const now = new Date();
+        for (let i = days - 1; i >= 0; i--) {
+          const d = new Date(now);
+          d.setDate(d.getDate() - i);
+          lastXDays.push(d.toISOString().split('T')[0]);
+          labels.push(d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' }));
+        }
+      }
 
       const subtitleEl = document.getElementById('stats-subtitle-visitas');
-      if (subtitleEl) subtitleEl.textContent = `Últimos ${days} días`;
+      if (subtitleEl) subtitleEl.textContent = subtitleText;
 
       try {
         // 1. Obtener Top Productos (Histórico)
@@ -3681,20 +3761,7 @@
           topListEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:0.85rem">No hay datos suficientes aún.</div>';
         }
 
-        // 2. Obtener Datos Diarios para el Gráfico y Sumas (últimos X días)
-        const labels = [];
-        const dataVisits = [];
-        const now = new Date();
-
-        // Generamos los últimos X días
-        const lastXDays = [];
-        for (let i = days - 1; i >= 0; i--) {
-          const d = new Date(now);
-          d.setDate(d.getDate() - i);
-          lastXDays.push(d.toISOString().split('T')[0]);
-          labels.push(d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' }));
-        }
-
+        // 2. Obtener Datos Diarios para el Gráfico y Sumas (últimos X días o rango personalizado)
         // Consultamos todos los días
         const dailyPromises = lastXDays.map(date => db.collection('analytics_daily').doc(date).get());
         const dailySnaps = await Promise.all(dailyPromises);
