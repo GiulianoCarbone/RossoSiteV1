@@ -111,6 +111,10 @@
       display: block;
     }
 
+    .hero-slider.desktop-fallback {
+      aspect-ratio: 1728 / 576;
+    }
+
     /* Flechas — sobre fondo blanco semitransparente, se ven sobre cualquier imagen */
     .slider-arrow {
       position: absolute;
@@ -3091,7 +3095,11 @@
           const isMobile = window.innerWidth < 768;
           const mobileUrls = (data.slidesMobile || []).filter(u => u.trim());
           const desktopUrls = (data.slides || []).filter(u => u.trim());
-          urls = (isMobile && mobileUrls.length > 0) ? mobileUrls : desktopUrls;
+          const usingMobile = isMobile && mobileUrls.length > 0;
+          urls = usingMobile ? mobileUrls : desktopUrls;
+          if (isMobile && !usingMobile) {
+            document.getElementById('hero-slider').classList.add('desktop-fallback');
+          }
         }
       } catch (e) {}
 
