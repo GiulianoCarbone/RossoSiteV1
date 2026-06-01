@@ -3546,7 +3546,7 @@
         await db.collection('config').doc('catalogoSlider').set({
           slides: urls,
           actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        }, { merge: true });
         sliderSlides = urls;
         renderSliderSlides();
         msg.textContent = '¡Imágenes guardadas! Los cambios se verán en el catálogo.';
