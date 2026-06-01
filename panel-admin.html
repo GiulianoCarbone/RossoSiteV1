@@ -797,7 +797,7 @@
                         <form id="contest-countdown-form">
                             <div class="input-group">
                                 <label>Fecha de Finalización</label>
-                                <input type="datetime-local" id="contest-countdown-date" value="2026-04-30T23:59" required>
+                                <input type="datetime-local" id="contest-countdown-date" value="2026-06-30T23:59" required>
                             </div>
                             <button type="submit" style="margin-top: 10px;">Guardar Fecha</button>
                         </form>
@@ -809,17 +809,15 @@
                     <h3><i class="fa-solid fa-file-contract"></i> Bases del Concurso</h3>
                     <form id="contest-terms-form">
                         <div class="input-group">
-                            <label>Título (Ej: Desafío Isolant 🏆)</label>
-                            <input type="text" id="contest-terms-title" value="Desafío Isolant 🏆" required>
+                            <label>Título (Ej: Tromen mundial 🏆)</label>
+                            <input type="text" id="contest-terms-title" value="Tromen mundial 🏆" required>
                         </div>
                         <div class="input-group">
                             <label>Contenido</label>
-                            <textarea id="contest-terms-content" rows="6" required>Mecánica: Se dividirá a las sucursales en categorías A y B, de ambas categorías saldrá un ganador, este será el que logre vender más unidades de la marca ISOLANT, en el mes.
+                            <textarea id="contest-terms-content" rows="6" required>Mecánica: Se agruparán todas las unidades mencionadas con anterioridad, el premio será otorgado a la persona que venda más equipos de la lista express en liquidación.
 Mínimo de Clasificación: Barrera de entrada sin mínimos.
-IMPORTANTE: Participan solo marca ISOLANT, NO PARTICIPA LINEA RUFI.
-CATEGORIA A: Monteros, Concepcion, Manantial y Salta.
-CATEGORIA B: Aguilares, Famailla, Metan y Tafi del Valle.
-PREMIO: 1 Parlante JBL portátil.</textarea>
+IMPORTANTE: Participan todos los modelos de la lista express - con la excepción de los aerosoles y ladrillos refractarios, los mismos no computan.
+PREMIO: 1 kit disco enlozado.</textarea>
                         </div>
                         <button type="submit" style="margin-top: 10px;">Guardar Bases</button>
                     </form>
@@ -870,16 +868,11 @@ PREMIO: 1 Parlante JBL portátil.</textarea>
 
                     <div id="winners-config-fields" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
                         <h4 style="margin-bottom: 15px; color: var(--brand);">Configuración de Ganadores</h4>
-                        
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; background: #f0fdf4; padding: 10px; border-radius: 8px; border: 1px solid #dcfce7;">
-                            <input type="checkbox" id="show-winners-btn" style="width: 20px; height: 20px; cursor: pointer;">
-                            <label for="show-winners-btn" style="margin: 0; cursor: pointer; font-weight: 700; color: #166534;">Mostrar Botón "Ver Ganadores"</label>
-                        </div>
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <!-- Winner A Details -->
                             <div style="background: #eff6ff; padding: 15px; border-radius: 8px; border: 1px solid #dbeafe;">
-                                <h5 style="color: #1e40af; margin-bottom: 10px; font-weight: 800;">GANADOR CATEGORÍA A</h5>
+                                <h5 style="color: #1e40af; margin-bottom: 10px; font-weight: 800;">GANADOR GENERAL (CATEGORÍA A)</h5>
                                 <div class="input-group">
                                     <label>Nombre del Ganador</label>
                                     <input type="text" id="winner-a-name" placeholder="Ej: Juan Pérez">
@@ -894,20 +887,20 @@ PREMIO: 1 Parlante JBL portátil.</textarea>
                                 </div>
                             </div>
 
-                            <!-- Winner B Details -->
-                            <div style="background: #fdf2f8; padding: 15px; border-radius: 8px; border: 1px solid #fce7f3;">
-                                <h5 style="color: #9d174d; margin-bottom: 10px; font-weight: 800;">GANADOR CATEGORÍA B</h5>
+                            <!-- Winner B Details (Disabled for single category) -->
+                            <div style="background: #fdf2f8; padding: 15px; border-radius: 8px; border: 1px solid #fce7f3; opacity: 0.5; pointer-events: none;" title="Deshabilitado para este concurso de categoría única">
+                                <h5 style="color: #9d174d; margin-bottom: 10px; font-weight: 800;">GANADOR CATEGORÍA B (NO UTILIZADO)</h5>
                                 <div class="input-group">
                                     <label>Nombre del Ganador</label>
-                                    <input type="text" id="winner-b-name" placeholder="Ej: María López">
+                                    <input type="text" id="winner-b-name" placeholder="Ej: María López" value="-">
                                 </div>
                                 <div class="input-group">
                                     <label>Sucursal</label>
-                                    <input type="text" id="winner-b-branch" placeholder="Ej: Famailla">
+                                    <input type="text" id="winner-b-branch" placeholder="Ej: Famailla" value="-">
                                 </div>
                                 <div class="input-group">
                                     <label>Unidades / Puntos</label>
-                                    <input type="number" id="winner-b-score" placeholder="Ej: 198">
+                                    <input type="number" id="winner-b-score" placeholder="Ej: 198" value="0">
                                 </div>
                             </div>
                         </div>
@@ -956,8 +949,8 @@ PREMIO: 1 Parlante JBL portátil.</textarea>
                     </form>
                 </div>
 
-                <div class="panel-card" style="padding: 20px; margin-top: 30px;">
-                    <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 - CATEGORÍA B</h3>
+                <div class="panel-card" style="padding: 20px; margin-top: 30px; opacity: 0.5; pointer-events: none;" title="Deshabilitado para este concurso de categoría única">
+                    <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 - CATEGORÍA B (NO UTILIZADO)</h3>
                     <form id="contest-ranking-b-form">
                         <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
                             <!-- Rank 1-5 B -->
