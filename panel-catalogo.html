@@ -1758,6 +1758,25 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* ── ORDENAR DESTACADOS ── */
+    .destacado-sort-item {
+      cursor: grab;
+      transition: all 0.2s ease;
+    }
+    .destacado-sort-item:active {
+      cursor: grabbing;
+    }
+    .destacado-sort-item.over {
+      border-color: var(--accent) !important;
+      background: #fff5f0 !important;
+      transform: scale(1.02);
+    }
+    .btn-sort-arrow:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
   </style>
 </head>
 
@@ -1804,10 +1823,12 @@
         <a class="nav-item" id="nav-config" onclick="setView('config')">
           <i class="fa-solid fa-gear"></i> Configuración
         </a>
+        <!--
         <div class="sidebar-section-label">Herramientas</div>
         <a class="nav-item" href="migrar-productos.html">
           <i class="fa-solid fa-upload"></i> Migrar datos
         </a>
+        -->
         <a class="nav-item" href="panel-admin.html">
           <i class="fa-solid fa-arrow-left"></i> Panel Admin
         </a>
@@ -2049,7 +2070,7 @@
           </div>
 
           <!-- ── IMÁGENES DEL HERO SLIDER — MOBILE ── -->
-          <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.02);margin-top:16px">
+          <div style="display:none;background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.02);margin-top:16px">
             <h3 style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px">
               <i class="fa-solid fa-mobile-screen" style="color:var(--accent)"></i> Imágenes del Hero Slider — Mobile
             </h3>
@@ -2071,6 +2092,29 @@
               </button>
             </div>
             <div id="config-slider-msg-mobile"
+              style="margin-top:12px;font-size:0.8rem;font-weight:600;display:none;padding:8px 12px;border-radius:6px;text-align:center">
+            </div>
+          </div>
+
+          <!-- ── ORDEN DE PRODUCTOS DESTACADOS ── -->
+          <div style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.02);margin-top:16px">
+            <h3 style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px">
+              <i class="fa-solid fa-star" style="color:var(--accent)"></i> Orden de Productos Destacados
+            </h3>
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px">Arrastrá los productos destacados o usá las flechas para ordenar cómo se mostrarán en el carrusel del catálogo.</p>
+
+            <div id="destacados-sort-list" style="display:flex;flex-direction:column;gap:8px">
+              <div style="text-align:center;padding:16px;color:var(--muted);font-size:0.82rem">Cargando destacados...</div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:16px">
+              <button onclick="guardarConfigDestacados()"
+                style="background:var(--brand);color:white;border:none;border-radius:8px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;flex:1;justify-content:center;transition:background 0.2s"
+                id="btn-destacados-save">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar orden de destacados
+              </button>
+            </div>
+            <div id="config-destacados-msg"
               style="margin-top:12px;font-size:0.8rem;font-weight:600;display:none;padding:8px 12px;border-radius:6px;text-align:center">
             </div>
           </div>
@@ -2533,6 +2577,9 @@
         todosLosProductos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         actualizarStats();
         filtrarProductos();
+        if (document.getElementById('view-config').style.display !== 'none') {
+          renderConfigDestacados();
+        }
       } catch (e) {
         console.error(e);
         toast('Error al cargar productos: ' + e.message, 'error');
@@ -3354,6 +3401,7 @@
         if (statsBar) statsBar.style.display = 'none';
         cargarConfigOfertas();
         cargarConfigSlider();
+        cargarConfigDestacados();
       }
     }
 
@@ -3649,6 +3697,184 @@
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar imágenes mobile';
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       CONFIGURACIÓN — ORDENAR PRODUCTOS DESTACADOS
+     ═══════════════════════════════════════════════════════════════ */
+    let destacadosOrden = [];
+
+    async function cargarConfigDestacados() {
+      try {
+        const doc = await db.collection('config').doc('destacados').get();
+        const data = doc.exists ? doc.data() : {};
+        destacadosOrden = Array.isArray(data.orden) ? data.orden : [];
+      } catch (e) {
+        console.error('Error cargando config destacados:', e);
+        destacadosOrden = [];
+      }
+      renderConfigDestacados();
+    }
+
+    function renderConfigDestacados() {
+      const list = document.getElementById('destacados-sort-list');
+      if (!list) return;
+
+      // Obtener destacados actuales
+      let destacados = todosLosProductos.filter(p => p.destacado);
+
+      // Si no hay ninguno destacado, mostrar mensaje
+      if (destacados.length === 0) {
+        list.innerHTML = `<div style="text-align:center;padding:24px;color:var(--muted);font-size:0.82rem;border:1px dashed var(--border);border-radius:10px;background:#f9fafb">No hay productos marcados como destacados. Marcá algunos productos como destacados en la sección de Productos para poder ordenarlos aquí.</div>`;
+        destacadosOrden = [];
+        return;
+      }
+
+      // Ordenar según destacadosOrden
+      destacados.sort((a, b) => {
+        const idxA = destacadosOrden.indexOf(a.sku);
+        const idxB = destacadosOrden.indexOf(b.sku);
+        if (idxA === -1 && idxB === -1) return 0;
+        if (idxA === -1) return 1;
+        if (idxB === -1) return -1;
+        return idxA - idxB;
+      });
+
+      // Sincronizar destacadosOrden local
+      destacadosOrden = destacados.map(p => p.sku);
+
+      list.innerHTML = destacados.map((p, i) => {
+        const imgSrc = p.imagenes?.length
+          ? cloudinaryUrl(p.imagenes[0], 'w_80,h_80,c_fill,f_auto,q_auto:eco')
+          : (p.imagenLegacy || '');
+
+        const imgHtml = imgSrc
+          ? `<img src="${imgSrc}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;background:white;border:1px solid var(--border)" onerror="this.outerHTML='<div style=&quot;width:36px;height:36px;border-radius:6px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:0.8rem;border:1px solid var(--border)&quot;><i class=&quot;fa-solid fa-image&quot;></i></div>'">`
+          : `<div style="width:36px;height:36px;border-radius:6px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:0.8rem;border:1px solid var(--border)"><i class="fa-solid fa-image"></i></div>`;
+
+        return `
+          <div class="destacado-sort-item" draggable="true" data-sku="${escHtml(p.sku)}" data-idx="${i}" style="
+            display:flex;align-items:center;gap:12px;background:#f9fafb;border:1px solid var(--border);
+            border-radius:10px;padding:10px 14px;transition:background .15s, transform .15s"
+            ondragstart="handleDragStart(event)"
+            ondragover="handleDragOver(event)"
+            ondragleave="handleDragLeave(event)"
+            ondrop="handleDrop(event)"
+            ondragend="handleDragEnd(event)">
+            
+            <div style="color:#d1d5db;cursor:grab;padding-right:4px"><i class="fa-solid fa-grip-vertical"></i></div>
+            
+            ${imgHtml}
+            
+            <div style="flex:1;min-width:0">
+              <div style="font-size:0.83rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(p.nombre)}</div>
+              <div style="font-size:0.72rem;color:var(--muted)">SKU: ${escHtml(p.sku)}</div>
+            </div>
+            
+            <div style="display:flex;gap:4px">
+              <button onclick="moverDestacado(${i}, -1)" title="Subir" ${i === 0 ? 'disabled' : ''} style="
+                background:white;border:1px solid var(--border);border-radius:6px;color:var(--brand);
+                width:28px;height:28px;font-size:0.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+                transition:all .15s" class="btn-sort-arrow">
+                <i class="fa-solid fa-arrow-up"></i>
+              </button>
+              <button onclick="moverDestacado(${i}, 1)" title="Bajar" ${i === destacados.length - 1 ? 'disabled' : ''} style="
+                background:white;border:1px solid var(--border);border-radius:6px;color:var(--brand);
+                width:28px;height:28px;font-size:0.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+                transition:all .15s" class="btn-sort-arrow">
+                <i class="fa-solid fa-arrow-down"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.moverDestacado = function(index, direction) {
+      const newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= destacadosOrden.length) return;
+
+      const temp = destacadosOrden[index];
+      destacadosOrden[index] = destacadosOrden[newIndex];
+      destacadosOrden[newIndex] = temp;
+
+      renderConfigDestacados();
+    };
+
+    // Drag and drop event handlers
+    let dragSrcEl = null;
+
+    window.handleDragStart = function(e) {
+      dragSrcEl = e.currentTarget;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', e.currentTarget.dataset.idx);
+      e.currentTarget.style.opacity = '0.4';
+    };
+
+    window.handleDragOver = function(e) {
+      if (e.preventDefault) e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      e.currentTarget.classList.add('over');
+      return false;
+    };
+
+    window.handleDragLeave = function(e) {
+      e.currentTarget.classList.remove('over');
+    };
+
+    window.handleDrop = function(e) {
+      if (e.stopPropagation) e.stopPropagation();
+      e.currentTarget.classList.remove('over');
+
+      const fromIdx = parseInt(e.dataTransfer.getData('text/plain'), 10);
+      const toIdx = parseInt(e.currentTarget.dataset.idx, 10);
+
+      if (fromIdx !== toIdx) {
+        const skuToMove = destacadosOrden[fromIdx];
+        destacadosOrden.splice(fromIdx, 1);
+        destacadosOrden.splice(toIdx, 0, skuToMove);
+        renderConfigDestacados();
+      }
+      return false;
+    };
+
+    window.handleDragEnd = function(e) {
+      e.currentTarget.style.opacity = '1';
+      document.querySelectorAll('.destacado-sort-item').forEach(item => {
+        item.classList.remove('over');
+      });
+    };
+
+    async function guardarConfigDestacados() {
+      const msg = document.getElementById('config-destacados-msg');
+      const btn = document.getElementById('btn-destacados-save');
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+
+      try {
+        await db.collection('config').doc('destacados').set({
+          orden: destacadosOrden,
+          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        msg.textContent = '¡Orden de destacados guardado!';
+        msg.style.display = 'block';
+        msg.style.background = '#f0fdf4';
+        msg.style.color = '#16a34a';
+        msg.style.border = '1px solid #bbf7d0';
+        setTimeout(() => msg.style.display = 'none', 3500);
+      } catch (e) {
+        console.error('Error guardando config destacados:', e);
+        msg.textContent = 'Error al guardar: ' + e.message;
+        msg.style.display = 'block';
+        msg.style.background = '#fef2f2';
+        msg.style.color = '#dc2626';
+        msg.style.border = '1px solid #fecaca';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar orden de destacados';
       }
     }
 

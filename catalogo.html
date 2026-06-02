@@ -687,6 +687,11 @@
       line-height: 1.35;
       margin-bottom: 6px;
       color: #374151;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: calc(0.84rem * 1.35 * 2);
     }
 
     .fc-cat {
@@ -705,7 +710,11 @@
       font-size: 1.05rem;
       font-weight: 800;
       color: var(--accent);
-      margin-top: 10px;
+      margin-top: auto;
+    }
+
+    .fc-name + .fc-btn {
+      margin-top: auto;
     }
 
     .fc-btn {
@@ -3175,8 +3184,19 @@
     }
 
     function renderCarousel() {
-      const destacados = todosLosProductos.filter(p => p.destacado);
+      let destacados = todosLosProductos.filter(p => p.destacado);
       if (destacados.length === 0) return;
+
+      if (destacadosOrden && destacadosOrden.length > 0) {
+        destacados.sort((a, b) => {
+          const idxA = destacadosOrden.indexOf(a.sku);
+          const idxB = destacadosOrden.indexOf(b.sku);
+          if (idxA === -1 && idxB === -1) return 0;
+          if (idxA === -1) return 1;
+          if (idxB === -1) return -1;
+          return idxA - idxB;
+        });
+      }
 
       document.getElementById('featured-section').classList.remove('hidden');
       const track = document.getElementById('carousel-track');
@@ -3243,6 +3263,8 @@
       if (cached) {
         try {
           todosLosProductos = JSON.parse(cached);
+          const cachedOrden = sessionStorage.getItem('rosso_destacados_orden');
+          if (cachedOrden) destacadosOrden = JSON.parse(cachedOrden);
           const ls = document.getElementById('loading-state');
           if (ls) ls.style.display = 'none';
           document.getElementById('product-grid').style.display = '';
@@ -3285,8 +3307,22 @@
       poblarMobileSelects();
     }
 
+    let destacadosOrden = [];
+
+    async function cargarConfigDestacados() {
+      try {
+        const doc = await db.collection('config').doc('destacados').get();
+        if (doc.exists) {
+          destacadosOrden = doc.data().orden || [];
+        }
+      } catch (e) {
+        console.warn('Error cargando orden de destacados:', e);
+      }
+    }
+
     async function cargarProductos(silencioso = false) {
       try {
+        await cargarConfigDestacados();
         const snap = await db.collection('catalogo')
           .where('disponible', '==', true)
           .orderBy('nombre')
@@ -3314,6 +3350,7 @@
       } else {
         // Refrescar en background: actualizar grilla y caché sin interrumpir al usuario
         renderSidebar();
+        renderCarousel();
         filtrarProductos();
       }
 
@@ -3326,6 +3363,7 @@
           return c;
         });
         sessionStorage.setItem('rosso_catalog_cache', JSON.stringify(cacheable));
+        sessionStorage.setItem('rosso_destacados_orden', JSON.stringify(destacadosOrden));
       } catch (e) { /* sessionStorage lleno o bloqueado, no es crítico */ }
     }
 
