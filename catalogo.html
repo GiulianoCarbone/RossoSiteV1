@@ -4,10 +4,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Catálogo de Productos | Rosso Materiales</title>
+  <title>Catálogo de Materiales de Construcción en Tucumán y Salta | Rosso Materiales</title>
   <meta name="description"
-    content="Explorá todo nuestro catálogo de materiales de construcción en Rosso Materiales. Griferías, revestimientos, bachas, muebles de baño, aberturas y más." />
+    content="Comprá materiales de construcción en Tucumán y Salta al mejor precio. Griferías, revestimientos, sanitarios, aberturas y construcción en seco en Rosso Materiales. Cotizá gratis." />
+  <meta name="keywords" content="materiales de construccion tucuman, materiales de construccion salta, corralon tucuman, corralon salta, griferias salta, sanitarios salta, porcelanato salta, aberturas salta, rosso materiales catalogo" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://rossomateriales.netlify.app/catalogo.html" />
   <link href="assets/FAV.png" rel="icon" />
+
+  <!-- Open Graph / Facebook (SEO & AI / GEO) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rossomateriales.netlify.app/catalogo.html" />
+  <meta property="og:title" content="Catálogo de Materiales de Construcción en Tucumán y Salta | Rosso Materiales" />
+  <meta property="og:description" content="Explorá y cotizá online griferías, cerámicos, porcelanatos, sanitarios y aberturas al mejor precio en Tucumán y Salta con Rosso Materiales." />
+  <meta property="og:image" content="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" />
+
+  <!-- Twitter (SEO & AI / GEO) -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://rossomateriales.netlify.app/catalogo.html" />
+  <meta property="twitter:title" content="Catálogo de Materiales de Construcción en Tucumán y Salta | Rosso Materiales" />
+  <meta property="twitter:description" content="Explorá y cotizá online griferías, cerámicos, porcelanatos, sanitarios y aberturas al mejor precio en Tucumán y Salta con Rosso Materiales." />
+  <meta property="twitter:image" content="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" />
+
+  <!-- Datos Estructurados JSON-LD (Vital para Google & IAs) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Rosso Materiales",
+    "image": "https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png",
+    "description": "Corralón y venta de materiales de construcción en Tucumán y Salta. Especialistas en griferías, sanitarios, cerámicos, porcelanatos, aberturas y construcción en seco.",
+    "url": "https://rossomateriales.netlify.app/catalogo.html",
+    "telephone": "+5493814146917",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "San Miguel de Tucumán",
+      "addressRegion": "Tucumán",
+      "addressCountry": "AR"
+    },
+    "areaServed": [
+      {
+        "@type": "AdministrativeArea",
+        "name": "Tucumán"
+      },
+      {
+        "@type": "AdministrativeArea",
+        "name": "Salta"
+      }
+    ],
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "-26.82414",
+      "longitude": "-65.22260"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Catálogo de Materiales de Construcción",
+      "itemListElement": [
+        {
+          "@type": "OfferCatalog",
+          "name": "Griferías",
+          "description": "Griferías para cocina, baño y repuestos de alta calidad."
+        },
+        {
+          "@type": "OfferCatalog",
+          "name": "Sanitarios y Bachas",
+          "description": "Inodoros, bidets, vanitorys y bachas de las mejores marcas."
+        },
+        {
+          "@type": "OfferCatalog",
+          "name": "Revestimientos",
+          "description": "Cerámicos, porcelanatos y guardas para pisos y paredes."
+        },
+        {
+          "@type": "OfferCatalog",
+          "name": "Aberturas",
+          "description": "Puertas, ventanas y portones de aluminio, chapa y madera."
+        },
+        {
+          "@type": "OfferCatalog",
+          "name": "Construcción en Seco",
+          "description": "Placas de yeso Durlock, perfiles galvanizados y accesorios."
+        }
+      ]
+    }
+  }
+  </script>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QBM51JZ19R"></script>
@@ -51,6 +133,19 @@
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
+    }
+
+    /* ── ACCESIBILIDAD Y SEO (sr-only) ──────────────── */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     button,
@@ -2608,6 +2703,8 @@
 </head>
 
 <body>
+  <!-- Título principal oculto para SEO y motores de IA (no altera la estética visual) -->
+  <h1 class="sr-only">Catálogo de Materiales de Construcción en Tucumán y Salta - Rosso Materiales</h1>
 
   <!-- ══ NAV ══════════════════════════════════════════════════ -->
   <header class="main-header" role="banner">
@@ -3165,15 +3262,22 @@
       const catLabel = [p.categoria, p.subcategoria].filter(Boolean).join(' › ');
       const added = enLista.has(p.sku);
       return `
-      <a class="fc-card" href="producto.html?sku=${encodeURIComponent(p.sku)}" style="text-decoration:none;color:inherit">
+      <a class="fc-card" href="producto.html?sku=${encodeURIComponent(p.sku)}" style="text-decoration:none;color:inherit" itemscope itemtype="https://schema.org/Product">
+        <meta itemprop="sku" content="${esc(p.sku)}" />
         <div class="fc-img-wrap">
           ${imgContent}
           <div class="fc-img-placeholder" style="${hasImg ? 'display:none' : ''}"><i class="fa-solid fa-image"></i></div>
           <div class="fc-badge"><i class="fa-solid fa-fire" style="font-size:.55rem"></i> Oferta</div>
         </div>
         <div class="fc-body">
-          <div class="fc-name">${esc(p.nombre)}</div>
-          ${p.precio != null ? `<div class="fc-price">$${Number(p.precio).toLocaleString('es-AR')}</div>` : ''}
+          <div class="fc-name" itemprop="name">${esc(p.nombre)}</div>
+          ${p.precio != null ? `
+          <div class="fc-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+            <meta itemprop="priceCurrency" content="ARS" />
+            <meta itemprop="price" content="${p.precio}" />
+            <meta itemprop="availability" content="https://schema.org/InStock" />
+            $${Number(p.precio).toLocaleString('es-AR')}
+          </div>` : ''}
           <button class="fc-btn${added ? ' added' : ''}"
             onclick="event.preventDefault(); event.stopPropagation(); agregarALista('${esc(p.sku)}')">
             <i class="fa-solid ${added ? 'fa-check' : 'fa-plus'}"></i>
@@ -3600,16 +3704,23 @@
         const added = enLista.has(p.sku);
         const url = `producto.html?sku=${encodeURIComponent(p.sku)}`;
         return `
-        <div class="prod-card" onclick="event.stopPropagation(); abrirModal('${esc(p.sku)}')" style="cursor:pointer">
+        <div class="prod-card" onclick="event.stopPropagation(); abrirModal('${esc(p.sku)}')" style="cursor:pointer" itemscope itemtype="https://schema.org/Product">
+          <meta itemprop="sku" content="${esc(p.sku)}" />
           ${p.destacado ? '<span class="badge-dest"><i class="fa-solid fa-star" style="font-size:.55rem"></i> Destacado</span>' : ''}
           <div class="prod-img-wrap">
             ${imgContent}
             <div class="prod-img-placeholder" style="${hasImg ? 'display:none' : ''}"><i class="fa-solid fa-image"></i></div>
           </div>
           <div class="prod-body">
-            <div class="prod-name">${esc(p.nombre)}</div>
-            ${p.marca ? `<div class="prod-marca">${esc(p.marca)}</div>` : ''}
-            ${p.precio != null ? `<div class="prod-price">$ ${Number(p.precio).toLocaleString('es-AR')}<span class="prod-price-unit"> / ${esc(p.unidad || 'unidad')}</span></div>` : ''}
+            <div class="prod-name" itemprop="name">${esc(p.nombre)}</div>
+            ${p.marca ? `<div class="prod-marca" itemprop="brand">${esc(p.marca)}</div>` : ''}
+            ${p.precio != null ? `
+            <div class="prod-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+              <meta itemprop="priceCurrency" content="ARS" />
+              <meta itemprop="price" content="${p.precio}" />
+              <meta itemprop="availability" content="https://schema.org/InStock" />
+              $ ${Number(p.precio).toLocaleString('es-AR')}<span class="prod-price-unit"> / ${esc(p.unidad || 'unidad')}</span>
+            </div>` : ''}
             <button class="btn-add${added ? ' added' : ''}"
               onclick="event.stopPropagation(); agregarALista('${esc(p.sku)}')">
               <i class="fa-solid ${added ? 'fa-check' : 'fa-plus'}"></i>
