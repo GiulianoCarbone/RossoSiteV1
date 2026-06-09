@@ -882,16 +882,128 @@
       border-color: var(--brand);
     }
 
-    .mobile-filters-row {
+    /* ── CATEGORY SLIDER (mobile) ─────────────────── */
+    .cat-slider-wrap {
       display: none;
-      gap: 10px;
       width: 100%;
+      position: relative;
     }
 
-    .mobile-filters-row select {
-      flex: 1;
-      min-width: 0;
-      text-overflow: ellipsis;
+    /* Fade hint de scroll en el borde derecho */
+    .cat-slider-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 32px;
+      pointer-events: none;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.95));
+    }
+
+    .cat-slider {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 2px 0;
+    }
+
+    .cat-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-chip {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s, transform .1s;
+    }
+
+    .cat-chip:active {
+      transform: scale(0.97);
+    }
+
+    .cat-chip.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* ── Menú flotante de subcategorías ───────────── */
+    .cat-dropdown {
+      position: fixed;
+      z-index: 2000;
+      display: none;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
+      padding: 6px;
+      max-height: 58vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      animation: catDdIn .14s ease;
+    }
+
+    .cat-dropdown.open {
+      display: block;
+    }
+
+    @keyframes catDdIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .cat-dd-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 11px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: background .12s;
+    }
+
+    .cat-dd-item:active {
+      background: rgba(39, 46, 104, 0.10);
+    }
+
+    .cat-dd-item.active {
+      color: var(--accent);
+    }
+
+    .cat-dd-head {
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      margin-bottom: 4px;
+      color: var(--brand);
+    }
+
+    .cat-dd-head.active {
+      color: var(--accent);
     }
 
     .active-filters {
@@ -2542,8 +2654,14 @@
         display: block;
       }
 
-      .mobile-filters-row {
-        display: flex;
+      .cat-slider-wrap {
+        display: block;
+      }
+
+      /* En mobile el estado activo lo muestra el slider, no los chips ni el contador */
+      .active-filters,
+      .result-count {
+        display: none;
       }
     }
 
@@ -2832,13 +2950,8 @@
   <!-- ══ FILTER STRIP (mobile) ════════════════════════════════ -->
   <div class="filter-strip" id="filter-strip">
     <div class="container">
-      <div class="mobile-filters-row">
-        <select id="m-filter-cat" onchange="onMobileCatChange()">
-          <option value="">Todas las categorías</option>
-        </select>
-        <select id="m-filter-sub" onchange="onMobileSubChange()" disabled>
-          <option value="">Todas las subcategorías</option>
-        </select>
+      <div class="cat-slider-wrap">
+        <div class="cat-slider" id="cat-slider"></div>
       </div>
       <div class="active-filters" id="active-filters"></div>
       <span class="result-count" id="result-count"></span>
@@ -2865,12 +2978,6 @@
         <div class="sort-bar">
           <span class="count" id="sort-count">Cargando productos...</span>
           <div class="sort-bar-right">
-            <select id="sort-select" onchange="filtrarProductos()">
-              <option value="nombre-az">Nombre A→Z</option>
-              <option value="nombre-za">Nombre Z→A</option>
-              <option value="sku">SKU</option>
-              <option value="destacados">Destacados primero</option>
-            </select>
             <div class="view-toggle">
               <button class="view-btn active" id="btn-grid" onclick="setView('grid')" title="Vista cuadrícula">
                 <i class="fa-solid fa-grip"></i>
@@ -3369,6 +3476,8 @@
           todosLosProductos = JSON.parse(cached);
           const cachedOrden = sessionStorage.getItem('rosso_destacados_orden');
           if (cachedOrden) destacadosOrden = JSON.parse(cachedOrden);
+          const cachedVistas = sessionStorage.getItem('rosso_vistas');
+          if (cachedVistas) vistasPorSku = JSON.parse(cachedVistas);
           const ls = document.getElementById('loading-state');
           if (ls) ls.style.display = 'none';
           document.getElementById('product-grid').style.display = '';
@@ -3381,11 +3490,12 @@
           setView(vistaActual);
           // Refrescar datos en background silenciosamente
           cargarProductos(true);
+          cargarVistas();
           return;
         } catch (e) { /* caché corrupta, ignorar y cargar normal */ }
       }
       mostrarSkeleton();
-      await Promise.all([cargarCategorias(), cargarProductos()]);
+      await Promise.all([cargarCategorias(), cargarProductos(), cargarVistas()]);
       initCountdown();
       setView(vistaActual);
     }
@@ -3408,7 +3518,7 @@
         console.warn('Error cargando categorías:', e);
       }
       renderSidebar();
-      poblarMobileSelects();
+      renderCatSlider();
     }
 
     let destacadosOrden = [];
@@ -3421,6 +3531,23 @@
         }
       } catch (e) {
         console.warn('Error cargando orden de destacados:', e);
+      }
+    }
+
+    /* Vistas por producto (colección analytics_products) → orden "más vistos" */
+    let vistasPorSku = {};
+
+    async function cargarVistas() {
+      try {
+        const snap = await db.collection('analytics_products').get();
+        const map = {};
+        snap.docs.forEach(d => { map[d.id] = d.data().visits || 0; });
+        vistasPorSku = map;
+        try { sessionStorage.setItem('rosso_vistas', JSON.stringify(map)); } catch (e) { /* no crítico */ }
+        // Si los productos ya están en pantalla, re-ordenar con las vistas frescas
+        if (todosLosProductos.length > 0) filtrarProductos();
+      } catch (e) {
+        console.warn('No se pudieron cargar las vistas; orden por defecto alfabético:', e);
       }
     }
 
@@ -3536,57 +3663,151 @@
     }
 
     /* ══════════════════════════════════════════════════════════
-       MOBILE SELECTS
+       SLIDER DE CATEGORÍAS + DESPLEGABLE (mobile)
     ══════════════════════════════════════════════════════════ */
-    function poblarMobileSelects() {
-      const catSel = document.getElementById('m-filter-cat');
-      catSel.innerHTML = '<option value="">Todas las categorías</option>';
-      categorias.forEach(c => {
-        const o = document.createElement('option');
-        o.value = c.nombre; o.textContent = c.nombre;
-        catSel.appendChild(o);
-      });
+    // Categoría con su menú desplegable abierto ('' = ninguno)
+    let dropdownCat = '';
+
+    function renderCatSlider() {
+      const bar = document.getElementById('cat-slider');
+      if (!bar) return;
+      const prevScroll = bar.scrollLeft;
+
+      let html = `<button class="cat-chip${!filtroCat ? ' active' : ''}" onclick="sliderTodos()">Todos</button>`;
+      html += categorias.map(c => {
+        const active = filtroCat === c.nombre;
+        const open = dropdownCat === c.nombre;
+        // Si la categoría activa tiene una subcategoría elegida, el chip lo refleja
+        const label = active && filtroSub ? `${c.nombre}: ${filtroSub}` : c.nombre;
+        return `<button class="cat-chip${active ? ' active' : ''}${open ? ' open' : ''}" data-cat="${esc(c.nombre)}" onclick="sliderTapCat('${esc(c.nombre)}')">${label}</button>`;
+      }).join('');
+
+      bar.innerHTML = html;
+      bar.scrollLeft = prevScroll;
     }
 
-    function onMobileCatChange() {
-      // Llamado sólo desde el select mobile de categoría
-      filtroCat = document.getElementById('m-filter-cat').value;
-      filtroSub = '';
-      _poblarSubSelect(filtroCat);
+    function sliderTodos() {
+      filtroCat = ''; filtroSub = '';
+      cerrarDropdown();
       actualizarSidebarActivo();
       filtrarProductos();
     }
 
-    function onMobileSubChange() {
-      // Llamado sólo desde el select mobile de subcategoría
-      filtroSub = document.getElementById('m-filter-sub').value;
+    function sliderTapCat(nombre) {
+      const catObj = categorias.find(c => c.nombre === nombre);
+      const hasSubs = catObj && catObj.subcategorias.length > 0;
+
+      if (!hasSubs) {
+        // Sin subcategorías: alterna el filtro, sin menú
+        filtroCat = filtroCat === nombre ? '' : nombre;
+        filtroSub = '';
+        cerrarDropdown();
+        actualizarSidebarActivo();
+        filtrarProductos();
+        return;
+      }
+
+      // Si el menú de esta categoría ya está abierto, lo cerramos (toggle)
+      if (dropdownCat === nombre) { cerrarDropdown(); return; }
+
+      // Si cambiamos de categoría, filtramos por la nueva (sin subcategoría)
+      if (filtroCat !== nombre) {
+        filtroCat = nombre;
+        filtroSub = '';
+        actualizarSidebarActivo();
+        filtrarProductos();
+      }
+      abrirDropdown(nombre);
+    }
+
+    function sliderSubPick(s) {
+      // '' = "Todos {categoría}"
+      filtroSub = s;
+      cerrarDropdown();
       filtrarProductos();
     }
 
-    // Sincroniza los selects mobile con el estado (filtroCat/filtroSub) sin tocar el estado
-    function sincronizarSelects() {
-      document.getElementById('m-filter-cat').value = filtroCat;
-      _poblarSubSelect(filtroCat);
-      document.getElementById('m-filter-sub').value = filtroSub;
+    /* ── Menú flotante de subcategorías ─────────────── */
+    function getDropdownEl() {
+      let dd = document.getElementById('cat-dropdown');
+      if (!dd) {
+        dd = document.createElement('div');
+        dd.id = 'cat-dropdown';
+        dd.className = 'cat-dropdown';
+        document.body.appendChild(dd);
+      }
+      return dd;
     }
 
-    // Puebla el select de subcategorías según la categoría dada
-    function _poblarSubSelect(cat) {
-      const subSel = document.getElementById('m-filter-sub');
-      subSel.innerHTML = '<option value="">Todas las subcategorías</option>';
-      if (cat) {
-        const catObj = categorias.find(c => c.nombre === cat);
-        if (catObj && catObj.subcategorias.length > 0) {
-          catObj.subcategorias.forEach(s => {
-            const o = document.createElement('option');
-            o.value = s; o.textContent = s;
-            subSel.appendChild(o);
-          });
-          subSel.disabled = false;
-          return;
-        }
-      }
-      subSel.disabled = true;
+    function abrirDropdown(nombre) {
+      const catObj = categorias.find(c => c.nombre === nombre);
+      if (!catObj) return;
+      dropdownCat = nombre;
+      const dd = getDropdownEl();
+      const subs = catObj.subcategorias;
+      dd.innerHTML =
+        `<button class="cat-dd-item cat-dd-head${!filtroSub ? ' active' : ''}" onclick="sliderSubPick('')">`
+        + `<span>Todos ${nombre}</span>${!filtroSub ? '<i class="fa-solid fa-check"></i>' : ''}</button>`
+        + subs.map(s =>
+          `<button class="cat-dd-item${filtroSub === s ? ' active' : ''}" onclick="sliderSubPick('${esc(s)}')">`
+          + `<span>${s}</span>${filtroSub === s ? '<i class="fa-solid fa-check"></i>' : ''}</button>`
+        ).join('');
+      posicionarDropdown(nombre);
+      dd.classList.add('open');
+      renderCatSlider(); // refleja el caret abierto en el chip
+      // Cerrar al tocar afuera, scrollear o redimensionar
+      setTimeout(() => {
+        document.addEventListener('click', _onDocClickDropdown, true);
+        window.addEventListener('scroll', cerrarDropdown, true);
+        window.addEventListener('resize', cerrarDropdown);
+        const bar = document.getElementById('cat-slider');
+        if (bar) bar.addEventListener('scroll', cerrarDropdown);
+      }, 0);
+    }
+
+    function posicionarDropdown(nombre) {
+      const dd = getDropdownEl();
+      let chip = null;
+      document.querySelectorAll('#cat-slider .cat-chip').forEach(el => {
+        if (el.dataset.cat === nombre) chip = el;
+      });
+      if (!chip) return;
+      const r = chip.getBoundingClientRect();
+      const margin = 8;
+      const width = Math.min(280, window.innerWidth - margin * 2);
+      dd.style.width = width + 'px';
+      dd.style.top = (r.bottom + 6) + 'px';
+      let left = r.left;
+      if (left + width > window.innerWidth - margin) left = window.innerWidth - margin - width;
+      if (left < margin) left = margin;
+      dd.style.left = left + 'px';
+    }
+
+    function cerrarDropdown() {
+      const wasOpen = !!dropdownCat;
+      dropdownCat = '';
+      const dd = document.getElementById('cat-dropdown');
+      if (dd) { dd.classList.remove('open'); dd.innerHTML = ''; }
+      document.removeEventListener('click', _onDocClickDropdown, true);
+      window.removeEventListener('scroll', cerrarDropdown, true);
+      window.removeEventListener('resize', cerrarDropdown);
+      const bar = document.getElementById('cat-slider');
+      if (bar) bar.removeEventListener('scroll', cerrarDropdown);
+      if (wasOpen) renderCatSlider(); // limpia el caret abierto
+    }
+
+    function _onDocClickDropdown(e) {
+      const dd = document.getElementById('cat-dropdown');
+      if (dd && dd.contains(e.target)) return;        // clic dentro del menú
+      const bar = document.getElementById('cat-slider');
+      if (bar && bar.contains(e.target)) return;       // clic en un chip: lo maneja sliderTapCat
+      cerrarDropdown();
+    }
+
+    // Cierra el menú y refresca la barra (usado por el sidebar de desktop y al limpiar)
+    function sincronizarSelects() {
+      cerrarDropdown();
+      renderCatSlider();
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -3603,14 +3824,19 @@
       const hayDestacados = document.querySelectorAll('#carousel-track .fc-card').length > 0;
       document.getElementById('featured-section').classList.toggle('hidden', !!q || !hayDestacados);
       const subVal = filtroSub;
-      const sort = document.getElementById('sort-select').value;
+      const sortEl = document.getElementById('sort-select');
+      // Orden por defecto del catálogo: más vistos primero
+      const sort = sortEl ? sortEl.value : 'vistas';
 
       productosFiltrados = todosLosProductos.filter(p => {
         const matchQ = !q || [p.nombre, p.sku, p.marca, p.descripcion, p.subcategoria]
           .some(v => v?.toLowerCase().includes(q));
         const matchCat = !filtroCat || p.categoria === filtroCat;
         const matchSub = !subVal || p.subcategoria === subVal;
-        return matchQ && matchCat && matchSub;
+        // Los destacados ya viven en el carrusel: se excluyen de la grilla.
+        // Excepción: al buscar el carrusel se oculta, así que deben poder encontrarse.
+        const matchDest = !!q || !p.destacado;
+        return matchQ && matchCat && matchSub && matchDest;
       });
 
       // Ordenar
@@ -3618,6 +3844,12 @@
         if (sort === 'nombre-za') return (b.nombre || '').localeCompare(a.nombre || '', 'es');
         if (sort === 'sku') return (a.sku || '').localeCompare(b.sku || '', 'es', { numeric: true });
         if (sort === 'destacados') return (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0);
+        if (sort === 'vistas') {
+          const va = vistasPorSku[a.sku] || 0;
+          const vb = vistasPorSku[b.sku] || 0;
+          if (vb !== va) return vb - va;                                  // más vistos primero
+          return (a.nombre || '').localeCompare(b.nombre || '', 'es');    // desempate alfabético
+        }
         return (a.nombre || '').localeCompare(b.nombre || '', 'es');
       });
 
@@ -3625,6 +3857,8 @@
 
       // Chips filtros activos
       renderChips();
+      // Slider de categorías (mobile)
+      renderCatSlider();
       // Sidebar activo
       actualizarSidebarActivo();
       // Clear button sidebar
@@ -3638,7 +3872,7 @@
       const wrap = document.getElementById('active-filters');
       const chips = [];
       if (filtroCat) chips.push({ label: filtroCat, action: () => { filtroCat = ''; filtroSub = ''; sincronizarSelects(); filtrarProductos(); } });
-      if (filtroSub) chips.push({ label: filtroSub, action: () => { filtroSub = ''; document.getElementById('m-filter-sub').value = ''; filtrarProductos(); } });
+      if (filtroSub) chips.push({ label: filtroSub, action: () => { filtroSub = ''; filtrarProductos(); } });
       wrap.innerHTML = chips.map((c, i) =>
         `<span class="filter-chip" onclick="clearChip(${i})">${esc(c.label)} ×</span>`
       ).join('');
@@ -3679,10 +3913,12 @@
       const total = productosFiltrados.length;
       const mostrando = Math.min(PAGE_SIZE * paginaActual, total);
 
+      const q = (document.getElementById('search-input').value || '').trim();
+      const sinFiltros = !q && !filtroCat && !filtroSub;
       count.textContent = total === 0 ? 'Sin resultados'
-        : total === todosLosProductos.length ? `${total} productos`
+        : sinFiltros ? `${total} productos`
           : `${total} resultados`;
-      rcEl.textContent = total !== todosLosProductos.length ? `${total} de ${todosLosProductos.length}` : '';
+      rcEl.textContent = sinFiltros ? '' : `${total} de ${todosLosProductos.length}`;
 
       if (total === 0) {
         grid.innerHTML = '';
@@ -3769,6 +4005,13 @@
       if (!p) return;
       productoModal = p;
       modalImgIndex = 0;
+
+      // Tracking: vista del producto (alimenta el orden "más vistos" de la grilla)
+      trackEvent('visit', {
+        sku: p.sku,
+        nombre: p.nombre,
+        imagen: getImgSrc(p, 'thumb')
+      });
 
       // Gallery
       const thumbsWrap = document.getElementById('gallery-thumbs');
