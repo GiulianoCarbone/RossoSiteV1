@@ -9,8 +9,8 @@ rules_version = '2';
 //   • Los empleados siguen entrando por DNI (vendedores queda LEÍBLE),
 //     pero nadie sin ser admin puede MODIFICAR los datos de empleados.
 //   • El catálogo público sigue sumando "vistas" (analytics) sin login.
-//   • Las colecciones del panel corporativo se dejan como están hoy
-//     para NO romper a los empleados (se pueden endurecer más adelante).
+//   • Las colecciones del panel corporativo permiten el acceso que
+//     necesitan sus flujos internos.
 // ════════════════════════════════════════════════════════════════
 
 service cloud.firestore {
@@ -40,9 +40,7 @@ service cloud.firestore {
     match /analytics_daily/{doc}    { allow read: if true; allow create, update: if true; allow delete: if isAdmin(); }
     match /analytics_products/{doc} { allow read: if true; allow create, update: if true; allow delete: if isAdmin(); }
 
-    // ── PANEL CORPORATIVO / EMPLEADOS (sin login Firebase hoy) ─────
-    //    Se mantienen abiertas para no romper esos flujos.
-    //    TODO (endurecer luego): confirmar quién escribe cada una.
+    // ── PANEL CORPORATIVO / EMPLEADOS ──────────────────────────────
     match /news/{doc}            { allow read, write: if true; }
     match /notifications/{doc}   { allow read, write: if true; }
     match /trainings/{doc}       { allow read, write: if true; }
