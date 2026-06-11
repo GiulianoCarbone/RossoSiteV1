@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -205,7 +206,7 @@
 
   /* ── FIREBASE ── */
   const firebaseConfig = {
-    apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+    apiKey: "AIzaSyDlnliCkBlHVHI6rFnKgijIfUwy1-umO68",
     authDomain: "backend-panel-vendedores.firebaseapp.com",
     projectId: "backend-panel-vendedores",
     storageBucket: "backend-panel-vendedores.firebasestorage.app",
@@ -214,14 +215,16 @@
   };
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
+  const auth = firebase.auth();
 
-  /* ── AUTH (sessionStorage, igual que panel-catalogo) ── */
-  if (sessionStorage.getItem('adminAuth') !== 'true') {
-    window.location.href = 'panel-catalogo.html';
-  }
+  /* ── AUTH (Firebase Authentication) ── */
+  // Sin sesión de admin → volver al panel de catálogo, que tiene el login.
+  // La sesión de Firebase se comparte entre las páginas del panel.
+  auth.onAuthStateChanged(user => {
+    if (!user) window.location.href = 'panel-catalogo.html';
+  });
   function logout() {
-    sessionStorage.removeItem('adminAuth');
-    window.location.href = 'panel-catalogo.html';
+    auth.signOut().then(() => { window.location.href = 'panel-catalogo.html'; });
   }
 
   /* ── ESTADO ── */

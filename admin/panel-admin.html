@@ -439,8 +439,12 @@
             <h2>Acceso Administrativo</h2>
             <form id="admin-login-form">
                 <div class="input-group">
+                    <label for="admin-email">Email</label>
+                    <input type="email" id="admin-email" placeholder="tu@email.com" autocomplete="username" required />
+                </div>
+                <div class="input-group">
                     <label for="admin-password">Contraseña</label>
-                    <input type="password" id="admin-password" placeholder="Ingrese código de acceso" required />
+                    <input type="password" id="admin-password" placeholder="••••••••" autocomplete="current-password" required />
                 </div>
                 <button type="submit">Ingresar</button>
                 <div id="login-error"></div>
@@ -1167,9 +1171,10 @@ PREMIO: 1 kit disco enlozado.</textarea>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+            apiKey: "AIzaSyDlnliCkBlHVHI6rFnKgijIfUwy1-umO68",
             authDomain: "backend-panel-vendedores.firebaseapp.com",
             projectId: "backend-panel-vendedores",
             storageBucket: "backend-panel-vendedores.firebasestorage.app",
@@ -1181,36 +1186,43 @@ PREMIO: 1 kit disco enlozado.</textarea>
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Auth Logic
-        const encodedAdminPassword = "NTM1MTUyNQ=="; // "5351525" base64
+        // Auth Logic (Firebase Authentication — email + contraseña)
+        const auth = firebase.auth();
         const loginForm = document.getElementById("admin-login-form");
+        const emailInput = document.getElementById("admin-email");
         const passwordInput = document.getElementById("admin-password");
         const loginError = document.getElementById("login-error");
+        let panelIniciado = false;
 
-        // Check session
-        if (sessionStorage.getItem("adminAuth") === "true") {
-            showPanel();
-        }
-
-        loginForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const entered = passwordInput.value;
-            if (btoa(entered) === encodedAdminPassword) {
-                sessionStorage.setItem("adminAuth", "true");
+        // Mantiene la sesión entre recargas y entre páginas del panel
+        auth.onAuthStateChanged((user) => {
+            if (user) {
                 showPanel();
             } else {
-                loginError.textContent = "Contraseña incorrecta";
+                document.getElementById("login-overlay").style.display = "";
+                document.getElementById("admin-wrapper").style.display = "none";
             }
         });
 
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            loginError.textContent = "";
+            auth.signInWithEmailAndPassword(emailInput.value.trim(), passwordInput.value)
+                .catch((err) => {
+                    console.error('Login error:', err.code, err.message);
+                    loginError.textContent = "No se pudo entrar (" + err.code + ")";
+                });
+        });
+
         document.getElementById("logout-btn").addEventListener("click", () => {
-            sessionStorage.removeItem("adminAuth");
-            location.reload();
+            auth.signOut();
         });
 
         function showPanel() {
             document.getElementById("login-overlay").style.display = "none";
             document.getElementById("admin-wrapper").style.display = "flex";
+            if (panelIniciado) return;   // evita re-inicializar si onAuthStateChanged se dispara de nuevo
+            panelIniciado = true;
             initDashboard();
             initNews();
             initTrainings();

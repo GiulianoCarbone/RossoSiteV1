@@ -1,0 +1,57 @@
+rules_version = '2';
+
+// ════════════════════════════════════════════════════════════════
+//  Reglas de seguridad de Firestore — Rosso Materiales
+//
+//  Objetivo:
+//   • El catálogo (catalogo/categorias/config) solo lo puede MODIFICAR
+//     un admin autenticado. El público lo LEE igual que siempre.
+//   • Los empleados siguen entrando por DNI (vendedores queda LEÍBLE),
+//     pero nadie sin ser admin puede MODIFICAR los datos de empleados.
+//   • El catálogo público sigue sumando "vistas" (analytics) sin login.
+//   • Las colecciones del panel corporativo se dejan como están hoy
+//     para NO romper a los empleados (se pueden endurecer más adelante).
+// ════════════════════════════════════════════════════════════════
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admin = email autenticado dentro de la lista blanca.
+    // Las cuentas se crean a mano en Authentication > Users; nadie puede
+    // auto-registrarse, así que alcanza con verificar el email.
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email in [
+          'rossomateriales@gmail.com'
+          // , 'otro-admin@ejemplo.com'   // agregar acá más admins si hace falta
+        ];
+    }
+
+    // ── CATÁLOGO: público LEE, solo admin ESCRIBE ──────────────────
+    match /catalogo/{doc}   { allow read: if true; allow write: if isAdmin(); }
+    match /categorias/{doc} { allow read: if true; allow write: if isAdmin(); }
+    match /config/{doc}     { allow read: if true; allow write: if isAdmin(); }
+
+    // ── EMPLEADOS: público LEE (login por DNI), solo admin ESCRIBE ──
+    match /vendedores/{doc} { allow read: if true; allow write: if isAdmin(); }
+
+    // ── ANALYTICS: el catálogo público suma vistas; nadie BORRA ────
+    match /analytics/{doc}          { allow read: if true; allow create, update: if true; allow delete: if isAdmin(); }
+    match /analytics_daily/{doc}    { allow read: if true; allow create, update: if true; allow delete: if isAdmin(); }
+    match /analytics_products/{doc} { allow read: if true; allow create, update: if true; allow delete: if isAdmin(); }
+
+    // ── PANEL CORPORATIVO / EMPLEADOS (sin login Firebase hoy) ─────
+    //    Se mantienen abiertas para no romper esos flujos.
+    //    TODO (endurecer luego): confirmar quién escribe cada una.
+    match /news/{doc}            { allow read, write: if true; }
+    match /notifications/{doc}   { allow read, write: if true; }
+    match /trainings/{doc}       { allow read, write: if true; }
+    match /invitaciones/{doc}    { allow read, write: if true; }
+    match /sugerencias/{doc}     { allow read, write: if true; }
+    match /reactions/{doc}       { allow read, write: if true; }
+    match /active_sessions/{doc} { allow read, write: if true; }
+
+    // ── Todo lo no contemplado: DENEGADO por defecto ───────────────
+    match /{document=**} { allow read, write: if false; }
+  }
+}

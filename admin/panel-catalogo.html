@@ -11,6 +11,7 @@
     crossorigin="anonymous" />
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1788,8 +1789,12 @@
     <div id="login-box">
       <img src="assets/LOGO.png" alt="Rosso Materiales" onerror="this.style.display='none'" />
       <h2>Panel de Catálogo</h2>
-      <p class="subtitle">Ingresá tu contraseña para continuar</p>
+      <p class="subtitle">Ingresá con tu cuenta para continuar</p>
       <form id="login-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="tu@email.com" autocomplete="username" />
+        </div>
         <div class="form-group">
           <label>Contraseña</label>
           <input type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password" />
@@ -2459,7 +2464,7 @@
        FIREBASE
     ═══════════════════════════════════════════════════════════════ */
     const firebaseConfig = {
-      apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+      apiKey: "AIzaSyDlnliCkBlHVHI6rFnKgijIfUwy1-umO68",
       authDomain: "backend-panel-vendedores.firebaseapp.com",
       projectId: "backend-panel-vendedores",
       storageBucket: "backend-panel-vendedores.firebasestorage.app",
@@ -2468,37 +2473,48 @@
     };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const auth = firebase.auth();
 
     /* ══════════════════════════════════════════════════════════════
-       AUTH
+       AUTH (Firebase Authentication — email + contraseña)
     ═══════════════════════════════════════════════════════════════ */
-    const ENCODED_PW = "NTM1MTUyNQ==";
+    let appIniciada = false;
 
-    if (sessionStorage.getItem("adminAuth") === "true") showApp();
+    // Mantiene la sesión entre recargas y entre páginas del panel
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        showApp();
+      } else {
+        document.getElementById('login-overlay').style.display = '';
+        document.getElementById('app').style.display = 'none';
+      }
+    });
 
     document.getElementById('login-form').addEventListener('submit', e => {
       e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
       const pw = document.getElementById('login-pw').value;
-      if (btoa(pw) === ENCODED_PW) {
-        sessionStorage.setItem("adminAuth", "true");
-        showApp();
-      } else {
-        document.getElementById('login-error').innerHTML =
-          '<i class="fa-solid fa-circle-exclamation"></i> Contraseña incorrecta';
-      }
+      const errEl = document.getElementById('login-error');
+      errEl.textContent = '';
+      auth.signInWithEmailAndPassword(email, pw)
+        .catch((err) => {
+          console.error('Login error:', err.code, err.message);
+          errEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> No se pudo entrar (' + err.code + ')';
+        });
     });
 
     function showApp() {
       document.getElementById('login-overlay').style.display = 'none';
       document.getElementById('app').style.display = 'flex';
+      if (appIniciada) return;   // evita recargar datos si onAuthStateChanged se dispara de nuevo
+      appIniciada = true;
       cargarCategorias();
       cargarProductos();
       verificarCloudinary();
     }
 
     function logout() {
-      sessionStorage.removeItem("adminAuth");
-      location.reload();
+      auth.signOut();
     }
 
     /* ══════════════════════════════════════════════════════════════
