@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invitación Exclusiva - Rosso Materiales & Eliane</title>
+    <title>Invitación - Independencia de Precios | Rosso Materiales</title>
     <meta name="description"
-        content="Confirmá tu asistencia para la inauguración del nuevo espacio Eliane en Rosso Materiales El Manantial.">
+        content="Confirmá tu asistencia a la Independencia de Precios: liquidación de mercadería discontinuada y Gran Locreada en Rosso Materiales Tafí del Valle, 10 y 11 de julio.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -17,7 +17,9 @@
         :root {
             --primary-blue: #1e2b5e;
             --rosso-orange: #f15a24;
-            --eliane-red: #e31e24;
+            --celeste: #74ACDF;
+            --celeste-deep: #2f86c5;
+            --sol: #F6B40E;
             --bg-light: #f8f9fa;
             --text-dark: #333;
             --text-muted: #666;
@@ -41,7 +43,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('assets/invitacion-bg.png');
+            background-image: linear-gradient(160deg, rgba(141, 197, 235, 0.82), rgba(235, 245, 252, 0.9)), url('assets/invitacion-bg.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -78,6 +80,9 @@
         .rosso-logo {
             width: 180px;
             margin-bottom: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .tagline {
@@ -104,12 +109,57 @@
             font-weight: 400;
         }
 
-        .eliane-logo-img {
-            max-width: 250px;
-            width: 80%;
-            height: auto;
-            margin: 10px 0 25px;
-            display: inline-block;
+        .title-accent {
+            color: var(--rosso-orange);
+        }
+
+        .title-celeste {
+            color: var(--celeste-deep);
+        }
+
+        .flag-ribbon {
+            height: 14px;
+            background: linear-gradient(to bottom,
+                    var(--celeste) 0%, var(--celeste) 33%,
+                    #ffffff 33%, #ffffff 67%,
+                    var(--celeste) 67%, var(--celeste) 100%);
+            border-bottom: 1px solid rgba(116, 172, 223, 0.35);
+        }
+
+        .sun-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff8e6;
+            border: 1px solid rgba(246, 180, 14, 0.4);
+            color: #a8780f;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .sun-badge i {
+            color: var(--sol);
+        }
+
+        .sucursal-photo {
+            margin: 0 40px 25px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            border: 3px solid #fff;
+            outline: 2px solid rgba(116, 172, 223, 0.45);
+        }
+
+        .sucursal-photo img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
         }
 
         .location-text {
@@ -148,12 +198,12 @@
         .info-icon {
             width: 45px;
             height: 45px;
-            background: rgba(30, 43, 94, 0.05);
+            background: rgba(116, 172, 223, 0.14);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary-blue);
+            color: var(--celeste-deep);
             font-size: 1.2rem;
         }
 
@@ -205,9 +255,44 @@
             }
         }
 
+        /* El pin "salta" para invitar al toque */
+        .location-link .info-icon i {
+            animation: pin-bounce 2.4s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        @keyframes pin-bounce {
+
+            0%,
+            40%,
+            100% {
+                transform: translateY(0);
+            }
+
+            10% {
+                transform: translateY(-6px) scale(1.08);
+            }
+
+            20% {
+                transform: translateY(0);
+            }
+
+            28% {
+                transform: translateY(-3px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .location-link,
+            .location-link .info-icon i {
+                animation: none !important;
+            }
+        }
+
 
         .form-section {
-            background: var(--primary-blue);
+            background: linear-gradient(170deg, var(--primary-blue) 0%, #245a96 100%);
             padding: 40px;
             color: white;
             text-align: center;
@@ -218,6 +303,18 @@
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 25px;
+        }
+
+        .form-note {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+            max-width: 420px;
+            margin: -16px auto 22px;
+        }
+
+        .form-note strong {
+            color: #ffd9a8;
         }
 
         .confirmation-form {
@@ -316,10 +413,11 @@
                 justify-content: space-between !important;
                 border-radius: 20px !important;
                 margin: 0 !important;
+                overflow-y: auto !important;
             }
 
             .card-header {
-                padding: 15px 15px 5px !important;
+                padding: 12px 15px 0 !important;
             }
 
             .main-title {
@@ -328,17 +426,38 @@
 
             .subtitle {
                 font-size: 0.95rem !important;
-                margin-bottom: 5px !important;
+                margin-bottom: 3px !important;
             }
 
-            .eliane-logo-img {
-                max-width: 130px !important;
-                margin: 5px 0 10px !important;
+            .subtitle br {
+                display: none !important;
             }
 
             .location-text {
                 font-size: 0.85rem !important;
-                margin-bottom: 10px !important;
+                margin-bottom: 6px !important;
+            }
+
+            .flag-ribbon {
+                height: 10px !important;
+                flex-shrink: 0 !important;
+            }
+
+            .sun-badge {
+                font-size: 0.62rem !important;
+                padding: 4px 12px !important;
+                margin-bottom: 8px !important;
+                gap: 6px !important;
+            }
+
+            .sucursal-photo {
+                margin: 0 15px 8px !important;
+                border-radius: 14px !important;
+                flex-shrink: 0 !important;
+            }
+
+            .sucursal-photo img {
+                height: 94px !important;
             }
 
             .body-text {
@@ -346,44 +465,57 @@
             }
 
             .info-grid {
-                margin: 0 15px 10px !important;
-                padding: 10px !important;
-                gap: 5px !important;
+                margin: 0 15px 8px !important;
+                padding: 0 !important;
+                gap: 8px !important;
                 display: flex !important;
-                justify-content: space-around !important;
-                background: rgba(0, 0, 0, 0.02) !important;
+                flex-wrap: wrap !important;
+                background: transparent !important;
+                border: none !important;
             }
 
             .info-item {
                 flex-direction: column !important;
+                justify-content: center !important;
                 text-align: center !important;
-                gap: 3px !important;
-                flex: 1 !important;
+                gap: 6px !important;
+                flex: 1 1 45% !important;
+                background: #fff !important;
+                border: 1px solid rgba(116, 172, 223, 0.35) !important;
+                border-radius: 14px !important;
+                padding: 10px 8px !important;
+                box-shadow: 0 2px 8px rgba(30, 43, 94, 0.06) !important;
             }
 
             .location-link {
-                padding: 10px 5px !important;
-                border-radius: 12px !important;
+                padding: 10px 8px !important;
+                border-radius: 14px !important;
+                background: rgba(241, 90, 36, 0.05) !important;
+                border: 1.5px solid rgba(241, 90, 36, 0.35) !important;
             }
 
 
             .info-icon {
-                width: 32px !important;
-                height: 32px !important;
-                font-size: 0.9rem !important;
-                background: white !important;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+                width: 34px !important;
+                height: 34px !important;
+                font-size: 0.95rem !important;
+                border-radius: 50% !important;
+                background: linear-gradient(135deg, var(--celeste), var(--celeste-deep)) !important;
+                color: #fff !important;
+                box-shadow: 0 3px 8px rgba(47, 134, 197, 0.35) !important;
             }
 
             .location-link .info-icon {
-                background: var(--rosso-orange) !important;
+                background: linear-gradient(135deg, #ff8a5c, var(--rosso-orange)) !important;
                 color: white !important;
+                box-shadow: 0 3px 8px rgba(241, 90, 36, 0.4) !important;
             }
 
 
             .info-content h4 {
-                font-size: 0.7rem !important;
-                line-height: 1.1 !important;
+                font-size: 0.72rem !important;
+                line-height: 1.25 !important;
+                text-wrap: balance;
             }
 
             .info-content p {
@@ -391,7 +523,7 @@
             }
 
             .form-section {
-                padding: 15px !important;
+                padding: 12px 15px !important;
                 flex-grow: 1 !important;
                 display: flex !important;
                 flex-direction: column !important;
@@ -400,28 +532,38 @@
 
             .form-title {
                 font-size: 1.1rem !important;
-                margin-bottom: 12px !important;
+                margin-bottom: 6px !important;
+            }
+
+            .form-note {
+                font-size: 0.76rem !important;
+                margin: 0 auto 10px !important;
+                line-height: 1.4 !important;
+            }
+
+            .confirmation-form {
+                gap: 10px !important;
             }
 
             .form-input {
-                padding: 10px 10px 10px 40px !important;
+                padding: 9px 10px 9px 40px !important;
                 font-size: 0.9rem !important;
             }
 
             .submit-btn {
-                padding: 12px !important;
+                padding: 10px !important;
                 font-size: 1rem !important;
-                margin-top: 5px !important;
+                margin-top: 4px !important;
             }
 
             .footer-note {
-                padding: 8px !important;
-                font-size: 0.75rem !important;
+                padding: 6px !important;
+                font-size: 0.72rem !important;
             }
 
             .rosso-logo {
                 width: 100px !important;
-                margin-bottom: 15px !important;
+                margin-bottom: 8px !important;
             }
         }
     </style>
@@ -430,47 +572,70 @@
 <body>
 
     <div class="invitation-card">
+        <div class="flag-ribbon"></div>
         <div class="card-header">
             <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Logo" class="rosso-logo"
                 style="margin-bottom: 30px;">
 
-            <h1 class="main-title">ESTÁS INVITADO</h1>
-            <p class="subtitle">Descubrí el nuevo espacio</p>
-            <img src="assets/eliane-logo.png" alt="Eliane" class="eliane-logo-img">
-            <p class="location-text">en nuestra sucursal de <strong>El Manantial</strong></p>
+            <div class="sun-badge"><i class="fa-solid fa-sun"></i> Especial Día de la Independencia</div>
+            <h1 class="main-title"><span class="title-celeste">INDEPENDENCIA</span><br><span class="title-accent">DE
+                    PRECIOS</span></h1>
+            <p class="subtitle">Liquidación de productos <br>+ Gran Locreada</p>
+            <!-- <p class="location-text">Sucursal <strong>Tafí del Valle</strong> </p> -->
         </div>
+
+        <div class="sucursal-photo">
+            <img src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAGEgTSDeJ5qACILgpn9Wd9XnbdKnZx_DM8uZxV1RzeuKE8v9ByqSi1Bxwyaq-lFiPgdd1_fb-F_KYUSFAZtnRqVnsxVlNr60INHgvBb-loM5eSwpmoFdBAf148svp6QRSUslv_aCtQSzK4=s680-w680-h510"
+                alt="Sucursal Rosso Materiales Tafí del Valle">
+        </div>
+
+        <p class="body-text">
+            Dos días de precios únicos en mercadería discontinuada: stock limitado,
+            se van y no vuelven. Y el sábado lo celebramos como corresponde,
+            con una Gran Locreada en el espacio verde de la sucursal.
+        </p>
 
         <div class="info-grid">
             <div class="info-item">
                 <div class="info-icon"><i class="fa-regular fa-calendar-check"></i></div>
                 <div class="info-content">
-                    <h4>23 de abril - 18:30 hs</h4>
-                    <p>¡Te esperamos puntualmente!</p>
+                    <h4>Viernes 10 y Sábado 11 de Julio</h4>
+                    <!-- COMPLETAR: confirmar horario definitivo -->
+                    <p>De 10:00 a 17:00 hs</p>
                 </div>
             </div>
-            <a href="https://maps.app.goo.gl/rmFkZoq4Bk7XJXin6" target="_blank" class="info-item location-link"
-                style="text-decoration: none; color: inherit;">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=-26.85749368894493,-65.6960278339007"
+                target="_blank" class="info-item location-link" style="text-decoration: none; color: inherit;">
                 <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
                 <div class="info-content">
-                    <h4>Sucursal El Manantial</h4>
-                    <p>Ruta 301, Km 0.6 <span
+                    <h4>Sucursal Tafí del Valle</h4>
+                    <p>Ruta 307, Km 60.5 <span
                             style="color: var(--rosso-orange); font-weight: 700; display: block; margin-top: 2px;">(Ver
                             mapa)</span></p>
 
                 </div>
             </a>
             <div class="info-item">
-                <div class="info-icon"><i class="fa-solid fa-martini-glass-citrus"></i></div>
+                <div class="info-icon"><i class="fa-solid fa-tags"></i></div>
                 <div class="info-content">
-                    <h4>Catering, Música & Presentación</h4>
-                    <p>Lanzamiento exclusivo de productos</p>
-
+                    <h4>Liquidación: precios únicos</h4>
+                    <p>Stock limitado — se van y no vuelven</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-bowl-food"></i></div>
+                <div class="info-content">
+                    <h4>Sábado 11: Gran Locreada</h4>
+                    <!-- COMPLETAR: mecánica de la locreada (gratis con compra / a la venta) -->
+                    <p>En el espacio verde de la sucursal</p>
                 </div>
             </div>
         </div>
 
         <div class="form-section">
             <h2 class="form-title">Confirmar Asistencia</h2>
+            <p class="form-note">La liquidación es con <strong>entrada libre los dos días</strong>.
+                Confirmando nos ayudás a preparar la <strong>Gran Locreada del sábado 11</strong>.</p>
             <form class="confirmation-form" id="invitation-form">
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
@@ -490,7 +655,7 @@
         </div>
 
         <div class="footer-note">
-            Te esperamos para compartir una gran tarde juntos
+            ¡Viva la Independencia… de Precios! · Te esperamos en Tafí del Valle
         </div>
     </div>
 
@@ -533,7 +698,7 @@
                     nombre: name,
                     email: email,
                     fecha_confirmacion: firebase.firestore.FieldValue.serverTimestamp(),
-                    evento: "Inauguración Eliane El Manantial 23/04"
+                    evento: "Independencia de Precios - Tafí del Valle 10-11/07/2026"
                 });
 
                 console.log('Confirmation saved to Firestore:', { name, email });
