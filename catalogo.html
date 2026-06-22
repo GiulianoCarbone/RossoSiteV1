@@ -3043,7 +3043,7 @@
             <span class="qty-label">Cantidad:</span>
             <div class="qty-ctrl">
               <button class="qty-btn" onclick="changeQty(-1)">−</button>
-              <input class="qty-input" type="number" id="modal-qty" value="1" min="1" max="999" />
+              <input class="qty-input" type="number" id="modal-qty" value="1" min="1" max="100" onchange="clampQtyInput(this)" />
               <button class="qty-btn" onclick="changeQty(1)">+</button>
             </div>
           </div>
@@ -4166,14 +4166,24 @@
       if (sugerenciasSection) sugerenciasSection.style.display = 'none';
     }
 
+    const MAX_QTY = 100;
+    function clampQty(n) {
+      n = parseInt(n) || 1;
+      return Math.min(MAX_QTY, Math.max(1, n));
+    }
+
     function changeQty(delta) {
       const input = document.getElementById('modal-qty');
-      input.value = Math.max(1, (parseInt(input.value) || 1) + delta);
+      input.value = clampQty((parseInt(input.value) || 1) + delta);
+    }
+
+    function clampQtyInput(input) {
+      input.value = clampQty(input.value);
     }
 
     function agregarDesdeModal() {
       if (!productoModal) return;
-      const qty = parseInt(document.getElementById('modal-qty').value) || 1;
+      const qty = clampQty(document.getElementById('modal-qty').value);
       agregarALista(productoModal.sku, qty);
       // Actualizar botón del modal
       const btn = document.getElementById('modal-btn-add');
@@ -4200,12 +4210,12 @@
       if (!p) return;
       const existente = lista.find(i => i.sku === sku);
       if (existente) {
-        existente.cantidad += qty;
+        existente.cantidad = clampQty(existente.cantidad + qty);
       } else {
         lista.push({
           sku: p.sku,
           nombre: p.nombre,
-          cantidad: qty,
+          cantidad: clampQty(qty),
           unidad: p.unidad || '',
           cat: [p.categoria, p.subcategoria].filter(Boolean).join(' › '),
           imagenUrl: getImgSrc(p, 'thumb')
@@ -4228,7 +4238,7 @@
     function cambiarCantidadPanel(sku, delta) {
       const item = lista.find(i => i.sku === sku);
       if (!item) return;
-      item.cantidad = Math.max(1, item.cantidad + delta);
+      item.cantidad = clampQty(item.cantidad + delta);
       guardarLista();
       renderPanel();
     }

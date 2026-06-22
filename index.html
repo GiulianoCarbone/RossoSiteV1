@@ -1404,6 +1404,50 @@
         sessionStorage.setItem('rosso_chat_session', sessionId);
       }
 
+      /* ---- Anti-spam: cooldown, tope por sesión y tope por minuto ---- */
+      const COOLDOWN_MS = 2000;      // mínimo entre mensajes
+      const MAX_PER_SESSION = 30;    // tope total de mensajes por sesión
+      const MAX_PER_MINUTE = 12;     // máximo por minuto (ráfagas)
+      const SESSION_COUNT_KEY = 'rosso_chat_count';
+      let sendTimestamps = [];       // marcas de tiempo (cooldown + ventana de 1 min)
+      let lastNoticeMsg = '';        // para no repetir el mismo aviso seguido
+
+      function getSessionCount() {
+        return parseInt(sessionStorage.getItem(SESSION_COUNT_KEY)) || 0;
+      }
+
+      // Devuelve { ok:true } o { ok:false, msg } si hay que frenar el envío.
+      function checkRateLimit() {
+        const now = Date.now();
+        if (getSessionCount() >= MAX_PER_SESSION) {
+          return { ok: false, msg: 'Llegaste al límite de mensajes de esta sesión. Si necesitás seguir, escribinos por WhatsApp y te atendemos enseguida.' };
+        }
+        const last = sendTimestamps[sendTimestamps.length - 1];
+        if (last && now - last < COOLDOWN_MS) {
+          const wait = Math.ceil((COOLDOWN_MS - (now - last)) / 1000);
+          return { ok: false, msg: `Esperá un momento antes de enviar otro mensaje (${wait}s).` };
+        }
+        if (sendTimestamps.filter(t => now - t < 60000).length >= MAX_PER_MINUTE) {
+          return { ok: false, msg: 'Estás enviando mensajes muy rápido. Esperá un minuto e intentá de nuevo.' };
+        }
+        return { ok: true };
+      }
+
+      // Registra un envío válido (para cooldown, ventana de 1 min y tope por sesión).
+      function registrarEnvio() {
+        const now = Date.now();
+        sendTimestamps.push(now);
+        sendTimestamps = sendTimestamps.filter(t => now - t < 60000); // solo el último minuto
+        sessionStorage.setItem(SESSION_COUNT_KEY, getSessionCount() + 1);
+      }
+
+      // Muestra el aviso de límite sin duplicar el mismo mensaje consecutivo.
+      function avisoLimite(msg) {
+        if (lastNoticeMsg === msg) return;
+        lastNoticeMsg = msg;
+        addMessage(msg, 'error');
+      }
+
       /* ---- Abrir / Cerrar ---- */
       function openChat() {
         chatWin.removeAttribute('hidden');
@@ -1578,6 +1622,12 @@
         const text = input.value.trim();
         if (!text || sendBtn.disabled) return;
 
+        // Anti-spam: cooldown / tope por sesión / tope por minuto
+        const gate = checkRateLimit();
+        if (!gate.ok) { avisoLimite(gate.msg); return; }
+        registrarEnvio();
+        lastNoticeMsg = ''; // se reinicia tras un envío válido
+
         input.value = '';
         input.style.height = 'auto';
         sendBtn.disabled = true;
@@ -1635,7 +1685,7 @@
       /* ---- Auto-resize del textarea + contador de caracteres ---- */
       const charCount = document.getElementById('chat-char-count');
       const charCounter = charCount ? charCount.parentElement : null;
-      const MAX_CHARS = 300;
+      const MAX_CHARS = 250;
 
       input.addEventListener('input', function () {
         // Auto-resize
