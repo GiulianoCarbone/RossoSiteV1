@@ -871,6 +871,21 @@ PREMIO: 1 kit disco enlozado.</textarea>
                         </div>
                     </div>
 
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px;">
+                        <div class="input-group" style="display: flex; align-items: center; gap: 10px; background: #fff7ed; padding: 10px; border-radius: 8px; border: 1px solid #ffedd5;">
+                            <input type="checkbox" id="show-ranking-a" style="width: 20px; height: 20px; cursor: pointer;" checked>
+                            <label for="show-ranking-a" style="margin: 0; cursor: pointer; font-weight: 600; color: #d95324;">Mostrar Categoría A</label>
+                        </div>
+                        <div class="input-group" style="display: flex; align-items: center; gap: 10px; background: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                            <input type="checkbox" id="show-ranking-b" style="width: 20px; height: 20px; cursor: pointer;">
+                            <label for="show-ranking-b" style="margin: 0; cursor: pointer; font-weight: 600; color: #272e68;">Mostrar Categoría B</label>
+                        </div>
+                        <div class="input-group" style="display: flex; align-items: center; gap: 10px; background: #f0fdf4; padding: 10px; border-radius: 8px; border: 1px solid #dcfce7;">
+                            <input type="checkbox" id="show-ranking-c" style="width: 20px; height: 20px; cursor: pointer;" checked>
+                            <label for="show-ranking-c" style="margin: 0; cursor: pointer; font-weight: 600; color: #16a34a;">Mostrar Categoría C</label>
+                        </div>
+                    </div>
+
                     <div id="winners-config-fields" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
                         <h4 style="margin-bottom: 15px; color: var(--brand);">Configuración de Ganadores</h4>
 
@@ -908,6 +923,23 @@ PREMIO: 1 kit disco enlozado.</textarea>
                                     <input type="number" id="winner-b-score" placeholder="Ej: 198" value="0">
                                 </div>
                             </div>
+
+                            <!-- Winner C Details -->
+                            <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border: 1px solid #dcfce7;">
+                                <h5 style="color: #166534; margin-bottom: 10px; font-weight: 800;">GANADOR CATEGORÍA C (TODAS LAS SUCURSALES)</h5>
+                                <div class="input-group">
+                                    <label>Nombre del Ganador</label>
+                                    <input type="text" id="winner-c-name" placeholder="Ej: Carlos Gómez">
+                                </div>
+                                <div class="input-group">
+                                    <label>Sucursal</label>
+                                    <input type="text" id="winner-c-branch" placeholder="Ej: Yerba Buena">
+                                </div>
+                                <div class="input-group">
+                                    <label>Unidades / Puntos</label>
+                                    <input type="number" id="winner-c-score" placeholder="Ej: 300">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <button id="save-buttons-config-btn" style="margin-top: 15px; background-color: #2563eb;">Guardar Configuración de Botones</button>
@@ -917,38 +949,11 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 <div class="panel-card" style="padding: 20px;">
                     <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 - CATEGORÍA A</h3>
                     <form id="contest-ranking-a-form">
-                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                            <!-- Rank 1-5 A -->
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; background: #fff7ed; padding: 10px; border-radius: 8px; border: 1px solid #ffedd5;">
-                                <span style="font-weight: 800; color: #d95324;">1º</span>
-                                <input type="text" id="rankA1-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankA1-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankA1-units" placeholder="Cant." value="0">
-                            </div>
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
-                                <span style="font-weight: 800; color: #4b5563;">2º</span>
-                                <input type="text" id="rankA2-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankA2-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankA2-units" placeholder="Cant." value="0">
-                            </div>
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
-                                <span style="font-weight: 800; color: #4b5563;">3º</span>
-                                <input type="text" id="rankA3-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankA3-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankA3-units" placeholder="Cant." value="0">
-                            </div>
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
-                                <span style="font-weight: 800; color: #9ca3af;">4º</span>
-                                <input type="text" id="rankA4-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankA4-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankA4-units" placeholder="Cant." value="0">
-                            </div>
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
-                                <span style="font-weight: 800; color: #9ca3af;">5º</span>
-                                <input type="text" id="rankA5-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankA5-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankA5-units" placeholder="Cant." value="0">
-                            </div>
+                        <div id="ranking-a-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <!-- Dynamic rows here -->
+                        </div>
+                        <div style="text-align: right; margin-top: 10px;">
+                            <button type="button" onclick="addRankingRow('A')" style="background: none; border: none; color: #d95324; font-weight: 700; cursor: pointer; text-decoration: underline;"><i class="fa-solid fa-plus"></i> Agregar Persona</button>
                         </div>
                         <button type="submit" style="margin-top: 20px; background-color: #d95324; font-weight: 800;">ACTUALIZAR RANKING A</button>
                     </form>
@@ -957,40 +962,25 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 <div class="panel-card" style="padding: 20px; margin-top: 30px; opacity: 0.5; pointer-events: none;" title="Deshabilitado para este concurso de categoría única">
                     <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 - CATEGORÍA B (NO UTILIZADO)</h3>
                     <form id="contest-ranking-b-form">
-                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                            <!-- Rank 1-5 B -->
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; background: #f9fafb; padding: 10px; border-radius: 8px; border: 1px solid #e5e7eb;">
-                                <span style="font-weight: 800; color: #d95324;">1º</span>
-                                <input type="text" id="rankB1-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankB1-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankB1-units" placeholder="Cant." value="0">
-                            </div>
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
-                                <span style="font-weight: 800; color: #4b5563;">2º</span>
-                                <input type="text" id="rankB2-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankB2-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankB2-units" placeholder="Cant." value="0">
-                            </div>
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
-                                <span style="font-weight: 800; color: #4b5563;">3º</span>
-                                <input type="text" id="rankB3-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankB3-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankB3-units" placeholder="Cant." value="0">
-                            </div>
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
-                                <span style="font-weight: 800; color: #9ca3af;">4º</span>
-                                <input type="text" id="rankB4-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankB4-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankB4-units" placeholder="Cant." value="0">
-                            </div>
-                            <div style="display: grid; grid-template-columns: 40px 1fr 1fr 100px; gap: 10px; align-items: center; padding: 10px;">
-                                <span style="font-weight: 800; color: #9ca3af;">5º</span>
-                                <input type="text" id="rankB5-name" placeholder="Vendedor" value="-">
-                                <input type="text" id="rankB5-branch" placeholder="Sucursal" value="-">
-                                <input type="number" id="rankB5-units" placeholder="Cant." value="0">
-                            </div>
+                        <div id="ranking-b-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <!-- Dynamic rows here -->
                         </div>
-                        <button type="submit" style="margin-top: 20px; background-color: #272e68; font-weight: 800;">ACTUALIZAR RANKING B</button>
+                        <div style="text-align: right; margin-top: 10px;">
+                            <button type="button" onclick="addRankingRow('B')" style="background: none; border: none; color: #272e68; font-weight: 700; cursor: pointer; text-decoration: underline;"><i class="fa-solid fa-plus"></i> Agregar Persona</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel-card" style="padding: 20px; margin-top: 30px;">
+                    <h3><i class="fa-solid fa-ranking-star"></i> Ranking Top 5 - CATEGORÍA C (TODAS LAS SUCURSALES)</h3>
+                    <form id="contest-ranking-c-form">
+                        <div id="ranking-c-container" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                            <!-- Dynamic rows here -->
+                        </div>
+                        <div style="text-align: right; margin-top: 10px;">
+                            <button type="button" onclick="addRankingRow('C')" style="background: none; border: none; color: #16a34a; font-weight: 700; cursor: pointer; text-decoration: underline;"><i class="fa-solid fa-plus"></i> Agregar Persona</button>
+                        </div>
+                        <button type="submit" style="margin-top: 20px; background-color: #16a34a; font-weight: 800;">ACTUALIZAR RANKING C</button>
                     </form>
                 </div>
 
@@ -2233,12 +2223,18 @@ PREMIO: 1 kit disco enlozado.</textarea>
                     await db.collection('config').doc('contest_config').set({
                         showRankingButton: document.getElementById('show-ranking-btn').checked,
                         showWinnersButton: document.getElementById('show-winners-btn').checked,
+                        showRankingA: document.getElementById('show-ranking-a').checked,
+                        showRankingB: document.getElementById('show-ranking-b').checked,
+                        showRankingC: document.getElementById('show-ranking-c').checked,
                         winnerAName: document.getElementById('winner-a-name').value,
                         winnerABranch: document.getElementById('winner-a-branch').value,
                         winnerAScore: document.getElementById('winner-a-score').value,
                         winnerBName: document.getElementById('winner-b-name').value,
                         winnerBBranch: document.getElementById('winner-b-branch').value,
-                        winnerBScore: document.getElementById('winner-b-score').value
+                        winnerBScore: document.getElementById('winner-b-score').value,
+                        winnerCName: document.getElementById('winner-c-name').value,
+                        winnerCBranch: document.getElementById('winner-c-branch').value,
+                        winnerCScore: document.getElementById('winner-c-score').value
                     }, { merge: true });
                     alert('✅ Configuración de ganadores guardada.');
                 } catch (err) {
@@ -2247,17 +2243,25 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 }
             });
 
+            // Shared function to read dynamic ranking rows
+            function getDynamicRanking(categoryId) {
+                const container = document.getElementById(`ranking-${categoryId.toLowerCase()}-container`);
+                const rows = container.querySelectorAll('.ranking-row');
+                const ranking = [];
+                rows.forEach(row => {
+                    ranking.push({
+                        name: row.querySelector('.rank-name').value.trim(),
+                        branch: row.querySelector('.rank-branch').value.trim(),
+                        units: parseInt(row.querySelector('.rank-units').value) || 0,
+                    });
+                });
+                return ranking;
+            }
+
             // Ranking A form
             document.getElementById('contest-ranking-a-form').onsubmit = async (e) => {
                 e.preventDefault();
-                const rankingA = [];
-                for (let i = 1; i <= 5; i++) {
-                    rankingA.push({
-                        name: document.getElementById(`rankA${i}-name`).value.trim(),
-                        branch: document.getElementById(`rankA${i}-branch`).value.trim(),
-                        units: parseInt(document.getElementById(`rankA${i}-units`).value) || 0,
-                    });
-                }
+                const rankingA = getDynamicRanking('A');
                 try {
                     await db.collection('config').doc('contest_config').set({ rankingA }, { merge: true });
                     alert('✅ Ranking A actualizado correctamente.');
@@ -2270,14 +2274,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
             // Ranking B form
             document.getElementById('contest-ranking-b-form').onsubmit = async (e) => {
                 e.preventDefault();
-                const rankingB = [];
-                for (let i = 1; i <= 5; i++) {
-                    rankingB.push({
-                        name: document.getElementById(`rankB${i}-name`).value.trim(),
-                        branch: document.getElementById(`rankB${i}-branch`).value.trim(),
-                        units: parseInt(document.getElementById(`rankB${i}-units`).value) || 0,
-                    });
-                }
+                const rankingB = getDynamicRanking('B');
                 try {
                     await db.collection('config').doc('contest_config').set({ rankingB }, { merge: true });
                     alert('✅ Ranking B actualizado correctamente.');
@@ -2285,6 +2282,63 @@ PREMIO: 1 kit disco enlozado.</textarea>
                     console.error(err);
                     alert('Error al guardar el ranking B.');
                 }
+            };
+
+            // Ranking C form
+            document.getElementById('contest-ranking-c-form').onsubmit = async (e) => {
+                e.preventDefault();
+                const rankingC = getDynamicRanking('C');
+                try {
+                    await db.collection('config').doc('contest_config').set({ rankingC }, { merge: true });
+                    alert('✅ Ranking C actualizado correctamente.');
+                } catch (err) {
+                    console.error(err);
+                    alert('Error al guardar el ranking C.');
+                }
+            };
+
+            window.addRankingRow = function(category, data = null) {
+                const container = document.getElementById(`ranking-${category.toLowerCase()}-container`);
+                const currentIndex = container.querySelectorAll('.ranking-row').length + 1;
+                
+                let color = '#d95324';
+                let bg = '#fff7ed';
+                let border = '#ffedd5';
+                if (category === 'B') { color = '#272e68'; bg = '#f9fafb'; border = '#e5e7eb'; }
+                if (category === 'C') { color = '#16a34a'; bg = '#f0fdf4'; border = '#dcfce7'; }
+                
+                if (currentIndex > 1 && category === 'A') {
+                   color = '#4b5563'; bg = '#f9fafb'; border = '#f3f4f6';
+                   if (currentIndex > 3) color = '#9ca3af';
+                }
+
+                const row = document.createElement('div');
+                row.className = 'ranking-row';
+                row.style.display = 'grid';
+                row.style.gridTemplateColumns = '40px 1fr 1fr 100px 40px';
+                row.style.gap = '10px';
+                row.style.alignItems = 'center';
+                row.style.padding = '10px';
+                row.style.background = bg;
+                row.style.borderRadius = '8px';
+                row.style.border = `1px solid ${border}`;
+                
+                row.innerHTML = `
+                    <span class="rank-index" style="font-weight: 800; color: ${color};">${currentIndex}º</span>
+                    <input type="text" class="rank-name" placeholder="Vendedor" value="${data ? data.name : '-'}">
+                    <input type="text" class="rank-branch" placeholder="Sucursal" value="${data ? data.branch : '-'}">
+                    <input type="number" class="rank-units" placeholder="Cant." value="${data ? data.units : '0'}">
+                    <button type="button" onclick="this.parentElement.remove(); window.updateRankingIndices('${category}');" style="background: none; border: none; color: #ef4444; cursor: pointer; padding: 5px;"><i class="fa-solid fa-trash"></i></button>
+                `;
+                container.appendChild(row);
+            };
+
+            window.updateRankingIndices = function(category) {
+                const container = document.getElementById(`ranking-${category.toLowerCase()}-container`);
+                const rows = container.querySelectorAll('.ranking-row');
+                rows.forEach((row, idx) => {
+                    row.querySelector('.rank-index').textContent = `${idx + 1}º`;
+                });
             };
 
             loadContestConfig();
@@ -2340,6 +2394,13 @@ PREMIO: 1 kit disco enlozado.</textarea>
                     else document.getElementById('show-ranking-btn').checked = true; // Default
 
                     if (data.showWinnersButton !== undefined) document.getElementById('show-winners-btn').checked = data.showWinnersButton;
+                    
+                    if (data.showRankingA !== undefined) document.getElementById('show-ranking-a').checked = data.showRankingA;
+                    else document.getElementById('show-ranking-a').checked = true;
+                    if (data.showRankingB !== undefined) document.getElementById('show-ranking-b').checked = data.showRankingB;
+                    else document.getElementById('show-ranking-b').checked = false;
+                    if (data.showRankingC !== undefined) document.getElementById('show-ranking-c').checked = data.showRankingC;
+                    else document.getElementById('show-ranking-c').checked = true;
 
                     // Winner A
                     if (data.winnerAName) document.getElementById('winner-a-name').value = data.winnerAName;
@@ -2351,25 +2412,34 @@ PREMIO: 1 kit disco enlozado.</textarea>
                     if (data.winnerBBranch) document.getElementById('winner-b-branch').value = data.winnerBBranch;
                     if (data.winnerBScore) document.getElementById('winner-b-score').value = data.winnerBScore;
 
+                    // Winner C
+                    if (data.winnerCName) document.getElementById('winner-c-name').value = data.winnerCName;
+                    if (data.winnerCBranch) document.getElementById('winner-c-branch').value = data.winnerCBranch;
+                    if (data.winnerCScore) document.getElementById('winner-c-score').value = data.winnerCScore;
+
                     // Ranking A
-                    if (data.rankingA && Array.isArray(data.rankingA)) {
-                        data.rankingA.forEach((item, index) => {
-                            const i = index + 1;
-                            if (i > 5) return;
-                            document.getElementById(`rankA${i}-name`).value = item.name || '';
-                            document.getElementById(`rankA${i}-branch`).value = item.branch || '';
-                            document.getElementById(`rankA${i}-units`).value = item.units || '';
-                        });
+                    document.getElementById('ranking-a-container').innerHTML = '';
+                    if (data.rankingA && Array.isArray(data.rankingA) && data.rankingA.length > 0) {
+                        data.rankingA.forEach(item => window.addRankingRow('A', item));
+                    } else {
+                        // Default empty rows
+                        for(let i=0; i<5; i++) window.addRankingRow('A');
                     }
+                    
                     // Ranking B
-                    if (data.rankingB && Array.isArray(data.rankingB)) {
-                        data.rankingB.forEach((item, index) => {
-                            const i = index + 1;
-                            if (i > 5) return;
-                            document.getElementById(`rankB${i}-name`).value = item.name || '';
-                            document.getElementById(`rankB${i}-branch`).value = item.branch || '';
-                            document.getElementById(`rankB${i}-units`).value = item.units || '';
-                        });
+                    document.getElementById('ranking-b-container').innerHTML = '';
+                    if (data.rankingB && Array.isArray(data.rankingB) && data.rankingB.length > 0) {
+                        data.rankingB.forEach(item => window.addRankingRow('B', item));
+                    } else {
+                        for(let i=0; i<5; i++) window.addRankingRow('B');
+                    }
+                    
+                    // Ranking C
+                    document.getElementById('ranking-c-container').innerHTML = '';
+                    if (data.rankingC && Array.isArray(data.rankingC) && data.rankingC.length > 0) {
+                        data.rankingC.forEach(item => window.addRankingRow('C', item));
+                    } else {
+                        for(let i=0; i<5; i++) window.addRankingRow('C');
                     }
                 }
             } catch (err) {

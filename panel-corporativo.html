@@ -4214,116 +4214,32 @@
 
         <div class="ranking-container-dual" style="display: grid; grid-template-columns: 1fr; gap: 20px;">
           <!-- CATEGORY A (GENERAL RANKING) -->
-          <div class="ranking-column">
+          <div class="ranking-column" id="ranking-col-a">
             <h5
               style="text-align: center; color: var(--accent); font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">
               Ranking General</h5>
             <div id="ranking-list-a">
-              <!-- A1 -->
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #fff7ed; border-radius: 12px; margin-bottom: 8px; border: 1px solid #ffedd5;">
-                <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥇</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-1">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankA-branch-1">-</div>
-                </div>
-                <div style="font-weight: 800; color: var(--accent); font-size: 1rem;" id="rankA-units-1">0</div>
-              </div>
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
-                <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥈</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-2">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankA-branch-2">-</div>
-                </div>
-                <div style="font-weight: 800; color: #4b5563; font-size: 1rem;" id="rankA-units-2">0</div>
-              </div>
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
-                <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥉</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-3">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankA-branch-3">-</div>
-                </div>
-                <div style="font-weight: 800; color: #4b5563; font-size: 1rem;" id="rankA-units-3">0</div>
-              </div>
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
-                <span
-                  style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">4</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-4">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankA-branch-4">-</div>
-                </div>
-                <div style="font-weight: 800; color: #6b7280; font-size: 1rem;" id="rankA-units-4">0</div>
-              </div>
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; border: 1px solid #f3f4f6;">
-                <span
-                  style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">5</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankA-name-5">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankA-branch-5">-</div>
-                </div>
-                <div style="font-weight: 800; color: #6b7280; font-size: 1rem;" id="rankA-units-5">0</div>
-              </div>
+              <!-- Dynamic rows will be inserted here -->
             </div>
           </div>
 
           <!-- CATEGORY B (HIDDEN FOR THIS CONTEST) -->
-          <div class="ranking-column" style="display: none;">
+          <div class="ranking-column" id="ranking-col-b" style="display: none;">
             <h5
               style="text-align: center; color: #272e68; font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">
               Categoría B</h5>
             <div id="ranking-list-b">
-              <!-- B1 -->
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #eef2ff; border-radius: 12px; margin-bottom: 8px; border: 1px solid #e0e7ff;">
-                <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥇</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-1">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankB-branch-1">-</div>
-                </div>
-                <div style="font-weight: 800; color: #4338ca; font-size: 1rem;" id="rankB-units-1">0</div>
-              </div>
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
-                <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥈</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-2">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankB-branch-2">-</div>
-                </div>
-                <div style="font-weight: 800; color: #4b5563; font-size: 1rem;" id="rankB-units-2">0</div>
-              </div>
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
-                <span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center;">🥉</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-3">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankB-branch-3">-</div>
-                </div>
-                <div style="font-weight: 800; color: #4b5563; font-size: 1rem;" id="rankB-units-3">0</div>
-              </div>
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; margin-bottom: 8px; border: 1px solid #f3f4f6;">
-                <span
-                  style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">4</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-4">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankB-branch-4">-</div>
-                </div>
-                <div style="font-weight: 800; color: #6b7280; font-size: 1rem;" id="rankB-units-4">0</div>
-              </div>
-              <div class="ranking-item"
-                style="display: flex; align-items: center; padding: 10px; background: #f9fafb; border-radius: 12px; border: 1px solid #f3f4f6;">
-                <span
-                  style="font-size: 0.9rem; margin-right: 12px; width: 25px; text-align: center; font-weight: 800; color: #9ca3af;">5</span>
-                <div style="flex-grow: 1;">
-                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;" id="rankB-name-5">-</div>
-                  <div style="font-size: 0.75rem; color: #6b7280;" id="rankB-branch-5">-</div>
-                </div>
-                <div style="font-weight: 800; color: #6b7280; font-size: 1rem;" id="rankB-units-5">0</div>
-              </div>
+              <!-- Dynamic rows will be inserted here -->
+            </div>
+          </div>
+
+          <!-- CATEGORY C (TODAS LAS SUCURSALES) -->
+          <div class="ranking-column" id="ranking-col-c">
+            <h5
+              style="text-align: center; color: #16a34a; font-weight: 800; margin-bottom: 15px; text-transform: uppercase;">
+              Todas las Sucursales</h5>
+            <div id="ranking-list-c">
+              <!-- Dynamic rows will be inserted here -->
             </div>
           </div>
         </div>
@@ -4385,6 +4301,25 @@
             <div id="winner-b-display-name"></div>
             <div id="winner-b-display-branch"></div>
             <div id="winner-b-display-score"></div>
+          </div>
+
+          <!-- WINNER C -->
+          <div
+            style="background: white; padding: 30px 20px; border-radius: 24px; border: 2px solid #16a34a; box-shadow: 0 15px 35px rgba(22, 163, 74, 0.12); position: relative; transition: transform 0.3s ease;">
+            <div
+              style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #16a34a; color: white; padding: 4px 18px; border-radius: 20px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase; white-space: nowrap; box-shadow: 0 4px 10px rgba(22, 163, 74, 0.3);">
+              Todas las Sucursales</div>
+            <div style="font-size: 3.5rem; margin-bottom: 15px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));">🏆
+            </div>
+            <h3 id="winner-c-display-name"
+              style="font-size: 1.4rem; color: #14532d; margin-bottom: 6px; font-weight: 900; line-height: 1.2;">-</h3>
+            <p id="winner-c-display-branch"
+              style="color: #6b7280; font-size: 1rem; margin-bottom: 15px; font-weight: 600;">-</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <span id="winner-c-display-score"
+                style="font-size: 1.8rem; color: #16a34a; font-weight: 900; font-family: 'Inter', sans-serif;">0</span>
+              <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 700;">UNIDADES</span>
+            </div>
           </div>
         </div>
 
@@ -4487,40 +4422,84 @@
         }
 
 
-        // 3. Ranking A
-        if (data.rankingA && Array.isArray(data.rankingA)) {
-          const accentColorsA = ['var(--accent)', '#4b5563', '#4b5563', '#6b7280', '#6b7280'];
-          data.rankingA.forEach((item, index) => {
+        // Helper function for dynamic ranking rendering
+        function renderRanking(containerId, rankingData, category) {
+          const container = document.getElementById(containerId);
+          if (!container) return;
+          container.innerHTML = '';
+          if (!rankingData || !Array.isArray(rankingData)) return;
+
+          let colorTheme;
+          let bgFirst = '#fff7ed', borderFirst = '#ffedd5', bgOther = '#f9fafb', borderOther = '#f3f4f6';
+          if (category === 'A') colorTheme = 'var(--accent)';
+          if (category === 'B') { colorTheme = '#4338ca'; bgFirst = '#eef2ff'; borderFirst = '#e0e7ff'; }
+          if (category === 'C') { colorTheme = '#16a34a'; bgFirst = '#f0fdf4'; borderFirst = '#dcfce7'; }
+
+          let htmlStr = '';
+          rankingData.forEach((item, index) => {
             const i = index + 1;
-            if (i > 5) return;
-            const nameEl = document.getElementById(`rankA-name-${i}`);
-            const branchEl = document.getElementById(`rankA-branch-${i}`);
-            const unitsEl = document.getElementById(`rankA-units-${i}`);
-            if (nameEl && item.name) nameEl.textContent = item.name;
-            if (branchEl && item.branch) branchEl.textContent = item.branch;
-            if (unitsEl && item.units !== undefined) {
-              unitsEl.textContent = `${item.units}`;
-              unitsEl.style.color = accentColorsA[index];
+            let iconOrNumber = '';
+            let bg = bgOther;
+            let border = borderOther;
+            let unitColor = '#4b5563';
+
+            if (i === 1) {
+              iconOrNumber = '🥇'; bg = bgFirst; border = borderFirst; unitColor = colorTheme;
+            } else if (i === 2) {
+              iconOrNumber = '🥈'; unitColor = '#4b5563';
+            } else if (i === 3) {
+              iconOrNumber = '🥉'; unitColor = '#4b5563';
+            } else {
+              iconOrNumber = `<span style="font-size: 0.9rem; font-weight: 800; color: #9ca3af;">${i}</span>`; unitColor = '#6b7280';
             }
+            
+            let leftEl = '';
+            if (i <= 3) {
+              leftEl = `<span style="font-size: 1.2rem; margin-right: 12px; width: 25px; text-align: center; display: inline-block;">${iconOrNumber}</span>`;
+            } else {
+              leftEl = `<span style="margin-right: 12px; width: 25px; text-align: center; display: inline-block;">${iconOrNumber}</span>`;
+            }
+
+            htmlStr += `
+              <div class="ranking-item" style="display: flex; align-items: center; padding: 10px; background: ${bg}; border-radius: 12px; margin-bottom: 8px; border: 1px solid ${border};">
+                ${leftEl}
+                <div style="flex-grow: 1;">
+                  <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;">${item.name || '-'}</div>
+                  <div style="font-size: 0.75rem; color: #6b7280;">${item.branch || '-'}</div>
+                </div>
+                <div style="font-weight: 800; color: ${unitColor}; font-size: 1rem;">${item.units || 0}</div>
+              </div>
+            `;
           });
+          container.innerHTML = htmlStr;
         }
 
-        // 3b. Ranking B
-        if (data.rankingB && Array.isArray(data.rankingB)) {
-          const accentColorsB = ['#4338ca', '#4b5563', '#4b5563', '#6b7280', '#6b7280'];
-          data.rankingB.forEach((item, index) => {
-            const i = index + 1;
-            if (i > 5) return;
-            const nameEl = document.getElementById(`rankB-name-${i}`);
-            const branchEl = document.getElementById(`rankB-branch-${i}`);
-            const unitsEl = document.getElementById(`rankB-units-${i}`);
-            if (nameEl && item.name) nameEl.textContent = item.name;
-            if (branchEl && item.branch) branchEl.textContent = item.branch;
-            if (unitsEl && item.units !== undefined) {
-              unitsEl.textContent = `${item.units}`;
-              unitsEl.style.color = accentColorsB[index];
-            }
-          });
+        // 3. Render Rankings dynamically
+        renderRanking('ranking-list-a', data.rankingA, 'A');
+        renderRanking('ranking-list-b', data.rankingB, 'B');
+        renderRanking('ranking-list-c', data.rankingC, 'C');
+
+        // Toggle visibility based on config
+        const showA = data.showRankingA !== false; // Default true
+        const showB = data.showRankingB === true;  // Default false
+        const showC = data.showRankingC !== false; // Default true
+
+        const colA = document.getElementById('ranking-col-a');
+        const colB = document.getElementById('ranking-col-b');
+        const colC = document.getElementById('ranking-col-c');
+        
+        if (colA) colA.style.display = showA ? '' : 'none';
+        if (colB) colB.style.display = showB ? '' : 'none';
+        if (colC) colC.style.display = showC ? '' : 'none';
+
+        // Adjust grid layout dynamically based on visible columns
+        const visibleCount = [showA, showB, showC].filter(Boolean).length;
+        const gridContainer = document.querySelector('.ranking-container-dual');
+        if (gridContainer) {
+            if (visibleCount === 1) gridContainer.style.gridTemplateColumns = '1fr';
+            else if (visibleCount === 2) gridContainer.style.gridTemplateColumns = '1fr 1fr';
+            else if (visibleCount === 3) gridContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+            else gridContainer.style.gridTemplateColumns = '1fr';
         }
 
         // 4. Countdown date
@@ -4573,6 +4552,10 @@
             if (data.winnerBName) document.getElementById('winner-b-display-name').textContent = data.winnerBName;
             if (data.winnerBBranch) document.getElementById('winner-b-display-branch').textContent = data.winnerBBranch;
             if (data.winnerBScore) document.getElementById('winner-b-display-score').textContent = data.winnerBScore;
+
+            if (data.winnerCName) document.getElementById('winner-c-display-name').textContent = data.winnerCName;
+            if (data.winnerCBranch) document.getElementById('winner-c-display-branch').textContent = data.winnerCBranch;
+            if (data.winnerCScore) document.getElementById('winner-c-display-score').textContent = data.winnerCScore;
           }
         }
       } catch (err) {
