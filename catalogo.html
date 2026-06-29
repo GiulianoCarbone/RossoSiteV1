@@ -2582,8 +2582,8 @@
     /* ── FAB ────────────────────────────────────────── */
     #quote-fab {
       position: fixed;
-      bottom: 96px;
-      right: 28px;
+      bottom: 25px;
+      right: 25px;
       background: var(--accent);
       color: white;
       border: none;
@@ -2786,8 +2786,8 @@
       }
 
       #quote-fab {
-        bottom: 84px;
-        right: 16px;
+        bottom: 14px;
+        right: 14px;
         padding: 12px 16px;
         font-size: 0.84rem;
       }
@@ -4258,6 +4258,7 @@
       const total = lista.reduce((s, i) => s + i.cantidad, 0);
       badge.textContent = lista.length;
       fab.classList.toggle('hidden', lista.length === 0);
+      document.body.classList.toggle('has-quote', lista.length > 0);
     }
 
     /* ── Panel ─────────────────────────────────────── */

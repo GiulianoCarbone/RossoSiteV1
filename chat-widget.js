@@ -19,9 +19,12 @@
 
   /* ── Estilos (clonados del chat del home + tarjetas de producto) ── */
   const css = `
-  .chat-fab{position:fixed;bottom:25px;right:25px;background:#ec6434;color:#fff;border:none;border-radius:50px;padding:14px 22px;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;box-shadow:0 6px 20px rgba(236,100,52,.45);cursor:pointer;z-index:1065;transition:transform .25s ease,box-shadow .25s ease,border-radius .25s ease,padding .25s ease,background .2s ease}
+  .chat-fab{position:fixed;bottom:25px;right:25px;background:#ec6434;color:#fff;border:none;border-radius:50px;padding:14px 22px;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;box-shadow:0 6px 20px rgba(236,100,52,.45);cursor:pointer;z-index:1065;transition:transform .25s ease,box-shadow .25s ease,border-radius .25s ease,padding .25s ease,background .2s ease,right .3s ease}
+  body.has-quote .chat-fab{right:180px}
   .chat-fab:hover{transform:scale(1.06) translateY(-2px);box-shadow:0 10px 28px rgba(236,100,52,.55);background:#d4552a}
   .chat-fab-label{display:flex;align-items:center;gap:5px}
+  .emoji-wave{display:inline-block;transform-origin:70% 90%;animation:wave-hand 2.5s ease-in-out infinite}
+  @keyframes wave-hand{0%,48%,100%{transform:rotate(0deg)}8%,24%{transform:rotate(14deg)}16%,32%{transform:rotate(-8deg)}40%{transform:rotate(10deg)}}
   .chat-fab-icon-close{display:none;width:20px;height:20px}
   .chat-fab-icon-close svg{width:20px;height:20px}
   .chat-fab.is-open .chat-fab-label{display:none}
@@ -84,6 +87,7 @@
   @media(max-width:480px){
     .chat-window{width:calc(100vw - 16px);height:calc(100dvh - 90px);right:8px;bottom:76px;border-radius:16px}
     .chat-fab{right:14px;bottom:14px}
+    body.has-quote .chat-fab{right:145px}
   }
   `;
 
