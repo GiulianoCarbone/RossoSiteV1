@@ -108,6 +108,15 @@
       </a>`).join('') + '</div>';
   }
 
+  function saveState() {
+    try {
+      if (msgs) sessionStorage.setItem('rc_html', msgs.innerHTML);
+      sessionStorage.setItem('rc_hist', JSON.stringify(history));
+      sessionStorage.setItem('rc_count', sessionCount);
+      sessionStorage.setItem('rc_open', (win && !win.hidden) ? '1' : '0');
+    } catch(e) {}
+  }
+
   function addUser(text) {
     const d = document.createElement('div');
     d.className = 'chat-msg chat-msg--user';
@@ -122,6 +131,19 @@
       cardsHTML(productos) +
       `<span class="chat-msg-time">${hora()}</span>`;
     msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
+
+    // Smooth transition on mobile for product cards
+    const newCards = d.querySelectorAll('.chat-card');
+    newCards.forEach(card => {
+      card.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          const href = this.getAttribute('href');
+          closeChat();
+          setTimeout(() => { window.location.href = href; }, 250);
+        }
+      });
+    });
   }
 
   function openChat() {
@@ -130,12 +152,13 @@
     fab.classList.add('is-open');
     fab.setAttribute('aria-expanded', 'true');
     setTimeout(() => input.focus(), 120);
+    saveState();
   }
   function closeChat() {
     win.classList.add('is-closing');
     fab.classList.remove('is-open');
     fab.setAttribute('aria-expanded', 'false');
-    setTimeout(() => { win.hidden = true; win.classList.remove('is-closing'); }, 200);
+    setTimeout(() => { win.hidden = true; win.classList.remove('is-closing'); saveState(); }, 200);
   }
 
   function updateCounter() {
@@ -154,11 +177,13 @@
     if (now - lastSent < COOLDOWN) return;                 // cooldown silencioso
     if (sessionCount >= MAX_SESSION) {
       addBot('Llegaste al límite de consultas de esta sesión. Si necesitás seguir, escribinos por WhatsApp y te ayudamos. 😊', null, true);
+      saveState();
       return;
     }
     lastSent = now; sessionCount++;
     addUser(text);
     history.push({ role: 'user', content: text });
+    saveState();
     input.value = ''; updateCounter();
     sending = true; sendBtn.disabled = true;
     typing.hidden = false; msgs.scrollTop = msgs.scrollHeight;
@@ -175,9 +200,11 @@
         addBot(data.respuesta || 'No te entendí bien, ¿podés darme más detalle?', data.productos);
         history.push({ role: 'assistant', content: data.respuesta || '' });
       }
+      saveState();
     } catch (e) {
       typing.hidden = true;
       addBot('No me pude conectar. Revisá tu internet e intentá de nuevo.', null, true);
+      saveState();
     } finally {
       sending = false; sendBtn.disabled = false; input.focus();
     }
@@ -242,6 +269,23 @@
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
     });
+
+    try {
+      const savedHtml = sessionStorage.getItem('rc_html');
+      if (savedHtml) {
+        msgs.innerHTML = savedHtml;
+        const savedHist = sessionStorage.getItem('rc_hist');
+        if (savedHist) history.push(...JSON.parse(savedHist));
+        sessionCount = parseInt(sessionStorage.getItem('rc_count') || '0', 10);
+        if (sessionStorage.getItem('rc_open') === '1') {
+          win.hidden = false;
+          win.style.animation = 'none';
+          fab.classList.add('is-open');
+          fab.setAttribute('aria-expanded', 'true');
+        }
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+    } catch(e) {}
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
