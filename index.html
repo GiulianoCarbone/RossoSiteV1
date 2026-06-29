@@ -1751,7 +1751,7 @@
           const item = document.createElement("a");
           item.className = "result-item";
           item.href = producto["URL del Producto"] || producto.url; // Compatible con ambas estructuras
-          item.target = "_blank";
+          // Ficha propia (producto.html): navegación interna, misma pestaña.
           item.innerHTML = `
               <img src="${producto.imagen ||
             "https://placehold.co/100x100/EFEFEF/333333?text=Rosso"

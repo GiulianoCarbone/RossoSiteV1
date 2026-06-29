@@ -144,7 +144,8 @@ exports.sugerir = onRequest(
 /* ═════════════════════════════════════════════════════════════════════════
    CHATBOT DEL CATÁLOGO (`chat`)
    Recomienda SOLO productos reales del catálogo (por SKU; no inventa).
-   Público → rate-limit por IP en Firestore. Solo usa DeepSeek (no Tavily).
+   Público → rate-limit por IP + techo global diario en Firestore (anti-abuso
+   de costo). Solo usa DeepSeek (no Tavily).
    ═════════════════════════════════════════════════════════════════════════ */
 
 // Cache del catálogo en memoria de la instancia (se refresca cada 10 min)
@@ -187,7 +188,7 @@ function filtrarRelevantes(catalogo, mensaje, max = 25) {
 
 const CHAT_SYSTEM = `Sos el asistente de ventas del catálogo online de Rosso Materiales (corralón de construcción y baño en Tucumán y Salta, Argentina). Hablás en español rioplatense, cordial y breve.
 REGLAS:
-- Recomendás ÚNICAMENTE productos de la lista PRODUCTOS que te paso, identificándolos por su "sku". NUNCA inventes productos, SKUs, precios ni stock.
+- Recomendás ÚNICAMENTE productos de la lista PRODUCTOS que te paso. En el JSON los identificás por su "sku", pero en el TEXTO de "respuesta" NUNCA escribas el sku ni ningún código: nombrá los productos SOLO por su nombre (las fichas con imagen se muestran aparte). NUNCA inventes productos, SKUs, precios ni stock.
 - Si ninguno encaja, decilo con amabilidad y ofrecé las CATEGORÍAS disponibles o pedí un dato más (ambiente, medida, uso). No inventes.
 - Respuestas cortas (2-4 frases). Orientás al cliente hacia el producto adecuado.
 - Para precio, stock, compra o envío, derivá amablemente a WhatsApp o a la sucursal (esos datos no los tenés vos).
@@ -202,6 +203,17 @@ function buildChatUser(mensaje, productos, categorias, history) {
   const hist = (history || []).slice(-4).map((h) =>
     `${h.role === 'user' ? 'Cliente' : 'Asistente'}: ${String(h.content || '').slice(0, 200)}`).join('\n');
   return `${hist ? 'CONVERSACIÓN PREVIA:\n' + hist + '\n\n' : ''}MENSAJE DEL CLIENTE:\n${mensaje}\n\nCATEGORÍAS DISPONIBLES: ${categorias.join(', ')}\n\nPRODUCTOS (elegí de acá por sku):\n${lista || '(ninguno relevante encontrado)'}`;
+}
+
+// Red de seguridad: borra cualquier sku/código que el modelo haya metido en el
+// texto visible (las fichas con imagen ya muestran el producto; el sku es ruido).
+function limpiarSkus(texto) {
+  return String(texto || '')
+    .replace(/\s*[([]\s*(?:sku|cod(?:igo)?|ref)[:\s.]*\d+\s*[)\]]/gi, '') // "(sku 123)" / "[cod: 123]"
+    .replace(/\b(?:sku|cod(?:igo)?|ref)[:\s.#]*\d+\b/gi, '')              // "sku 123" suelto
+    .replace(/\s+([,.;:!?])/g, '$1')                                      // espacio antes de puntuación
+    .replace(/\s{2,}/g, ' ')                                              // espacios dobles
+    .trim();
 }
 
 // Rate-limit por IP en Firestore: 10/min y 120/día
@@ -223,6 +235,23 @@ async function checkRateLimit(ip) {
   });
 }
 
+// Techo global diario: tope de consultas/día en TODO el sitio (corta el gasto
+// de DeepSeek ante abuso distribuido / IPs rotativas que evaden el límite por IP).
+const GLOBAL_DAILY_CAP = 2000;
+async function checkGlobalLimit() {
+  const ref = admin.firestore().collection('chatlimits').doc('_global_diario');
+  const now = Date.now();
+  return admin.firestore().runTransaction(async (tx) => {
+    const doc = await tx.get(ref);
+    const d = doc.exists ? doc.data() : {};
+    let { dayStart = 0, dayCount = 0 } = d;
+    if (now - dayStart > 86400000) { dayStart = now; dayCount = 0; }
+    dayCount++;
+    tx.set(ref, { dayStart, dayCount }, { merge: true });
+    return { ok: dayCount <= GLOBAL_DAILY_CAP };
+  });
+}
+
 exports.chat = onRequest(
   { secrets: [DEEPSEEK_API_KEY], cors: true, region: 'us-central1' },
   async (req, res) => {
@@ -237,6 +266,16 @@ exports.chat = onRequest(
       const history = Array.isArray(req.body && req.body.history) ? req.body.history : [];
       if (!mensaje) return res.status(400).json({ error: 'Escribí una consulta.' });
       if (mensaje.length > 300) return res.status(400).json({ error: 'El mensaje es demasiado largo.' });
+
+      // Techo global diario: si se superó, respondemos amable y NO gastamos en DeepSeek.
+      const global = await checkGlobalLimit();
+      if (!global.ok) {
+        return res.json({
+          ok: true,
+          respuesta: 'Estoy recibiendo muchísimas consultas en este momento 🙏. Por favor escribinos por WhatsApp y te ayudamos al toque.',
+          productos: [],
+        });
+      }
 
       const catalogo = await getCatalogo();
       const categorias = [...new Set(catalogo.map((p) => p.categoria).filter(Boolean))];
@@ -255,7 +294,7 @@ exports.chat = onRequest(
         .map((s) => porSku.get(String(s))).filter(Boolean).slice(0, 4)
         .map((p) => ({ sku: p.sku, nombre: p.nombre, categoria: p.categoria, descripcion: p.descripcion, imagen: p.imagen }));
 
-      return res.json({ ok: true, respuesta: parsed.respuesta || '', productos });
+      return res.json({ ok: true, respuesta: limpiarSkus(parsed.respuesta), productos });
     } catch (e) {
       console.error('chat error:', e);
       return res.status(500).json({ error: 'Error interno' });
