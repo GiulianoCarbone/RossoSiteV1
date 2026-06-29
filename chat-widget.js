@@ -86,8 +86,8 @@
   .chat-send-btn svg{width:18px;height:18px}
   @media(max-width:480px){
     .chat-window{width:calc(100vw - 16px);height:calc(100dvh - 90px);right:8px;bottom:76px;border-radius:16px}
-    .chat-fab{right:14px;bottom:14px}
-    body.has-quote .chat-fab{right:165px}
+    .chat-fab{right:14px;bottom:14px;left:auto}
+    body.has-quote .chat-fab{right:auto;left:14px}
   }
   `;
 
@@ -131,19 +131,6 @@
       cardsHTML(productos) +
       `<span class="chat-msg-time">${hora()}</span>`;
     msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
-
-    // Smooth transition on mobile for product cards
-    const newCards = d.querySelectorAll('.chat-card');
-    newCards.forEach(card => {
-      card.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768) {
-          e.preventDefault();
-          const href = this.getAttribute('href');
-          closeChat();
-          setTimeout(() => { window.location.href = href; }, 250);
-        }
-      });
-    });
   }
 
   function openChat() {
@@ -268,6 +255,16 @@
     input.addEventListener('input', updateCounter);
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+    });
+
+    msgs.addEventListener('click', (e) => {
+      const card = e.target.closest('.chat-card');
+      if (card && window.innerWidth <= 768) {
+        e.preventDefault();
+        const href = card.getAttribute('href');
+        closeChat();
+        setTimeout(() => { window.location.href = href; }, 250);
+      }
     });
 
     try {
