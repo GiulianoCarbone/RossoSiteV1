@@ -87,7 +87,7 @@
   @media(max-width:480px){
     .chat-window{width:calc(100vw - 16px);height:calc(100dvh - 90px);right:8px;bottom:76px;border-radius:16px}
     .chat-fab{right:14px;bottom:14px}
-    body.has-quote .chat-fab{right:145px}
+    body.has-quote .chat-fab{right:165px}
   }
   `;
 
