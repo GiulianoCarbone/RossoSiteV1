@@ -1829,6 +1829,9 @@
         <a class="nav-item" id="nav-config" onclick="setView('config')">
           <i class="fa-solid fa-gear"></i> Configuración
         </a>
+        <a class="nav-item" id="nav-importar" onclick="setView('importar')">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Descripciones IA
+        </a>
         <!--
         <div class="sidebar-section-label">Herramientas</div>
         <a class="nav-item" href="admin/migrar-productos.html">
@@ -2128,6 +2131,49 @@
         </div>
       </div>
 
+      <!-- VISTA IMPORTAR DESCRIPCIONES IA -->
+      <div class="grid-area" id="view-importar" style="display:none">
+        <style>
+          .imp-bar{position:sticky;top:0;z-index:5;background:white;border:1px solid var(--border);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+          .imp-card{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+          .imp-card.rechazado{opacity:.55;background:#fafafa}
+          .imp-card.imp-aplicado{border-color:#22c55e;background:#f0fdf4}
+          .imp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px}
+          .imp-meta{display:block;font-size:.72rem;color:var(--muted);margin-top:2px}
+          .imp-actual{font-size:.8rem;color:var(--muted);background:#f9fafb;border-radius:8px;padding:8px 10px;margin-bottom:8px}
+          .imp-actual span{font-weight:700;color:#9ca3af}
+          .imp-vacia{font-style:italic}
+          .imp-text{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:10px;font:inherit;font-size:.85rem;resize:vertical;box-sizing:border-box}
+          .imp-rechazar{font-size:.78rem;color:var(--muted);white-space:nowrap;display:flex;align-items:center;gap:5px;cursor:pointer}
+          #btn-aprobar-todos:disabled{opacity:.5;cursor:not-allowed}
+        </style>
+        <div style="max-width:860px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <div style="width:32px;height:32px;background:rgba(236,100,52,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent);font-size:.85rem"></i>
+            </div>
+            <h2 style="font-size:1rem;font-weight:700;color:var(--brand)">Importar descripciones IA</h2>
+          </div>
+          <p style="font-size:.82rem;color:var(--muted);margin-bottom:20px;margin-left:42px">
+            Cargá el archivo <code>scrape-borradores.json</code>. Revisá (podés editar el texto o rechazar) y aplicá. Solo se modifica la <b>descripción</b>; el nombre no se toca.
+          </p>
+
+          <div class="imp-bar">
+            <label style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--brand);border:1px solid var(--border);border-radius:8px;padding:8px 14px;margin:0">
+              <i class="fa-solid fa-file-arrow-up"></i> Cargar JSON
+              <input type="file" accept="application/json,.json" onchange="cargarBorradoresArchivo(this)" style="display:none">
+            </label>
+            <span id="imp-summary" style="font-size:.82rem;color:var(--muted)">Ningún archivo cargado.</span>
+            <span id="imp-progress" style="font-size:.8rem;color:var(--accent);font-weight:600"></span>
+            <button id="btn-aprobar-todos" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:white;border:none;border-radius:8px;padding:9px 16px;font-weight:700;font-size:.82rem;cursor:pointer" onclick="aprobarTodos()" disabled>
+              <i class="fa-solid fa-circle-check"></i> Aprobar todos
+            </button>
+          </div>
+
+          <div id="imp-lista"></div>
+        </div>
+      </div>
+
       <!-- VISTA ESTADÍSTICAS -->
       <div class="grid-area" id="view-stats" style="display:none">
 
@@ -2394,7 +2440,22 @@
           </div>
         </div>
 
-        <div class="modal-section-label">Descripción</div>
+        <div class="modal-section-label" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <span>Descripción</span>
+          <button type="button" id="btn-sugerir-ia" onclick="sugerirConIA()"
+            style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--accent),#f59e0b);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:0.76rem;font-weight:700;cursor:pointer">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Sugerir con IA
+          </button>
+        </div>
+
+        <div id="sugerencia-nombre"
+          style="display:none;margin-bottom:10px;padding:8px 12px;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;font-size:0.8rem;color:#9a3412">
+          <i class="fa-solid fa-lightbulb"></i> Nombre sugerido: <b id="sugerencia-nombre-txt"></b>
+          <button type="button" onclick="aplicarNombreSugerido()"
+            style="margin-left:8px;background:var(--brand);color:#fff;border:none;border-radius:6px;padding:3px 9px;font-size:0.72rem;font-weight:700;cursor:pointer">Aplicar</button>
+          <button type="button" onclick="document.getElementById('sugerencia-nombre').style.display='none'"
+            style="margin-left:4px;background:transparent;border:none;color:#9a3412;cursor:pointer;font-size:0.72rem;text-decoration:underline">Descartar</button>
+        </div>
 
         <div class="field">
           <label>Descripción</label>
@@ -2880,6 +2941,9 @@
 
     function cerrarModal() {
       document.getElementById('modal-producto').classList.remove('open');
+      const sn = document.getElementById('sugerencia-nombre');
+      if (sn) sn.style.display = 'none';
+      nombreSugeridoPendiente = '';
     }
 
     function cambiarSku() {
@@ -3372,7 +3436,7 @@
        NAVEGACIÓN DE VISTAS
     ═══════════════════════════════════════════════════════════════ */
     function setView(v) {
-      ['productos', 'categorias', 'stats', 'config'].forEach(vista => {
+      ['productos', 'categorias', 'stats', 'config', 'importar'].forEach(vista => {
         const viewEl = document.getElementById(`view-${vista}`);
         if (viewEl) viewEl.style.display = (v === vista) ? 'block' : 'none';
 
@@ -3419,6 +3483,13 @@
         cargarConfigOfertas();
         cargarConfigSlider();
         cargarConfigDestacados();
+      } else if (v === 'importar') {
+        topbarEl.innerHTML = `<div class="icon-wrap" style="background:rgba(236,100,52,0.1);color:var(--accent)"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h1>Descripciones IA</h1>`;
+        document.querySelector('.search-wrap').style.visibility = 'hidden';
+        document.getElementById('filter-cat-top').style.visibility = 'hidden';
+        document.querySelector('.topbar-right').style.visibility = 'hidden';
+        if (filterBar) filterBar.style.display = 'none';
+        if (statsBar) statsBar.style.display = 'none';
       }
     }
 
@@ -4114,6 +4185,157 @@
 
     let toastTimer;
     const toastIcons = { success: 'fa-circle-check', error: 'fa-circle-xmark', '': 'fa-circle-info' };
+
+    /* ══════════════════════════════════════════════════════════════
+       IMPORTAR DESCRIPCIONES IA (Fase 2)
+       Carga scrape-borradores.json y escribe el campo `descripcion`.
+       Como el admin está autenticado, las reglas permiten la escritura.
+    ═══════════════════════════════════════════════════════════════ */
+    let borradores = [];
+
+    function cargarBorradoresArchivo(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          if (!Array.isArray(data)) throw new Error('el archivo no es una lista');
+          borradores = data.filter(b => b.sku && b.descripcion).map(b => {
+            const prod = todosLosProductos.find(p => p.sku === b.sku);
+            return {
+              sku: b.sku,
+              nombre: b.nombre || (prod ? prod.nombre : b.sku),
+              categoria: b.categoria || (prod ? prod.categoria : ''),
+              origen: b.origen || '',
+              existe: !!prod,
+              descActual: prod ? (prod.descripcion || '') : '',
+              descNueva: String(b.descripcion),
+              rechazado: false,
+              aplicado: false,
+            };
+          });
+          renderBorradores();
+          toast(`${borradores.length} borradores cargados`, 'success');
+        } catch (e) {
+          toast('Error al leer el archivo: ' + e.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+      input.value = '';
+    }
+
+    function toggleRechazo(i) { borradores[i].rechazado = !borradores[i].rechazado; renderBorradores(); }
+    function actualizarTexto(i, val) { borradores[i].descNueva = val; }
+
+    function renderBorradores() {
+      const aplicar = borradores.filter(b => !b.rechazado && b.existe && !b.aplicado);
+      const rechazados = borradores.filter(b => b.rechazado).length;
+      const sinMatch = borradores.filter(b => !b.existe).length;
+      const aplicados = borradores.filter(b => b.aplicado).length;
+      document.getElementById('imp-summary').innerHTML =
+        `<b>${borradores.length}</b> borradores · <b>${aplicar.length}</b> para aplicar` +
+        (rechazados ? ` · ${rechazados} rechazados` : '') +
+        (aplicados ? ` · <span style="color:#16a34a">${aplicados} aplicados ✓</span>` : '') +
+        (sinMatch ? ` · <span style="color:#b91c1c">${sinMatch} sin match (se omiten)</span>` : '');
+      document.getElementById('btn-aprobar-todos').disabled = aplicar.length === 0;
+
+      document.getElementById('imp-lista').innerHTML = borradores.map((b, i) => `
+        <div class="imp-card ${b.rechazado ? 'rechazado' : ''} ${b.aplicado ? 'imp-aplicado' : ''}">
+          <div class="imp-head">
+            <div>
+              <strong>${escHtml(b.nombre)}</strong>
+              <span class="imp-meta">SKU ${escHtml(b.sku)}${b.categoria ? ' · ' + escHtml(b.categoria) : ''} · ${b.origen === 'scrape' ? '🌐 web' : '🤖 generado'}${b.aplicado ? ' · ✓ aplicado' : ''}${!b.existe ? ' · ⚠️ no está en el catálogo' : ''}</span>
+            </div>
+            ${b.existe && !b.aplicado ? `<label class="imp-rechazar"><input type="checkbox" ${b.rechazado ? 'checked' : ''} onchange="toggleRechazo(${i})"> Rechazar</label>` : ''}
+          </div>
+          ${b.descActual ? `<div class="imp-actual"><span>Actual:</span> ${escHtml(b.descActual)}</div>` : `<div class="imp-actual imp-vacia">Sin descripción actual</div>`}
+          <textarea class="imp-text" oninput="actualizarTexto(${i}, this.value)" ${b.rechazado || !b.existe || b.aplicado ? 'disabled' : ''}>${escHtml(b.descNueva)}</textarea>
+        </div>
+      `).join('');
+    }
+
+    async function aprobarTodos() {
+      const aplicar = borradores.filter(b => !b.rechazado && b.existe && !b.aplicado && b.descNueva.trim());
+      if (!aplicar.length) return;
+      if (!confirm(`Vas a escribir la descripción de ${aplicar.length} productos en el catálogo (campo visible para el cliente). ¿Continuar?`)) return;
+      document.getElementById('btn-aprobar-todos').disabled = true;
+      const prog = document.getElementById('imp-progress');
+      let hechos = 0, errores = 0;
+      for (let i = 0; i < aplicar.length; i += 400) {
+        const chunk = aplicar.slice(i, i + 400);
+        const batch = db.batch();
+        chunk.forEach(b => batch.update(db.collection('catalogo').doc(b.sku), {
+          descripcion: b.descNueva.trim(),
+          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp(),
+        }));
+        try {
+          await batch.commit();
+          chunk.forEach(b => {
+            b.aplicado = true;
+            const p = todosLosProductos.find(x => x.sku === b.sku);
+            if (p) p.descripcion = b.descNueva.trim();
+          });
+          hechos += chunk.length;
+        } catch (e) {
+          console.error('Error al aplicar lote:', e);
+          errores += chunk.length;
+        }
+        prog.textContent = `Aplicados ${hechos}/${aplicar.length}${errores ? ` · ${errores} errores` : ''}`;
+      }
+      toast(`${hechos} descripciones aplicadas${errores ? `, ${errores} con error` : ''}`, errores ? 'error' : 'success');
+      renderBorradores();
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       SUGERIR CON IA (botón en el modal de producto)
+       Llama a la Cloud Function `sugerir` con el ID token del admin.
+    ═══════════════════════════════════════════════════════════════ */
+    const SUGERIR_URL = 'https://us-central1-backend-panel-vendedores.cloudfunctions.net/sugerir'; // ← confirmá con la salida del deploy
+    let nombreSugeridoPendiente = '';
+
+    async function sugerirConIA() {
+      const nombre = document.getElementById('f-nombre').value.trim();
+      if (!nombre) { toast('Escribí primero el nombre del producto.', 'error'); return; }
+      const categoria = document.getElementById('f-categoria').value;
+      const marca = document.getElementById('f-marca').value.trim();
+      const btn = document.getElementById('btn-sugerir-ia');
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Buscando…';
+      try {
+        const idToken = await auth.currentUser.getIdToken();
+        const resp = await fetch(SUGERIR_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+          body: JSON.stringify({ nombre, categoria, marca }),
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) throw new Error(data.error || `Error ${resp.status}`);
+        document.getElementById('f-descripcion').value = data.descripcion || '';
+        if (data.nombre_sugerido) {
+          nombreSugeridoPendiente = data.nombre_sugerido;
+          document.getElementById('sugerencia-nombre-txt').textContent = data.nombre_sugerido;
+          document.getElementById('sugerencia-nombre').style.display = '';
+        } else {
+          document.getElementById('sugerencia-nombre').style.display = 'none';
+        }
+        toast(data.origen === 'web' ? 'Descripción sugerida desde la web ✓' : 'Descripción generada (sin datos web)', 'success');
+      } catch (e) {
+        console.error('sugerirConIA:', e);
+        toast('No se pudo sugerir: ' + e.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }
+    }
+
+    function aplicarNombreSugerido() {
+      if (!nombreSugeridoPendiente) return;
+      document.getElementById('f-nombre').value = nombreSugeridoPendiente;
+      document.getElementById('sugerencia-nombre').style.display = 'none';
+      toast('Nombre actualizado', 'success');
+    }
 
     function toast(msg, tipo = '') {
       const el = document.getElementById('toast');

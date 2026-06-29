@@ -1,0 +1,8 @@
+# Nunca commitear secretos ni salidas (este repo es PÚBLICO)
+.env
+*.env
+service-account*.json
+serviceAccount*.json
+*serviceaccount*.json
+node_modules/
+out/

@@ -1,0 +1,13 @@
+{
+  "name": "rosso-functions",
+  "description": "Cloud Functions de Rosso Materiales",
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^5.1.1"
+  },
+  "private": true
+}

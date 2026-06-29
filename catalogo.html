@@ -1672,8 +1672,8 @@
     /* ── BACK TO TOP ── */
     #back-to-top {
       position: fixed;
-      bottom: 96px;
-      right: 28px;
+      bottom: 28px;
+      left: 28px;
       background: white;
       border: 1px solid var(--border);
       border-radius: 50%;
@@ -2582,9 +2582,9 @@
     /* ── FAB ────────────────────────────────────────── */
     #quote-fab {
       position: fixed;
-      bottom: 28px;
+      bottom: 96px;
       right: 28px;
-      background: linear-gradient(135deg, var(--accent) 0%, #ff7b4f 100%);
+      background: var(--accent);
       color: white;
       border: none;
       border-radius: 999px;
@@ -2603,7 +2603,7 @@
     #quote-fab:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 30px rgba(236, 100, 52, .55);
-      background: linear-gradient(135deg, #f27244 0%, #ff8b63 100%);
+      background: #d4552a;
     }
 
     #quote-fab.hidden {
@@ -2786,15 +2786,15 @@
       }
 
       #quote-fab {
-        bottom: 16px;
+        bottom: 84px;
         right: 16px;
         padding: 12px 16px;
         font-size: 0.84rem;
       }
 
       #back-to-top {
-        bottom: 80px;
-        right: 16px;
+        bottom: 16px;
+        left: 16px;
       }
 
       .view-toggle {
@@ -4543,6 +4543,8 @@
     actualizarFAB(); // restaurar FAB si hay lista guardada
     init();
   </script>
+  <!-- Asistente IA del catálogo -->
+  <script src="chat-widget.js" defer></script>
 </body>
 
 </html>

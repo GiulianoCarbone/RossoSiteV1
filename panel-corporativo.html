@@ -4735,7 +4735,7 @@
       position: fixed;
       bottom: 25px;
       right: 25px;
-      background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+      background: var(--accent);
       color: #fff;
       border: none;
       border-radius: 50px;
@@ -4754,7 +4754,8 @@
 
     .chat-fab:hover {
       transform: scale(1.06) translateY(-2px);
-      box-shadow: 0 10px 28px rgba(192, 57, 43, 0.55);
+      box-shadow: 0 10px 28px rgba(236, 100, 52, 0.55);
+      background: #d4552a;
     }
 
     .chat-fab-label {
@@ -4848,7 +4849,7 @@
 
     /* Header */
     .chat-window-header {
-      background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+      background: var(--accent);
       padding: 14px 16px;
       display: flex;
       align-items: center;
@@ -5001,7 +5002,7 @@
     }
 
     .chat-msg--user .chat-msg-bubble {
-      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      background: var(--accent);
       color: #fff;
       border-bottom-right-radius: 4px;
     }
@@ -5035,7 +5036,7 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: #c0392b;
+      background: var(--accent);
       display: inline-block;
       animation: typing-bounce 1.2s infinite ease-in-out;
     }

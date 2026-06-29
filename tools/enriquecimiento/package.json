@@ -1,0 +1,16 @@
+{
+  "name": "rosso-enriquecimiento-descripciones",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Herramienta de uso interno (dev) para generar borradores de descripciones de producto con IA. NO forma parte del sitio publicado.",
+  "scripts": {
+    "generar": "node generar-descripciones.mjs",
+    "generar:todos": "node generar-descripciones.mjs --all",
+    "scrape": "node enriquecer-scrape.mjs",
+    "scrape:todos": "node enriquecer-scrape.mjs --all"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
