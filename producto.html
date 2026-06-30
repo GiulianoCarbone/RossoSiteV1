@@ -979,6 +979,15 @@
     
     document.getElementById('btn-calc').style.display = esPiso ? 'flex' : 'none';
 
+    // Autocompletar "rendimiento por caja" desde la descripción (queda editable por el cliente)
+    if (esPiso) {
+      const rendInput = document.getElementById('mc-rend');
+      const rendInfo  = document.getElementById('mc-rend-info');
+      const rend = extraerRendimiento(p.descripcion);
+      if (rendInput) rendInput.value = rend != null ? rend : 2;
+      if (rendInfo)  rendInfo.textContent = rend != null ? 'detectado del producto' : 'Opcional — verificá el valor';
+    }
+
     // Mostrar
     document.getElementById('pdp-loading').style.display = 'none';
     document.getElementById('pdp-wrap').style.display    = '';
@@ -1000,6 +1009,30 @@
   }
   function cerrarCalculadora() {
     document.getElementById('modal-calc').classList.remove('open');
+  }
+
+  /* Intenta sacar el "rendimiento por caja" (m²) desde la descripción del producto.
+     Cubre redacciones variadas: "Rendimiento de 2,20 m² por caja", "rinde 2.20 m² por caja",
+     "Caja rinde aproximadamente 2,20 m²", "Venta por caja cerrada de 2,22 m²", etc.
+     Devuelve un número plausible (0.8–4.0) o null si no encuentra nada confiable. */
+  function extraerRendimiento(desc) {
+    if (!desc) return null;
+    const txt = String(desc).replace(/²/g, '2');   // m² -> m2 para simplificar
+    const D   = '(\\d{1,2}[.,]\\d{1,2})';                 // número decimal (exige decimales)
+    const num = (s) => parseFloat(s.replace(',', '.'));
+    const ok  = (v) => v >= 0.8 && v <= 4.0;              // rango típico de rendimiento por caja
+    // Patrones ordenados de mayor a menor confianza. m(?!m) evita confundir con "mm" (juntas/espesor).
+    const patrones = [
+      new RegExp('rendimiento[^.]{0,30}?' + D + '\\s*m(?!m)', 'i'),
+      new RegExp('rinde[^.]{0,30}?' + D + '\\s*m(?!m)', 'i'),
+      new RegExp(D + '\\s*m2?\\s*(?:por|x|\\/)\\s*caja', 'i'),
+      new RegExp('caja[^.]{0,40}?' + D + '\\s*m(?!m)', 'i')
+    ];
+    for (const rx of patrones) {
+      const m = txt.match(rx);
+      if (m && ok(num(m[1]))) return num(m[1]);
+    }
+    return null;
   }
 
   function runMc() {

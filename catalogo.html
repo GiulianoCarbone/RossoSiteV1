@@ -4393,6 +4393,9 @@
       const asunto = encodeURIComponent(`Solicitud de presupuesto — ${nombre}`);
       const body = encodeURIComponent(cuerpo);
 
+      // Analytics: contar el envío por email como contacto (igual que WhatsApp)
+      trackEvent('contacts');
+
       window.location.href = `mailto:${destino}?subject=${asunto}&body=${body}`;
       cerrarModalEmail();
     }
