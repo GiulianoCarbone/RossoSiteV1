@@ -1,5 +1,5 @@
 // Este archivo contiene TODOS los productos para el buscador de la página de inicio.
-// GENERADO AUTOMÁTICAMENTE desde Firestore (colección "catalogo") el 2026-06-29T19:40:27.825Z.
+// GENERADO AUTOMÁTICAMENTE desde Firestore (colección "catalogo") el 2026-07-01T13:59:49.431Z.
 // No lo edites a mano: volvé a correr  tools/buscador/generar-todos-los-productos.mjs
 const productos = [
   {
@@ -29,6 +29,27 @@ const productos = [
     "categoria": "Aberturas",
     "url": "producto.html?sku=35833",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/35833"
+  },
+  {
+    "nombre": "Aislante Térmico Doble Alum. Rufi 10 mm - Isolant",
+    "sku": "33891",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=33891",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/vq7csbslwz2flatpazq5"
+  },
+  {
+    "nombre": "Aislante Térmico Rufi 10 mm - Isolant",
+    "sku": "33045",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=33045",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/obllbiiorqa18ryselvc"
+  },
+  {
+    "nombre": "Aislante Térmico Rufi 5 mm - Isolant",
+    "sku": "33044",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=33044",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/suj2oexnuw0oxqivikfr"
   },
   {
     "nombre": "Alerce – Juego para bañera y ducha C/ Cierre Ceramico - Fv",
@@ -556,6 +577,13 @@ const productos = [
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/31674"
   },
   {
+    "nombre": "Cemento Holcim x 25 kg",
+    "sku": "37937",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=37937",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/tgndw43yxawwcqsvn5ve"
+  },
+  {
     "nombre": "Century Calcio 60x60 - Cerámica Alberdi",
     "sku": "37154",
     "categoria": "Revestimientos",
@@ -563,11 +591,11 @@ const productos = [
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/37154"
   },
   {
-    "nombre": "Cerámico - Piedra Beige 36x36",
-    "sku": "4",
-    "categoria": "Revestimientos",
-    "url": "producto.html?sku=4",
-    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/lzjvthipjifmhyaeu0t9"
+    "nombre": "Ceresita Hidrófugo en Pasta (1kg, 4kg, 10kg, 20kg) -Weber",
+    "sku": "11544",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=11544",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/fkf21uibwscsypvhaufd"
   },
   {
     "nombre": "Ciprés – Juego para bañera y ducha C/ Cierre Ceramico - Fv",
@@ -603,13 +631,6 @@ const productos = [
     "categoria": "Juegos de Baño",
     "url": "producto.html?sku=11948",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/izh1hl8fo2acl1inresc"
-  },
-  {
-    "nombre": "Combo Baño",
-    "sku": "2",
-    "categoria": "Juegos de Baño",
-    "url": "producto.html?sku=2",
-    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/ds8ajawz9quyx2f4t3y1"
   },
   {
     "nombre": "Cordillera Cobre 45x45 - Cerámica Cortines",
@@ -799,20 +820,6 @@ const productos = [
     "categoria": "Revestimientos",
     "url": "producto.html?sku=36132",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/36132"
-  },
-  {
-    "nombre": "Grifería de cocina - Fv",
-    "sku": "32279",
-    "categoria": "Griferías",
-    "url": "producto.html?sku=32279",
-    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/ffyvpqmqobthjvzt1hwj"
-  },
-  {
-    "nombre": "Grifería de cocina - Fv",
-    "sku": "32280",
-    "categoria": "Griferías",
-    "url": "producto.html?sku=32280",
-    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/rsq7fqdzrvnyrkudbum0"
   },
   {
     "nombre": "Guarda 1381 - Atrim",
@@ -1095,6 +1102,20 @@ const productos = [
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/RR0197"
   },
   {
+    "nombre": "Juego de Baño Espacio 2 Piezas - Ferrum",
+    "sku": "20958",
+    "categoria": "Juegos de Baño",
+    "url": "producto.html?sku=20958",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/u4np07oojx6h3xoon9r3"
+  },
+  {
+    "nombre": "Juego de Baño Espacio 2 Piezas - Ferrum",
+    "sku": "38072",
+    "categoria": "Juegos de Baño",
+    "url": "producto.html?sku=38072",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/hoejogq0afrieo4kopwy"
+  },
+  {
     "nombre": "Juego de Baño Ferrum Andina - 2 Piezas",
     "sku": "RO122",
     "categoria": "Juegos de Baño",
@@ -1128,20 +1149,6 @@ const productos = [
     "categoria": "Juegos de Baño",
     "url": "producto.html?sku=1232",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/n8pmoqu2iaeldxitijcc"
-  },
-  {
-    "nombre": "Juego de Baño Ferrum ESPACIO- 2 Piezas",
-    "sku": "20958",
-    "categoria": "Juegos de Baño",
-    "url": "producto.html?sku=20958",
-    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/u4np07oojx6h3xoon9r3"
-  },
-  {
-    "nombre": "Juego de Baño Ferrum ESPACIO- 2 Piezas",
-    "sku": "38072",
-    "categoria": "Juegos de Baño",
-    "url": "producto.html?sku=38072",
-    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/hoejogq0afrieo4kopwy"
   },
   {
     "nombre": "Juego de Baño Italiana Capea - 3 Piezas",
@@ -1200,11 +1207,32 @@ const productos = [
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/37419"
   },
   {
-    "nombre": "Kit de Griferías",
-    "sku": "3",
-    "categoria": "Griferías",
-    "url": "producto.html?sku=3",
-    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/apcng7vur3s4p8zh9dtv"
+    "nombre": "Lana De Vidrio Fieltro Liviano HR (38mm)- Isover",
+    "sku": "38354",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=38354",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/osxfkxggqybjh4ktkuet"
+  },
+  {
+    "nombre": "Lana De Vidrio Fieltro Rolac Plata Cubierta HR (38mm, 50mm, 80mm, 100mm) - Isover",
+    "sku": "37539",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=37539",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/tbtz0ppwi05ni0hu9ift"
+  },
+  {
+    "nombre": "Lana De Vidrio Fieltro Tensado /Alum RH (50mm, 80mm) - Isover",
+    "sku": "38861",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=38861",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/vdsphaqzukzsoti8pjbi"
+  },
+  {
+    "nombre": "Lana De Vidrio Fieltro Tensado /Poliprop. RH(50mm) - Isover",
+    "sku": "29824",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=29824",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/vrliht4igtnssgjaldvf"
   },
   {
     "nombre": "Lavatorio 1 Agujeros Andina - Ferrum",
@@ -1361,6 +1389,13 @@ const productos = [
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/37155"
   },
   {
+    "nombre": "Maestro / Cemento de Albañilería x 25 kg Holcim",
+    "sku": "37947",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=37947",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/uvbypddmmrlajep1beqj"
+  },
+  {
     "nombre": "Malaga Beige 32x47- Cañuelas",
     "sku": "36600",
     "categoria": "Revestimientos",
@@ -1433,14 +1468,14 @@ const productos = [
   {
     "nombre": "Membrana Asfáltica No Crack -35 kg - Megaflex",
     "sku": "36538",
-    "categoria": "Pinturas y Membranas",
+    "categoria": "Construcción",
     "url": "producto.html?sku=36538",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/36538"
   },
   {
     "nombre": "Membrana tradicional 35 Kg - Megaflex",
     "sku": "36590",
-    "categoria": "Pinturas y Membranas",
+    "categoria": "Construcción",
     "url": "producto.html?sku=36590",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/36590"
   },
@@ -1471,6 +1506,13 @@ const productos = [
     "categoria": "Bachas",
     "url": "producto.html?sku=RR0184",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/RR0184"
+  },
+  {
+    "nombre": "Mortero Celublock x30kg - Weber",
+    "sku": "31635",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=31635",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/sknhbbmmqdgd7fgaf5az"
   },
   {
     "nombre": "Murete Crayon 35x60 - Cerámica Cortines",
@@ -1648,11 +1690,60 @@ const productos = [
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/33555"
   },
   {
+    "nombre": "Pastina Prestige x2kg -Weber (Negro, Hueso, Plata, Beige, Nieve, Cedro)",
+    "sku": "30442",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=30442",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/kqbfs47lj9kcc0cprklo"
+  },
+  {
     "nombre": "Pearl Pulido 57.5X117 - Tendenza",
     "sku": "37729",
     "categoria": "Revestimientos",
     "url": "producto.html?sku=37729",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/37729"
+  },
+  {
+    "nombre": "Pegamento Estandar Cerámica x25kg - Weber",
+    "sku": "36479",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=36479",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/dyw4sji0p7g2sr8x3b16"
+  },
+  {
+    "nombre": "Pegamento Flex Porcelanato x25kg - Weber",
+    "sku": "37076",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=37076",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/s2fecpdlov0gayw0tfxy"
+  },
+  {
+    "nombre": "Pegamento Impermeable Tector 300H x25kg - Holcim",
+    "sku": "37098",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=37098",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/lohbabbhuk13tqd75enk"
+  },
+  {
+    "nombre": "Pegamento Piscinas x30kg - Weber",
+    "sku": "19720",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=19720",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/pi4if9lc6csemf0a68bl"
+  },
+  {
+    "nombre": "Pegamento Piso S/Piso x25kg - Weber",
+    "sku": "37302",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=37302",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/rgqcls8ljddoopsrkinh"
+  },
+  {
+    "nombre": "Pegamento Porcelanato Tector300 x25kg - Holcim",
+    "sku": "37099",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=37099",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/szmsaykuvbjttuvcyj4r"
   },
   {
     "nombre": "Pepper Cocina- Fv",
@@ -1685,28 +1776,28 @@ const productos = [
   {
     "nombre": "Pintura Asfáltica Base solvente Koverpaint-Alpin 10 Lts. - Kartonsec",
     "sku": "36980",
-    "categoria": "Pinturas y Membranas",
+    "categoria": "Construcción",
     "url": "producto.html?sku=36980",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/36980"
   },
   {
     "nombre": "Pintura Asfáltica Base solvente Koverpaint-Alpin 18 Lts. - Kartonsec",
     "sku": "36541",
-    "categoria": "Pinturas y Membranas",
+    "categoria": "Construcción",
     "url": "producto.html?sku=36541",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/36541"
   },
   {
     "nombre": "Pintura Asfáltica Base solvente Koverpaint-Alpin 4 Lts. - Kartonsec",
     "sku": "36540",
-    "categoria": "Pinturas y Membranas",
+    "categoria": "Construcción",
     "url": "producto.html?sku=36540",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/36540"
   },
   {
     "nombre": "Pintura Asfáltica Primer base solvente 1-4-18 Lts. - Megaflex",
     "sku": "26238",
-    "categoria": "Pinturas y Membranas",
+    "categoria": "Construcción",
     "url": "producto.html?sku=26238",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/26238"
   },
@@ -1730,13 +1821,6 @@ const productos = [
     "categoria": "Revestimientos",
     "url": "producto.html?sku=37753",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/37753"
-  },
-  {
-    "nombre": "Porcelanato - Toscana Beige 50x50",
-    "sku": "5",
-    "categoria": "Revestimientos",
-    "url": "producto.html?sku=5",
-    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/eoa4njbhcp7qr1qxmsrb"
   },
   {
     "nombre": "Porfido HD Marrón 35x35 - Cerámica Lourdes",
@@ -1940,6 +2024,48 @@ const productos = [
     "categoria": "Aberturas",
     "url": "producto.html?sku=35828",
     "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/35828"
+  },
+  {
+    "nombre": "Revoque Ext. 2 En 1 Manual Mix x25kg - Weber",
+    "sku": "38082",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=38082",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/jngwwlzqfo71jphrniaw"
+  },
+  {
+    "nombre": "Revoque Ext. 3 En 1 Manual Mix x25kg - Weber",
+    "sku": "23427",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=23427",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/varxaqhk6ry5gnmvd7eo"
+  },
+  {
+    "nombre": "Revoque Ext. 3 en 1 Promex x25kg - Weber",
+    "sku": "27900",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=27900",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/ylmbomk2vjnlbiggc0i7"
+  },
+  {
+    "nombre": "Revoque Fino Hidrorrepelente Weber 25 kg",
+    "sku": "20718",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=20718",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/gzlicdmeh5gpa71ptrfi"
+  },
+  {
+    "nombre": "Revoque Fino Interior x25kg - Weber",
+    "sku": "18898",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=18898",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/uedwk9miyle1yplbbhfl"
+  },
+  {
+    "nombre": "Revoque Int. 2 en 1 Promex x25kg - Weber",
+    "sku": "27899",
+    "categoria": "Construcción",
+    "url": "producto.html?sku=27899",
+    "imagen": "https://res.cloudinary.com/dbntmfmdv/image/upload/w_200,h_200,c_fit,f_auto,q_auto:eco,fl_lossy/rosso/productos/oglxkm1ufualhkmak4td"
   },
   {
     "nombre": "Roble Canela 19.4x118.2 - Eliane",
