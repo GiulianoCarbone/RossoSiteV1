@@ -372,9 +372,7 @@
     }
 
     .featured-content-wrapper {
-      width: max-content;
-      max-width: 100%;
-      margin: 0 auto;
+      width: 100%;
       position: relative;
     }
 
@@ -442,6 +440,10 @@
     .countdown-label i {
       color: var(--accent);
     }
+
+    /* Variante compacta del label: sólo visible en mobile */
+    .cd-label-short { display: none; }
+    .cd-clock { display: none; }
 
     .countdown-blocks {
       display: flex;
@@ -526,6 +528,84 @@
       font-weight: 700;
       color: #dc2626;
       letter-spacing: 0.05em;
+    }
+
+    /* ── Countdown compacto en mobile (chip de una línea) ── */
+    @media (max-width: 768px) {
+      .countdown-wrap {
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: none;
+        flex-wrap: nowrap;
+        width: fit-content;
+        max-width: 100%;
+      }
+
+      .countdown-wrap:hover {
+        box-shadow: none;
+        border-color: rgba(236, 100, 52, 0.15);
+      }
+
+      .cd-clock {
+        display: inline-block;
+        color: var(--accent);
+        font-size: 0.8rem;
+      }
+
+      .cd-label-full { display: none; }
+      .cd-label-short { display: inline; }
+
+      .countdown-label {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: none;
+        letter-spacing: 0.01em;
+        gap: 5px;
+      }
+
+      .countdown-blocks { gap: 6px; }
+
+      .cd-block {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 1px;
+        background: none;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        min-width: 0;
+        box-shadow: none;
+      }
+
+      .cd-block:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: transparent;
+      }
+
+      .cd-num { font-size: 0.9rem; }
+
+      .cd-unit,
+      .cd-sep { display: none; }
+
+      /* Sufijos compactos d/h/m/s */
+      #cd-days::after,
+      #cd-hours::after,
+      #cd-mins::after,
+      #cd-secs::after {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--muted);
+        margin-left: 1px;
+      }
+
+      #cd-days::after  { content: 'd'; }
+      #cd-hours::after { content: 'h'; }
+      #cd-mins::after  { content: 'm'; }
+      #cd-secs::after  { content: 's'; }
     }
 
     @keyframes lightning-flicker {
@@ -1888,6 +1968,7 @@
       padding: 12px;
       box-sizing: border-box;
       transition: opacity 0.3s ease;
+      cursor: zoom-in;
     }
 
     /* Arrows for modal gallery */
@@ -1955,6 +2036,106 @@
     .gallery-thumb.active {
       border-color: var(--brand);
     }
+
+    /* Indicador de zoom sobre la imagen principal */
+    .gallery-zoom-hint {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand);
+      font-size: 0.85rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    /* ── LIGHTBOX (imagen ampliada) ── */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+
+    .lightbox-overlay.open {
+      display: flex;
+      animation: fadeIn .2s ease;
+    }
+
+    .lightbox-img {
+      max-width: 95vw;
+      max-height: 92vh;
+      object-fit: contain;
+      cursor: default;
+      border-radius: 6px;
+      box-shadow: 0 12px 44px rgba(0, 0, 0, 0.5);
+      animation: lightboxIn .2s ease;
+    }
+
+    @keyframes lightboxIn {
+      from { opacity: 0; transform: scale(.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 2001;
+      transition: background .15s;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 2001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s;
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .lightbox-nav.prev { left: 18px; }
+    .lightbox-nav.next { right: 18px; }
 
     /* Modal info */
     .modal-info {
@@ -2926,7 +3107,9 @@
           <!-- COUNTDOWN OFERTAS -->
           <div class="countdown-wrap" id="countdown-wrap" style="display:none" role="timer" aria-live="polite">
             <span class="countdown-label">
-              Estas ofertas terminan en
+              <i class="fa-regular fa-clock cd-clock"></i>
+              <span class="cd-label-full">Estas ofertas terminan en</span>
+              <span class="cd-label-short">Termina en</span>
             </span>
             <div class="countdown-blocks">
               <div class="cd-block" id="cd-days">
@@ -3047,6 +3230,7 @@
             </div>
             <button class="gallery-nav-btn next" id="modal-nav-next" onclick="moveModalGallery(1)"
               style="display:none"><i class="fa-solid fa-chevron-right"></i></button>
+            <div class="gallery-zoom-hint" id="gallery-zoom-hint" style="display:none"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
           </div>
           <div class="gallery-thumbs" id="gallery-thumbs"></div>
         </div>
@@ -3085,6 +3269,16 @@
         <div class="suggestions-grid" id="m-sugerencias"></div>
       </div>
     </div>
+  </div>
+
+  <!-- Lightbox / imagen ampliada -->
+  <div class="lightbox-overlay" id="lightbox-overlay" onclick="cerrarLightbox()">
+    <button class="lightbox-close" onclick="cerrarLightbox()" aria-label="Cerrar">×</button>
+    <button class="lightbox-nav prev" id="lightbox-prev" onclick="event.stopPropagation(); lightboxNav(-1)" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+    <img id="lightbox-img" class="lightbox-img" src="" alt=""
+      onclick="event.stopPropagation()"
+      ontouchstart="handleTouchStart(event)" ontouchend="handleLightboxTouchEnd(event)" />
+    <button class="lightbox-nav next" id="lightbox-next" onclick="event.stopPropagation(); lightboxNav(1)" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
   </div>
 
   <!-- ══ QUOTE PANEL ═══════════════════════════════════════════ -->
@@ -4041,10 +4235,13 @@
       if (prevBtn) prevBtn.style.display = hasMultiple ? 'flex' : 'none';
       if (nextBtn) nextBtn.style.display = hasMultiple ? 'flex' : 'none';
 
+      const zoomHint = document.getElementById('gallery-zoom-hint');
+      if (zoomHint) zoomHint.style.display = imgs.length > 0 ? 'flex' : 'none';
+
       if (p.imagenes && p.imagenes.length > 0) {
         mainContainer.innerHTML = `<img id="gallery-main-img" class="gallery-main"
         src="${cdnUrl(p.imagenes[0], 'w_600,f_auto,q_auto:good,fl_lossy')}"
-        alt="${esc(p.nombre)}" />`;
+        alt="${esc(p.nombre)}" onclick="abrirLightbox()" />`;
         thumbsWrap.innerHTML = p.imagenes.map((pid, i) => `
         <img class="gallery-thumb${i === 0 ? ' active' : ''}"
           src="${cdnUrl(pid, 'w_120,h_120,c_fill,f_auto,q_auto')}"
@@ -4052,7 +4249,7 @@
           onclick="modalImgIndex=${i}; cambiarImagen('${pid}', this)" />`).join('');
       } else if (p.imagenLegacy) {
         mainContainer.innerHTML = `<img id="gallery-main-img" class="gallery-main"
-        src="${esc(p.imagenLegacy)}" alt="${esc(p.nombre)}" />`;
+        src="${esc(p.imagenLegacy)}" alt="${esc(p.nombre)}" onclick="abrirLightbox()" />`;
         thumbsWrap.innerHTML = `<img class="gallery-thumb active"
         src="${esc(p.imagenLegacy)}" alt="Imagen 1" />`;
       } else {
@@ -4170,6 +4367,48 @@
       document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
       if (thumbEl) thumbEl.classList.add('active');
     }
+
+    /* ── Lightbox / imagen ampliada ── */
+    function actualizarLightboxImg() {
+      if (!productoModal) return;
+      const imgs = productoModal.imagenes || (productoModal.imagenLegacy ? [productoModal.imagenLegacy] : []);
+      if (imgs.length === 0) return;
+      const pid = imgs[modalImgIndex] || imgs[0];
+      const isLegacy = !productoModal.imagenes || productoModal.imagenes.length === 0;
+      const lbImg = document.getElementById('lightbox-img');
+      lbImg.src = isLegacy ? pid : cdnUrl(pid, 'w_1600,f_auto,q_auto:good,fl_lossy');
+      lbImg.alt = productoModal.nombre || '';
+    }
+
+    window.abrirLightbox = function () {
+      if (!productoModal) return;
+      const imgs = productoModal.imagenes || (productoModal.imagenLegacy ? [productoModal.imagenLegacy] : []);
+      if (imgs.length === 0) return;
+      actualizarLightboxImg();
+      const multi = imgs.length > 1;
+      document.getElementById('lightbox-prev').style.display = multi ? 'flex' : 'none';
+      document.getElementById('lightbox-next').style.display = multi ? 'flex' : 'none';
+      document.getElementById('lightbox-overlay').classList.add('open');
+    };
+
+    window.cerrarLightbox = function () {
+      document.getElementById('lightbox-overlay').classList.remove('open');
+    };
+
+    window.lightboxNav = function (dir) {
+      if (!productoModal) return;
+      const imgs = productoModal.imagenes || (productoModal.imagenLegacy ? [productoModal.imagenLegacy] : []);
+      if (imgs.length <= 1) return;
+      modalImgIndex = (modalImgIndex + dir + imgs.length) % imgs.length;
+      const thumbs = document.querySelectorAll('.gallery-thumb');
+      cambiarImagen(imgs[modalImgIndex], thumbs[modalImgIndex]);
+      actualizarLightboxImg();
+    };
+
+    window.handleLightboxTouchEnd = function (e) {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(dx) > 50) lightboxNav(dx > 0 ? -1 : 1);
+    };
 
     function cerrarModal() {
       document.getElementById('product-modal').classList.remove('open');
@@ -4512,8 +4751,15 @@
     /* ══════════════════════════════════════════════════════════
        EVENTOS
     ══════════════════════════════════════════════════════════ */
-    // Cerrar modal con Escape
+    // Cerrar modal con Escape / navegar lightbox con flechas
     document.addEventListener('keydown', e => {
+      const lb = document.getElementById('lightbox-overlay');
+      if (lb && lb.classList.contains('open')) {
+        if (e.key === 'Escape') cerrarLightbox();
+        else if (e.key === 'ArrowLeft') lightboxNav(-1);
+        else if (e.key === 'ArrowRight') lightboxNav(1);
+        return;
+      }
       if (e.key === 'Escape') { cerrarModal(); cerrarPanel(); cerrarModalEmail(); }
     });
 
