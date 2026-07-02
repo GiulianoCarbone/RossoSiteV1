@@ -1106,12 +1106,17 @@
     .cat-main {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 8px;
       padding: 8px 10px;
       font-size: 0.86rem;
       font-weight: 500;
       border-radius: 6px;
       transition: background 0.15s;
+    }
+
+    .cat-main .cat-name {
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     .cat-main:hover {
@@ -1127,9 +1132,16 @@
     }
 
     .cat-main i.arrow {
+      flex-shrink: 0;
+      width: 0.8em;
+      text-align: center;
       font-size: 0.65rem;
       color: var(--muted);
       transition: transform .2s;
+    }
+
+    .cat-main i.arrow.arrow--hidden {
+      visibility: hidden;
     }
 
     .cat-main.open i.arrow {
@@ -1146,12 +1158,21 @@
     }
 
     .cat-sub-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
       padding: 6px 10px;
       font-size: 0.82rem;
       color: var(--muted);
       border-radius: 6px;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
+    }
+
+    .cat-sub-item > span:first-child {
+      min-width: 0;
+      line-height: 1.25;
     }
 
     .cat-sub-item:hover {
@@ -1655,17 +1676,16 @@
 
     /* ── CAT COUNT ── */
     .cat-count {
-      font-size: 0.7rem;
-      color: var(--muted);
-      background: #f3f4f6;
-      border-radius: 999px;
-      padding: 1px 7px;
-      font-weight: 600;
       flex-shrink: 0;
+      min-width: 2.2em;
+      text-align: right;
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
     }
 
     .cat-main.active .cat-count {
-      background: #dbeafe;
       color: var(--brand);
     }
 
@@ -3611,10 +3631,8 @@
         const subsHtml = hasSubs ? `
         <div class="cat-subs" id="subs-${esc(cat.nombre)}">
           ${cat.subcategorias.map(s => {
-          const subCount = todosLosProductos.filter(p => p.categoria === cat.nombre && p.subcategoria === s).length;
           return `<div class="cat-sub-item" onclick="filtrarPorSub('${esc(cat.nombre)}','${esc(s)}')">
               <span>${s}</span>
-              ${subCount > 0 ? `<span class="cat-count" style="float:right">${subCount}</span>` : ''}
             </div>`;
         }).join('')}
         </div>` : '';
@@ -3623,11 +3641,9 @@
         <div class="cat-tree-item">
           <div class="cat-main" id="cat-main-${esc(cat.nombre)}"
             onclick="filtrarPorCat('${esc(cat.nombre)}')">
-            <span>${cat.nombre}</span>
-            <span style="display:flex;align-items:center;gap:6px">
-              ${catCount > 0 ? `<span class="cat-count">${catCount}</span>` : ''}
-              ${hasSubs ? '<i class="fa-solid fa-chevron-right arrow"></i>' : ''}
-            </span>
+            <span class="cat-name">${cat.nombre}</span>
+            <span class="cat-count">${catCount > 0 ? catCount : ''}</span>
+            <i class="fa-solid fa-chevron-right arrow${hasSubs ? '' : ' arrow--hidden'}"></i>
           </div>
           ${subsHtml}
         </div>`;
