@@ -3683,6 +3683,9 @@
       // Analytics: Visita al catálogo
       trackEvent('visits');
 
+      // Deep-linking: restaurar búsqueda / filtros desde la URL (?q=&cat=&sub=)
+      aplicarFiltrosDeURL();
+
       // Si hay caché, mostrar instantáneo y refrescar en background
       const cached = sessionStorage.getItem('rosso_catalog_cache');
       if (cached) {
@@ -4029,6 +4032,38 @@
       debTimer = setTimeout(filtrarProductos, 220);
     }
 
+    /* ══════════════════════════════════════════════════════════
+       DEEP-LINKING: la URL refleja búsqueda + filtros (compartible)
+       El vendedor busca/filtra y copia el link; al abrirlo se
+       restaura la misma vista (a prueba de recarga).
+    ══════════════════════════════════════════════════════════ */
+    // Escribe el estado actual en la URL. Usamos replaceState para
+    // no llenar el historial con cada tecla/click.
+    function actualizarURL() {
+      const q = (document.getElementById('search-input').value || '').trim();
+      const params = new URLSearchParams();
+      if (q) params.set('q', q);
+      if (filtroCat) params.set('cat', filtroCat);
+      if (filtroSub) params.set('sub', filtroSub);
+      const qs = params.toString();
+      const url = qs ? `${location.pathname}?${qs}` : location.pathname;
+      try { history.replaceState(null, '', url); } catch (e) { /* contexto sin History API */ }
+    }
+
+    // Lee ?q= / ?cat= / ?sub= de la URL y los aplica al estado inicial.
+    // Se llama una sola vez al arrancar, antes del primer filtrarProductos().
+    function aplicarFiltrosDeURL() {
+      const params = new URLSearchParams(location.search);
+      const q = params.get('q') || '';
+      const cat = params.get('cat') || '';
+      const sub = params.get('sub') || '';
+      const input = document.getElementById('search-input');
+      if (input) input.value = q;
+      filtroCat = cat;
+      filtroSub = cat ? sub : '';   // una subcategoría sin categoría no aplica
+      actualizarClearBtn();
+    }
+
     function filtrarProductos() {
       const q = (document.getElementById('search-input').value || '').toLowerCase().trim();
       const hayDestacados = document.querySelectorAll('#carousel-track .fc-card').length > 0;
@@ -4076,6 +4111,9 @@
         (filtroCat || subVal || q) ? 'block' : 'none';
 
       renderGrid();
+
+      // La URL refleja el estado para poder compartirla / recargarla
+      actualizarURL();
     }
 
     function renderChips() {
