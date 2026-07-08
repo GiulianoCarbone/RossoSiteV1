@@ -269,6 +269,26 @@
         transform: translateY(-4px);
     }
 
+    /* --- ¿Cómo funciona? --- */
+    .how-it-works { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 900px; margin: 0 auto 45px; }
+    .hiw-step { background: #fff; border-radius: 12px; padding: 22px 18px; text-align: center; box-shadow: var(--shadow); }
+    .hiw-step .hiw-icon { font-size: 1.8rem; color: var(--accent); margin-bottom: 10px; }
+    .hiw-step h4 { color: var(--brand); font-size: 1.05rem; margin-bottom: 6px; }
+    .hiw-step p { color: var(--muted); font-size: 0.85rem; line-height: 1.45; }
+    @media (max-width: 640px) { .how-it-works { grid-template-columns: 1fr; margin-bottom: 30px; } }
+
+    /* --- Validación inline (reemplaza los alert) --- */
+    .step-card.step-error { border: 2px solid #e11d48; animation: shake 0.35s; }
+    .step-error-msg { display: none; color: #e11d48; font-size: 0.88rem; font-weight: 600; margin-top: 12px; }
+    .step-card.step-error .step-error-msg { display: block; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+
+    /* --- Buscador dentro del modal de productos --- */
+    .modal-search-wrap { padding: 14px 24px; border-bottom: 1px solid #e5e7eb; flex-shrink: 0; }
+    .modal-search { width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+    .modal-search:focus { outline: none; border-color: var(--brand); }
+    .modal-no-results { display: none; text-align: center; color: var(--muted); padding: 30px 10px; font-weight: 500; }
+
     @media (max-width: 900px) { .visualizer-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -286,9 +306,14 @@
         <div class="dropdown">
           <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
           <div class="dropdown-menu">
-            <a href="/calculadora">Calculá los m²</a>
-            <a href="/checklist">Checklist de Materiales</a>
-            <a href="/glosario">Glosario</a>
+            <a href="visualizador-ia.html">Visualizador IA</a>
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
+            <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
+            <a href="calculadora-niveladores.html">Calculadora Niveladores</a>
+            <a href="calculadora-cielorraso-pvc.html">Cielorraso PVC</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
           </div>
         </div>
       </div>
@@ -305,9 +330,14 @@
         <div class="dropdown">
           <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
           <div class="dropdown-menu">
-            <a href="/calculadora.html">Calculá los m²</a>
-            <a href="/checklist.html">Checklist de Materiales</a>
-            <a href="/glosario.html">Glosario</a>
+            <a href="visualizador-ia.html">Visualizador IA</a>
+            <a href="calculadora.html">Calculá los m²</a>
+            <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
+            <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
+            <a href="calculadora-niveladores.html">Calculadora Niveladores</a>
+            <a href="calculadora-cielorraso-pvc.html">Cielorraso PVC</a>
+            <a href="checklist.html">Checklist de Materiales</a>
+            <a href="glosario.html">Glosario</a>
           </div>
         </div>
       </div>
@@ -319,12 +349,30 @@
       <div class="visualizer-container">
         <div class="section-header" id="main-header">
           <h1 class="section-title">Visualizá tu Ambiente</h1>
-          <p class="section-subtitle">¿No te decidís? Subí una foto de tu espacio, elegí el revestimiento y te enviamos un diseño personalizado hecho por nuestros expertos.</p>
+          <p class="section-subtitle">Subí una foto de tu espacio y elegí el revestimiento que te gusta. Nuestro equipo de diseño te envía una imagen personalizada de cómo quedaría, en 48 hs hábiles y sin costo.</p>
+        </div>
+
+        <div class="how-it-works" id="how-it-works">
+          <div class="hiw-step">
+            <div class="hiw-icon"><i class="fa-solid fa-image"></i></div>
+            <h4>1. Subí tu foto</h4>
+            <p>Una foto frontal de tu ambiente, lo más despejada posible.</p>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-icon"><i class="fa-solid fa-swatchbook"></i></div>
+            <h4>2. Elegí el revestimiento</h4>
+            <p>Seleccioná el piso o pared que querés ver aplicado.</p>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-icon"><i class="fa-solid fa-paper-plane"></i></div>
+            <h4>3. Recibí tu diseño</h4>
+            <p>Te lo enviamos por mail o WhatsApp en 48 hs hábiles.</p>
+          </div>
         </div>
 
         <div class="visualizer-grid">
           <div class="config-column">
-            <div class="step-card">
+            <div class="step-card" id="card-surface">
               <div class="step-header"><div class="step-number">1</div><h2 class="step-title">¿Qué querés renovar?</h2></div>
               <div class="surface-selector">
                 <div class="surface-option" data-surface="floor" style="background-image: url('https://todoporcelanato.com.ar/wp-content/uploads/Ambientacion-SYROS-1-1.jpg');">
@@ -334,18 +382,20 @@
                   <span>Pared</span>
                 </div>
               </div>
+              <div class="step-error-msg">Elegí si vas a renovar un piso o una pared.</div>
             </div>
 
-            <div class="step-card">
+            <div class="step-card" id="card-product">
               <div class="step-header"><div class="step-number">2</div><h2 class="step-title">Elegí el Revestimiento</h2></div>
               <button id="open-product-modal-btn" class="select-product-btn">Seleccionar Revestimiento</button>
               <div id="selected-product-preview">
                 <img id="selected-product-img" src="" alt="Producto seleccionado">
                 <p id="selected-product-name"></p>
               </div>
+              <div class="step-error-msg">Seleccioná un revestimiento para continuar.</div>
             </div>
 
-            <div class="step-card">
+            <div class="step-card" id="card-image">
               <div class="step-header"><div class="step-number">3</div><h2 class="step-title">Subí tu Foto</h2></div>
               <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 15px;">Para un mejor resultado, intentá que la foto sea lo más frontal posible y con la menor cantidad de muebles u objetos.</p>
               <div id="upload-area" class="upload-area"><p>Arrastrá y soltá una imagen o hacé clic</p><input type="file" id="image-upload" hidden accept="image/*"></div>
@@ -353,13 +403,14 @@
                 <img id="image-preview" src="#" alt="Vista previa" style="display: none;" />
                 <button id="remove-image-btn" title="Quitar imagen">&times;</button>
               </div>
+              <div class="step-error-msg">Subí una foto de tu ambiente.</div>
             </div>
           </div>
 
           <div class="result-column">
-            <div class="step-card">
+            <div class="step-card" id="card-datos">
               <div class="step-header"><div class="step-number">4</div><h2 class="step-title">Tus Datos</h2></div>
-              <p>Completá tus datos para que podamos enviarte el diseño terminado a tu correo.</p>
+              <p>Completá tus datos para que podamos enviarte el diseño terminado.</p>
               <div class="input-group">
                 <label for="user-name">Nombre y Apellido</label>
                 <input type="text" id="user-name" placeholder="Ej: Juan Pérez" required>
@@ -368,6 +419,11 @@
                 <label for="user-email">Email</label>
                 <input type="email" id="user-email" placeholder="Ej: juan.perez@email.com" required>
               </div>
+              <div class="input-group">
+                <label for="user-phone">WhatsApp <span style="font-weight:400; color:var(--muted);">(opcional)</span></label>
+                <input type="tel" id="user-phone" placeholder="Ej: 381 555-1234">
+              </div>
+              <div class="step-error-msg">Completá tu nombre y email.</div>
               <div class="action-buttons">
                 <button id="send-request-btn" class="generate-button"><i class="fas fa-spinner"></i><span class="btn-text">Enviar Solicitud</span></button>
                 <button id="clear-btn" class="generate-button" title="Empezar de nuevo"><i class="fa-solid fa-eraser"></i></button>
@@ -377,7 +433,7 @@
             <div class="step-card" id="confirmation-card">
               <i class="fas fa-check-circle"></i>
               <h3>¡Solicitud Enviada!</h3>
-              <p>Recibimos tus datos correctamente. Nuestro equipo de diseño se pondrá a trabajar y te enviaremos el resultado a tu correo en las próximas <strong>48 horas hábiles</strong>. ¡Gracias por confiar en Rosso Materiales!</p>
+              <p>Recibimos tus datos correctamente. Nuestro equipo de diseño se pondrá a trabajar y te enviaremos el resultado a tu correo o WhatsApp en las próximas <strong>48 horas hábiles</strong>. ¡Gracias por confiar en Rosso Materiales!</p>
               <div>
                 <a href="visualizador-ia.html" class="back-home-btn">Hacer otra consulta</a>
               </div>
@@ -395,10 +451,14 @@
         <h4>Seleccioná un Revestimiento</h4>
         <button id="close-product-modal-btn" class="close-modal-btn">&times;</button>
       </div>
+      <div class="modal-search-wrap">
+        <input type="text" id="product-search" class="modal-search" placeholder="Buscar por nombre o SKU..." autocomplete="off">
+      </div>
       <div class="product-modal-body">
         <div id="product-modal-grid" class="product-modal-grid">
           <!-- La grilla de productos se renderizará aquí con JS -->
         </div>
+        <div id="modal-no-results" class="modal-no-results">No encontramos revestimientos con ese nombre.</div>
       </div>
     </div>
   </div>
@@ -535,6 +595,7 @@
         document.querySelectorAll('.surface-option').forEach(o => o.classList.remove('selected'));
         option.classList.add('selected');
         selectedSurface = option.dataset.surface;
+        document.getElementById('card-surface').classList.remove('step-error');
       });
     });
 
@@ -543,6 +604,8 @@
     const openModalBtn = document.getElementById('open-product-modal-btn');
     const closeModalBtn = document.getElementById('close-product-modal-btn');
     const productGrid = document.getElementById('product-modal-grid');
+    const productSearch = document.getElementById('product-search');
+    const modalNoResults = document.getElementById('modal-no-results');
     const selectedProductPreview = document.getElementById('selected-product-preview');
     const selectedProductImg = document.getElementById('selected-product-img');
     const selectedProductName = document.getElementById('selected-product-name');
@@ -550,6 +613,11 @@
     openModalBtn.addEventListener('click', (e) => {
         e.preventDefault();
         productModal.style.display = 'flex';
+        if (productSearch) {
+          productSearch.value = '';
+          filtrarProductosModal();
+          setTimeout(() => productSearch.focus(), 100);
+        }
     });
     closeModalBtn.addEventListener('click', () => productModal.style.display = 'none');
     productModal.addEventListener('click', (e) => {
@@ -577,8 +645,24 @@
         selectedProductName.textContent = selectedProduct.nombre;
         selectedProductPreview.style.display = 'flex';
         productModal.style.display = 'none';
+        document.getElementById('card-product').classList.remove('step-error');
       });
     });
+
+    // Buscador dentro del modal: filtra por nombre o SKU en vivo
+    function filtrarProductosModal() {
+      const q = (productSearch.value || '').trim().toLowerCase();
+      let visibles = 0;
+      productGrid.querySelectorAll('.product-item').forEach(item => {
+        const sku = (item.dataset.productSku || '').toLowerCase();
+        const nombre = (item.querySelector('.product-name')?.textContent || '').toLowerCase();
+        const match = !q || nombre.includes(q) || sku.includes(q);
+        item.style.display = match ? '' : 'none';
+        if (match) visibles++;
+      });
+      modalNoResults.style.display = visibles === 0 ? 'block' : 'none';
+    }
+    if (productSearch) productSearch.addEventListener('input', filtrarProductosModal);
 
     // --- PASO 3: CARGA DE IMAGEN ---
     const uploadArea = document.getElementById('upload-area');
@@ -601,6 +685,7 @@
     function handleFile(file) {
       if (file && file.type.startsWith('image/')) {
         userImageFile = file;
+        document.getElementById('card-image').classList.remove('step-error');
         const reader = new FileReader();
         reader.onload = e => {
           imagePreview.src = e.target.result;
@@ -623,25 +708,70 @@
       removeImageBtn.style.display = 'none';
     }
 
+    // --- COMPRESIÓN DE IMAGEN (antes de subir) ---
+    // Las fotos de celular suelen pesar 5-10MB. Las redimensionamos y
+    // recomprimimos en el navegador para que la subida sea rápida y liviana.
+    function compressImage(file, maxDimension = 1600, quality = 0.8) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = new Image();
+          img.onload = () => {
+            let width = img.width, height = img.height;
+            if (width > maxDimension || height > maxDimension) {
+              if (width >= height) { height = Math.round(height * maxDimension / width); width = maxDimension; }
+              else { width = Math.round(width * maxDimension / height); height = maxDimension; }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+            canvas.toBlob(blob => resolve(blob || file), 'image/jpeg', quality);
+          };
+          img.onerror = () => resolve(file); // si falla, subimos el original
+          img.src = e.target.result;
+        };
+        reader.onerror = () => resolve(file);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // --- VALIDACIÓN INLINE (reemplaza los alert) ---
+    function clearStepErrors() {
+      document.querySelectorAll('.step-card.step-error').forEach(c => c.classList.remove('step-error'));
+    }
+    function showStepError(id) {
+      const card = document.getElementById(id);
+      if (!card) return;
+      // Reinicia la animación shake aunque ya tuviera la clase
+      card.classList.remove('step-error');
+      void card.offsetWidth;
+      card.classList.add('step-error');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     // --- PASO 4: ENVIAR ---
     const sendRequestBtn = document.getElementById('send-request-btn');
     sendRequestBtn.addEventListener('click', async (e) => {
       e.preventDefault(); // <-- ¡ESTA ES LA LÍNEA CLAVE! Evita que la página se recargue.
       const userName = document.getElementById('user-name').value.trim();
       const userEmail = document.getElementById('user-email').value.trim();
+      const userPhone = document.getElementById('user-phone').value.trim();
 
-      if (!selectedSurface) { alert('Paso 1: Por favor, elegí si vas a renovar un piso o una pared.'); return; }
-      if (!selectedProductId) { alert('Paso 2: No te olvides de seleccionar un revestimiento.'); return; }
-      if (!userImageFile) { alert('Paso 3: ¡Falta la foto de tu ambiente!'); return; }
-      if (!userName || !userEmail) { alert('Paso 4: Por favor, completá tu nombre y email.'); return; }
+      clearStepErrors();
+      if (!selectedSurface)        { showStepError('card-surface'); return; }
+      if (!selectedProductId)      { showStepError('card-product'); return; }
+      if (!userImageFile)          { showStepError('card-image');   return; }
+      if (!userName || !userEmail) { showStepError('card-datos');   return; }
 
       sendRequestBtn.classList.add('loading');
       sendRequestBtn.disabled = true;
 
       try {
-        // 1) Subir imagen a ImgBB
+        // 1) Comprimir y subir imagen a ImgBB
+        const imagenOptimizada = await compressImage(userImageFile);
         const imgbbFormData = new FormData();
-        imgbbFormData.append('image', userImageFile);
+        imgbbFormData.append('image', imagenOptimizada, 'ambiente.jpg');
 
         const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
           method: 'POST',
@@ -659,7 +789,8 @@
         const formData = new FormData();
         formData.append('Nombre', userName);
         formData.append('Email', userEmail);
-        formData.append('Superficie a renovar', selectedSurface);
+        if (userPhone) formData.append('WhatsApp', userPhone);
+        formData.append('Superficie a renovar', selectedSurface === 'floor' ? 'Piso' : 'Pared');
         formData.append('Producto Elegido', `${selectedProduct.nombre} (SKU: ${selectedProduct.sku})`);
         formData.append('Link del Producto', selectedProduct.url);
         formData.append('Imagen del Ambiente', imageUrl);
@@ -677,9 +808,18 @@
           throw new Error('Error al enviar el formulario a Formspree.');
         }
 
-        // 3) Mostrar alerta de confirmación y refrescar la página
-        alert('¡Solicitud enviada!✅ En las próximas 48 horas hábiles recibirás el diseño en tu correo electrónico.');
-        location.reload();
+        // 3) Mostrar la tarjeta de confirmación (en lugar de alert + reload)
+        document.getElementById('main-header').style.display = 'none';
+        const hiw = document.getElementById('how-it-works');
+        if (hiw) hiw.style.display = 'none';
+        document.querySelector('.config-column').style.display = 'none';
+        document.getElementById('card-datos').style.display = 'none';
+        const grid = document.querySelector('.visualizer-grid');
+        grid.style.gridTemplateColumns = '1fr';
+        grid.style.maxWidth = '600px';
+        grid.style.margin = '0 auto';
+        document.getElementById('confirmation-card').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
       } catch (error) {
         console.error("Error al enviar la solicitud: ", error);
@@ -696,10 +836,12 @@
       clearImage();
       selectedSurface = null;
       selectedProductId = null;
-      selectedProductPreview.style.display = 'none';      
+      selectedProductPreview.style.display = 'none';
       document.querySelectorAll('.surface-option.selected').forEach(el => el.classList.remove('selected'));
       document.getElementById('user-name').value = '';
       document.getElementById('user-email').value = '';
+      document.getElementById('user-phone').value = '';
+      clearStepErrors();
     });
   });
   </script>
