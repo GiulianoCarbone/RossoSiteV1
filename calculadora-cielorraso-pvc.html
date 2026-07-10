@@ -77,6 +77,48 @@
     }
     </script>
 
+    <!-- Structured Data: FAQPage -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "¿Cuántas placas de PVC necesito para mi cielorraso?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Las tablas de PVC perfilplas tienen un ancho estándar de 20 cm (0,20 m) y vienen en largos de 4 o 6 metros. Una tabla de 4 m cubre 0,80 m² y una de 6 m cubre 1,20 m². Para saber cuántas necesitás se divide la superficie del ambiente por lo que cubre cada tabla y se suma un porcentaje de desperdicio. Nuestra calculadora lo hace automáticamente según el largo de tabla que elijas."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "¿Qué materiales lleva un cielorraso de PVC?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Se arma en tres partes: la estructura portante (montantes y soleras de 35 mm), las fijaciones (tornillo T1 aguja para unir perfiles y fijación N°8 con tarugo para anclar a la pared) y el revestimiento (placas de PVC perfilplas, perfil perimetral que remata contra la pared y unión H para empalmar tablas). La calculadora te da la cantidad exacta de cada uno."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "¿Cada cuánto se colocan las estructuras (modulación)?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "La modulación estándar es de 0,50 m: los perfiles portantes se ubican cada 50 cm para que las placas queden firmes y no se arqueen con el tiempo. A menor separación, más rígido queda el cielorraso, pero se usa más material. La calculadora toma 0,50 m como valor recomendado."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "¿Qué es la altura de velas en un cielorraso de PVC?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Las velas son los soportes verticales que cuelgan la estructura desde la losa. La altura de velas es la distancia entre la losa (techo original) y el cielorraso terminado; define cuánto baja el nuevo techo y se usa para calcular el largo de los montantes. Se elige según cuánto necesites descolgar el techo, por ejemplo para pasar instalaciones o ganar aislación."
+                }
+            }
+        ]
+    }
+    </script>
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QBM51JZ19R"></script>
     <script>
@@ -529,6 +571,7 @@
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
                     <div class="dropdown-menu">
+                        <a href="visualizador-ia.html">Visualizador IA</a>
                         <a href="calculadora.html">Calculá los m²</a>
                         <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
                         <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
@@ -557,6 +600,7 @@
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle"><i class="fa-solid fa-wrench"></i> Utilidades</a>
                     <div class="dropdown-menu">
+                        <a href="visualizador-ia.html">Visualizador IA</a>
                         <a href="calculadora.html">Calculá los m²</a>
                         <a href="calculadora-placasdeyeso.html">Placas de Yeso</a>
                         <a href="calculadora-viguetas.html">Calculadora Viguetas</a>
@@ -796,6 +840,95 @@
                 </div><!-- /results-col -->
             </div><!-- /pvc-layout -->
         </div><!-- /container -->
+
+        <!-- SEO Content Section: FAQ -->
+        <section style="max-width: 800px; margin: 60px auto 0; padding: 0 20px;">
+            <h2 style="color: var(--brand); font-size: 1.5rem; margin-bottom: 30px; text-align: center;">
+                <i class="fa-solid fa-circle-question" style="color: var(--accent);"></i>
+                Preguntas Frecuentes sobre Cielorrasos de PVC
+            </h2>
+
+            <details style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: var(--shadow); cursor: pointer;">
+                <summary style="font-weight: 700; color: var(--brand); font-size: 1.05rem; list-style: none; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-chevron-right" style="color: var(--accent); font-size: 0.8rem;"></i>
+                    ¿Cuántas placas de PVC necesito para mi cielorraso?
+                </summary>
+                <p style="color: var(--muted); margin-top: 15px; line-height: 1.7;">
+                    Las <strong>tablas de PVC perfilplas</strong> tienen un ancho estándar de <strong>20 cm (0,20 m)</strong> y vienen en largos de
+                    <strong>4 o 6 metros</strong>. Una tabla de 4 m cubre <strong>0,80 m²</strong> y una de 6 m cubre <strong>1,20 m²</strong>.
+                    Para saber cuántas necesitás se divide la superficie del ambiente por lo que cubre cada tabla y se suma un porcentaje de
+                    desperdicio. Nuestra calculadora lo hace automáticamente según el largo de tabla que elijas.
+                </p>
+            </details>
+
+            <details style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: var(--shadow); cursor: pointer;">
+                <summary style="font-weight: 700; color: var(--brand); font-size: 1.05rem; list-style: none; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-chevron-right" style="color: var(--accent); font-size: 0.8rem;"></i>
+                    ¿Qué materiales lleva un cielorraso de PVC?
+                </summary>
+                <p style="color: var(--muted); margin-top: 15px; line-height: 1.7;">
+                    Se arma en tres partes: la <strong>estructura portante</strong> (montantes y soleras de 35 mm), las <strong>fijaciones</strong>
+                    (tornillo T1 aguja para unir perfiles y fijación N°8 con tarugo para anclar a la pared) y el <strong>revestimiento</strong>
+                    (placas de PVC perfilplas, perfil perimetral que remata contra la pared y unión H para empalmar tablas).
+                    La calculadora te da la cantidad exacta de cada uno.
+                </p>
+            </details>
+
+            <details style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: var(--shadow); cursor: pointer;">
+                <summary style="font-weight: 700; color: var(--brand); font-size: 1.05rem; list-style: none; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-chevron-right" style="color: var(--accent); font-size: 0.8rem;"></i>
+                    ¿Cada cuánto se colocan las estructuras (modulación)?
+                </summary>
+                <p style="color: var(--muted); margin-top: 15px; line-height: 1.7;">
+                    La <strong>modulación estándar es de 0,50 m</strong>: los perfiles portantes se ubican cada 50 cm para que las placas queden
+                    firmes y no se arqueen con el tiempo. A menor separación, más rígido queda el cielorraso, pero también se usa más material.
+                    La calculadora toma <strong>0,50 m</strong> como valor recomendado.
+                </p>
+            </details>
+
+            <details style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: var(--shadow); cursor: pointer;">
+                <summary style="font-weight: 700; color: var(--brand); font-size: 1.05rem; list-style: none; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-chevron-right" style="color: var(--accent); font-size: 0.8rem;"></i>
+                    ¿Qué es la altura de velas en un cielorraso de PVC?
+                </summary>
+                <p style="color: var(--muted); margin-top: 15px; line-height: 1.7;">
+                    Las <strong>velas</strong> son los soportes verticales que cuelgan la estructura desde la losa. La <strong>altura de velas</strong>
+                    es la distancia entre la losa (techo original) y el cielorraso terminado; define cuánto baja el nuevo techo y se usa para
+                    calcular el largo de los montantes. Se elige según cuánto necesites <strong>descolgar el techo</strong>, por ejemplo para
+                    pasar instalaciones o ganar aislación.
+                </p>
+            </details>
+        </section>
+
+        <!-- SEO Content: Texto + internal links -->
+        <section style="max-width: 800px; margin: 50px auto 0; padding: 0 20px 40px;">
+            <h2 style="color: var(--brand); font-size: 1.3rem; margin-bottom: 15px;">
+                ¿Cómo funciona la Calculadora de Cielorraso PVC?
+            </h2>
+            <p style="color: var(--muted); line-height: 1.8; margin-bottom: 20px;">
+                Nuestra <strong>calculadora de cielorraso PVC</strong> te permite estimar la cantidad exacta de <strong>placas, perfiles,
+                tornillos y fijaciones</strong> que necesitás. Ingresá el <strong>lado menor y el lado mayor del ambiente</strong> (en metros),
+                la <strong>altura de velas</strong>, el <strong>largo de las tablas de PVC</strong> (4 o 6 m) y el porcentaje de desperdicio.
+                Con esos datos calcula la superficie y el perímetro del cielorraso y determina automáticamente todos los materiales.
+            </p>
+            <p style="color: var(--muted); line-height: 1.8; margin-bottom: 20px;">
+                A partir de la superficie, la herramienta calcula las <strong>placas de PVC</strong> (ancho de tabla 0,20 m), los
+                <strong>montantes y soleras de 35 mm</strong> de la estructura (barras de 2,6 m), los <strong>perfiles perimetrales y uniones H</strong>
+                (barras de 3 m) y las <strong>fijaciones</strong> (tornillo T1 aguja y fijación N°8). Todo con la modulación de 0,50 m recomendada
+                y el desperdicio que indiques, para que compres justo lo necesario.
+            </p>
+            <h3 style="color: var(--brand); font-size: 1.1rem; margin-bottom: 10px;">
+                Más herramientas gratuitas para tu proyecto:
+            </h3>
+            <ul style="color: var(--muted); line-height: 2; padding-left: 20px;">
+                <li><a href="calculadora-placasdeyeso.html" style="color: var(--accent); font-weight: 600;">Calculadora de Placas de Yeso</a> — Materiales para cielorrasos, revestimientos y paredes en seco</li>
+                <li><a href="calculadora.html" style="color: var(--accent); font-weight: 600;">Calculadora de m², Pegamento y Pastina</a> — Cajas de cerámico, pegamento y pastina</li>
+                <li><a href="calculadora-niveladores.html" style="color: var(--accent); font-weight: 600;">Calculadora de Niveladores</a> — Clips, cuñas y pinzas para la colocación</li>
+                <li><a href="calculadora-viguetas.html" style="color: var(--accent); font-weight: 600;">Calculadora de Viguetas</a> — Materiales para losa con viguetas T21 o T180</li>
+                <li><a href="checklist.html" style="color: var(--accent); font-weight: 600;">Checklist de Materiales</a> — Listas completas por tipo de obra</li>
+                <li><a href="glosario.html" style="color: var(--accent); font-weight: 600;">Glosario de Construcción</a> — Diccionario de términos técnicos</li>
+            </ul>
+        </section>
     </main>
 
     <!-- ── PRINT CONTAINER ── -->
