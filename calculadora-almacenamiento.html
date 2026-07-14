@@ -219,47 +219,7 @@
             font-weight: 800;
         }
 
-        /* Action Buttons */
-        .secondary-actions {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-        }
 
-        .btn-sec {
-            background: white;
-            border: 1.5px solid #cbd5e1;
-            padding: 12px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            color: var(--brand);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: var(--transition);
-        }
-
-        .btn-sec:hover {
-            background: #f8fafc;
-            border-color: var(--brand);
-            transform: translateY(-2px);
-        }
-
-        .btn-sec.print:hover {
-            color: white;
-            background: var(--brand);
-            border-color: var(--brand);
-        }
-
-        .btn-sec.whatsapp:hover {
-            color: white;
-            background: #25d366;
-            border-color: #25d366;
-        }
 
         /* Warnings */
         .input-warning {
@@ -335,50 +295,7 @@
             color: var(--accent);
         }
 
-        /* Print container styles */
-        #print-container {
-            display: none;
-        }
 
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            #print-container, #print-container * {
-                visibility: visible;
-            }
-
-            #print-container {
-                display: block;
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 30px;
-                background: white;
-                color: black;
-            }
-
-            .print-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin: 25px 0;
-            }
-
-            .print-table th {
-                background: #f1f5f9;
-                color: black;
-                text-align: left;
-                padding: 10px;
-                border-bottom: 2px solid black;
-            }
-
-            .print-table td {
-                padding: 10px;
-                border-bottom: 1px solid #ddd;
-            }
-        }
     </style>
 </head>
 
@@ -485,13 +402,7 @@
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <label for="criterio-tiempo">Criterio de Tiempo</label>
-                        <select id="criterio-tiempo" onchange="saveAndCalculate()">
-                            <option value="proporcional" selected>Proporcional Diario (días transcurridos / 30)</option>
-                            <option value="mes_comercial">Mes Comercial Completo (30 días, redondea arriba)</option>
-                        </select>
-                    </div>
+
                 </div>
 
                 <!-- RESULTADOS -->
@@ -500,31 +411,10 @@
                         <div class="res-label">Tiempo Transcurrido</div>
                         <div class="res-value" id="res-tiempo">-</div>
                     </div>
-                    <div class="res-item">
-                        <div class="res-label">Importe Original de Compra</div>
-                        <div class="res-value" id="res-importe-neto">$ 0,00</div>
-                    </div>
-                    <div class="res-item">
-                        <div class="res-label">Recargo por Almacenamiento</div>
-                        <div class="res-value" id="res-recargo-total">$ 0,00</div>
-                    </div>
                     <div class="res-item" style="border-top: 2px solid #cbd5e1; margin-top: 8px; padding-top: 12px;">
-                        <div class="res-label" style="font-weight: 700;">Total General a Cobrar</div>
-                        <div class="res-value accent" id="res-final-total">$ 0,00</div>
+                        <div class="res-label" style="font-weight: 700;">Recargo por Almacenamiento</div>
+                        <div class="res-value accent" id="res-recargo-total">$ 0,00</div>
                     </div>
-                </div>
-
-                <!-- BOTONES DE ACCIÓN -->
-                <div class="secondary-actions">
-                    <button class="btn-sec" onclick="reiniciar()" title="Limpiar datos">
-                        <i class="fa-solid fa-rotate-left"></i> Reiniciar
-                    </button>
-                    <button class="btn-sec whatsapp" onclick="compartirWhatsApp()" title="Compartir WhatsApp">
-                        <i class="fa-brands fa-whatsapp"></i> Compartir
-                    </button>
-                    <button class="btn-sec print" onclick="imprimirPDF()" title="Imprimir PDF">
-                        <i class="fa-solid fa-print"></i> PDF
-                    </button>
                 </div>
             </div>
 
@@ -539,75 +429,14 @@
                         Toda compra de materiales cuenta con un plazo de acopio bonificado. Pasado este plazo, se aplicará un recargo del <span class="highlight">5% mensual</span> sobre el importe de la compra en concepto de almacenamiento logístico.
                     </p>
                     <ul class="legend-list">
-                        <li><strong>Mes Comercial:</strong> Cada fracción de 30 días se cuenta como un mes entero (ej. 35 días transcurridos equivalen a 2 meses de recargo).</li>
-                        <li><strong>Proporcional Diario:</strong> El recargo se calcula por el total exacto de días transcurridos sobre la base de un mes de 30 días.</li>
+                        <li><strong>Criterio de redondeo:</strong> Si el excedente de días supera los 15 días, se redondea al mes entero siguiente (ej. 16 días transcurridos equivalen a 1 mes de recargo). Si es de 15 días o menos, el excedente no se cobra (ej. 15 días equivalen a 0 meses de recargo, y 45 días equivalen a 1 mes de recargo).</li>
                     </ul>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- MEMBRETE DE IMPRESIÓN (OCULTO) -->
-    <div id="print-container">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #272e68; padding-bottom: 15px;">
-            <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Logo Rosso" style="width: 150px;">
-            <div style="text-align: right;">
-                <h1 style="color: #272e68; margin: 0; font-size: 1.3rem;">Liquidación de Almacenamiento</h1>
-                <p id="print-fecha-emision" style="font-size: 0.8rem; color: #666; margin-top: 5px;"></p>
-            </div>
-        </div>
 
-        <table class="print-table">
-            <thead>
-                <tr>
-                    <th>Concepto</th>
-                    <th style="text-align: right;">Detalle / Valor</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Cliente / Detalle:</strong></td>
-                    <td id="print-cliente" style="text-align: right;">-</td>
-                </tr>
-                <tr>
-                    <td><strong>Fecha de Ingreso:</strong></td>
-                    <td id="print-ingreso" style="text-align: right;">-</td>
-                </tr>
-                <tr>
-                    <td><strong>Fecha de Retiro / Liquidación:</strong></td>
-                    <td id="print-retiro" style="text-align: right;">-</td>
-                </tr>
-                <tr>
-                    <td><strong>Tiempo Transcurrido:</strong></td>
-                    <td id="print-tiempo" style="text-align: right;">-</td>
-                </tr>
-                <tr>
-                    <td><strong>Criterio de Cálculo:</strong></td>
-                    <td id="print-criterio" style="text-align: right;">-</td>
-                </tr>
-                <tr>
-                    <td><strong>Tasa Mensual Aplicada:</strong></td>
-                    <td id="print-tasa" style="text-align: right;">5%</td>
-                </tr>
-                <tr>
-                    <td><strong>Importe Neto Compra:</strong></td>
-                    <td id="print-monto-compra" style="text-align: right; font-weight: 600;">$ 0,00</td>
-                </tr>
-                <tr style="background-color: #fff7f5;">
-                    <td><strong style="color: #ec6434;">Recargo por Almacén:</strong></td>
-                    <td id="print-monto-recargo" style="text-align: right; font-weight: 700; color: #ec6434;">$ 0,00</td>
-                </tr>
-                <tr style="background-color: #f1f5f9; border-top: 2px solid #272e68;">
-                    <td><strong>TOTAL GENERAL A LIQUIDAR:</strong></td>
-                    <td id="print-monto-total" style="text-align: right; font-weight: 800; font-size: 1.1rem; color: #272e68;">$ 0,00</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 15px; font-size: 0.8rem; color: #666; text-align: center;">
-            <p>Documento informativo emitido por Rosso Materiales para la liquidación de servicios logísticos de acopio.</p>
-        </div>
-    </div>
 
     <footer class="main-footer">
         <div class="container" style="text-align: center; padding: 20px;">
@@ -622,7 +451,6 @@
         const inputTasa = document.getElementById('tasa-recargo');
         const inputIngreso = document.getElementById('fecha-ingreso');
         const inputRetiro = document.getElementById('fecha-retiro');
-        const selectCriterio = document.getElementById('criterio-tiempo');
 
         // Inicializar fechas al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
@@ -640,7 +468,6 @@
                     inputTasa.value = state.tasa !== undefined ? state.tasa : 5;
                     inputIngreso.value = state.ingreso || hoy;
                     inputRetiro.value = state.retiro || hoy;
-                    selectCriterio.value = state.criterio || 'proporcional';
                 } catch (e) {
                     console.error("Error al cargar localStorage", e);
                 }
@@ -686,8 +513,7 @@
                 importe: inputImporte.value,
                 tasa: inputTasa.value,
                 ingreso: inputIngreso.value,
-                retiro: inputRetiro.value,
-                criterio: selectCriterio.value
+                retiro: inputRetiro.value
             };
             localStorage.setItem('rosso_storage_simple_state', JSON.stringify(state));
         }
@@ -698,21 +524,16 @@
             const tasa = parseFloat(inputTasa.value) / 100 || 0.05;
             const ingresoStr = inputIngreso.value;
             const retiroStr = inputRetiro.value;
-            const criterio = selectCriterio.value;
 
             const resTiempo = document.getElementById('res-tiempo');
-            const resImporte = document.getElementById('res-importe-neto');
             const resRecargo = document.getElementById('res-recargo-total');
-            const resTotal = document.getElementById('res-final-total');
 
             const formatARS = (val) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(val);
 
             // Validar que tengamos las fechas bien y el importe
             if (!ingresoStr || !retiroStr || new Date(retiroStr) < new Date(ingresoStr)) {
                 resTiempo.innerText = '-';
-                resImporte.innerText = formatARS(importe);
                 resRecargo.innerText = formatARS(0);
-                resTotal.innerText = formatARS(importe);
                 return;
             }
 
@@ -723,121 +544,19 @@
             const diffTime = Math.abs(retiro - ingreso);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-            let mesesFacturables = 0;
-            let tiempoText = "";
+            // Si el resto de días supera los 15 días, redondea hacia arriba; si es igual o menor a 15, hacia abajo
+            const mesesCompletos = Math.floor(diffDays / 30);
+            const diasExcedentes = diffDays % 30;
+            const mesesFacturables = diasExcedentes > 15 ? mesesCompletos + 1 : mesesCompletos;
 
-            if (criterio === 'mes_comercial') {
-                if (diffDays === 0) {
-                    mesesFacturables = 0;
-                } else {
-                    mesesFacturables = Math.ceil(diffDays / 30);
-                }
-                tiempoText = `${diffDays} días (${mesesFacturables} ${mesesFacturables === 1 ? 'mes' : 'meses'})`;
-            } else {
-                mesesFacturables = diffDays / 30;
-                tiempoText = `${diffDays} días (${mesesFacturables.toFixed(2)} meses)`;
-            }
+            const tiempoText = `${diffDays} días (${mesesFacturables} ${mesesFacturables === 1 ? 'mes' : 'meses'})`;
 
-            // Calcular recargo y total
+            // Calcular recargo
             const recargoTotal = importe * tasa * mesesFacturables;
-            const totalLiquidacion = importe + recargoTotal;
 
             // Rellenar en pantalla
             resTiempo.innerText = tiempoText;
-            resImporte.innerText = formatARS(importe);
             resRecargo.innerText = formatARS(recargoTotal);
-            resTotal.innerText = formatARS(totalLiquidacion);
-        }
-
-        // Reiniciar formulario
-        function reiniciar() {
-            if (confirm('¿Deseás reiniciar los campos de la calculadora?')) {
-                localStorage.removeItem('rosso_storage_simple_state');
-                inputCliente.value = '';
-                inputImporte.value = '';
-                inputTasa.value = '5';
-                
-                const hoy = new Date().toISOString().split('T')[0];
-                inputIngreso.value = hoy;
-                inputRetiro.value = hoy;
-                selectCriterio.value = 'proporcional';
-
-                validateDates();
-                calculate();
-            }
-        }
-
-        // Formatear fechas para los reportes (dd/mm/aaaa)
-        function formatDate(dateStr) {
-            if (!dateStr) return '-';
-            const [y, m, d] = dateStr.split('-');
-            return `${d}/${m}/${y}`;
-        }
-
-        // Compartir WhatsApp
-        function compartirWhatsApp() {
-            const importe = parseFloat(inputImporte.value) || 0;
-            if (importe === 0) {
-                return alert('Por favor, ingresá un importe de compra válido.');
-            }
-
-            if (!validateDates()) {
-                return alert('Corregí las fechas antes de compartir.');
-            }
-
-            const cliente = inputCliente.value || 'Cliente General';
-            const ingreso = formatDate(inputIngreso.value);
-            const retiro = formatDate(inputRetiro.value);
-            const tiempo = document.getElementById('res-tiempo').innerText;
-            const recargo = document.getElementById('res-recargo-total').innerText;
-            const total = document.getElementById('res-final-total').innerText;
-            const tasa = inputTasa.value;
-            const criterio = selectCriterio.options[selectCriterio.selectedIndex].text;
-
-            let texto = `*LIQUIDACIÓN DE ALMACENAMIENTO* 📦\n`;
-            texto += `_Rosso Materiales_\n`;
-            texto += `-------------------------------------------\n`;
-            texto += `*Cliente:* ${cliente}\n`;
-            texto += `*Ingreso:* ${ingreso}\n`;
-            texto += `*Retiro:* ${retiro}\n`;
-            texto += `*Tiempo Transcurrido:* ${tiempo}\n`;
-            texto += `*Criterio:* ${criterio}\n`;
-            texto += `*Tasa Recargo:* ${tasa}% mensual\n`;
-            texto += `-------------------------------------------\n`;
-            texto += `*Neto Compra:* $ ${importe.toLocaleString('es-AR', {minimumFractionDigits:2, maximumFractionDigits:2})}\n`;
-            texto += `*Recargo por Almacén:* ${recargo}\n`;
-            texto += `*TOTAL A PAGAR:* ${total}\n`;
-            texto += `-------------------------------------------\n`;
-            texto += `_Recuerde retirar sus materiales a la brevedad. ¡Muchas gracias!_`;
-
-            window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
-        }
-
-        // Imprimir PDF
-        function imprimirPDF() {
-            const importe = parseFloat(inputImporte.value) || 0;
-            if (importe === 0) {
-                return alert('Por favor, ingresá un importe de compra válido.');
-            }
-
-            if (!validateDates()) {
-                return alert('Corregí las fechas antes de imprimir.');
-            }
-
-            // Rellenar datos en el contenedor de impresión
-            document.getElementById('print-fecha-emision').innerText = `Emisión: ${new Date().toLocaleString('es-AR')}`;
-            document.getElementById('print-cliente').innerText = inputCliente.value || 'Cliente General';
-            document.getElementById('print-ingreso').innerText = formatDate(inputIngreso.value);
-            document.getElementById('print-retiro').innerText = formatDate(inputRetiro.value);
-            document.getElementById('print-tiempo').innerText = document.getElementById('res-tiempo').innerText;
-            document.getElementById('print-criterio').innerText = selectCriterio.options[selectCriterio.selectedIndex].text;
-            document.getElementById('print-tasa').innerText = `${inputTasa.value}% mensual`;
-            
-            document.getElementById('print-monto-compra').innerText = document.getElementById('res-importe-neto').innerText;
-            document.getElementById('print-monto-recargo').innerText = document.getElementById('res-recargo-total').innerText;
-            document.getElementById('print-monto-total').innerText = document.getElementById('res-final-total').innerText;
-
-            window.print();
         }
     </script>
 </body>
