@@ -1437,29 +1437,51 @@ PREMIO: 1 kit disco enlozado.</textarea>
 
 
         // --- DASHBOARD LOGIC (Active Users) ---
+        // Debe coincidir con ONLINE_WINDOW_MS del panel corporativo, que es quien
+        // manda los latidos de sesión (uno cada 3 minutos).
+        const ONLINE_WINDOW_MS = 8 * 60 * 1000;
+
         function initDashboard() {
             const activeUsersCountEl = document.getElementById('active-users-count');
             const activeUsersListEl = document.getElementById('active-users-list');
-            const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
+            let sessions = [];
 
-            db.collection('active_sessions')
-                .where('last_seen', '>', twoMinutesAgo)
-                .onSnapshot(snapshot => {
-                    const activeCount = snapshot.size;
-                    const activeUsers = [];
-                    snapshot.forEach(doc => activeUsers.push(doc.data().userName));
+            function render() {
+                const cutoff = Date.now() - ONLINE_WINDOW_MS;
+                const activeUsers = sessions
+                    .filter(s => s.lastSeen >= cutoff)
+                    .map(s => s.userName);
 
-                    if (activeUsersListEl) {
-                        if (activeUsers.length > 0) {
-                            activeUsersListEl.innerHTML = activeUsers.map(name =>
-                                `<span class="user-tag"><i class="fa-solid fa-circle fa-2xs" style="color: #22c55e;"></i>${name}</span>`
-                            ).join('');
-                        } else {
-                            activeUsersListEl.innerHTML = `<p style="color: #6b7280;">No hay usuarios activos.</p>`;
-                        }
+                if (activeUsersListEl) {
+                    if (activeUsers.length > 0) {
+                        activeUsersListEl.innerHTML = activeUsers.map(name =>
+                            `<span class="user-tag"><i class="fa-solid fa-circle fa-2xs" style="color: #22c55e;"></i>${name}</span>`
+                        ).join('');
+                    } else {
+                        activeUsersListEl.innerHTML = `<p style="color: #6b7280;">No hay usuarios activos.</p>`;
                     }
-                    if (activeUsersCountEl) activeUsersCountEl.textContent = activeCount;
+                }
+                if (activeUsersCountEl) activeUsersCountEl.textContent = activeUsers.length;
+            }
+
+            // El filtro contra epoch matchea solo los documentos que tienen last_seen,
+            // o sea las sesiones vivas. La ventana se aplica en render() para que
+            // acompañe al reloj en vez de quedar congelada al cargar la página.
+            db.collection('active_sessions')
+                .where('last_seen', '>', new Date(0))
+                .onSnapshot(snapshot => {
+                    sessions = snapshot.docs.map(doc => {
+                        const data = doc.data();
+                        return {
+                            userName: data.userName,
+                            lastSeen: data.last_seen ? data.last_seen.toMillis() : 0
+                        };
+                    });
+                    render();
                 });
+
+            // Recalcula la ventana sin volver a leer de Firestore.
+            setInterval(render, 30000);
         }
 
         // --- CONNECTED TODAY LOGIC ---
@@ -1482,15 +1504,15 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 document.getElementById('connection-mode-badge').textContent = "Cargando...";
                 document.getElementById('connection-mode-badge').style.color = "#666";
 
-                // Buscar todos los documentos de historial (isHistory=true)
-                const historySnapshot = await db.collection('active_sessions')
-                    .where('isHistory', '==', true)
+                // El historial vive en session_logs y se filtra por fecha en el
+                // servidor: traer la colección entera para mostrar un solo día
+                // costaba una lectura por cada conexión registrada desde siempre.
+                const historySnapshot = await db.collection('session_logs')
+                    .where('connectionTime', '>=', startOfDay)
                     .get();
 
-                console.log("📊 Documentos de historial encontrados:", historySnapshot.size);
-
                 if (historySnapshot.empty) {
-                    console.log("No logs found in session_logs, trying fallback to active_sessions...");
+                    console.log("Sin registros en session_logs, probando fallback a active_sessions...");
                     document.getElementById('connection-mode-badge').textContent = "Modo: Tiempo Real (Fallback)";
                     document.getElementById('connection-mode-badge').style.color = "#d9534f"; // Red for fallback
 

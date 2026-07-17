@@ -2901,8 +2901,7 @@
           logUserConnection(); // HISTORIAL: Registra la conexión en logs permanentes
           listenToActiveUsers(); // Empieza a contar
 
-          // Mantiene la sesión activa actualizando el timestamp cada 30 segundos
-          setInterval(updateUserSession, 30000);
+          setInterval(updateUserSession, HEARTBEAT_MS);
         } else {
           document.getElementById("login-overlay").style.display = "flex";
           document.getElementById("panel-wrapper").style.display = "none";
@@ -3009,6 +3008,17 @@
       // === LÓGICA DEL CONTADOR DE USUARIOS ACTIVOS =====================
       // =================================================================
 
+      // Cada latido se replica a todos los paneles abiertos, así que el costo en
+      // lecturas de Firestore crece al cuadrado de la gente conectada. Con 3 min
+      // de latido, la ventana de 8 min tolera perder 2 latidos seguidos.
+      const HEARTBEAT_MS = 3 * 60 * 1000;
+      const ONLINE_WINDOW_MS = 8 * 60 * 1000;
+
+      // Cuánto se guarda cada conexión antes de que la TTL policy la borre.
+      // El plazo lo fija este valor, no la policy: cambiarlo acá solo afecta a
+      // los logs nuevos, los ya escritos conservan su fecha original.
+      const LOG_RETENTION_DAYS = 40;
+
       // Función para registrar o actualizar la sesión del usuario
       async function updateUserSession() {
         const loggedInUserName = localStorage.getItem("vendedorLogueado");
@@ -3043,12 +3053,12 @@
       // Función para registrar histórico de conexiones (Logs)
       async function logUserConnection() {
         const loggedInUserName = localStorage.getItem("vendedorLogueado");
-        console.log("🔵 logUserConnection llamada. Usuario:", loggedInUserName);
+        if (!loggedInUserName) return;
 
-        if (!loggedInUserName) {
-          console.warn("⚠️ No hay usuario logueado, no se registra conexión");
-          return;
-        }
+        // Un refresco de página no es una conexión nueva: registramos como mucho
+        // una por hora y por pestaña para que el historial no crezca de más.
+        const lastLogged = Number(sessionStorage.getItem('lastConnectionLog') || 0);
+        if (Date.now() - lastLogged < 60 * 60 * 1000) return;
 
         try {
           // Crear ID único: usuario_timestamp
@@ -3061,16 +3071,15 @@
             sessionId: sessionId,
             connectionTime: firebase.firestore.FieldValue.serverTimestamp(),
             timestamp: timestamp,
-            isHistory: true
+            isHistory: true,
+            // La TTL policy de Firestore borra el doc solo al llegar a esta fecha.
+            expiresAt: new Date(timestamp + LOG_RETENTION_DAYS * 24 * 60 * 60 * 1000)
           };
 
-          console.log("🔵 Guardando conexión con ID:", logId);
-
-          await db.collection('active_sessions').doc(logId).set(logData);
-          console.log("✅ Conexión registrada");
+          await db.collection('session_logs').doc(logId).set(logData);
+          sessionStorage.setItem('lastConnectionLog', String(timestamp));
         } catch (error) {
-          console.error("❌ Error al registrar historial:", error);
-          console.error("Detalles:", error.code, error.message);
+          console.error("Error al registrar historial:", error);
         }
       }
 
@@ -3078,34 +3087,50 @@
       function listenToActiveUsers() {
         const activeUsersCountEl = document.getElementById('active-users-count');
         const activeUsersListEl = document.getElementById('active-users-list');
-        const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000);
+        let sessions = [];
 
+        function render() {
+          const cutoff = Date.now() - ONLINE_WINDOW_MS;
+          const activeUsers = sessions
+            .filter(s => s.lastSeen >= cutoff)
+            .map(s => s.userName);
+
+          if (activeUsersListEl) {
+            if (activeUsers.length > 0) {
+              activeUsersListEl.innerHTML = activeUsers.map(name => `<span class="user-tag"><i class="fa-solid fa-circle fa-2xs" style="color: #22c55e;"></i>${name}</span>`).join('');
+            } else {
+              activeUsersListEl.innerHTML = `<p class="text-sm text-gray-500">Nadie conectado en este momento.</p>`;
+            }
+          }
+
+          if (activeUsersCountEl) {
+            activeUsersCountEl.textContent = activeUsers.length;
+          }
+        }
+
+        // El filtro contra epoch matchea solo los documentos que tienen last_seen,
+        // o sea las sesiones vivas. La ventana se aplica en render() para que
+        // acompañe al reloj en vez de quedar congelada al cargar la página.
         db.collection('active_sessions')
-          .where('last_seen', '>', twoMinutesAgo) // Solo contamos usuarios vistos en los últimos 2 minutos
+          .where('last_seen', '>', new Date(0))
           .onSnapshot(snapshot => {
-            const activeCount = snapshot.size;
-            const activeUsers = [];
-            snapshot.forEach(doc => {
-              activeUsers.push(doc.data().userName);
+            sessions = snapshot.docs.map(doc => {
+              const data = doc.data();
+              return {
+                userName: data.userName,
+                lastSeen: data.last_seen ? data.last_seen.toMillis() : 0
+              };
             });
-
-            if (activeUsersListEl) {
-              if (activeUsers.length > 0) {
-                activeUsersListEl.innerHTML = activeUsers.map(name => `<span class="user-tag"><i class="fa-solid fa-circle fa-2xs" style="color: #22c55e;"></i>${name}</span>`).join('');
-              } else {
-                activeUsersListEl.innerHTML = `<p class="text-sm text-gray-500">Nadie conectado en este momento.</p>`;
-              }
-            }
-
-            if (activeUsersCountEl) {
-              activeUsersCountEl.textContent = activeCount;
-            }
+            render();
           }, error => {
             console.error("Error al escuchar usuarios activos:", error);
             if (activeUsersCountEl) {
               activeUsersCountEl.textContent = 'Error';
             }
           });
+
+        // Recalcula la ventana sin volver a leer de Firestore.
+        setInterval(render, 30000);
       }
 
       // Se activa cuando el usuario cierra la pestaña o el navegador
