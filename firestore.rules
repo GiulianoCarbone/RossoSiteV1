@@ -50,6 +50,8 @@ service cloud.firestore {
     match /active_sessions/{doc} { allow read, write: if true; }
     // Historial de conexiones. Lo purga la TTL policy sobre expiresAt (40 días).
     match /session_logs/{doc}    { allow read, write: if true; }
+    // Contadores diarios de uso por vendedor (TTL propia sobre expiresAt, 400 días).
+    match /usage_daily/{doc}     { allow read, write: if true; }
 
     // ── Todo lo no contemplado: DENEGADO por defecto ───────────────
     match /{document=**} { allow read, write: if false; }

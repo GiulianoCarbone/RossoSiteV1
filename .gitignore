@@ -1,0 +1,17 @@
+# === Datos sensibles / PII — NUNCA subir al repo (es público y se publica en Ferozo) ===
+# Nóminas de empleados con DNIs (RRHH). Se leen localmente y no deben versionarse.
+*.xlsx
+*.xls
+nomina*.csv
+nomina*.json
+padron*.csv
+
+# Credenciales / claves de servicio de Firebase (por si alguna vez se bajan localmente)
+serviceAccount*.json
+*firebase-adminsdk*.json
+.env
+.env.*
+
+# Basura del sistema / editor
+Thumbs.db
+.DS_Store

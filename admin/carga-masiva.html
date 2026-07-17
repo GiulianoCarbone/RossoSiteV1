@@ -72,7 +72,7 @@
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
                         <div class="relative w-full md:w-1/2">
                             <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            <input type="text" id="search-vendedores" placeholder="Buscar por nombre o DNI..."
+                            <input type="text" id="search-vendedores" placeholder="Buscar por nombre, DNI, sucursal o puesto..."
                                 class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500">
                         </div>
                         <div class="flex items-center gap-4">
@@ -83,6 +83,15 @@
                                 title="Exportar lista a CSV">
                                 <i class="fa-solid fa-file-csv"></i> Exportar</button>
                         </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 mb-3">
+                        <select id="filter-sucursal"
+                            class="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-700 bg-white focus:ring-2 focus:ring-orange-500 cursor-pointer">
+                            <option value="">Todas las sucursales</option>
+                        </select>
+                    </div>
+                    <div id="filter-area-chips" class="flex flex-wrap items-center gap-2 mb-2">
+                        <span class="text-xs font-semibold text-gray-500 mr-1">Áreas:</span>
                     </div>
                     <div id="vendedores-list" class="space-y-3 mt-6 max-h-[50vh] overflow-y-auto pr-2">
                         <p class="text-center text-gray-500">Cargando vendedores...</p>
@@ -131,13 +140,38 @@
             </div>
         </div>
 
-
+        <!-- SECCIÓN DE SINCRONIZACIÓN SUCURSAL / PUESTO -->
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <div class="flex flex-col items-center">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Sincronizar Sucursal y Puesto</h2>
+                <p class="text-gray-600 text-center mb-6 max-w-2xl">
+                    Subí la nómina en <b>Excel (.xlsx)</b> o <b>.csv</b> — con columnas de
+                    <b>DNI, sucursal y puesto</b> (los encabezados se detectan solos).
+                    Actualiza cada persona <b>buscándola por DNI</b>: le agrega o corrige su sucursal
+                    y puesto. <b>No crea ni borra</b> a nadie. Los DNIs que no existan en el padrón se
+                    listan al final para que los cargues a mano si corresponde.
+                </p>
+            </div>
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+                <input type="file" id="sync-file" accept=".xlsx,.xls,.csv"
+                    class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100 cursor-pointer">
+                <button id="sync-button"
+                    class="w-full sm:w-auto whitespace-nowrap bg-indigo-600 text-white font-bold py-2 px-6 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate"></i> Sincronizar
+                </button>
+            </div>
+            <div id="sync-status" class="mt-6 text-sm text-gray-700 bg-gray-50 rounded-md p-4 max-h-64 overflow-y-auto">
+                <p>Elegí un archivo .xlsx o .csv para empezar…</p>
+            </div>
+        </div>
 
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <!-- SheetJS: leer nóminas en Excel (.xlsx) directamente en el navegador -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDlnliCkBlHVHI6rFnKgijIfUwy1-umO68",
@@ -157,6 +191,8 @@
         const statusDiv = document.getElementById('status');
         const uploadButton = document.getElementById('upload-button');
         const searchInput = document.getElementById('search-vendedores');
+        const filterSucursal = document.getElementById('filter-sucursal');
+        const areaChips = document.getElementById('filter-area-chips');
         const countSpan = document.getElementById('vendedor-count');
         const addVendedorForm = document.getElementById('add-vendedor-form');
         const addVendedorBtn = document.getElementById('add-vendedor-btn');
@@ -164,6 +200,22 @@
         const exportCsvBtn = document.getElementById('export-csv-btn');
 
         let allVendedores = []; // Cache para los vendedores
+
+        // Clasifica un puesto en un "área" (bloque) para agrupar y decidir a quién se trackea.
+        // Mismo criterio que usa el Seguimiento en el panel admin.
+        function areaDePuesto(puesto) {
+            const u = (puesto || '').toUpperCase();
+            if (u.startsWith('(OBRA)')) return 'OBRA';
+            if (u.includes('DEPOSITO') || u.includes('DEPÓSITO')) return 'DEPOSITO';
+            if (u.includes('VENDEDOR') || u.includes('VENTAS')) return 'VENTAS';
+            if (u === 'CAJERO' || u === 'CAJERA' || u === 'CEJERO') return 'CAJA';
+            if (u.includes('ENCARGADO')) return 'ENCARGADOS';
+            if (['CHOFER', 'MIXER', 'MAQUINISTA', 'BOMBISTA', 'MECANICO', 'SIDERURGIA'].includes(u)) return 'LOGISTICA';
+            if (['MAESTRANZA', 'PORTERIA', 'SERENO', 'AYUDANTE'].includes(u)) return 'SERVICIOS';
+            if (u.includes('GERENTE') || u.includes('DIRECTOR') || u.includes('JEFE DE MARKETING')
+                || u.includes('INFRAESTRU') || u.includes('GERENTENTE')) return 'GERENCIA';
+            return 'ADMIN';
+        }
 
         // --- FUNCIÓN PARA MOSTRAR VENDEDORES ---
         const fetchAndDisplayVendedores = async () => {
@@ -175,7 +227,8 @@
                 }
 
                 allVendedores = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderVendedores(allVendedores);
+                populateFilters();
+                applyFilters();
 
             } catch (error) {
                 vendedoresListDiv.innerHTML = '<p class="text-center text-red-500">Error al cargar los vendedores.</p>';
@@ -204,6 +257,9 @@
                             <div>
                                 <p class="font-semibold text-gray-800">${vendedor.nombre}</p>
                                 <p class="text-sm text-gray-500">DNI: ${vendedor.dni}</p>
+                                ${(vendedor.sucursal || vendedor.puesto)
+                        ? `<p class="text-xs text-gray-400 mt-0.5"><i class="fa-solid fa-location-dot"></i> ${vendedor.sucursal || '—'} · ${vendedor.puesto || '—'}</p>`
+                        : `<p class="text-xs text-amber-500 mt-0.5"><i class="fa-solid fa-triangle-exclamation"></i> sin sucursal/puesto</p>`}
                             </div>
                             <div class="flex items-center gap-2">
                                 <button class="edit-btn text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-100" title="Editar">
@@ -218,6 +274,10 @@
                         <div class="edit-mode hidden space-y-2 mt-2">
                             <input type="text" value="${vendedor.nombre}" class="edit-nombre w-full p-2 border border-gray-300 rounded-md" placeholder="Nombre completo">
                             <input type="text" value="${vendedor.dni}" class="edit-dni w-full p-2 border border-gray-300 rounded-md" placeholder="DNI">
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" value="${vendedor.sucursal || ''}" class="edit-sucursal w-full p-2 border border-gray-300 rounded-md" placeholder="Sucursal (ej: SUC 13)">
+                                <input type="text" value="${vendedor.puesto || ''}" class="edit-puesto w-full p-2 border border-gray-300 rounded-md" placeholder="Puesto (ej: VENDEDOR)">
+                            </div>
                             <div class="flex justify-end gap-2 mt-2">
                                 <button class="cancel-btn bg-gray-200 text-gray-700 font-semibold py-1 px-3 rounded-md hover:bg-gray-300">Cancelar</button>
                                 <button class="save-btn bg-green-500 text-white font-semibold py-1 px-3 rounded-md hover:bg-green-600">Guardar</button>
@@ -228,14 +288,89 @@
             });
         }
 
-        // --- EVENTO PARA EL BUSCADOR ---
-        searchInput.addEventListener('input', () => {
+        // --- BUSCADOR + FILTROS (texto + sucursal + áreas múltiples) ---
+        const activeAreas = new Set(); // áreas seleccionadas (vacío = todas)
+
+        // Área de un vendedor: usa el campo guardado o lo deriva del puesto.
+        function getArea(v) {
+            return v.area || (v.puesto ? areaDePuesto(v.puesto) : '');
+        }
+
+        function chipClass(active) {
+            return 'area-chip px-3 py-1 rounded-full text-xs font-semibold border transition-colors cursor-pointer ' +
+                (active
+                    ? 'bg-orange-500 text-white border-orange-500'
+                    : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200');
+        }
+
+        // Rellena el dropdown de sucursal y los chips de área presentes en el padrón.
+        function populateFilters() {
+            const sucs = [...new Set(allVendedores.map(v => v.sucursal).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+            const areas = [...new Set(allVendedores.map(getArea).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+
+            const prevS = filterSucursal.value;
+            filterSucursal.innerHTML = '<option value="">Todas las sucursales</option>' +
+                sucs.map(s => `<option value="${s}">${s}</option>`).join('');
+            filterSucursal.value = prevS;
+
+            // Descartar del set las áreas que ya no existan en el padrón.
+            [...activeAreas].forEach(a => { if (!areas.includes(a)) activeAreas.delete(a); });
+
+            areaChips.innerHTML = '<span class="text-xs font-semibold text-gray-500 mr-1">Áreas:</span>';
+            areas.forEach(a => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.dataset.area = a;
+                btn.textContent = a;
+                btn.className = chipClass(activeAreas.has(a));
+                btn.addEventListener('click', () => {
+                    if (activeAreas.has(a)) activeAreas.delete(a); else activeAreas.add(a);
+                    btn.className = chipClass(activeAreas.has(a));
+                    updateClearChip();
+                    applyFilters();
+                });
+                areaChips.appendChild(btn);
+            });
+
+            const clear = document.createElement('button');
+            clear.type = 'button';
+            clear.id = 'area-clear';
+            clear.textContent = '✕ limpiar';
+            clear.className = 'text-xs text-gray-400 hover:text-gray-600 underline ml-1';
+            clear.addEventListener('click', () => {
+                activeAreas.clear();
+                populateFilters();
+                applyFilters();
+            });
+            areaChips.appendChild(clear);
+            updateClearChip();
+        }
+
+        // Muestra el "limpiar" solo cuando hay áreas seleccionadas.
+        function updateClearChip() {
+            const clear = document.getElementById('area-clear');
+            if (clear) clear.style.display = activeAreas.size ? '' : 'none';
+        }
+
+        // Aplica el texto de búsqueda combinado con sucursal y las áreas seleccionadas.
+        function applyFilters() {
             const query = searchInput.value.toLowerCase();
-            const filtered = allVendedores.filter(v =>
-                v.nombre.toLowerCase().includes(query) || v.dni.includes(query)
-            );
+            const fSuc = filterSucursal.value;
+            const filtered = allVendedores.filter(v => {
+                const matchText = !query ||
+                    v.nombre.toLowerCase().includes(query) ||
+                    v.dni.includes(query) ||
+                    (v.sucursal || '').toLowerCase().includes(query) ||
+                    (v.puesto || '').toLowerCase().includes(query);
+                const matchSuc = !fSuc || v.sucursal === fSuc;
+                const matchArea = activeAreas.size === 0 || activeAreas.has(getArea(v));
+                return matchText && matchSuc && matchArea;
+            });
             renderVendedores(filtered);
-        });
+        }
+
+        searchInput.addEventListener('input', applyFilters);
+        filterSucursal.addEventListener('change', applyFilters);
 
         // --- LÓGICA PARA AÑADIR VENDEDOR INDIVIDUAL ---
         addVendedorForm.addEventListener('submit', async (e) => {
@@ -288,10 +423,10 @@
 
             // Crear el contenido del CSV
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Nombre,DNI\n"; // Encabezados
+            csvContent += "Nombre,DNI,Sucursal,Puesto\n"; // Encabezados
 
             allVendedores.forEach(vendedor => {
-                const row = `"${vendedor.nombre}","${vendedor.dni}"`;
+                const row = `"${vendedor.nombre}","${vendedor.dni}","${vendedor.sucursal || ''}","${vendedor.puesto || ''}"`;
                 csvContent += row + "\n";
             });
 
@@ -347,6 +482,8 @@
             if (e.target.closest('.save-btn')) {
                 const newNombre = vendedorItem.querySelector('.edit-nombre').value.trim();
                 const newDni = vendedorItem.querySelector('.edit-dni').value.trim();
+                const newSucursal = vendedorItem.querySelector('.edit-sucursal').value.trim();
+                const newPuesto = vendedorItem.querySelector('.edit-puesto').value.trim();
 
                 if (!newNombre || !newDni) {
                     alert('El nombre y el DNI no pueden estar vacíos.');
@@ -360,7 +497,10 @@
                 try {
                     await db.collection('vendedores').doc(docId).update({
                         nombre: newNombre,
-                        dni: newDni
+                        dni: newDni,
+                        sucursal: newSucursal,
+                        puesto: newPuesto,
+                        area: newPuesto ? areaDePuesto(newPuesto) : ''
                     });
                     fetchAndDisplayVendedores(); // Refresh the list
                 } catch (error) {
@@ -434,6 +574,142 @@
 
             fetchAndDisplayVendedores();
             document.getElementById('vendedores-json').value = '';
+        });
+
+        // --- LÓGICA DE SINCRONIZACIÓN SUCURSAL / PUESTO (por DNI) ---
+        const syncFileInput = document.getElementById('sync-file');
+        const syncButton = document.getElementById('sync-button');
+        const syncStatus = document.getElementById('sync-status');
+
+        // Parser CSV mínimo: soporta comillas dobles, "" escapado y BOM.
+        function parseCSV(text) {
+            text = text.replace(/^﻿/, '');
+            const rows = [];
+            let field = '', row = [], inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                const c = text[i];
+                if (inQuotes) {
+                    if (c === '"') {
+                        if (text[i + 1] === '"') { field += '"'; i++; }
+                        else inQuotes = false;
+                    } else field += c;
+                } else {
+                    if (c === '"') inQuotes = true;
+                    else if (c === ',') { row.push(field); field = ''; }
+                    else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+                    else if (c === '\r') { /* ignorar */ }
+                    else field += c;
+                }
+            }
+            if (field.length || row.length) { row.push(field); rows.push(row); }
+            return rows.filter(r => r.some(x => x.trim() !== ''));
+        }
+
+        // Lee un archivo (.xlsx/.xls con SheetJS, o .csv con parseCSV) y devuelve
+        // una lista normalizada [{ dni, nombre, sucursal, puesto }]. Detecta la fila
+        // de encabezados (la que tiene "DNI") y mapea las columnas por su nombre.
+        async function extractRecords(file) {
+            const name = (file.name || '').toLowerCase();
+            let rows; // array de arrays; alguna fila es el encabezado
+            if (name.endsWith('.csv')) {
+                rows = parseCSV(await file.text());
+            } else {
+                if (typeof XLSX === 'undefined') {
+                    throw new Error('No se pudo cargar la librería para leer Excel. Revisá tu conexión e intentá de nuevo.');
+                }
+                const buf = await file.arrayBuffer();
+                const wb = XLSX.read(buf, { type: 'array' });
+                const ws = wb.Sheets[wb.SheetNames[0]];
+                rows = XLSX.utils.sheet_to_json(ws, { header: 1, blankrows: false, defval: '' })
+                    .map(r => r.map(c => (c === null || c === undefined) ? '' : String(c)));
+            }
+            if (!rows || rows.length < 2) return [];
+
+            let hIdx = rows.findIndex(r => r.some(c => String(c).trim().toUpperCase().includes('DNI')));
+            if (hIdx === -1) hIdx = 0;
+            const header = rows[hIdx].map(c => String(c).trim().toUpperCase());
+            const find = (...keys) => header.findIndex(h => keys.some(k => h.includes(k)));
+            const iDni = find('DNI');
+            const iSuc = find('SUCURSAL');
+            const iPue = find('PUESTO');
+            const iNom = find('NOMBRE', 'APELLIDO');
+            if (iDni === -1 || iSuc === -1 || iPue === -1) {
+                throw new Error('El archivo necesita columnas de DNI, SUCURSAL y PUESTO.');
+            }
+
+            const out = [];
+            for (let r = hIdx + 1; r < rows.length; r++) {
+                const row = rows[r];
+                const dni = String(row[iDni] == null ? '' : row[iDni]).trim();
+                if (!dni) continue;
+                out.push({
+                    dni,
+                    nombre: iNom > -1 ? String(row[iNom] == null ? '' : row[iNom]).trim() : '',
+                    sucursal: String(row[iSuc] == null ? '' : row[iSuc]).trim(),
+                    puesto: String(row[iPue] == null ? '' : row[iPue]).trim()
+                });
+            }
+            return out;
+        }
+
+        syncButton.addEventListener('click', async () => {
+            const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+            const file = syncFileInput.files[0];
+            if (!file) {
+                syncStatus.innerHTML = '<p class="text-red-600 font-semibold">Elegí un archivo .csv primero.</p>';
+                return;
+            }
+            syncButton.disabled = true;
+            syncButton.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Sincronizando...';
+            syncStatus.innerHTML = '<p>Leyendo archivo…</p>';
+
+            try {
+                const records = await extractRecords(file);
+                if (!records.length) throw new Error('No se encontraron filas con datos en el archivo.');
+
+                // Traer el padrón una sola vez y mapear por DNI (evita 1 query por fila).
+                syncStatus.innerHTML = '<p>Cargando padrón actual…</p>';
+                const snap = await db.collection('vendedores').get();
+                const byDni = {};
+                snap.forEach(doc => { byDni[String(doc.data().dni).trim()] = doc.id; });
+
+                let updated = 0;
+                const notFound = [];
+                let batch = db.batch();
+                let opsInBatch = 0;
+                const commits = [];
+
+                for (const rec of records) {
+                    const dni = rec.dni;
+                    if (!dni) continue;
+                    const docId = byDni[dni];
+                    if (!docId) { notFound.push(rec.nombre ? `${dni} (${rec.nombre})` : dni); continue; }
+                    batch.update(db.collection('vendedores').doc(docId), {
+                        sucursal: rec.sucursal,
+                        puesto: rec.puesto,
+                        area: rec.puesto ? areaDePuesto(rec.puesto) : ''
+                    });
+                    updated++;
+                    opsInBatch++;
+                    if (opsInBatch === 400) { commits.push(batch.commit()); batch = db.batch(); opsInBatch = 0; }
+                }
+                if (opsInBatch > 0) commits.push(batch.commit());
+                await Promise.all(commits);
+
+                let html = `<p class="text-green-700 font-bold">✓ ${updated} vendedores actualizados con sucursal y puesto.</p>`;
+                if (notFound.length) {
+                    html += `<hr class="my-2"><p class="text-yellow-700 font-semibold">${notFound.length} DNIs del CSV no existen en el padrón (cargalos a mano si corresponde):</p>`;
+                    html += '<p class="text-yellow-600 text-xs break-words">' + notFound.map(esc).join(', ') + '</p>';
+                }
+                syncStatus.innerHTML = html;
+                fetchAndDisplayVendedores();
+            } catch (err) {
+                syncStatus.innerHTML = `<p class="text-red-600 font-semibold">Error: ${err.message}</p>`;
+                console.error('Error en sincronización:', err);
+            } finally {
+                syncButton.disabled = false;
+                syncButton.innerHTML = '<i class="fa-solid fa-rotate"></i> Sincronizar';
+            }
         });
 
         // --- AUTH GATE + CARGA INICIAL ---

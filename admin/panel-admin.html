@@ -479,6 +479,9 @@
                 <a class="nav-item" data-section="vendedores">
                     <i class="fa-solid fa-users-cog"></i> Vendedores
                 </a>
+                <a class="nav-item" data-section="seguimiento">
+                    <i class="fa-solid fa-chart-line"></i> Seguimiento
+                </a>
 
                 <a class="nav-item" data-section="social-config">
                     <i class="fa-solid fa-share-nodes"></i> Redes Sociales
@@ -613,6 +616,187 @@
                         }
                     </style>
                 </div>
+            </section>
+
+            <!-- SEGUIMIENTO SECTION -->
+            <section id="seguimiento" class="content-section">
+                <div class="section-header">
+                    <h1>Seguimiento de Uso</h1>
+                    <button id="seg-export-pdf" style="width:auto; background-color:#4f46e5;">
+                        <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="seg-controls">
+                        <div class="seg-period-toggle">
+                            <button type="button" class="seg-period-btn active" data-period="week">Semana actual</button>
+                            <button type="button" class="seg-period-btn" data-period="month">Mes actual</button>
+                        </div>
+                        <div class="seg-filters">
+                            <select id="seg-filter-sucursal" class="seg-select">
+                                <option value="">Todas las sucursales</option>
+                            </select>
+                            <select id="seg-filter-area" class="seg-select">
+                                <option value="">Todas las áreas</option>
+                            </select>
+                        </div>
+                        <span id="seg-range-label" class="seg-range-label"></span>
+                    </div>
+
+                    <div class="seg-kpi-grid">
+                        <div class="seg-kpi">
+                            <span class="seg-kpi-value" id="seg-kpi-active">–</span>
+                            <span class="seg-kpi-label">Activos</span>
+                        </div>
+                        <div class="seg-kpi">
+                            <span class="seg-kpi-value" id="seg-kpi-inactive">–</span>
+                            <span class="seg-kpi-label">Sin entrar en el período</span>
+                        </div>
+                        <div class="seg-kpi">
+                            <span class="seg-kpi-value" id="seg-kpi-minutes">–</span>
+                            <span class="seg-kpi-label">Minutos totales de uso</span>
+                        </div>
+                        <div class="seg-kpi">
+                            <span class="seg-kpi-value" id="seg-kpi-clicks">–</span>
+                            <span class="seg-kpi-label">Clics en noticias</span>
+                        </div>
+                    </div>
+                    <p id="seg-scope-note" class="seg-hint" style="margin-top:12px;margin-bottom:0;"></p>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-store"></i> Resumen por sucursal</h3>
+                    <p class="seg-hint">Cobertura y uso de cada sucursal en el período (solo puestos trackeados).</p>
+                    <div id="seg-by-sucursal-wrap">
+                        <p class="seg-empty">Cargando…</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-briefcase"></i> Resumen por área</h3>
+                    <p class="seg-hint">Uso agrupado por tipo de puesto.</p>
+                    <div id="seg-by-area-wrap">
+                        <p class="seg-empty">Cargando…</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-ranking-star"></i> Ranking de uso</h3>
+                    <p class="seg-hint">Ordenado por minutos estimados en la app (latido cada 3 min con actividad real).</p>
+                    <div id="seg-ranking-wrap">
+                        <p class="seg-empty">Cargando…</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-user-clock"></i> Vendedores inactivos</h3>
+                    <p class="seg-hint">Del padrón trackeado (<span id="seg-total-vendedores">–</span> personas: ventas, caja, encargados y gerencia), quiénes no registraron actividad en el período.</p>
+                    <div id="seg-inactive-wrap">
+                        <p class="seg-empty">Cargando…</p>
+                    </div>
+                </div>
+
+                <style>
+                    .seg-controls {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        flex-wrap: wrap;
+                        gap: 12px;
+                    }
+                    .seg-period-toggle {
+                        display: inline-flex;
+                        background: #f3f4f6;
+                        border-radius: 10px;
+                        padding: 4px;
+                        gap: 4px;
+                    }
+                    .seg-period-btn {
+                        width: auto;
+                        background: transparent;
+                        color: #4b5563;
+                        padding: 8px 18px;
+                        font-size: 0.9rem;
+                        border-radius: 8px;
+                    }
+                    .seg-period-btn:hover { background: #e5e7eb; }
+                    .seg-period-btn.active {
+                        background: var(--accent);
+                        color: #fff;
+                    }
+                    .seg-range-label { color: #6b7280; font-size: 0.9rem; font-weight: 600; }
+                    .seg-filters { display: inline-flex; gap: 8px; flex-wrap: wrap; }
+                    .seg-select {
+                        border: 1px solid #e5e7eb;
+                        background: #fff;
+                        border-radius: 8px;
+                        padding: 8px 12px;
+                        font-size: 0.9rem;
+                        color: #374151;
+                        cursor: pointer;
+                    }
+                    .seg-select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+                    .seg-cov { display: inline-flex; align-items: center; gap: 8px; }
+                    .seg-cov-track { background: #f3f4f6; border-radius: 6px; height: 8px; width: 90px; overflow: hidden; }
+                    .seg-cov-fill { background: #16a34a; height: 100%; border-radius: 6px; }
+                    .seg-muted { color: #9ca3af; }
+                    .seg-kpi-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                        gap: 14px;
+                        margin-top: 18px;
+                    }
+                    .seg-kpi {
+                        background: #f9fafb;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 12px;
+                        padding: 18px;
+                        text-align: center;
+                    }
+                    .seg-kpi-value {
+                        display: block;
+                        font-size: 2rem;
+                        font-weight: 800;
+                        color: var(--brand);
+                        line-height: 1.1;
+                    }
+                    .seg-kpi-label {
+                        display: block;
+                        margin-top: 6px;
+                        font-size: 0.82rem;
+                        color: #6b7280;
+                    }
+                    .seg-hint { color: #6b7280; font-size: 0.85rem; margin: 4px 0 14px; }
+                    .seg-empty { color: #9ca3af; font-size: 0.9rem; }
+                    .seg-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+                    .seg-table th, .seg-table td {
+                        text-align: left;
+                        padding: 10px 12px;
+                        border-bottom: 1px solid #eef0f3;
+                    }
+                    .seg-table th {
+                        color: #6b7280;
+                        font-size: 0.78rem;
+                        text-transform: uppercase;
+                        letter-spacing: 0.03em;
+                    }
+                    .seg-table td.num, .seg-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+                    .seg-rank { color: #9ca3af; font-weight: 700; width: 34px; }
+                    .seg-bar-cell { width: 40%; }
+                    .seg-bar-track { background: #f3f4f6; border-radius: 6px; height: 8px; overflow: hidden; }
+                    .seg-bar-fill { background: var(--accent); height: 100%; border-radius: 6px; }
+                    .seg-inactive-tag {
+                        display: inline-block;
+                        background: #fef2f2;
+                        color: #b91c1c;
+                        border-radius: 20px;
+                        padding: 4px 12px;
+                        font-size: 0.85rem;
+                        margin: 3px;
+                    }
+                    .seg-scroll { overflow-x: auto; }
+                </style>
             </section>
 
             <!-- VENDEDORES SECTION -->
@@ -1223,6 +1407,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
             initVendedorConfig();
             initContestConfig();
             initInvitations();
+            initSeguimiento();
         }
 
 
@@ -1259,6 +1444,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
             if (sectionId === 'vendedor-config') loadVendedorConfig();
             if (sectionId === 'contest-config') loadContestConfig();
             if (sectionId === 'invitations') loadInvitations();
+            if (sectionId === 'seguimiento') loadSeguimiento();
 
 
 
@@ -1291,6 +1477,351 @@ PREMIO: 1 kit disco enlozado.</textarea>
             switchSection('notifications');
             openNotificationForm();
         };
+
+        // ============================================================
+        // === SEGUIMIENTO DE USO =====================================
+        // ============================================================
+        // Cada latido del panel corporativo suma 1 a `heartbeats` en
+        // usage_daily/<vendedor>_<YYYY-MM-DD>. El latido va cada 3 min sólo si
+        // hay actividad real, así que minutos ≈ heartbeats * 3.
+        const HEARTBEAT_MINUTES = 3;
+        // Áreas cuyos puestos SÍ se trackean (deciden quién cuenta como activo/inactivo).
+        // Para cambiar el alcance, sumá/quitá tokens que devuelve areaDePuesto().
+        const TRACKABLE_AREAS = ['VENTAS', 'CAJA', 'ENCARGADOS', 'GERENCIA'];
+        let segPeriod = 'week';
+        let segData = null;         // dataset crudo del período (para filtrar sin re-consultar Firestore)
+        let segLastReport = null;   // snapshot filtrado para el export PDF
+
+        // Mismo criterio que carga-masiva.html: clasifica un puesto en un "área".
+        function areaDePuesto(puesto) {
+            const u = (puesto || '').toUpperCase();
+            if (u.startsWith('(OBRA)')) return 'OBRA';
+            if (u.includes('DEPOSITO') || u.includes('DEPÓSITO')) return 'DEPOSITO';
+            if (u.includes('VENDEDOR') || u.includes('VENTAS')) return 'VENTAS';
+            if (u === 'CAJERO' || u === 'CAJERA' || u === 'CEJERO') return 'CAJA';
+            if (u.includes('ENCARGADO')) return 'ENCARGADOS';
+            if (['CHOFER', 'MIXER', 'MAQUINISTA', 'BOMBISTA', 'MECANICO', 'SIDERURGIA'].includes(u)) return 'LOGISTICA';
+            if (['MAESTRANZA', 'PORTERIA', 'SERENO', 'AYUDANTE'].includes(u)) return 'SERVICIOS';
+            if (u.includes('GERENTE') || u.includes('DIRECTOR') || u.includes('JEFE DE MARKETING')
+                || u.includes('INFRAESTRU') || u.includes('GERENTENTE')) return 'GERENCIA';
+            return 'ADMIN';
+        }
+
+        function initSeguimiento() {
+            document.querySelectorAll('.seg-period-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.dataset.period === segPeriod) return;
+                    document.querySelectorAll('.seg-period-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    segPeriod = btn.dataset.period;
+                    loadSeguimiento();
+                });
+            });
+            document.getElementById('seg-filter-sucursal').addEventListener('change', applySegFilters);
+            document.getElementById('seg-filter-area').addEventListener('change', applySegFilters);
+            document.getElementById('seg-export-pdf').addEventListener('click', exportSeguimientoPDF);
+        }
+
+        // Clave YYYY-MM-DD en hora local (igual que el panel corporativo).
+        function segDateKey(date) {
+            const mes = String(date.getMonth() + 1).padStart(2, '0');
+            const dia = String(date.getDate()).padStart(2, '0');
+            return `${date.getFullYear()}-${mes}-${dia}`;
+        }
+
+        // Devuelve { start, end } del período elegido. La semana arranca el lunes.
+        function segPeriodRange() {
+            const now = new Date();
+            const end = new Date(now); end.setHours(23, 59, 59, 999);
+            const start = new Date(now); start.setHours(0, 0, 0, 0);
+            if (segPeriod === 'week') {
+                const dow = (start.getDay() + 6) % 7; // 0 = lunes
+                start.setDate(start.getDate() - dow);
+            } else {
+                start.setDate(1);
+            }
+            return { start, end };
+        }
+
+        function segFmtDate(d) {
+            return d.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' });
+        }
+
+        async function loadSeguimiento() {
+            const { start, end } = segPeriodRange();
+            document.getElementById('seg-range-label').textContent =
+                `${segFmtDate(start)} — ${segFmtDate(end)}`;
+            document.getElementById('seg-ranking-wrap').innerHTML = '<p class="seg-empty">Cargando…</p>';
+            document.getElementById('seg-inactive-wrap').innerHTML = '<p class="seg-empty">Cargando…</p>';
+
+            try {
+                // usage_daily filtra por el campo string `date`, comparable lexicográficamente.
+                const startKey = segDateKey(start);
+                const endKey = segDateKey(end);
+                const snap = await db.collection('usage_daily')
+                    .where('date', '>=', startKey)
+                    .where('date', '<=', endKey)
+                    .get();
+
+                // Agregar por vendedor sumando todos sus días del período.
+                const porVendedor = {};
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const name = d.userName || 'Desconocido';
+                    if (!porVendedor[name]) {
+                        porVendedor[name] = { name, heartbeats: 0, newsClicks: 0, days: 0 };
+                    }
+                    porVendedor[name].heartbeats += d.heartbeats || 0;
+                    porVendedor[name].newsClicks += d.newsClicks || 0;
+                    porVendedor[name].days += 1;
+                });
+
+                // Índice del padrón: nombre -> { sucursal, area, puesto }.
+                const vendSnap = await db.collection('vendedores').get();
+                const index = {};
+                const trackablePadron = [];
+                vendSnap.forEach(doc => {
+                    const v = doc.data();
+                    if (!v.nombre) return;
+                    const area = v.area || (v.puesto ? areaDePuesto(v.puesto) : '') || 'ADMIN';
+                    const info = { name: v.nombre, sucursal: v.sucursal || 'Sin asignar', area, puesto: v.puesto || '' };
+                    index[v.nombre] = info;
+                    if (TRACKABLE_AREAS.includes(area)) trackablePadron.push(info);
+                });
+
+                // Activos = uso real cruzado contra el padrón trackeado. El resto queda "fuera de alcance".
+                const trackableNames = new Set(trackablePadron.map(p => p.name));
+                const activos = [];
+                let outOfScope = 0;
+                Object.values(porVendedor).forEach(u => {
+                    if (trackableNames.has(u.name)) {
+                        const info = index[u.name];
+                        activos.push({ ...u, minutes: u.heartbeats * HEARTBEAT_MINUTES, sucursal: info.sucursal, area: info.area, puesto: info.puesto });
+                    } else {
+                        outOfScope++;
+                    }
+                });
+                activos.sort((a, b) => b.minutes - a.minutes);
+
+                segData = { start, end, activos, trackablePadron, outOfScope };
+                poblarFiltros(trackablePadron);
+                applySegFilters();
+            } catch (error) {
+                console.error('Error al cargar seguimiento:', error);
+                document.getElementById('seg-ranking-wrap').innerHTML =
+                    '<p style="color:#dc2626;">Error al cargar datos. Revisá la consola.</p>';
+            }
+        }
+
+        // Rellena los <select> de sucursal y área con lo que exista en el padrón trackeado.
+        function poblarFiltros(padron) {
+            const sucs = [...new Set(padron.map(p => p.sucursal))].sort((a, b) => a.localeCompare(b));
+            const areas = [...new Set(padron.map(p => p.area))].sort((a, b) => a.localeCompare(b));
+            const selS = document.getElementById('seg-filter-sucursal');
+            const selA = document.getElementById('seg-filter-area');
+            const prevS = selS.value, prevA = selA.value;
+            selS.innerHTML = '<option value="">Todas las sucursales</option>' +
+                sucs.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+            selA.innerHTML = '<option value="">Todas las áreas</option>' +
+                areas.map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join('');
+            selS.value = prevS; selA.value = prevA;
+        }
+
+        // Aplica los filtros de sucursal/área sobre segData y re-renderiza todo (sin re-consultar Firestore).
+        function applySegFilters() {
+            if (!segData) return;
+            const fSuc = document.getElementById('seg-filter-sucursal').value;
+            const fArea = document.getElementById('seg-filter-area').value;
+            const match = p => (!fSuc || p.sucursal === fSuc) && (!fArea || p.area === fArea);
+
+            const activos = segData.activos.filter(match);
+            const padron = segData.trackablePadron.filter(match);
+            const activosSet = new Set(activos.map(v => v.name));
+            const inactivos = padron.filter(p => !activosSet.has(p.name))
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            const totalMin = activos.reduce((s, v) => s + v.minutes, 0);
+            const totalClicks = activos.reduce((s, v) => s + v.newsClicks, 0);
+            const cobertura = padron.length ? Math.round((activos.length / padron.length) * 100) : 0;
+
+            document.getElementById('seg-kpi-active').textContent = activos.length;
+            document.getElementById('seg-kpi-inactive').textContent = inactivos.length;
+            document.getElementById('seg-kpi-minutes').textContent = totalMin.toLocaleString('es-AR');
+            document.getElementById('seg-kpi-clicks').textContent = totalClicks.toLocaleString('es-AR');
+            document.getElementById('seg-total-vendedores').textContent = padron.length;
+
+            let note = `Cobertura: <b>${cobertura}%</b> (${activos.length} de ${padron.length} usaron la app).`;
+            if (!fSuc && !fArea && segData.outOfScope > 0) {
+                note += ` <span class="seg-muted">· ${segData.outOfScope} persona(s) fuera de alcance también registraron uso.</span>`;
+            }
+            document.getElementById('seg-scope-note').innerHTML = note;
+
+            const porSucursal = agrupar(padron, activos, 'sucursal');
+            const porArea = agrupar(padron, activos, 'area');
+
+            renderSegRanking(activos);
+            renderSegInactive(inactivos);
+            renderSegGroup('seg-by-sucursal-wrap', 'Sucursal', porSucursal);
+            renderSegGroup('seg-by-area-wrap', 'Área', porArea);
+
+            segLastReport = {
+                start: segData.start, end: segData.end, activos, inactivos,
+                padronTotal: padron.length, totalMin, totalClicks, cobertura,
+                porSucursal, porArea, fSuc, fArea
+            };
+        }
+
+        // Agrupa padrón/activos por una clave (sucursal|area) y calcula cobertura + uso.
+        function agrupar(padron, activos, key) {
+            const g = {};
+            const bucket = k => (g[k] || (g[k] = { grupo: k, total: 0, activos: 0, minutes: 0, clicks: 0 }));
+            padron.forEach(p => { bucket(p[key] || '—').total++; });
+            activos.forEach(a => {
+                const b = bucket(a[key] || '—');
+                b.activos++; b.minutes += a.minutes; b.clicks += a.newsClicks;
+            });
+            return Object.values(g).sort((a, b) => b.minutes - a.minutes || b.activos - a.activos);
+        }
+
+        function segFmtMinutes(min) {
+            if (min < 60) return `${min} min`;
+            const h = Math.floor(min / 60);
+            const m = min % 60;
+            return m ? `${h} h ${m} min` : `${h} h`;
+        }
+
+        function renderSegRanking(activos) {
+            const wrap = document.getElementById('seg-ranking-wrap');
+            if (activos.length === 0) {
+                wrap.innerHTML = '<p class="seg-empty">Sin actividad registrada en el período.</p>';
+                return;
+            }
+            const maxMin = activos[0].minutes || 1;
+            let html = '<div class="seg-scroll"><table class="seg-table"><thead><tr>' +
+                '<th class="seg-rank">#</th><th>Nombre</th><th>Sucursal</th><th>Área</th>' +
+                '<th class="seg-bar-cell">Uso</th>' +
+                '<th class="num">Tiempo</th><th class="num">Días</th><th class="num">Clics</th>' +
+                '</tr></thead><tbody>';
+            activos.forEach((v, i) => {
+                const pct = Math.round((v.minutes / maxMin) * 100);
+                html += `<tr>
+                    <td class="seg-rank">${i + 1}</td>
+                    <td>${escapeHtml(v.name)}</td>
+                    <td>${escapeHtml(v.sucursal)}</td>
+                    <td>${escapeHtml(v.area)}</td>
+                    <td class="seg-bar-cell"><div class="seg-bar-track"><div class="seg-bar-fill" style="width:${pct}%"></div></div></td>
+                    <td class="num">${segFmtMinutes(v.minutes)}</td>
+                    <td class="num">${v.days}</td>
+                    <td class="num">${v.newsClicks}</td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+            wrap.innerHTML = html;
+        }
+
+        function renderSegInactive(inactivos) {
+            const wrap = document.getElementById('seg-inactive-wrap');
+            if (inactivos.length === 0) {
+                wrap.innerHTML = '<p class="seg-empty" style="color:#16a34a;">✓ Todos registraron actividad en el período.</p>';
+                return;
+            }
+            wrap.innerHTML = inactivos.map(p =>
+                `<span class="seg-inactive-tag">${escapeHtml(p.name)}<span class="seg-muted"> · ${escapeHtml(p.sucursal)}</span></span>`
+            ).join('');
+        }
+
+        // Tabla de resumen agrupado (por sucursal o por área) con barra de cobertura.
+        function renderSegGroup(wrapId, label, filas) {
+            const wrap = document.getElementById(wrapId);
+            if (!filas.length) { wrap.innerHTML = '<p class="seg-empty">Sin datos.</p>'; return; }
+            let html = '<div class="seg-scroll"><table class="seg-table"><thead><tr>' +
+                `<th>${label}</th><th class="num">Cobertura</th><th class="num">Activos</th>` +
+                '<th class="num">Tiempo</th><th class="num">Clics</th></tr></thead><tbody>';
+            filas.forEach(f => {
+                const cov = f.total ? Math.round((f.activos / f.total) * 100) : 0;
+                html += `<tr>
+                    <td>${escapeHtml(f.grupo)}</td>
+                    <td class="num"><span class="seg-cov"><span class="seg-cov-track"><span class="seg-cov-fill" style="width:${cov}%"></span></span>${cov}%</span></td>
+                    <td class="num">${f.activos}/${f.total}</td>
+                    <td class="num">${segFmtMinutes(f.minutes)}</td>
+                    <td class="num">${f.clicks}</td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+            wrap.innerHTML = html;
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c =>
+                ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function exportSeguimientoPDF() {
+            if (!segLastReport || segLastReport.activos.length === 0) {
+                alert('No hay datos para exportar en este período.');
+                return;
+            }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const r = segLastReport;
+            const periodo = segPeriod === 'week' ? 'Semanal' : 'Mensual';
+            const rango = `${segFmtDate(r.start)} al ${segFmtDate(r.end)}`;
+            const filtroTxt = [r.fSuc, r.fArea].filter(Boolean).join(' · ') || 'Todos';
+            const pct = f => `${f.total ? Math.round(f.activos / f.total * 100) : 0}%`;
+
+            doc.setFontSize(18);
+            doc.text(`Reporte de Uso ${periodo}`, 14, 20);
+            doc.setFontSize(11);
+            doc.setTextColor(100);
+            doc.text(`Período: ${rango}   ·   Filtro: ${filtroTxt}`, 14, 28);
+            doc.text(`Activos: ${r.activos.length}/${r.padronTotal} (${r.cobertura}%)   ·   Uso: ${segFmtMinutes(r.totalMin)}   ·   Clics: ${r.totalClicks}`, 14, 34);
+
+            doc.autoTable({
+                startY: 42,
+                head: [['Sucursal', 'Cobertura', 'Activos', 'Tiempo', 'Clics']],
+                body: r.porSucursal.map(f => [f.grupo, pct(f), `${f.activos}/${f.total}`, segFmtMinutes(f.minutes), f.clicks]),
+                theme: 'grid',
+                headStyles: { fillColor: [39, 46, 104] },
+                styles: { fontSize: 9 }
+            });
+
+            doc.autoTable({
+                startY: doc.lastAutoTable.finalY + 8,
+                head: [['Área', 'Cobertura', 'Activos', 'Tiempo', 'Clics']],
+                body: r.porArea.map(f => [f.grupo, pct(f), `${f.activos}/${f.total}`, segFmtMinutes(f.minutes), f.clicks]),
+                theme: 'grid',
+                headStyles: { fillColor: [39, 46, 104] },
+                styles: { fontSize: 9 }
+            });
+
+            let y = doc.lastAutoTable.finalY + 10;
+            doc.setFontSize(13); doc.setTextColor(30);
+            doc.text('Ranking de uso', 14, y);
+            doc.autoTable({
+                startY: y + 4,
+                head: [['#', 'Nombre', 'Sucursal', 'Área', 'Tiempo', 'Días', 'Clics']],
+                body: r.activos.map((v, i) => [i + 1, v.name, v.sucursal, v.area, segFmtMinutes(v.minutes), v.days, v.newsClicks]),
+                theme: 'striped',
+                headStyles: { fillColor: [79, 70, 229] },
+                styles: { fontSize: 8 }
+            });
+
+            if (r.inactivos.length > 0) {
+                y = doc.lastAutoTable.finalY + 12;
+                doc.setFontSize(13); doc.setTextColor(30);
+                doc.text(`Inactivos en el período (${r.inactivos.length})`, 14, y);
+                doc.autoTable({
+                    startY: y + 4,
+                    head: [['Nombre', 'Sucursal']],
+                    body: r.inactivos.map(p => [p.name, p.sucursal]),
+                    theme: 'plain',
+                    headStyles: { fillColor: [185, 28, 28], textColor: 255 },
+                    styles: { fontSize: 9 }
+                });
+            }
+
+            doc.save(`Reporte_Uso_${periodo}_${segDateKey(r.start)}.pdf`);
+        }
 
         // --- INVITATIONS LOGIC ---
         function initInvitations() {

@@ -3019,6 +3019,68 @@
       // los logs nuevos, los ya escritos conservan su fecha original.
       const LOG_RETENTION_DAYS = 40;
 
+      // Los contadores de uso son docs diminutos y sirven para comparar contra
+      // el año pasado, así que se guardan mucho más que las conexiones sueltas.
+      const USAGE_RETENTION_DAYS = 400;
+
+      // Sin pestaña visible ni interacción reciente no late: así "en línea" y los
+      // minutos de uso miden gente y no pestañas olvidadas en segundo plano.
+      const IDLE_TIMEOUT_MS = 10 * 60 * 1000;
+
+      let lastActivityAt = Date.now();
+      let lastHeartbeatAt = 0;
+
+      ['mousemove', 'keydown', 'touchstart', 'click', 'scroll'].forEach(evt => {
+        window.addEventListener(evt, () => { lastActivityAt = Date.now(); }, { passive: true });
+      });
+
+      // Al volver a la pestaña late enseguida, para no esperar hasta 3 minutos
+      // a reaparecer en la lista de conectados.
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          lastActivityAt = Date.now();
+          updateUserSession();
+        }
+      });
+
+      function isUserActive() {
+        return document.visibilityState === 'visible'
+          && Date.now() - lastActivityAt < IDLE_TIMEOUT_MS;
+      }
+
+      // Clave YYYY-MM-DD en hora local. Con toISOString() se correría de día:
+      // en UTC-3 todo lo posterior a las 21:00 caería en la fecha siguiente.
+      function toDateKey(date) {
+        const mes = String(date.getMonth() + 1).padStart(2, '0');
+        const dia = String(date.getDate()).padStart(2, '0');
+        return `${date.getFullYear()}-${mes}-${dia}`;
+      }
+
+      // Suma 1 al contador `campo` del documento de uso de hoy. Nadie escucha
+      // esta colección, así que el costo es lineal: no se amplifica a todos los
+      // paneles abiertos como pasa con active_sessions.
+      async function bumpUsage(campo) {
+        const loggedInUserName = localStorage.getItem("vendedorLogueado");
+        if (!loggedInUserName) return;
+
+        const dayStart = new Date();
+        dayStart.setHours(0, 0, 0, 0);
+        const dateKey = toDateKey(dayStart);
+        const sessionId = loggedInUserName.replace(/\s+/g, '-').toLowerCase();
+
+        try {
+          await db.collection('usage_daily').doc(`${sessionId}_${dateKey}`).set({
+            userName: loggedInUserName,
+            date: dateKey,
+            [campo]: firebase.firestore.FieldValue.increment(1),
+            lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
+            expiresAt: new Date(dayStart.getTime() + USAGE_RETENTION_DAYS * 24 * 60 * 60 * 1000)
+          }, { merge: true });
+        } catch (error) {
+          console.error("Error al registrar uso:", error);
+        }
+      }
+
       // Función para registrar o actualizar la sesión del usuario
       async function updateUserSession() {
         const loggedInUserName = localStorage.getItem("vendedorLogueado");
@@ -3028,12 +3090,22 @@
         // Esto previene que un mismo vendedor abra múltiples sesiones contables.
         currentUserSessionId = loggedInUserName.replace(/\s+/g, '-').toLowerCase();
 
+        // Si no hay nadie del otro lado no latimos: la sesión se cae sola cuando
+        // vence la ventana de 8 min, y el contador de uso no suma tiempo falso.
+        if (!isUserActive()) return;
+
+        // visibilitychange también llama acá, así que evitamos ráfagas de
+        // escrituras si alguien pasa de pestaña en pestaña.
+        if (Date.now() - lastHeartbeatAt < 30000) return;
+        lastHeartbeatAt = Date.now();
+
         try {
           const sessionRef = db.collection('active_sessions').doc(currentUserSessionId);
           await sessionRef.set({
             userName: loggedInUserName,
             last_seen: firebase.firestore.FieldValue.serverTimestamp()
           });
+          await bumpUsage('heartbeats');
         } catch (error) {
           console.error("Error al actualizar la sesión de usuario:", error);
         }
@@ -3487,7 +3559,7 @@
           await docRef.update({
             clicked_by: firebase.firestore.FieldValue.arrayUnion(loggedInUserName)
           });
-          console.log(`Click registrado en noticia ${newsId} para ${loggedInUserName}`);
+          await bumpUsage('newsClicks');
         } catch (error) {
           console.error("Error al registrar clic en noticia:", error);
         }
