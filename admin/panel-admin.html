@@ -674,14 +674,6 @@
                 </div>
 
                 <div class="card">
-                    <h3><i class="fa-solid fa-briefcase"></i> Resumen por área</h3>
-                    <p class="seg-hint">Uso agrupado por tipo de puesto.</p>
-                    <div id="seg-by-area-wrap">
-                        <p class="seg-empty">Cargando…</p>
-                    </div>
-                </div>
-
-                <div class="card">
                     <h3><i class="fa-solid fa-ranking-star"></i> Ranking de uso</h3>
                     <p class="seg-hint">Ordenado por minutos estimados en la app (latido cada 3 min con actividad real).</p>
                     <div id="seg-ranking-wrap">
@@ -1487,7 +1479,9 @@ PREMIO: 1 kit disco enlozado.</textarea>
         const HEARTBEAT_MINUTES = 3;
         // Áreas cuyos puestos SÍ se trackean (deciden quién cuenta como activo/inactivo).
         // Para cambiar el alcance, sumá/quitá tokens que devuelve areaDePuesto().
-        const TRACKABLE_AREAS = ['VENTAS', 'CAJA', 'ENCARGADOS', 'GERENCIA'];
+        // Los encargados cuentan como vendedores (área VENTAS), así que no hay token ENCARGADOS.
+        // El depósito NO usa la app: DEPOSITO queda fuera de este listado a propósito.
+        const TRACKABLE_AREAS = ['VENTAS', 'CAJA', 'GERENCIA'];
         let segPeriod = 'week';
         let segData = null;         // dataset crudo del período (para filtrar sin re-consultar Firestore)
         let segLastReport = null;   // snapshot filtrado para el export PDF
@@ -1499,13 +1493,32 @@ PREMIO: 1 kit disco enlozado.</textarea>
             if (u.includes('DEPOSITO') || u.includes('DEPÓSITO')) return 'DEPOSITO';
             if (u.includes('VENDEDOR') || u.includes('VENTAS')) return 'VENTAS';
             if (u === 'CAJERO' || u === 'CAJERA' || u === 'CEJERO') return 'CAJA';
-            if (u.includes('ENCARGADO')) return 'ENCARGADOS';
+            if (u.includes('ENCARGADO')) return 'VENTAS'; // los encargados cuentan como vendedores
             if (['CHOFER', 'MIXER', 'MAQUINISTA', 'BOMBISTA', 'MECANICO', 'SIDERURGIA'].includes(u)) return 'LOGISTICA';
             if (['MAESTRANZA', 'PORTERIA', 'SERENO', 'AYUDANTE'].includes(u)) return 'SERVICIOS';
             if (u.includes('GERENTE') || u.includes('DIRECTOR') || u.includes('JEFE DE MARKETING')
                 || u.includes('INFRAESTRU') || u.includes('GERENTENTE')) return 'GERENCIA';
             return 'ADMIN';
         }
+
+        // Nº de sucursal -> nombre legible. Mismo mapa que carga-masiva.html.
+        // El depósito (SUC ## - DEP) se agrupa con su localidad; los códigos sin mapear
+        // (LOGISTICA, M. H., PUNTO CAÑO, etc.) se muestran tal cual hasta asignarles nombre.
+        const SUCURSAL_NOMBRES = {
+            '02': 'Tafí del Valle', '05': 'Monteros', '07': 'Aguilares', '08': 'Famaillá',
+            '09': 'Manantial', '10': 'Aguilares', '11': 'Concepción', '13': 'Salta',
+            '14': 'Mayorista Manantial', '16': 'Metán', '31': 'Mayorista Salta', '99': 'Casa Central'
+        };
+        function nombreSucursal(raw) {
+            const s = (raw || '').trim();
+            if (!s) return 'Sin asignar';
+            const m = s.match(/(\d{1,3})/);
+            if (m && SUCURSAL_NOMBRES[m[1].padStart(2, '0')]) return SUCURSAL_NOMBRES[m[1].padStart(2, '0')];
+            return s;
+        }
+
+        // Sucursales que NO son de venta → se excluyen del "Resumen por sucursal".
+        const SUCURSAL_OCULTAS_RESUMEN = ['Casa Central', 'M. H.'];
 
         function initSeguimiento() {
             document.querySelectorAll('.seg-period-btn').forEach(btn => {
@@ -1584,7 +1597,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
                     const v = doc.data();
                     if (!v.nombre) return;
                     const area = v.area || (v.puesto ? areaDePuesto(v.puesto) : '') || 'ADMIN';
-                    const info = { name: v.nombre, sucursal: v.sucursal || 'Sin asignar', area, puesto: v.puesto || '' };
+                    const info = { name: v.nombre, sucursal: nombreSucursal(v.sucursal), area, puesto: v.puesto || '' };
                     index[v.nombre] = info;
                     if (TRACKABLE_AREAS.includes(area)) trackablePadron.push(info);
                 });
@@ -1656,18 +1669,22 @@ PREMIO: 1 kit disco enlozado.</textarea>
             }
             document.getElementById('seg-scope-note').innerHTML = note;
 
-            const porSucursal = agrupar(padron, activos, 'sucursal');
-            const porArea = agrupar(padron, activos, 'area');
+            // Casa Central y M. H. no son sucursales de venta → fuera del resumen por sucursal.
+            const sucPadron = padron.filter(p => !SUCURSAL_OCULTAS_RESUMEN.includes(p.sucursal));
+            const sucActivos = activos.filter(v => !SUCURSAL_OCULTAS_RESUMEN.includes(v.sucursal));
+            const porSucursal = agrupar(sucPadron, sucActivos, 'sucursal');
 
-            renderSegRanking(activos);
+            // El ranking de uso no muestra a Casa Central (administración/gerencia).
+            const rankingActivos = activos.filter(v => v.sucursal !== 'Casa Central');
+
+            renderSegRanking(rankingActivos);
             renderSegInactive(inactivos);
             renderSegGroup('seg-by-sucursal-wrap', 'Sucursal', porSucursal);
-            renderSegGroup('seg-by-area-wrap', 'Área', porArea);
 
             segLastReport = {
-                start: segData.start, end: segData.end, activos, inactivos,
+                start: segData.start, end: segData.end, activos, rankingActivos, inactivos,
                 padronTotal: padron.length, totalMin, totalClicks, cobertura,
-                porSucursal, porArea, fSuc, fArea
+                porSucursal, fSuc, fArea
             };
         }
 
@@ -1785,22 +1802,13 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 styles: { fontSize: 9 }
             });
 
-            doc.autoTable({
-                startY: doc.lastAutoTable.finalY + 8,
-                head: [['Área', 'Cobertura', 'Activos', 'Tiempo', 'Clics']],
-                body: r.porArea.map(f => [f.grupo, pct(f), `${f.activos}/${f.total}`, segFmtMinutes(f.minutes), f.clicks]),
-                theme: 'grid',
-                headStyles: { fillColor: [39, 46, 104] },
-                styles: { fontSize: 9 }
-            });
-
             let y = doc.lastAutoTable.finalY + 10;
             doc.setFontSize(13); doc.setTextColor(30);
             doc.text('Ranking de uso', 14, y);
             doc.autoTable({
                 startY: y + 4,
                 head: [['#', 'Nombre', 'Sucursal', 'Área', 'Tiempo', 'Días', 'Clics']],
-                body: r.activos.map((v, i) => [i + 1, v.name, v.sucursal, v.area, segFmtMinutes(v.minutes), v.days, v.newsClicks]),
+                body: r.rankingActivos.map((v, i) => [i + 1, v.name, v.sucursal, v.area, segFmtMinutes(v.minutes), v.days, v.newsClicks]),
                 theme: 'striped',
                 headStyles: { fillColor: [79, 70, 229] },
                 styles: { fontSize: 8 }

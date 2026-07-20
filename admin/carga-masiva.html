@@ -209,12 +209,28 @@
             if (u.includes('DEPOSITO') || u.includes('DEPÓSITO')) return 'DEPOSITO';
             if (u.includes('VENDEDOR') || u.includes('VENTAS')) return 'VENTAS';
             if (u === 'CAJERO' || u === 'CAJERA' || u === 'CEJERO') return 'CAJA';
-            if (u.includes('ENCARGADO')) return 'ENCARGADOS';
+            if (u.includes('ENCARGADO')) return 'VENTAS'; // los encargados cuentan como vendedores
             if (['CHOFER', 'MIXER', 'MAQUINISTA', 'BOMBISTA', 'MECANICO', 'SIDERURGIA'].includes(u)) return 'LOGISTICA';
             if (['MAESTRANZA', 'PORTERIA', 'SERENO', 'AYUDANTE'].includes(u)) return 'SERVICIOS';
             if (u.includes('GERENTE') || u.includes('DIRECTOR') || u.includes('JEFE DE MARKETING')
                 || u.includes('INFRAESTRU') || u.includes('GERENTENTE')) return 'GERENCIA';
             return 'ADMIN';
+        }
+
+        // Nº de sucursal -> nombre legible. Mismo mapa que panel-admin.html.
+        // "SUC 07 - DEP" se agrupa con su localidad; los códigos sin mapear
+        // (LOGISTICA, M. H., PUNTO CAÑO, etc.) se muestran tal cual hasta asignarles nombre.
+        const SUCURSAL_NOMBRES = {
+            '02': 'Tafí del Valle', '05': 'Monteros', '07': 'Aguilares', '08': 'Famaillá',
+            '09': 'Manantial', '10': 'Aguilares', '11': 'Concepción', '13': 'Salta',
+            '14': 'Mayorista Manantial', '16': 'Metán', '31': 'Mayorista Salta', '99': 'Casa Central'
+        };
+        function nombreSucursal(raw) {
+            const s = (raw || '').trim();
+            if (!s) return 'Sin asignar';
+            const m = s.match(/(\d{1,3})/);
+            if (m && SUCURSAL_NOMBRES[m[1].padStart(2, '0')]) return SUCURSAL_NOMBRES[m[1].padStart(2, '0')];
+            return s;
         }
 
         // --- FUNCIÓN PARA MOSTRAR VENDEDORES ---
@@ -251,6 +267,10 @@
                 vendedorEl.className = 'bg-gray-50 p-3 rounded-md border';
                 vendedorEl.dataset.id = vendedor.id;
 
+                const sucNom = vendedor.sucursal ? nombreSucursal(vendedor.sucursal) : '';
+                const sucBadge = sucNom + (vendedor.sucursal && sucNom !== vendedor.sucursal
+                    ? ` <span class="text-gray-300">(${vendedor.sucursal})</span>` : '');
+
                 vendedorEl.innerHTML = `
                         <!-- View Mode -->
                         <div class="view-mode flex items-center justify-between">
@@ -258,7 +278,7 @@
                                 <p class="font-semibold text-gray-800">${vendedor.nombre}</p>
                                 <p class="text-sm text-gray-500">DNI: ${vendedor.dni}</p>
                                 ${(vendedor.sucursal || vendedor.puesto)
-                        ? `<p class="text-xs text-gray-400 mt-0.5"><i class="fa-solid fa-location-dot"></i> ${vendedor.sucursal || '—'} · ${vendedor.puesto || '—'}</p>`
+                        ? `<p class="text-xs text-gray-400 mt-0.5"><i class="fa-solid fa-location-dot"></i> ${sucBadge || '—'} · ${vendedor.puesto || '—'}</p>`
                         : `<p class="text-xs text-amber-500 mt-0.5"><i class="fa-solid fa-triangle-exclamation"></i> sin sucursal/puesto</p>`}
                             </div>
                             <div class="flex items-center gap-2">
@@ -305,7 +325,7 @@
 
         // Rellena el dropdown de sucursal y los chips de área presentes en el padrón.
         function populateFilters() {
-            const sucs = [...new Set(allVendedores.map(v => v.sucursal).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+            const sucs = [...new Set(allVendedores.map(v => v.sucursal).filter(Boolean).map(nombreSucursal))].sort((a, b) => a.localeCompare(b));
             const areas = [...new Set(allVendedores.map(getArea).filter(Boolean))].sort((a, b) => a.localeCompare(b));
 
             const prevS = filterSucursal.value;
@@ -361,8 +381,9 @@
                     v.nombre.toLowerCase().includes(query) ||
                     v.dni.includes(query) ||
                     (v.sucursal || '').toLowerCase().includes(query) ||
+                    (v.sucursal ? nombreSucursal(v.sucursal).toLowerCase().includes(query) : false) ||
                     (v.puesto || '').toLowerCase().includes(query);
-                const matchSuc = !fSuc || v.sucursal === fSuc;
+                const matchSuc = !fSuc || nombreSucursal(v.sucursal) === fSuc;
                 const matchArea = activeAreas.size === 0 || activeAreas.has(getArea(v));
                 return matchText && matchSuc && matchArea;
             });
