@@ -1517,8 +1517,12 @@ PREMIO: 1 kit disco enlozado.</textarea>
             return s;
         }
 
-        // Sucursales que NO son de venta → se excluyen del "Resumen por sucursal".
-        const SUCURSAL_OCULTAS_RESUMEN = ['Casa Central', 'M. H.'];
+        // M. H. no es sucursal de venta y no se trackea: su gente queda FUERA de todo el
+        // reporte (KPIs, ranking, inactivos, resumen). Si registran uso, cuenta como "fuera de alcance".
+        const SUCURSAL_EXCLUIDAS = ['M. H.'];
+
+        // Casa Central SÍ cuenta en KPIs/inactivos, pero se oculta del "Resumen por sucursal".
+        const SUCURSAL_OCULTAS_RESUMEN = ['Casa Central'];
 
         function initSeguimiento() {
             document.querySelectorAll('.seg-period-btn').forEach(btn => {
@@ -1596,10 +1600,13 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 vendSnap.forEach(doc => {
                     const v = doc.data();
                     if (!v.nombre) return;
-                    const area = v.area || (v.puesto ? areaDePuesto(v.puesto) : '') || 'ADMIN';
+                    // El puesto es la fuente de verdad. El campo `area` guardado quedó viejo:
+                    // los encargados se sincronizaron como 'ENCARGADOS' antes de fusionarlos en
+                    // VENTAS, así que confiar en v.area los deja fuera del ranking. Recalculamos.
+                    const area = v.puesto ? areaDePuesto(v.puesto) : (v.area || 'ADMIN');
                     const info = { name: v.nombre, sucursal: nombreSucursal(v.sucursal), area, puesto: v.puesto || '' };
                     index[v.nombre] = info;
-                    if (TRACKABLE_AREAS.includes(area)) trackablePadron.push(info);
+                    if (TRACKABLE_AREAS.includes(area) && !SUCURSAL_EXCLUIDAS.includes(info.sucursal)) trackablePadron.push(info);
                 });
 
                 // Activos = uso real cruzado contra el padrón trackeado. El resto queda "fuera de alcance".
