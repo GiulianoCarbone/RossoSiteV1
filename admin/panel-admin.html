@@ -637,9 +637,6 @@
                             <select id="seg-filter-sucursal" class="seg-select">
                                 <option value="">Todas las sucursales</option>
                             </select>
-                            <select id="seg-filter-area" class="seg-select">
-                                <option value="">Todas las áreas</option>
-                            </select>
                         </div>
                         <span id="seg-range-label" class="seg-range-label"></span>
                     </div>
@@ -1479,9 +1476,9 @@ PREMIO: 1 kit disco enlozado.</textarea>
         const HEARTBEAT_MINUTES = 3;
         // Áreas cuyos puestos SÍ se trackean (deciden quién cuenta como activo/inactivo).
         // Para cambiar el alcance, sumá/quitá tokens que devuelve areaDePuesto().
-        // Los encargados cuentan como vendedores (área VENTAS), así que no hay token ENCARGADOS.
-        // El depósito NO usa la app: DEPOSITO queda fuera de este listado a propósito.
-        const TRACKABLE_AREAS = ['VENTAS', 'CAJA', 'GERENCIA'];
+        // El seguimiento es SÓLO para empleados de venta: vendedores y encargados, ambos
+        // mapeados a VENTAS. Caja, gerencia, depósito, admin, etc. quedan fuera a propósito.
+        const TRACKABLE_AREAS = ['VENTAS'];
         let segPeriod = 'week';
         let segData = null;         // dataset crudo del período (para filtrar sin re-consultar Firestore)
         let segLastReport = null;   // snapshot filtrado para el export PDF
@@ -1535,7 +1532,6 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 });
             });
             document.getElementById('seg-filter-sucursal').addEventListener('change', applySegFilters);
-            document.getElementById('seg-filter-area').addEventListener('change', applySegFilters);
             document.getElementById('seg-export-pdf').addEventListener('click', exportSeguimientoPDF);
         }
 
@@ -1633,26 +1629,21 @@ PREMIO: 1 kit disco enlozado.</textarea>
             }
         }
 
-        // Rellena los <select> de sucursal y área con lo que exista en el padrón trackeado.
+        // Rellena el <select> de sucursal con lo que exista en el padrón trackeado.
         function poblarFiltros(padron) {
             const sucs = [...new Set(padron.map(p => p.sucursal))].sort((a, b) => a.localeCompare(b));
-            const areas = [...new Set(padron.map(p => p.area))].sort((a, b) => a.localeCompare(b));
             const selS = document.getElementById('seg-filter-sucursal');
-            const selA = document.getElementById('seg-filter-area');
-            const prevS = selS.value, prevA = selA.value;
+            const prevS = selS.value;
             selS.innerHTML = '<option value="">Todas las sucursales</option>' +
                 sucs.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
-            selA.innerHTML = '<option value="">Todas las áreas</option>' +
-                areas.map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join('');
-            selS.value = prevS; selA.value = prevA;
+            selS.value = prevS;
         }
 
-        // Aplica los filtros de sucursal/área sobre segData y re-renderiza todo (sin re-consultar Firestore).
+        // Aplica el filtro de sucursal sobre segData y re-renderiza todo (sin re-consultar Firestore).
         function applySegFilters() {
             if (!segData) return;
             const fSuc = document.getElementById('seg-filter-sucursal').value;
-            const fArea = document.getElementById('seg-filter-area').value;
-            const match = p => (!fSuc || p.sucursal === fSuc) && (!fArea || p.area === fArea);
+            const match = p => (!fSuc || p.sucursal === fSuc);
 
             const activos = segData.activos.filter(match);
             const padron = segData.trackablePadron.filter(match);
@@ -1671,7 +1662,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
             document.getElementById('seg-total-vendedores').textContent = padron.length;
 
             let note = `Cobertura: <b>${cobertura}%</b> (${activos.length} de ${padron.length} usaron la app).`;
-            if (!fSuc && !fArea && segData.outOfScope > 0) {
+            if (!fSuc && segData.outOfScope > 0) {
                 note += ` <span class="seg-muted">· ${segData.outOfScope} persona(s) fuera de alcance también registraron uso.</span>`;
             }
             document.getElementById('seg-scope-note').innerHTML = note;
@@ -1691,7 +1682,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
             segLastReport = {
                 start: segData.start, end: segData.end, activos, rankingActivos, inactivos,
                 padronTotal: padron.length, totalMin, totalClicks, cobertura,
-                porSucursal, fSuc, fArea
+                porSucursal, fSuc
             };
         }
 
@@ -1722,7 +1713,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
             }
             const maxMin = activos[0].minutes || 1;
             let html = '<div class="seg-scroll"><table class="seg-table"><thead><tr>' +
-                '<th class="seg-rank">#</th><th>Nombre</th><th>Sucursal</th><th>Área</th>' +
+                '<th class="seg-rank">#</th><th>Nombre</th><th>Sucursal</th>' +
                 '<th class="seg-bar-cell">Uso</th>' +
                 '<th class="num">Tiempo</th><th class="num">Días</th><th class="num">Clics</th>' +
                 '</tr></thead><tbody>';
@@ -1732,7 +1723,6 @@ PREMIO: 1 kit disco enlozado.</textarea>
                     <td class="seg-rank">${i + 1}</td>
                     <td>${escapeHtml(v.name)}</td>
                     <td>${escapeHtml(v.sucursal)}</td>
-                    <td>${escapeHtml(v.area)}</td>
                     <td class="seg-bar-cell"><div class="seg-bar-track"><div class="seg-bar-fill" style="width:${pct}%"></div></div></td>
                     <td class="num">${segFmtMinutes(v.minutes)}</td>
                     <td class="num">${v.days}</td>
@@ -1790,7 +1780,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
             const r = segLastReport;
             const periodo = segPeriod === 'week' ? 'Semanal' : 'Mensual';
             const rango = `${segFmtDate(r.start)} al ${segFmtDate(r.end)}`;
-            const filtroTxt = [r.fSuc, r.fArea].filter(Boolean).join(' · ') || 'Todos';
+            const filtroTxt = r.fSuc || 'Todos';
             const pct = f => `${f.total ? Math.round(f.activos / f.total * 100) : 0}%`;
 
             doc.setFontSize(18);
@@ -1814,8 +1804,8 @@ PREMIO: 1 kit disco enlozado.</textarea>
             doc.text('Ranking de uso', 14, y);
             doc.autoTable({
                 startY: y + 4,
-                head: [['#', 'Nombre', 'Sucursal', 'Área', 'Tiempo', 'Días', 'Clics']],
-                body: r.rankingActivos.map((v, i) => [i + 1, v.name, v.sucursal, v.area, segFmtMinutes(v.minutes), v.days, v.newsClicks]),
+                head: [['#', 'Nombre', 'Sucursal', 'Tiempo', 'Días', 'Clics']],
+                body: r.rankingActivos.map((v, i) => [i + 1, v.name, v.sucursal, segFmtMinutes(v.minutes), v.days, v.newsClicks]),
                 theme: 'striped',
                 headStyles: { fillColor: [79, 70, 229] },
                 styles: { fontSize: 8 }
