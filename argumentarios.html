@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Argumentarios de Venta | Rosso Materiales</title>
-  <meta name="description" content="Argumentarios de venta por categoría y marca: grueso, ferretería, instalaciones, terminaciones y sanitarios. Beneficios, manejo de objeciones y venta cruzada para cerrar más ventas." />
+  <meta name="description" content="Guía de venta por producto: cerámica, porcelanato, pisos vinílicos SPC, griferías, sanitarios, revestimientos decorativos, construcción en seco y aberturas. Ficha técnica, beneficios, venta cruzada, argumentos para objeciones y videos de capacitación." />
   <link href="assets/FAV.png" rel="icon" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link href="style.css" rel="stylesheet" />
@@ -36,39 +36,100 @@
     .page-header h1{margin:0;color:var(--brand);font-size:clamp(1.8rem,2.4vw,2.6rem)}
     .page-header p{margin:.4rem 0 0;color:var(--muted)}
 
-    /* Search + Filters */
-    .controls{display:grid;gap:14px;padding:20px 0}
-    .search-bar{width:100%;padding:14px 16px;border:1px solid var(--border-color);border-radius:12px;font-size:1rem}
+    /* Search + Filters (sticky) */
+    .controls-bar{position:sticky;top:calc(var(--header-h) - 1px);z-index:40;background:#fff;border-bottom:1px solid var(--border-color);box-shadow:0 6px 14px rgba(0,0,0,.05)}
+    .controls{display:grid;gap:12px;padding:14px 0}
+    .search-bar{width:100%;padding:13px 16px;border:1px solid var(--border-color);border-radius:12px;font-size:1rem}
     .filter-bar{display:flex;flex-wrap:wrap;gap:10px}
     .chip{border:1px solid var(--border-color);background:#fff;color:#111;padding:8px 12px;border-radius:20px;font-weight:600;cursor:pointer;transition:.2s}
     .chip[aria-pressed="true"], .chip:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+    .controls-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .result-count{color:var(--muted);font-size:.9rem;margin:0}
+    .toggle-all{border:1px solid var(--border-color);background:#fff;color:var(--brand);font-weight:700;font-size:.85rem;padding:7px 13px;border-radius:20px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.2s}
+    .toggle-all:hover{background:var(--brand);border-color:var(--brand);color:#fff}
+    .toggle-all i{transition:transform .2s;font-size:.8rem}
+    .toggle-all[aria-expanded="true"] i{transform:rotate(180deg)}
 
-    /* Grid */
-    .arguments-grid{display:grid;grid-template-columns:1fr;gap:28px;padding-bottom:40px}
-    @media(min-width:960px){.arguments-grid{grid-template-columns:1fr 1fr}}
+    /* Grid (columna única, ancho de lectura) */
+    .arguments-grid{display:flex;flex-direction:column;gap:14px;padding:22px 0 44px;max-width:860px}
 
-    .argument-card{background:var(--card-bg);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;border-top:5px solid var(--accent)}
-    .product-header{display:flex;align-items:center;gap:18px;padding:18px}
-    .product-image{width:90px;height:90px;object-fit:contain;flex-shrink:0}
-    .product-title h2{margin:0;color:var(--brand);font-size:1.4rem}
-    .product-title .pitch{margin:.25rem 0 0;color:var(--muted);font-style:italic}
-    .argument-body{padding:0 18px 18px}
+    .argument-card{background:var(--card-bg);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;border-top:5px solid var(--accent)}
+    /* Cabecera colapsable (summary) */
+    .product-header{display:flex;align-items:flex-start;gap:16px;padding:16px 46px 16px 18px;position:relative;cursor:pointer;list-style:none;user-select:none;transition:background .15s}
+    .product-header::-webkit-details-marker{display:none}
+    .product-header::after{content:'\f078';font-family:"Font Awesome 6 Free";font-weight:900;position:absolute;right:18px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.9rem;transition:transform .2s}
+    .argument-card[open] .product-header::after{transform:translateY(-50%) rotate(180deg)}
+    .argument-card[open] .product-header{border-bottom:1px solid var(--border-color)}
+    .product-header:hover{background:#f8fafc}
+    .product-header:focus-visible{outline:2px solid var(--accent);outline-offset:-3px;border-radius:10px}
+    .product-icon{width:60px;height:60px;border-radius:14px;display:grid;place-items:center;flex-shrink:0;background:linear-gradient(135deg,var(--brand),#1b5fb8);color:#fff;font-size:1.5rem}
+    .product-title{min-width:0}
+    .card-num{display:inline-block;font-size:.72rem;font-weight:800;color:var(--accent);letter-spacing:.1em}
+    .product-title h2{margin:.05rem 0 .25rem;color:var(--brand);font-size:1.3rem;line-height:1.2}
+    .brands{margin:.1rem 0;color:#374151;font-size:.88rem;font-weight:600}
+    .brands i{color:var(--accent);margin-right:5px}
+    .product-title .pitch{margin:.35rem 0 0;color:var(--muted);font-style:italic;font-size:.94rem}
+
+    .argument-body{padding:8px 18px 18px}
     .argument-section{margin-top:16px}
-    .argument-section h4{display:flex;gap:8px;align-items:center;margin:0 0 8px;color:var(--brand);font-size:1.05rem}
+    .argument-section h4{display:flex;gap:8px;align-items:center;margin:0 0 8px;color:var(--brand);font-size:1.02rem}
     .argument-section h4 i{color:var(--accent)}
-    .argument-section ul{list-style:none;margin:0;padding-left:20px}
-    .argument-section li{position:relative;padding-left:24px;margin:.45rem 0}
+    .argument-section ul{list-style:none;margin:0;padding-left:0}
+    .argument-section li{position:relative;padding-left:24px;margin:.45rem 0;line-height:1.45}
     .argument-section li::before{content:'✓';position:absolute;left:0;top:0;color:var(--accent);font-weight:700}
-    .objection{background:#fff9f3;border-left:3px solid var(--accent);padding:10px;border-radius:6px}
-    .objection strong{color:#111}
+
+    /* Ficha técnica (sin check) */
+    .spec-list li{padding-left:0;margin:.4rem 0}
+    .spec-list li::before{content:none}
+    .spec-list strong{color:var(--brand)}
+
+    /* Venta cruzada */
     .upsell-products{display:flex;gap:8px;flex-wrap:wrap}
-    .upsell-tag{background:#e9ecef;color:#3f3f46;padding:6px 10px;border-radius:999px;font-size:.9rem;font-weight:600}
+    .upsell-tag{background:#eef2f7;color:#334155;padding:6px 10px;border-radius:999px;font-size:.85rem;font-weight:600}
+
+    /* Espacio de opinión / roleplay */
+    .roleplay{margin-top:18px;background:#f8fafc;border:1px solid var(--border-color);border-radius:12px;padding:14px}
+    .roleplay > h4{margin:0 0 6px;color:var(--brand);display:flex;gap:8px;align-items:center;font-size:1.02rem}
+    .roleplay > h4 i{color:var(--accent)}
+    .rp-scenario,.rp-win{border-radius:10px;padding:11px 13px;margin:.55rem 0 0}
+    .rp-scenario{background:#fff9f3;border-left:3px solid var(--accent)}
+    .rp-win{background:#eef4ff;border-left:3px solid var(--brand)}
+    .rp-label{display:inline-block;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-bottom:5px}
+    .rp-label--win{color:var(--brand)}
+    .rp-scenario p,.rp-win p{margin:0;line-height:1.55}
+
+    /* Video */
+    .video-block{margin-top:14px;border:1px solid var(--border-color);border-radius:12px;background:#fff;overflow:hidden}
+    .video-block summary{cursor:pointer;font-weight:700;color:var(--brand);padding:12px 14px;list-style:none;display:flex;align-items:center;gap:8px}
+    .video-block summary::-webkit-details-marker{display:none}
+    .video-block summary i{color:#e11d48}
+    .video-block summary .chev{margin-left:auto;transition:.2s;color:var(--muted);font-size:.8rem}
+    .video-block[open] summary .chev{transform:rotate(180deg)}
+    .video-body{padding:2px 14px 14px}
+    .video-body p{margin:.3rem 0;font-size:.9rem;color:#374151}
+    .video-body p strong{color:var(--brand)}
+    .video-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .video-links a{display:inline-flex;align-items:center;gap:6px;background:#fff5f5;color:#b91c1c;border:1px solid #fecaca;padding:6px 11px;border-radius:8px;font-size:.83rem;font-weight:600;text-decoration:none}
+    .video-links a:hover{background:#fee2e2}
+    .video-links a.site{background:#eef4ff;color:#1d4ed8;border-color:#bfdbfe}
+    .video-links a.site:hover{background:#dbeafe}
+
+    .no-results{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;display:none}
 
     /* Tips */
     .tips-venta{background:#fff;border:1px dashed var(--border-color);border-radius:12px;padding:16px;margin:10px 0 28px}
     .tips-venta h3{margin:0 0 10px;color:var(--brand)}
     .tips-venta ul{margin:0;padding-left:20px}
     .tips-venta li{margin:.35rem 0}
+
+    /* Móvil: chips en una sola línea con scroll horizontal */
+    @media (max-width:768px){
+      .filter-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
+      .filter-bar::-webkit-scrollbar{display:none}
+      .chip{white-space:nowrap;flex:0 0 auto}
+      .arguments-grid{gap:12px}
+      .product-title h2{font-size:1.18rem}
+    }
 
     /* Footer */
     .main-footer{border-top:1px solid var(--border-color);background:#fff}
@@ -80,7 +141,7 @@
     "@context":"https://schema.org",
     "@type":"WebPage",
     "name":"Argumentarios de Venta | Rosso Materiales",
-    "description":"Argumentarios de venta por categoría y marca para equipos comerciales de Rosso Materiales.",
+    "description":"Argumentarios de venta por producto para equipos comerciales de Rosso Materiales.",
     "publisher":{
       "@type":"Organization",
       "name":"Rosso Materiales"
@@ -101,19 +162,25 @@
     <div class="page-header">
       <div class="container">
         <h1>Argumentarios de Venta</h1>
-        <p>La guía definitiva para transformar características en beneficios y cerrar más ventas.</p>
+        <p>Ficha técnica, beneficios, venta cruzada y el argumento ganador para cada producto. La guía para asesorar mejor y cerrar más ventas.</p>
       </div>
     </div>
 
-    <div class="container controls" role="search">
-      <input type="text" id="search-bar" class="search-bar" placeholder="Buscar producto, marca o uso (ej: Holcim, porcelanato, tanque)..." aria-label="Buscar" />
-      <div class="filter-bar" aria-label="Filtros de categoría" id="filterBar">
-        <button class="chip" data-filter="all" aria-pressed="true">Todos</button>
-        <button class="chip" data-filter="grueso">Grueso</button>
-        <button class="chip" data-filter="ferreteria">Ferretería</button>
-        <button class="chip" data-filter="instalaciones">Instalaciones</button>
-        <button class="chip" data-filter="terminaciones">Terminaciones</button>
-        <button class="chip" data-filter="sanitarios">Sanitarios & Grifería</button>
+    <div class="controls-bar">
+      <div class="container controls" role="search">
+        <input type="text" id="search-bar" class="search-bar" placeholder="Buscar producto, marca o uso (ej: porcelanato, FV, Placo, aberturas)..." aria-label="Buscar" />
+        <div class="filter-bar" aria-label="Filtros de categoría" id="filterBar">
+          <button class="chip" data-filter="all" aria-pressed="true">Todos</button>
+          <button class="chip" data-filter="pisos">Pisos y Revestimientos</button>
+          <button class="chip" data-filter="decorativos">Revestimientos Decorativos</button>
+          <button class="chip" data-filter="sanitarios">Sanitarios y Grifería</button>
+          <button class="chip" data-filter="seco">Construcción en Seco</button>
+          <button class="chip" data-filter="aberturas">Aberturas</button>
+        </div>
+        <div class="controls-actions">
+          <p class="result-count" id="resultCount" aria-live="polite"></p>
+          <button type="button" class="toggle-all" id="toggleAll" aria-expanded="false"><i class="fa-solid fa-chevron-down"></i> <span>Expandir todo</span></button>
+        </div>
       </div>
     </div>
 
@@ -121,367 +188,742 @@
       <section class="tips-venta" aria-labelledby="tips-title">
         <h3 id="tips-title"><i class="fa-solid fa-lightbulb"></i> Tips rápidos para vender más</h3>
         <ul>
-          <li>💬 Enfocá el discurso en <strong>beneficios reales</strong> (ahorro, durabilidad, garantía) en lugar de solo características.</li>
-          <li>📈 Mostrá el <strong>costo final por m²</strong> cuando comparás alternativas (ladrillos de 33 vs 30 cm, viguetas largas, etc.).</li>
-          <li>♻️ Integrá argumentos de <strong>sustentabilidad</strong> (ECOPlanet, ahorro energético con aislantes, Rotoplas tricapa).</li>
-          <li>🧩 Practicá <strong>venta cruzada</strong>: cemento + malla + ladrillo, porcelanato + niveladores + pastina epoxi.</li>
+          <li>💬 Usá el <strong>"Espacio de opinión"</strong> de cada ficha: practicá el argumento ganador antes de tenerlo enfrente al cliente.</li>
+          <li>🧩 <strong>Venta obligada de complementarios:</strong> nunca dejes salir un porcelanato sin su pegamento y niveladores, ni un sanitario sin su tapa y sello.</li>
+          <li>💡 "Lo barato sale caro": mostrá el <strong>costo real a futuro</strong> (repuestos, roturas, mano de obra) frente a la diferencia de precio de hoy.</li>
+          <li>▶️ Apoyate en los <strong>videos sugeridos</strong> para capacitarte y para mostrarle al cliente cómo funciona el producto.</li>
         </ul>
       </section>
     </div>
 
     <div class="container arguments-grid" id="arguments-grid">
 
-      <!-- ====== GRUESO ====== -->
-      <div class="argument-card" data-category="grueso" data-search-term="cemento holcim ecoplanet maestro albañileria cpn cpc cpf rapido sostenible">
-        <div class="product-header">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Holcim_Logotipo.png" alt="Bolsa de Cemento Holcim" class="product-image" />
+      <!-- ============ 01 · CERÁMICA ============ -->
+      <details class="argument-card" data-category="pisos" data-search-term="ceramica allpa cortines lourdes canuelas pasta roja pisos revestimientos pei absorcion pared cocina bano economico weber klaukol pastina crucetas llana">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-border-all"></i></div>
           <div class="product-title">
-            <h2>Cemento Holcim (CPN, CPC, CPF, Maestro ECOPlanet)</h2>
-            <p class="pitch">«El cemento justo para cada etapa: estructura, albañilería y obra sustentable.»</p>
+            <span class="card-num">01</span>
+            <h2>Cerámica</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Allpa · Cortines · Lourdes · Cañuelas</p>
+            <p class="pitch">«La opción más económica para terminar una casa, con amplia variedad de diseños.»</p>
           </div>
-        </div>
+        </summary>
         <div class="argument-body">
           <div class="argument-section">
-            <h4><i class="fa-solid fa-star"></i> Beneficios principales</h4>
-            <ul>
-              <li><strong>Rendimiento y resistencia:</strong> la base para estructuras seguras y terminaciones prolijas.</li>
-              <li><strong>ECOPlanet:</strong> menor huella de carbono sin resignar performance.</li>
-              <li><strong>Maestro:</strong> reemplaza cal en morteros: más <em>plasticidad</em> y ahorro de tiempo.</li>
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Pisos y revestimientos de pasta roja.</li>
+              <li><strong>Composición:</strong> Arcilla roja cocida + esmalte.</li>
+              <li><strong>Características:</strong> Bordes redondeados (no rectificados). Absorción de agua media/alta.</li>
+              <li><strong>Aplicación:</strong> Pisos de tránsito medio/bajo y revestimiento de paredes (baños, cocinas).</li>
             </ul>
           </div>
-          <div class="argument-section">
-            <h4><i class="fa-solid fa-shield-halved"></i> Objeción frecuente</h4>
-            <div class="objection"><strong>“Es más caro que otras marcas.”</strong><p>El costo final por m³ se equipara por su mayor rendimiento y menos desperdicio; ganás calidad y durabilidad.</p></div>
-          </div>
-          <div class="argument-section">
-            <h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4>
-            <div class="upsell-products"><span class="upsell-tag">Arena y piedra</span><span class="upsell-tag">Ladrillos</span><span class="upsell-tag">Mallas</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="argument-card" data-category="grueso" data-search-term="cal hidratada mortero revoque grueso tradicional">
-        <div class="product-header">
-          <img src="https://i.ibb.co/393qvr7s/Captura-de-pantalla-2025-10-28-a-la-s-4-10-23-p-m.png" alt="Cal hidratada" class="product-image" />
-          <div class="product-title">
-            <h2>Cal Hidratada (varias marcas)</h2>
-            <p class="pitch">«Mejor trabajabilidad y adherencia en morteros tradicionales.»</p>
-          </div>
-        </div>
-        <div class="argument-body">
           <div class="argument-section">
             <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
             <ul>
-              <li>Mayor <strong>plasticidad</strong> y <strong>adherencia</strong> del mortero.</li>
-              <li>Muros que “respiran”: menos humedad por condensación.</li>
+              <li><strong>Precio:</strong> es la opción más económica para terminar una casa.</li>
+              <li><strong>Colocación:</strong> más blanda para cortar que el porcelanato (menor desgaste de herramientas).</li>
             </ul>
           </div>
           <div class="argument-section">
-            <h4><i class="fa-solid fa-shield-halved"></i> Tip técnico</h4>
-            <div class="objection"><strong>No usar sola ni en hormigón estructural.</strong><p>Ideal combinada con Portland; alternativa moderna: Cemento de Albañilería.</p></div>
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Pegamento Weber / Klaukol</span>
+              <span class="upsell-tag">Pastina clásica</span>
+              <span class="upsell-tag">Cortadora de cerámicos</span>
+              <span class="upsell-tag">Llana dentada Nº8/10</span>
+              <span class="upsell-tag">Crucetas (separadores)</span>
+            </div>
           </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — uso incorrecto</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente se enamoró de una cerámica de pared brillante muy linda y quiere ponerla en el piso del comedor. ¿Se la vendemos?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«Tengo que serte honesto: si ponés esa cerámica de pared en el piso, se te va a rayar a la semana y se puede partir si se cae algo pesado. Las cerámicas tienen un índice de resistencia (PEI). Esa es para pared (solo se toca con la mano). Para el piso, llevate esta otra que tiene tránsito intenso y te va a durar años impecable.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Diferencia entre cerámica y porcelanato" (canal Sodimac o marcas).</p>
+              <p><strong>Foco:</strong> Entender la absorción de agua.</p>
+              <div class="video-links">
+                <a href="https://www.youtube.com/watch?v=wE2Y8xPBn0g" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <div class="argument-card" data-category="grueso" data-search-term="bloques hormigon portantes no portantes u simil piedra">
-        <div class="product-header">
-          <img src="https://varsan.com.ar/wp-content/uploads/2021/05/varsan-premoldeados-ladrillos-hormigon.jpg" alt="Bloques de hormigón" class="product-image" />
+      <!-- ============ 02 · PORCELANATO ============ -->
+      <details class="argument-card" data-category="pisos" data-search-term="porcelanato alberdi san pietro tendenza ilva eliane esmaltado tecnico rectificado alto transito 60x120 80x80 pegamento flex nivelacion arcos cunas disco diamantado">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-border-all"></i></div>
           <div class="product-title">
-            <h2>Bloques de Hormigón (premoldeados)</h2>
-            <p class="pitch">«Velocidad de obra, robustez y terminaciones decorativas.»</p>
+            <span class="card-num">02</span>
+            <h2>Porcelanato</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Alberdi · San Pietro · Tendenza · Ilva · Eliane</p>
+            <p class="pitch">«Máxima durabilidad y estética moderna: prácticamente eterno.»</p>
           </div>
-        </div>
+        </summary>
         <div class="argument-body">
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Porcelanatos esmaltados, técnicos y rectificados.</li>
+              <li><strong>Composición:</strong> Arcillas refinadas cocidas a altísima temperatura.</li>
+              <li><strong>Características:</strong> Absorción casi nula (&lt;0,5%). Muy duros. <em>Rectificado:</em> borde a 90° (junta fina de 2 mm). <em>Sin rectificar:</em> borde curvo (junta más ancha).</li>
+              <li><strong>Aplicación:</strong> Pisos de alto tránsito, locales comerciales, residencias de lujo.</li>
+            </ul>
+          </div>
           <div class="argument-section">
             <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
             <ul>
-              <li><strong>Avance rápido</strong> y menor costo de mano de obra.</li>
-              <li>Opciones <strong>portantes</strong>, livianas y <strong>símil piedra</strong>.</li>
+              <li><strong>Durabilidad:</strong> prácticamente eterno. No se mancha, no se gasta.</li>
+              <li><strong>Estética:</strong> formatos grandes (60x120, 80x80) que agrandan los ambientes.</li>
             </ul>
           </div>
           <div class="argument-section">
-            <h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4>
-            <div class="upsell-products"><span class="upsell-tag">Cemento</span><span class="upsell-tag">Hierros</span><span class="upsell-tag">Malla</span></div>
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios <span style="font-weight:800;color:var(--accent)">¡obligada!</span></h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Pegamento exclusivo porcelanato (Flex)</span>
+              <span class="upsell-tag">Sistema de nivelación (arcos y cuñas)</span>
+              <span class="upsell-tag">Disco diamantado continuo / turbo fino</span>
+            </div>
           </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — la trampa del pegamento</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente gastó una fortuna en porcelanato Ilva pero quiere llevar el pegamento "común" más barato para ahorrar. ¿Qué le decimos?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«¡No lo hagas! El porcelanato no absorbe agua, así que el pegamento común no se agarra. En 6 meses vas a escuchar que los pisos suenan huecos y se empiezan a despegar. Para proteger tu inversión en este piso hermoso, tenés que usar sí o sí pegamento para porcelanato (químico). Lo barato acá te sale carísimo después.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Cómo colocar porcelanatos grandes dimensiones" (canal Weber o Klaukol).</p>
+              <p><strong>Foco:</strong> La importancia del doble encolado y la nivelación.</p>
+              <div class="video-links">
+                <a href="https://www.youtube.com/watch?v=xwoHiVkFtJA" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+                <a href="https://www.youtube.com/watch?v=bsqeHBMnHDY" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <div class="argument-card" data-category="grueso" data-search-term="mallas electrosoldadas 4.2 5 6 8 sima losa contrapiso">
-        <div class="product-header">
-          <img src="https://unimaxar.vtexassets.com/arquivos/ids/158977/HIE.MALL.189-1-.webp?v=638877476902930000" alt="Malla electrosoldada" class="product-image" />
+      <!-- ============ 03 · PISOS VINÍLICOS SPC ============ -->
+      <details class="argument-card" data-category="pisos" data-search-term="pisos vinilicos spc flooring click flotante rigido stone plastic composite piedra pvc resistente agua zocalos manta base adhesivo montaje mascotas">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
           <div class="product-title">
-            <h2>Mallas Electrosoldadas (Acerbrag / Acindar)</h2>
-            <p class="pitch">«La base invisible que evita fisuras y asegura la losa.»</p>
+            <span class="card-num">03</span>
+            <h2>Pisos Vinílicos (SPC)</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> SPC Flooring</p>
+            <p class="pitch">«Transformá tu casa en un día: rígido, sistema click y 100% resistente al agua.»</p>
           </div>
-        </div>
+        </summary>
         <div class="argument-body">
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Pisos vinílicos rígidos sistema click (SPC).</li>
+              <li><strong>Composición:</strong> SPC = Stone Plastic Composite (polvo de piedra calcárea + PVC). No es el viejo piso de goma.</li>
+              <li><strong>Características:</strong> Rígido, encastre "click" (flotante), 100% resistente al agua y a los golpes.</li>
+              <li><strong>Aplicación:</strong> Pisos interiores (incluso baños y cocinas). Se puede colocar directo sobre cerámicas viejas si están niveladas.</li>
+            </ul>
+          </div>
           <div class="argument-section">
             <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
             <ul>
-              <li>Distribuye tensiones y <strong>evita agrietamientos</strong>.</li>
-              <li>Medidas estándar 2,00×6,00 y 2,40×6,00; Ø 4.2 a 8 mm.</li>
+              <li><strong>Transformación express:</strong> cambiás toda la cara de la casa en un día, sin obra, sin escombros y sin polvo.</li>
+              <li><strong>Mantenimiento cero:</strong> apto para mascotas, no se raya fácil y se limpia solo con trapo húmedo.</li>
             </ul>
           </div>
           <div class="argument-section">
-            <h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4>
-            <div class="upsell-products"><span class="upsell-tag">Viguetas</span><span class="upsell-tag">Bovedillas</span><span class="upsell-tag">Cemento</span></div>
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Zócalos EPS / PVC</span>
+              <span class="upsell-tag">Varillas de transición</span>
+              <span class="upsell-tag">Manta base</span>
+              <span class="upsell-tag">Adhesivo de montaje</span>
+              <span class="upsell-tag">Cúter y escuadra</span>
+            </div>
           </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — derribar el prejuicio del "plástico"</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente quiere cambiar el piso pero le tiene miedo al vinílico porque lo asocia al de rollo viejo que se despegaba, se marcaba con los tacos y se arruinaba con el agua. ¿Cómo se lo vendemos?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«Olvidate de ese vinílico viejo, esto es tecnología SPC (piedra y PVC). Es un piso rígido y de altísima resistencia. El mayor beneficio es que te ahorrás la obra: no tenés que picar el piso viejo, no sacás escombros y en 24 horas tenés la casa nueva. Además, a diferencia del piso flotante de madera tradicional, este es 100% resistente al agua; si se inunda el lavarropas o baldeás de más, al piso no le pasa absolutamente nada.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Instalación y ventajas de pisos SPC sistema click".</p>
+              <p><strong>Foco:</strong> Ver que no se rompe nada, no hay polvo y resisten el agua.</p>
+              <div class="video-links">
+                <a href="https://www.youtube.com/watch?v=9vs1qzQqnfE&t=148s" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <div class="argument-card" data-category="grueso" data-search-term="viguetas tensolite losa alivianada calculo separacion 43 50">
-        <div class="product-header">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Logo-Isologo-Horizontal_tensolite_color.png" alt="Tensolite" class="product-image" />
+      <!-- ============ 04 · GRIFERÍAS Y CANILLAS ============ -->
+      <details class="argument-card" data-category="sanitarios" data-search-term="griferias canillas fv vasser tigre latyn 70/30 cierre ceramico compresion bronce laton bano cocina lavadero flexibles teflon sellador roscas sifon sopapa garantia repuestos">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-faucet-drip"></i></div>
           <div class="product-title">
-            <h2>Viguetas Tensolite</h2>
-            <p class="pitch">«Losa segura, montada en menos tiempo y con menor peso.»</p>
+            <span class="card-num">04</span>
+            <h2>Griferías y Canillas</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> FV · Vasser · Tigre · Latyn · 70/30</p>
+            <p class="pitch">«Cierre cerámico de media vuelta: suave, sin goteos y con repuestos asegurados.»</p>
           </div>
-        </div>
+        </summary>
         <div class="argument-body">
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Griferías para baño, cocina y lavadero (cierre cerámico y compresión).</li>
+              <li><strong>Composición:</strong> Cuerpos de bronce/latón (alta gama) o aleaciones/ABS (económicas).</li>
+              <li><strong>Características:</strong> <em>Cierre tradicional (cuerito):</em> varias vueltas para cerrar. <em>Cierre cerámico:</em> cierra con un cuarto o media vuelta; los discos internos no se desgastan por fricción de goma.</li>
+              <li><strong>Aplicación:</strong> Lavatorios, duchas, bidets y mesadas de cocina.</li>
+            </ul>
+          </div>
           <div class="argument-section">
             <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
             <ul>
-              <li>Pretensado = <strong>más resistencia</strong> con menos peso.</li>
-              <li>Separación típica 43–50 cm (según bovedilla).</li>
+              <li><strong>Confort:</strong> el cierre cerámico es suave, no hay que hacer fuerza (ideal para chicos o gente mayor) y no gotea.</li>
+              <li><strong>Respaldo:</strong> marcas como FV garantizan repuestos por décadas.</li>
             </ul>
           </div>
           <div class="argument-section">
-            <h4><i class="fa-solid fa-shield-halved"></i> Objeción</h4>
-            <div class="objection"><strong>“Un herrero me arma algo similar.”</strong><p>Sin control de fábrica no se garantiza el cálculo de carga ni el pretensado. Tensolite asegura calidad y respaldo.</p></div>
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Flexibles de acero inox / cobre</span>
+              <span class="upsell-tag">Teflón alta densidad</span>
+              <span class="upsell-tag">Sellador de roscas líquido</span>
+              <span class="upsell-tag">Sifones y sopapas</span>
+              <span class="upsell-tag">Llave francesa / pico de loro</span>
+            </div>
           </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — lo barato sale caro</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente está construyendo su casa definitiva, pero para ahorrar quiere llevar una grifería genérica en lugar de una primera marca como FV o Vasser. ¿Cómo lo hacemos invertir en calidad?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«La grifería barata te salva el apuro hoy, pero pensá que va empotrada en la pared de tu baño nuevo. Cuando esa canilla genérica empiece a gotear en un año, no vas a conseguir el repuesto: vas a tener que romper la cerámica y la pared para cambiar el cuadro de ducha entero. Llevando FV pagás un poquito más hoy, pero comprás la tranquilidad de que si en 15 años necesitás un repuesto lo vas a conseguir, aparte tenés garantía de 5 años.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Diferencia entre cierre cerámico y cierre tradicional FV".</p>
+              <p><strong>Foco:</strong> Mostrar la suavidad del cerámico de media vuelta vs. la gomita que se gasta.</p>
+              <div class="video-links">
+                <a href="https://www.youtube.com/watch?v=yo-f43VyyWg" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+                <a href="https://www.youtube.com/watch?v=AE4JJOxM6ME" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+                <a href="https://www.vasser.com.ar/" target="_blank" rel="noopener" class="site"><i class="fa-solid fa-globe"></i> Página Vasser</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <div class="argument-card" data-category="grueso" data-search-term="bovedillas eps telgopor aislacion termica acustica losa alivianada">
-        <div class="product-header">
-          <img src="https://bercovichsa.vtexassets.com/arquivos/ids/167881-800-800?v=638728052033830000&width=800&height=800&aspect=true" alt="Bovedillas EPS" class="product-image" />
+      <!-- ============ 05 · LOSAS DE BAÑO (SANITARIOS) ============ -->
+      <details class="argument-card" data-category="sanitarios" data-search-term="losas bano sanitarios inodoro deposito bidet ferrum roca capea mochila descarga dual doble ahorro agua porcelana vitrificada tapa asiento aro cera manguito fuelle antihongos">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-toilet"></i></div>
           <div class="product-title">
-            <h2>Bovedillas EPS (para viguetas)</h2>
-            <p class="pitch">«Livianas, aislantes y rápidas de colocar: confort y ahorro.»</p>
+            <span class="card-num">05</span>
+            <h2>Losas de Baño (Sanitarios)</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Ferrum · Roca · Capea</p>
+            <p class="pitch">«Porcelana sanitaria que se mantiene impecable por décadas, con ahorro de agua.»</p>
           </div>
-        </div>
+        </summary>
         <div class="argument-body">
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Inodoros (largos/cortos), depósitos y bidets.</li>
+              <li><strong>Composición:</strong> Porcelana sanitaria vitrificada a alta temperatura.</li>
+              <li><strong>Características:</strong> Esmaltes de altísima resistencia a químicos y manchas. Descarga simple o dual (ahorro de agua). <em>Inodoro largo:</em> depósito (mochila) apoyado atrás. <em>Inodoro corto:</em> depósito embutido en la pared o válvula tipo botón.</li>
+              <li><strong>Aplicación:</strong> Cuartos de baño.</li>
+            </ul>
+          </div>
           <div class="argument-section">
             <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
             <ul>
-              <li>Reduce peso estructural y mejora <strong>aislación</strong>.</li>
-              <li>Instalación simple; cortes limpios y sin escombros.</li>
+              <li><strong>Higiene:</strong> superficie no porosa, evita bacterias y malos olores.</li>
+              <li><strong>Ecología / ahorro:</strong> la descarga doble permite usar 3 o 6 litros, ahorrando miles de litros de agua al año.</li>
             </ul>
           </div>
           <div class="argument-section">
-            <h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4>
-            <div class="upsell-products"><span class="upsell-tag">Viguetas</span><span class="upsell-tag">Malla</span><span class="upsell-tag">Cemento</span></div>
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios <span style="font-weight:800;color:var(--accent)">¡obligada!</span></h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Asiento / tapa (caída amortiguada)</span>
+              <span class="upsell-tag">Aro de cera / sello</span>
+              <span class="upsell-tag">Tornillos de fijación de bronce</span>
+              <span class="upsell-tag">Fuelle de conexión</span>
+              <span class="upsell-tag">Flexible para mochila</span>
+              <span class="upsell-tag">Masilla y sellador antihongos</span>
+            </div>
           </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — vender diseño y funcionamiento</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente duda si llevar la línea más económica o invertir un poco más y pasar a una línea media/alta de Ferrum o Roca. ¿Qué beneficios le vendemos?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«El baño es una de las pocas cosas de la casa que se hace para no tocarse por 20 años. Una línea superior de Ferrum o Roca le da un salto de categoría visual a todo el baño (diseños más modernos y limpios), la mochila tiene un sistema de descarga mucho más eficiente que no se tranca, y el esmalte es de mejor calidad: nunca se te va a poner amarillento ni poroso. Esa línea de sarro se forma rápido en las losas económicas, a diferencia de los modelos que ofrecemos en Rosso. El sanitario se paga solo con los años que te dura impecable.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Diferencia entre inodoro corto y largo" o "Sistemas de descarga doble Ferrum/Roca" + manguito de conexión.</p>
+              <p><strong>Foco:</strong> Entender qué lleva mochila y qué va a la pared, y el ahorro de agua.</p>
+              <div class="video-links">
+                <a href="https://www.youtube.com/watch?v=NNSZgJwd8xI" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+                <a href="https://www.youtube.com/watch?v=GuemVEjaqzI" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <div class="argument-card" data-category="grueso" data-search-term="membranas impermeabilizantes asfaltica liquida autoadhesiva tectape sika">
-        <div class="product-header">
-          <img src="https://arcencohogar.vtexassets.com/arquivos/ids/282744-1600-1600?v=637651636916500000&width=1600&height=1600&aspect=true" alt="Membranas" class="product-image" />
+      <!-- ============ 06 · BACHAS DE BAÑO Y LAVATORIO ============ -->
+      <details class="argument-card" data-category="sanitarios" data-search-term="bachas bano lavatorio johnson roca ferrum dacoord apoyo embutir bajo mesada acero inoxidable loza sopapa click clack sifon griferia alta pared silicona fungicida">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-sink"></i></div>
           <div class="product-title">
-            <h2>Membranas Impermeabilizantes </h2>
-            <p class="pitch">«La mejor defensa contra filtraciones en techos y terrazas.»</p>
+            <span class="card-num">06</span>
+            <h2>Bachas de Baño y Lavatorio</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Johnson · Roca · Ferrum · Dacoord</p>
+            <p class="pitch">«Diseño y funcionalidad para cada mesada: apoyo, embutir o bajo mesada.»</p>
           </div>
-        </div>
+        </summary>
         <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Soluciones: asfáltica, líquida y autoadhesiva.</li><li>Mayor durabilidad con <strong>imprimación</strong> previa.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4><div class="upsell-products"><span class="upsell-tag">Imprimación</span><span class="upsell-tag">Rodillos</span><span class="upsell-tag">Selladores</span></div></div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Bachas de apoyo, de embutir y bajo mesada.</li>
+              <li><strong>Composición:</strong> Porcelana sanitaria (Roca/Ferrum), acero inoxidable (Johnson), loza/sintéticas (Dacoord).</li>
+              <li><strong>Características:</strong> Distintos formatos de instalación. Las de apoyo van sobre la mesada; las bajo mesada quedan ocultas dando más espacio útil.</li>
+              <li><strong>Aplicación:</strong> Mesadas de baño, toilettes y lavaderos.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
+            <ul>
+              <li><strong>Personalización:</strong> permite adaptar el baño a cualquier estilo (minimalista, rústico, moderno).</li>
+              <li><strong>Limpieza:</strong> las bachas modernas tienen curvas suaves que no acumulan sarro.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Sopapa sistema Click-Clack</span>
+              <span class="upsell-tag">Sifón (cromado o plástico)</span>
+              <span class="upsell-tag">Grifería alta / de pared</span>
+              <span class="upsell-tag">Silicona neutra fungicida</span>
+            </div>
+          </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — el error de la grifería</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente se enamora de una bacha de apoyo (las que van arriba de la mesada) pero quiere usar una canilla bajita estándar que ya tiene comprada. ¿Por qué debemos frenarlo y asesorarlo?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«Espectacular la bacha de apoyo, le va a dar un toque de diseño increíble a tu baño. Pero ojo: no podés usar la canilla bajita tradicional. Si ponés una canilla corta con esta bacha alta, literalmente no te va a entrar la mano para lavarte o vas a salpicar todo el mueble por afuera. Para que esto luzca de revista y sea súper cómodo, necesitás la grifería de cuello alto (o de pared) que hace juego. Llevate el combo completo así te queda perfecto y funcional.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Tipos de bachas para baño: apoyo vs embutir".</p>
+              <p><strong>Foco:</strong> Estética y funcionalidad según el mueble.</p>
+              <div class="video-links">
+                <a href="https://www.facebook.com/RossoMateriales/videos/bacha-de-encastre-o-de-apoyo-esa-es-la-cuesti%C3%B3n-si-te-va-el-dise%C3%B1o-la-bacha-de-a/1241705010450802/" target="_blank" rel="noopener" class="site"><i class="fa-brands fa-facebook"></i> Video Rosso</a>
+                <a href="https://www.youtube.com/watch?v=geqt9OppalY" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <!-- ====== FERRETERÍA ====== -->
-      <div class="argument-card" data-category="ferreteria" data-search-term="chapas ternium techos sinusoidal trapezoidal cincalum prepintada c25 c27">
-        <div class="product-header">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGntGWXmbJ9NcrXXfppOYvU1G7rWKIGooAew&s" alt="Ternium" class="product-image" />
-          <div class="product-title"><h2>Chapas para Techos Ternium</h2><p class="pitch">«Resistencia, variedad estética y colocación rápida.»</p></div>
-        </div>
+      <!-- ============ 07 · REVESTIMIENTO WALL PANEL ============ -->
+      <details class="argument-card" data-category="decorativos" data-search-term="revestimiento wall panel vigorita wpc pvc acanalado varillado madera interior respaldo cama tv living adhesivo montaje cinta bifaz zocalos perfiles">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-panorama"></i></div>
+          <div class="product-title">
+            <span class="card-num">07</span>
+            <h2>Revestimiento Wall Panel</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Vigorita</p>
+            <p class="pitch">«Lujo instantáneo estilo varillado de madera, pegado directo sobre la pared.»</p>
+          </div>
+        </summary>
         <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Ondulada y trapezoidal (T101).</li><li>Galvanizada, Cincalum, Prepintada y translúcida.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-circle-info"></i> Tip</h4><div class="objection"><strong>Retirar film protector</strong> al instalar y limpiar virutas para evitar oxidación.</div></div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Paneles acanalados de WPC / PVC para interior.</li>
+              <li><strong>Composición:</strong> WPC (Wood Plastic Composite — madera y polímeros) o PVC de alta densidad.</li>
+              <li><strong>Características:</strong> Listones acanalados (efecto varillado de madera). Resistente a la humedad, lavable y acústico.</li>
+              <li><strong>Aplicación:</strong> Decoración de interiores: respaldos de cama, paredes de TV, recepciones, livings.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
+            <ul>
+              <li><strong>Lujo instantáneo:</strong> logra el diseño moderno de moda (varillado de madera) sin pagar a un carpintero.</li>
+              <li><strong>Obra seca y limpia:</strong> se corta con sierra y se pega directo sobre la pared existente. Oculta imperfecciones.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Adhesivo de montaje (PU / silicona neutra)</span>
+              <span class="upsell-tag">Cinta bifaz</span>
+              <span class="upsell-tag">Sierra de diente fino</span>
+              <span class="upsell-tag">Zócalos a tono</span>
+              <span class="upsell-tag">Perfiles de terminación L / U</span>
+            </div>
+          </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — la excusa de la pared fea</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente viene a comprar enduido y pintura porque tiene una pared del living fea, desnivelada o con roces, pero le da pereza hacer todo el trabajo. ¿Cómo le hacemos up-selling a Wall Panel Vigorita?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«Enduir, lijar (llenar de polvo la casa) y pintar te va a llevar días y siempre se va a notar la imperfección. Llevate los Wall Panels de Vigorita: los pegás directo sobre esa pared fea con adhesivo de montaje y en 2 horas transformás tu living en una casa de revista. Tapás el problema de raíz, no ensuciás nada y le sumás muchísimo valor estético a tu propiedad.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Transformación de ambiente con Wall Panel WPC" (suelen ser reels de "antes y después").</p>
+              <p><strong>Foco:</strong> El impacto visual inmediato y lo fácil que es pegarlo en la pared.</p>
+              <div class="video-links">
+                <a href="https://www.youtube.com/shorts/HNhqwfm7wEA" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <!-- <div class="argument-card" data-category="ferreteria" data-search-term="pinturas tersuave sinteplast latex interior exterior esmalte antioxidante">
-        <div class="product-header">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Paint_buckets.jpg" alt="Pinturas" class="product-image" />
-          <div class="product-title"><h2>Pinturas (Tersuave / Sinteplast / Sherwin / Alba)</h2><p class="pitch">«Renová espacios con productos para cada superficie.»</p></div>
-        </div>
+      <!-- ============ 08 · PLACAS UV (SÍMIL MÁRMOL) ============ -->
+      <details class="argument-card" data-category="decorativos" data-search-term="placas uv simil marmol vigorita pvc brillante calacatta revestimiento bano ducha cocina hall impermeable ignifuga liviana perfiles aluminio ventosas adhesivo">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-gem"></i></div>
+          <div class="product-title">
+            <span class="card-num">08</span>
+            <h2>Placas UV (Símil Mármol)</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Vigorita</p>
+            <p class="pitch">«El look del mármol Calacatta sin escombros ni volquetas.»</p>
+          </div>
+        </summary>
         <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Látex interior/exterior, esmaltes y antióxidos.</li><li>Claves: <strong>preparación</strong> de superficie + fijador.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4><div class="upsell-products"><span class="upsell-tag">Fijador</span><span class="upsell-tag">Enduido</span><span class="upsell-tag">Pinceles</span></div></div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Placas de PVC con recubrimiento brillante UV imitación piedra/mármol.</li>
+              <li><strong>Composición:</strong> Lámina de PVC de alta densidad con impresión digital y capa protectora de curado UV (brillo tipo cristal).</li>
+              <li><strong>Características:</strong> Formato grande (aprox. 1,22 × 2,44 m). Totalmente impermeable, ignífuga y súper liviana (3-4 mm de espesor).</li>
+              <li><strong>Aplicación:</strong> Revestimiento de baños (incluso dentro de la ducha), cocinas, halls de entrada y locales comerciales.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
+            <ul>
+              <li><strong>Presupuesto terrenal:</strong> logra la apariencia de un mármol Calacatta real por una fracción del costo y del peso.</li>
+              <li><strong>Renovación sin escombros:</strong> se pega directamente sobre los azulejos viejos de un baño.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios <span style="font-weight:800;color:var(--accent)">obligatorios</span></h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Adhesivo de montaje (¡mucho!)</span>
+              <span class="upsell-tag">Pistola aplicadora</span>
+              <span class="upsell-tag">Ventosas</span>
+              <span class="upsell-tag">Perfiles de aluminio (H, esquineros)</span>
+              <span class="upsell-tag">Sellador de silicona</span>
+            </div>
+          </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — el miedo a romper el baño</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«Un cliente quiere modernizar el baño pero no quiere soportar a los albañiles picando, el polvo por toda la casa y estar sin baño 15 días. ¿Qué le ofrecemos?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«No piques nada. Llevate las Placas UV Vigorita símil mármol: las pegás directamente arriba de la cerámica vieja que tenés hoy. En un fin de semana cambiás tu baño de los años 80 a un baño de hotel 5 estrellas sin levantar una sola bolsa de escombros. Te ahorrás la volqueta, el albañil, la pastina y el dolor de cabeza. Es comprar y disfrutar el mismo día.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Instalación de láminas de PVC símil mármol" o "Renovación de baño sin romper azulejos".</p>
+              <p><strong>Foco:</strong> Ver cómo una sola placa gigante cubre todo sin escombros.</p>
+              <div class="video-links">
+                <a href="https://www.youtube.com/watch?v=qC34FV3xLY0" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+                <a href="https://www.youtube.com/watch?v=9ux1vG27EYw" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div> -->
+      </details>
 
-      <!-- <div class="argument-card" data-category="ferreteria" data-search-term="selladores sika silicona neutra aceticapu poliuretanico cintas asfalticas">
-        <div class="product-header">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Sika_Logo.svg" alt="Sika" class="product-image" />
-          <div class="product-title"><h2>Selladores y Cintas (Sika / Tectape)</h2><p class="pitch">«Sellados duraderos para evitar filtraciones y fisuras.»</p></div>
-        </div>
+      <!-- ============ 09 · CIELORRASO DE PVC ============ -->
+      <details class="argument-card" data-category="seco" data-search-term="cielorraso pvc barbieri machihembrado alero galeria exterior intemperie humedad ignifugo perfiles galvanizados molduras tornillos t1 t2 mantenimiento cero">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-grip-lines"></i></div>
+          <div class="product-title">
+            <span class="card-num">09</span>
+            <h2>Cielorraso de PVC</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Barbieri</p>
+            <p class="pitch">«Cero mantenimiento para galerías y aleros: no lo ataca la humedad.»</p>
+          </div>
+        </summary>
         <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Silicona neutra y acética; <strong>PU pintable</strong>.</li><li>Cinta asfáltica para reparaciones rápidas.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-circle-question"></i> Objeción</h4><div class="objection"><strong>“¿Cuál uso en baño?”</strong><p>Neutra para espejos y metales sensibles; acética para uso general (no pintable).</p></div></div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Placas machihembradas de PVC.</li>
+              <li><strong>Composición:</strong> PVC extrudado alveolar.</li>
+              <li><strong>Características:</strong> No lo ataca la humedad, ni los insectos ni los hongos. Ignífugo.</li>
+              <li><strong>Aplicación:</strong> Cielorrasos bajo techo, galerías semi-cubiertas, aleros y estaciones de servicio.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
+            <ul>
+              <li><strong>Cero mantenimiento:</strong> una vez instalado, no requiere pintura ni barniz nunca más.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Perfiles galvanizados (soleras/montantes)</span>
+              <span class="upsell-tag">Molduras perimetrales Barbieri</span>
+              <span class="upsell-tag">Tornillos T1 y T2</span>
+            </div>
+          </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — PVC vs. machimbre de madera en exteriores</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente está haciendo el techo de una galería exterior o un alero y viene a pedir machimbre de pino porque "es lo clásico". ¿Cómo lo pasamos al PVC Barbieri?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«El pino es lindo el primer año, pero al estar afuera la humedad y el sol lo castigan. Vas a tener que subirte a una escalera a lijarlo y barnizarlo todos los años si no querés que se ponga negro o se pudra. Con el cielorraso de PVC Barbieri lo ponés hoy y te olvidás para el resto de tu vida. Si se ensucia con tierra o telarañas, le pasás un trapo o un manguerazo y queda nuevo.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Mantenimiento cero con cielorrasos de PVC exterior".</p>
+              <p><strong>Foco:</strong> Mostrar la resistencia a la intemperie (humedad exterior).</p>
+              <div class="video-links">
+                <a href="https://www.youtube.com/watch?v=cKOfR-_ya7s" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div> -->
+      </details>
 
-      <div class="argument-card" data-category="ferreteria" data-search-term="enduido revear klaukol interior exterior masilla pared fijador lijas">
-        <div class="product-header">
-          <img src="https://sika.scene7.com/is/image/sikacs/ar-2022-REVEAR-3D-DUAL-MEDIANERAS-25Kg-RGB-00566855:1-1?wid=480&hei=480&fit=crop%2C1" alt="Enduido" class="product-image" />
-          <div class="product-title"><h2>Enduidos (Revear / Klaukol / Tersuave)</h2><p class="pitch">«Base perfecta para un acabado de pintura impecable.»</p></div>
-        </div>
+      <!-- ============ 10 · PLACAS DE YESO ============ -->
+      <details class="argument-card" data-category="seco" data-search-term="placas yeso placo durlock construccion seco estandar gris rh verde humedad rf rosa fuego tabique cielorraso soleras montantes omegas tornillos t1 t2 cinta papel masilla lana vidrio">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-trowel-bricks"></i></div>
+          <div class="product-title">
+            <span class="card-num">10</span>
+            <h2>Placas de Yeso (Construcción en Seco)</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Placo</p>
+            <p class="pitch">«Construcción en seco rápida y limpia: una pared en 4 horas.»</p>
+          </div>
+        </summary>
         <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Interior y exterior; fácil de aplicar y lijar.</li><li>Preparación: fijador si la pared está entizada.</li></ul></div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Placas estándar (GR), resistentes a la humedad (RH · verdes) y resistentes al fuego (RF · rosas).</li>
+              <li><strong>Composición:</strong> Núcleo de yeso bihidratado revestido en ambas caras con papel celulosa especial.</li>
+              <li><strong>Características:</strong> <em>Gris (estándar):</em> dormitorios, livings, tabiques secos. <em>Verde (RH):</em> con silicona, para baños y cocinas. <em>Rosa (RF):</em> con fibra de vidrio, para salidas de escape, cocinas industriales o chimeneas.</li>
+              <li><strong>Aplicación:</strong> Paredes interiores, cielorrasos y revestimientos.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
+            <ul>
+              <li><strong>Velocidad y limpieza:</strong> construís una pared en 4 horas sin agua ni cemento.</li>
+              <li><strong>Versatilidad:</strong> pasás los caños de luz y agua por dentro de la estructura sin picar la pared.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada — el "sistema" completo</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Soleras · montantes · omegas</span>
+              <span class="upsell-tag">Tornillos T1 (metal-metal) y T2 (placa-metal)</span>
+              <span class="upsell-tag">Cinta de papel (nunca malla)</span>
+              <span class="upsell-tag">Masilla lista para usar · lija</span>
+              <span class="upsell-tag">Lana de vidrio (aislación)</span>
+            </div>
+          </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — el mito de la pared "de cartón"</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente quiere dividir una habitación pero no quiere usar placas de yeso porque dice que son "de cartón", que si te apoyás se rompen y que no puede colgar el televisor. ¿Cómo le damos seguridad estructural?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«Es un mito por instalaciones mal hechas. La placa Placo no trabaja sola, trabaja sobre un esqueleto de acero. Si respetamos la separación de los perfiles (cada 40 cm), la pared queda súper sólida, podés empujarla tranquilo. Y respecto al televisor, si prevemos dónde va a ir antes de cerrar la pared le ponemos un refuerzo de madera o metal por dentro, o usamos los tarugos especiales para yeso ("paraguas"), y podés colgar el Smart TV de 65 pulgadas o una alacena pesada sin que se mueva un milímetro. Es tecnología de construcción mundial.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Diferencia entre placas de yeso estándar, antihumedad y resistente al fuego".</p>
+              <p><strong>Foco:</strong> Entender que cada placa tiene un uso específico y no se puede usar cualquiera en cualquier lado.</p>
+              <div class="video-links">
+                <a href="https://www.placo.com.ar/Nuestros-productos" target="_blank" rel="noopener" class="site"><i class="fa-solid fa-globe"></i> Página Placo</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <!-- ====== INSTALACIONES ====== -->
-      <div class="argument-card" data-category="instalaciones" data-search-term="tanques rotoplas tricapa vertical horizontal precons">
-        <div class="product-header">
-          <img src="https://rotoplas.com.ar/wp-content/uploads/2017/09/Tinaco.jpg" alt="Rotoplas" class="product-image" />
-          <div class="product-title"><h2>Tanques de Agua Rotoplas / Precons</h2><p class="pitch">«Agua segura siempre: más limpia, sin algas, con garantía.»</p></div>
-        </div>
+      <!-- ============ 11 · PLACAS CEMENTICIAS ============ -->
+      <details class="argument-card" data-category="seco" data-search-term="placas cementicias volcanboard superboard cemento autoclavado exterior fachada steel framing intemperie impacto pgc pgu tornillos aletas cinta fibra vidrio base coat">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-industry"></i></div>
+          <div class="product-title">
+            <span class="card-num">11</span>
+            <h2>Placas Cementicias</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Volcanboard · Superboard</p>
+            <p class="pitch">«Resistencia extrema para exteriores: como cemento, en sistema seco.»</p>
+          </div>
+        </summary>
         <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Tricapa bloquea luz: evita algas.</li><li>Modelos verticales y horizontales; 400–2500 L.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4><div class="upsell-products"><span class="upsell-tag">Flotante</span><span class="upsell-tag">Conexiones</span><span class="upsell-tag">Bomba</span></div></div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Placas planas de cemento autoclavado.</li>
+              <li><strong>Composición:</strong> Cemento, arena, cuarzo y fibras de celulosa, curadas en horno de alta presión (autoclave).</li>
+              <li><strong>Características:</strong> Extremadamente duras, no se pudren, no se oxidan, incombustibles. Resistentes al impacto y al agua directa.</li>
+              <li><strong>Aplicación:</strong> Exteriores (fachadas, cerramientos, aleros), áreas muy húmedas o paredes que requieren máxima resistencia a golpes (galpones).</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
+            <ul>
+              <li><strong>Resistencia extrema:</strong> equivale a construir con mampostería pero en sistema seco (steel framing). Soporta lluvias, granizo y sol directo.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada — distinta a la del yeso</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Perfilería estructural (PGC / PGU)</span>
+              <span class="upsell-tag">Tornillos con aletas</span>
+              <span class="upsell-tag">Cinta de fibra de vidrio</span>
+              <span class="upsell-tag">Base Coat (masilla exterior cementicia)</span>
+            </div>
+          </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — el peligro de improvisar afuera</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente está cerrando un quincho del lado de afuera y quiere llevar placas de yeso antihumedad (las verdes) porque son más baratas que las cementicias. ¿Por qué se lo tenemos que prohibir comercialmente?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«La placa verde es resistente a la humedad del vapor (para un baño), pero no a la lluvia directa. Si ponés placa de yeso afuera, al primer temporal se te va a derretir como una aspirina y vas a tirar toda la plata de la estructura a la basura. Para afuera, sí o sí tenés que llevar placa cementicia: es un poco más cara hoy, pero es literalmente una pared de cemento. Le puede llover encima 20 años que no se va a deshacer nunca. No juegues con el exterior.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Fachadas con placas cementicias" o "Diferencia entre placa de yeso y placa de cemento".</p>
+              <p><strong>Foco:</strong> Ver la resistencia a golpes y que pueden ir a la intemperie total.</p>
+              <div class="video-links">
+                <a href="https://www.placo.com.ar/Nuestros-productos/placas/placo-volcanboard" target="_blank" rel="noopener" class="site"><i class="fa-solid fa-globe"></i> Página Placo</a>
+                <a href="https://www.youtube.com/shorts/r6hzRmdmJkU" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <div class="argument-card" data-category="instalaciones" data-search-term="canerias gruesas ips tigre pvc polietileno k6 k10 cloacal 110 160">
-        <div class="product-header">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOMyP_i80Kn90hcrsEQEWILSmLv_9qouuUgA&s" alt="Cañerías" class="product-image" />
-          <div class="product-title"><h2>Cañerías Gruesas (IPS / Tigre / Awaduct)</h2><p class="pitch">«Agua y cloacas sin pérdidas: materiales certificados.»</p></div>
-        </div>
+      <!-- ============ 12 · PUERTAS ============ -->
+      <details class="argument-card" data-category="aberturas" data-search-term="puertas oblak el italo novo aberturas herfasa placa exterior chapa inyectada poliuretano interior mdf aislacion termica seguridad espuma expansible cunas cerraduras picaportes">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-door-open"></i></div>
+          <div class="product-title">
+            <span class="card-num">12</span>
+            <h2>Puertas</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Oblak · El Italo · Novo Aberturas · Herfasa · Puerta placa</p>
+            <p class="pitch">«Chapa inyectada con poliuretano: seguridad y aislación térmica real.»</p>
+          </div>
+        </summary>
         <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Entrada de agua PEBD K4–K10.</li><li>Cloacal PVC 110/160 mm con adhesivo o junta elástica.</li></ul></div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Puertas de exterior (chapa inyectada) e interior (puerta placa).</li>
+              <li><strong>Composición:</strong> <em>Exterior:</em> chapa de acero (calibre 20 o 18) rellena de espuma de poliuretano expandido de alta densidad. <em>Interior:</em> bastidor de madera (pino/álamo) con panel de abeja celulósico, revestido en MDF.</li>
+              <li><strong>Características:</strong> Líneas estándar con marcos reforzados que garantizan un cierre hermético y parejo.</li>
+              <li><strong>Aplicación:</strong> Frentes de calle, entradas de patio, división de dormitorios y baños.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
+            <ul>
+              <li><strong>Seguridad:</strong> las de exterior son robustas y macizas, resistiendo mejor los impactos.</li>
+              <li><strong>Aislación (la clave):</strong> el relleno no es para dar peso, es para aislar temperatura y sonido.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Espuma de poliuretano expansible</span>
+              <span class="upsell-tag">Cuñas de nivelación</span>
+              <span class="upsell-tag">Cerraduras de seguridad</span>
+              <span class="upsell-tag">Picaportes</span>
+              <span class="upsell-tag">Esmalte sintético · pinceles · cinta</span>
+            </div>
+          </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — vender confort térmico en nuestra zona</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente busca una puerta de exterior económica de chapa simple (hueca) para el frente porque está cuidando el presupuesto. ¿Cómo lo pasamos a una puerta inyectada?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«Una puerta de chapa simple al sol se convierte en una plancha caliente que te mete todo el calor a la casa. Para nuestra zona, con veranos bravos, necesitás sí o sí una puerta inyectada con poliuretano de cualquiera de las marcas que trabajamos. El poliuretano funciona como la pared de una heladera: te aísla el calor de afuera y te mantiene el fresco del aire adentro, ahorrándote luz. Además, al ser maciza por dentro, es mucho más segura contra golpes o barretas. Es la puerta ideal y más inteligente para el frente de cualquier casa de familia.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Beneficios de las puertas de chapa inyectada" o "Cómo instalar puertas con espuma de poliuretano".</p>
+              <p><strong>Foco:</strong> Entender qué significa "inyectada" y la rapidez de la nueva forma de instalación.</p>
+              <div class="video-links">
+                <a href="https://www.youtube.com/watch?v=huk9Q4UHH5I" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+                <a href="https://www.youtube.com/watch?v=JRhB1HRlMQs" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Ver video</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <div class="argument-card" data-category="instalaciones" data-search-term="ppr termofusion aqua system ips hidro3 pn20 pn25 agua caliente fria">
-        <div class="product-header">
-          <img src="https://www.abelson.com.ar/7283-large_default/friendly-url-autogeneration-failed.jpg" alt="PPR" class="product-image" />
-          <div class="product-title"><h2>Instalación de Agua PPR (Aqua System / IPS / Hidro3)</h2><p class="pitch">«Termofusión segura: uniones moleculares sin pérdidas.»</p></div>
-        </div>
+      <!-- ============ 13 · VENTANAS, RAJAS Y AIREADORES ============ -->
+      <details class="argument-card" data-category="aberturas" data-search-term="ventanas rajas aireadores novo aberturas el italo aluminio pano fijo corrediza banderola ventilacion cruzada inalterable mantenimiento cero sellador silicona rejas">
+        <summary class="product-header">
+          <div class="product-icon"><i class="fa-solid fa-window-maximize"></i></div>
+          <div class="product-title">
+            <span class="card-num">13</span>
+            <h2>Ventanas, Rajas y Aireadores</h2>
+            <p class="brands"><i class="fa-solid fa-tags"></i> Novo Aberturas · El Italo</p>
+            <p class="pitch">«Aluminio inalterable: ventilá sin perder seguridad ni mantenimiento.»</p>
+          </div>
+        </summary>
         <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>PN12–PN25: apto fría y caliente.</li><li>Accesorios completos y llaves de paso.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4><div class="upsell-products"><span class="upsell-tag">Termofusora</span><span class="upsell-tag">Boquillas</span><span class="upsell-tag">Tijera</span></div></div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-clipboard-list"></i> Ficha técnica</h4>
+            <ul class="spec-list">
+              <li><strong>Producto:</strong> Aberturas de aluminio (paños fijos, corredizas, banderolas y rajas).</li>
+              <li><strong>Composición:</strong> Perfiles de aluminio extruido con vidrio entero o repartido.</li>
+              <li><strong>Características:</strong> Material inalterable: no se deforma, no se pudre y es muy liviano.</li>
+              <li><strong>Aplicación:</strong> <em>Ventanas:</em> iluminación y ventilación de dormitorios/livings. <em>Rajas y aireadores:</em> espacios reducidos como pasillos, baños, lavaderos o vestidores.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-star"></i> Beneficios</h4>
+            <ul>
+              <li><strong>Mantenimiento cero:</strong> a diferencia de la chapa (que se oxida) o la madera (que hay que barnizar), el aluminio se coloca y te olvidás para siempre.</li>
+            </ul>
+          </div>
+          <div class="argument-section">
+            <h4><i class="fa-solid fa-cart-plus"></i> Venta cruzada / complementarios</h4>
+            <div class="upsell-products">
+              <span class="upsell-tag">Sellador de silicona acrílica / PU</span>
+              <span class="upsell-tag">Rejas a medida</span>
+            </div>
+          </div>
+          <div class="roleplay">
+            <h4><i class="fa-solid fa-comments"></i> Espacio de opinión — la importancia del aireador</h4>
+            <div class="rp-scenario"><span class="rp-label">Disparador</span><p>«El cliente quiere poner un vidrio fijo (sin apertura) en el baño o el lavadero para gastar menos, porque dice que "es solo para que entre luz". ¿Por qué debemos ofrecerle un aireador o raja de Novo Aberturas?»</p></div>
+            <div class="rp-win"><span class="rp-label rp-label--win">Argumento ganador</span><p>«En una casa de familia, el vapor de la ducha, el agua caliente del lavarropas y el calor acumulado te arruinan la pintura y te llenan el techo de hongos rapidísimo si no hay por dónde ventilar. Un paño fijo te da luz, pero el ambiente no respira. Poniendo un aireador o una raja abatible de Novo Aberturas, sacás toda esa humedad sin perder seguridad, porque el espacio por donde se abre es chiquito y no entra nadie. Es una solución súper práctica y económica que te salva los cielorrasos y las paredes a futuro.»</p></div>
+          </div>
+          <details class="video-block">
+            <summary><i class="fa-brands fa-youtube"></i> Video sugerido <i class="fa-solid fa-chevron-down chev"></i></summary>
+            <div class="video-body">
+              <p><strong>Búsqueda:</strong> "Ventilación cruzada en el hogar" o "Tipos de aberturas de aluminio".</p>
+              <p><strong>Foco:</strong> Conocer los distintos sistemas de apertura (corrediza vs. abatible) y su función.</p>
+              <div class="video-links">
+                <a href="https://www.novoaberturas.com.ar/" target="_blank" rel="noopener" class="site"><i class="fa-solid fa-globe"></i> Página Novo Aberturas</a>
+              </div>
+            </div>
+          </details>
         </div>
-      </div>
+      </details>
 
-      <div class="argument-card" data-category="instalaciones" data-search-term="gas sigas epoxi ips flexible regulador rejillas ventilacion">
-        <div class="product-header">
-          <img src="https://sanitariosadducci.com.ar/wp-content/uploads/2018/10/caño-sigas.jpg" alt="Gas" class="product-image" />
-          <div class="product-title"><h2>Instalación de Gas (Sigas / Epoxi)</h2><p class="pitch">«Seguridad certificada con materiales aprobados.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Sistema fusión Sigas y caños epoxi roscados.</li><li>Flexibles, reguladores, llaves y nichos.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-triangle-exclamation"></i> Importante</h4><div class="objection">Instalación por <strong>gasista matriculado</strong>. Verificar vencimiento de caños.</div></div>
-        </div>
-      </div>
-
-      <div class="argument-card" data-category="instalaciones" data-search-term="perfileria barbieri soleras montantes omega cantoneras cielorrasos pvc perfilplas durlock placo knauf">
-        <div class="product-header">
-          <img src="https://http2.mlstatic.com/D_NQ_NP_633024-MLA82917455883_032025-O.webp" alt="Barbieri" class="product-image" />
-          <div class="product-title"><h2>Perfilería y Cielorrasos (Barbieri / Durlock / Placo / Knauf)</h2><p class="pitch">«Construcción en seco: rápida, limpia y precisa.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Soleras, montantes, omega y cantoneras.</li><li>Cielorrasos de yeso o PVC Perfilplas®.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4><div class="upsell-products"><span class="upsell-tag">Placas ST/RH/RF</span><span class="upsell-tag">Tornillos T1/T2/T3</span><span class="upsell-tag">Lana de vidrio</span></div></div>
-        </div>
-      </div>
-
-      <!-- ====== TERMINACIONES ====== -->
-      <div class="argument-card" data-category="terminaciones" data-search-term="ceramicos canuelas alberdi eliane pei paredes pisos">
-        <div class="product-header">
-          <img src="https://www.zaratemateriales.com.ar/9076-home_default/cañuelas-roma-50x50-230m2-disc.jpg" alt="Cerámicos" class="product-image" />
-          <div class="product-title"><h2>Cerámicos y Revestimientos (Cañuelas / Alberdi / Eliane)</h2><p class="pitch">«Variedad, resistencia y fácil limpieza para cada ambiente.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Índice <strong>PEI</strong> para elegir uso correcto.</li><li>Amplia paleta de diseños y formatos.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4><div class="upsell-products"><span class="upsell-tag">Pegamento C1/C2</span><span class="upsell-tag">Pastina</span><span class="upsell-tag">Guardacantos</span></div></div>
-        </div>
-      </div>
-
-      <div class="argument-card" data-category="terminaciones" data-search-term="porcelanatos ilva alberdi canuelas c2 c3 epoxi formatos grandes 60x120 120x120">
-        <div class="product-header">
-          <img src="https://www.zaratemateriales.com.ar/9154-home_default/ccn-2ª-porc-ardessia-humo-615x615-189-m2-disc.jpg" alt="Porcelanatos" class="product-image" />
-          <div class="product-title"><h2>Porcelanatos (ILVA / Alberdi / Cañuelas)</h2><p class="pitch">«Máxima durabilidad y estética moderna de alto nivel.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Baja absorción: apto exterior y alto tránsito.</li><li>Requiere <strong>adhesivo C2/C3</strong> y niveladores en gran formato.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-hand-holding-dollar"></i> Venta cruzada</h4><div class="upsell-products"><span class="upsell-tag">Niveladores</span><span class="upsell-tag">Disco diamantado</span><span class="upsell-tag">Pastina epoxi</span></div></div>
-        </div>
-      </div>
-
-      <div class="argument-card" data-category="terminaciones" data-search-term="atrim schluter guardacantos listeles perfiles aluminio acero zocalos">
-        <div class="product-header">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeUKxpklNPLiu06LkqsMa3yUeJ6e99NDAcLg&s" alt="Atrim" class="product-image" />
-          <div class="product-title"><h2>Guardacantos y Listeles (Atrim / Schlüter)</h2><p class="pitch">«El detalle que protege y eleva la terminación.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Protege aristas y mejora estética.</li><li>Aluminio, acero o PVC en alturas 8/10/12 mm.</li></ul></div>
-        </div>
-      </div>
-
-      <div class="argument-card" data-category="terminaciones" data-search-term="pegamentos klaukol weber sika c1 c2 c3 r2 piso sobre piso piscinas">
-        <div class="product-header">
-          <img src="https://http2.mlstatic.com/D_NQ_NP_2X_686208-MLA76809091102_062024-T.webp" alt="Pegamentos" class="product-image" />
-          <div class="product-title"><h2>Pegamentos (Klaukol / Weber / Sika)</h2><p class="pitch">«La adherencia correcta para que nada se despegue.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>C1 para cerámicos; <strong>C2/C3</strong> para porcelanato y gran formato.</li><li><strong>R2</strong> reactivo para piscinas y exigencia química.</li></ul></div>
-        </div>
-      </div>
-
-      <div class="argument-card" data-category="terminaciones" data-search-term="pastinas klaukol weber sika epoxi antihongo colores consumo">
-        <div class="product-header">
-          <img src="https://www.ar.weber/files/ar/styles/768x768_resize/public/pictures/2024-03/pack-weber-classic-2kg_798A79DECA384DD6AEB7FCA76BA26E8C.jpg.webp?itok=_6OfQS67" alt="Pastinas" class="product-image" />
-          <div class="product-title"><h2>Pastinas (Klaukol / Weber / Sika)</h2><p class="pitch">«Cierre perfecto: juntas selladas y fáciles de limpiar.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Cementicias y <strong>epoxi</strong> (máxima impermeabilidad).</li><li>Amplia carta de colores; opciones antihongo.</li></ul></div>
-        </div>
-      </div>
-
-      <!-- ====== SANITARIOS & GRIFERÍA ====== -->
-      <div class="argument-card" data-category="sanitarios" data-search-term="griferia fv garantia cierre ceramico repuestos cocina bano">
-        <div class="product-header">
-          <img src="https://grupofv.com/assets/img/logo-fv.png" alt="Grifería FV" class="product-image" />
-          <div class="product-title"><h2>Grifería FV</h2><p class="pitch">«Inversión a largo plazo: diseño + cero problemas.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Garantía 5 años y <strong>repuestos asegurados</strong>.</li><li>Cierre cerámico: no gotea y dura más.</li></ul></div>
-          <div class="argument-section"><h4><i class="fa-solid fa-shield-halved"></i> Objeción</h4><div class="objection"><strong>“Vi más baratas.”</strong><p>El costo de cambiar/ reparar goteos supera la diferencia. FV rinde por años.</p></div></div>
-        </div>
-      </div>
-
-      <div class="argument-card" data-category="sanitarios" data-search-term="sanitarios ferrum roca inodoro bidet lavatorio doble descarga">
-        <div class="product-header">
-          <img src="https://www.ferrum.com/pub/media/ferrum/images/share.png" alt="Ferrum / Roca" class="product-image" />
-          <div class="product-title"><h2>Sanitarios Ferrum / Roca</h2><p class="pitch">«Porcelana sanitaria de primera: se mantiene impecable por décadas.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Diseños clásicos y modernos, <strong>doble descarga</strong>.</li><li>Calidad de loza superior: no se percude ni mancha.</li></ul></div>
-        </div>
-      </div>
-
-      <div class="argument-card" data-category="sanitarios" data-search-term="griferia hera vasser cocina bano calidad precio">
-        <div class="product-header">
-          <img src="https://elamigoar.vtexassets.com/arquivos/ids/159164/GRI.VASS.COC.004.jpg?v=638022379766830000" alt="Grifería" class="product-image" />
-          <div class="product-title"><h2>Grifería Hera / Vasser</h2><p class="pitch">«Excelente relación precio-calidad sin resignar diseño.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Líneas para cocina y baño con cierre cerámico.</li><li>Amplia variedad de modelos y terminaciones.</li></ul></div>
-        </div>
-      </div>
-
-      <div class="argument-card" data-category="sanitarios" data-search-term="bachas mesadas johnson tekstone acero quartz cocina bano">
-        <div class="product-header">
-          <img src="https://merlinosrl.vtexassets.com/arquivos/ids/165024-800-800?v=637684612864800000&width=800&height=800&aspect=true" alt="Bachas y mesadas" class="product-image" />
-          <div class="product-title"><h2>Bachas & Mesadas (Johnson / Tekstone)</h2><p class="pitch">«Funcionalidad y estética para cocinas y baños modernos.»</p></div>
-        </div>
-        <div class="argument-body">
-          <div class="argument-section"><h4><i class="fa-solid fa-star"></i> Beneficios</h4><ul><li>Acero 304 y superficies de cuarzo/solid surface.</li><li>Formatos bajo/ sobre mesada; accesorios complementarios.</li></ul></div>
-        </div>
-      </div>
+      <p class="no-results" id="noResults"><i class="fa-solid fa-magnifying-glass"></i> No se encontraron productos con ese criterio.</p>
 
     </div><!-- /grid -->
   </main>
@@ -495,18 +937,46 @@
   <script>
     document.addEventListener('DOMContentLoaded', function(){
       const searchBar = document.getElementById('search-bar');
-      const cards = Array.from(document.querySelectorAll('.argument-card'));
+      const cards = Array.from(document.querySelectorAll('details.argument-card'));
       const filterBar = document.getElementById('filterBar');
+      const noResults = document.getElementById('noResults');
+      const resultCount = document.getElementById('resultCount');
+      const toggleAll = document.getElementById('toggleAll');
+      const toggleAllLabel = toggleAll.querySelector('span');
       let activeFilter = 'all';
 
+      function normalize(str){
+        return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      }
+
+      function setToggleAll(expanded){
+        toggleAll.setAttribute('aria-expanded', String(expanded));
+        toggleAllLabel.textContent = expanded ? 'Colapsar todo' : 'Expandir todo';
+      }
+
       function applyFilters(){
-        const term = searchBar.value.toLowerCase().trim();
+        const term = normalize(searchBar.value.trim());
+        let visible = 0;
         cards.forEach(card => {
           const category = card.dataset.category;
           const hayCategoria = (activeFilter === 'all') || (category === activeFilter);
-          const hayTermino = !term || card.dataset.searchTerm.toLowerCase().includes(term);
-          card.style.display = (hayCategoria && hayTermino) ? 'block' : 'none';
+          const haystack = normalize(card.dataset.searchTerm + ' ' + card.textContent);
+          const hayTermino = !term || haystack.includes(term);
+          const show = hayCategoria && hayTermino;
+          card.style.display = show ? '' : 'none';
+          if(show){
+            visible++;
+            if(term) card.open = true;   // auto-abrir las coincidencias al buscar
+          }
         });
+        if(term){
+          setToggleAll(true);
+        } else {                         // al limpiar la b\u00fasqueda, volver al modo "resumen"
+          cards.forEach(c => c.open = false);
+          setToggleAll(false);
+        }
+        noResults.style.display = visible === 0 ? 'block' : 'none';
+        resultCount.textContent = visible + (visible === 1 ? ' producto' : ' productos');
       }
 
       searchBar.addEventListener('input', applyFilters);
@@ -516,12 +986,26 @@
         const btn = e.target.closest('.chip');
         if(!btn) return;
         activeFilter = btn.dataset.filter;
-        // actualizar aria-pressed
         filterBar.querySelectorAll('.chip').forEach(ch => ch.setAttribute('aria-pressed', String(ch===btn)));
         applyFilters();
       });
 
-      // Acceso rápido con hash de URL: ?q=porcelanato&cat=terminaciones
+      // Expandir / colapsar todo (solo tarjetas visibles)
+      toggleAll.addEventListener('click', ()=>{
+        const expand = toggleAll.getAttribute('aria-expanded') !== 'true';
+        cards.forEach(card => { if(card.style.display !== 'none') card.open = expand; });
+        setToggleAll(expand);
+      });
+
+      // Mantener el bot\u00f3n sincronizado si se abren/cierran tarjetas a mano
+      cards.forEach(card => card.addEventListener('toggle', ()=>{
+        const vis = cards.filter(c => c.style.display !== 'none');
+        const abiertas = vis.filter(c => c.open).length;
+        if(abiertas === 0) setToggleAll(false);
+        else if(abiertas === vis.length) setToggleAll(true);
+      }));
+
+      // Acceso rápido por URL: ?q=porcelanato&cat=pisos
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q');
       const cat = params.get('cat');
