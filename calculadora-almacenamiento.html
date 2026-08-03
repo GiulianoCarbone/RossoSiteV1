@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Costo de Almacenamiento | Rosso Materiales</title>
     <meta name="description"
-        content="Calculá de forma simple el costo de almacenamiento y recargo del 5% por mercadería no retirada en Rosso Materiales.">
+        content="Calculá de forma simple el costo de almacenamiento y recargo del 0,5% por mercadería no retirada en Rosso Materiales.">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="assets/FAV.png" rel="icon">
@@ -383,7 +383,7 @@
                         <div class="input-group">
                             <label for="tasa-recargo">Recargo Mensual</label>
                             <div class="input-group-with-suffix">
-                                <input type="number" id="tasa-recargo" value="5" min="0" step="0.1" oninput="saveAndCalculate()">
+                                <input type="number" id="tasa-recargo" value="0.5" min="0" step="0.1" oninput="saveAndCalculate()">
                                 <span class="input-suffix">%</span>
                             </div>
                         </div>
@@ -426,7 +426,7 @@
                 </div>
                 <div class="legend-content">
                     <p>
-                        Toda compra de materiales cuenta con un plazo de acopio bonificado. Pasado este plazo, se aplicará un recargo del <span class="highlight">5% mensual</span> sobre el importe de la compra en concepto de almacenamiento logístico.
+                        Toda compra de materiales cuenta con un plazo de acopio bonificado. Pasado este plazo, se aplicará un recargo del <span class="highlight">0,5% mensual</span> sobre el importe de la compra en concepto de almacenamiento logístico.
                     </p>
                     <ul class="legend-list">
                         <li><strong>Criterio de redondeo:</strong> Si el excedente de días supera los 15 días, se redondea al mes entero siguiente (ej. 16 días transcurridos equivalen a 1 mes de recargo). Si es de 15 días o menos, el excedente no se cobra (ej. 15 días equivalen a 0 meses de recargo, y 45 días equivalen a 1 mes de recargo).</li>
@@ -465,7 +465,7 @@
                     const state = JSON.parse(savedState);
                     inputCliente.value = state.cliente || '';
                     inputImporte.value = state.importe || '';
-                    inputTasa.value = state.tasa !== undefined ? state.tasa : 5;
+                    inputTasa.value = state.tasa !== undefined ? state.tasa : 0.5;
                     inputIngreso.value = state.ingreso || hoy;
                     inputRetiro.value = state.retiro || hoy;
                 } catch (e) {
@@ -521,7 +521,7 @@
         // Lógica de cálculo
         function calculate() {
             const importe = parseFloat(inputImporte.value) || 0;
-            const tasa = parseFloat(inputTasa.value) / 100 || 0.05;
+            const tasa = parseFloat(inputTasa.value) / 100 || 0.005;
             const ingresoStr = inputIngreso.value;
             const retiroStr = inputRetiro.value;
 
