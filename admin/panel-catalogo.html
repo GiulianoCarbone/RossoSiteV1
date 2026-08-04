@@ -13,6 +13,9 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
   <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+  <!-- jsPDF + AutoTable (exportar top de productos a PDF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.21/jspdf.plugin.autotable.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -1687,6 +1690,113 @@
       margin-bottom: 24px;
     }
 
+    /* Acciones tarjeta "Productos más visitados" (cerrar mes / historial) */
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hist-select {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #fff;
+      cursor: pointer;
+      outline: none;
+      max-width: 160px;
+    }
+
+    .btn-cerrar-mes {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--brand);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .btn-cerrar-mes:hover {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
+    }
+
+    .top-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .nuevo-mes-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: rgba(236,100,52,0.12);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .top-conteo {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+      padding-left: 10px;
+      border-left: 1px solid var(--border);
+    }
+
+    .top-tabs {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      background: #f3f4f6;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+
+    .top-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .top-tab:hover { color: var(--brand); }
+
+    .top-tab.active {
+      background: #fff;
+      color: var(--brand);
+      box-shadow: 0 1px 2px rgba(16,24,40,.08);
+    }
+
     .chart-container {
       flex: 1;
       min-height: 240px;
@@ -2231,53 +2341,43 @@
 
           <!-- Card: Top Productos -->
           <div class="stats-card">
-            <div class="stats-card-header">
-              <h3 class="stats-card-title">Productos más visitados <i class="fa-solid fa-circle-info"></i></h3>
+            <div class="stats-card-header" style="flex-wrap:wrap; gap:10px">
+              <h3 class="stats-card-title">Ranking de productos <i class="fa-solid fa-circle-info"></i></h3>
+              <div class="top-actions">
+                <select id="stats-hist-select" class="hist-select" onchange="verHistorial(this.value)" title="Ver el top de un mes ya cerrado">
+                  <option value="">Mes actual</option>
+                </select>
+                <button class="btn-cerrar-mes" id="btn-export-pdf" onclick="exportarTopPDF()"
+                  title="Descargar en PDF el top que estás viendo">
+                  <i class="fa-solid fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn-cerrar-mes" id="btn-cerrar-mes" onclick="abrirCerrarMes()"
+                  title="Archiva el top de este período y reinicia las visitas a cero">
+                  <i class="fa-solid fa-flag-checkered"></i> Cerrar mes
+                </button>
+              </div>
             </div>
 
-            <div class="stats-subtitle">General (Histórico)</div>
+            <div class="top-tabs">
+              <button class="top-tab active" data-metric="visits" onclick="setTopMetric('visits')">
+                <i class="fa-regular fa-eye"></i> Más vistos
+              </button>
+              <button class="top-tab" data-metric="consultas" onclick="setTopMetric('consultas')">
+                <i class="fa-brands fa-whatsapp"></i> Más consultados
+              </button>
+            </div>
+
+            <div class="top-meta">
+              <span class="stats-subtitle" id="stats-top-desde" style="margin-bottom:0">Acumulado</span>
+              <span class="top-conteo" id="top-conteo" style="display:none"></span>
+              <span class="nuevo-mes-badge" id="nuevo-mes-badge" style="display:none">
+                <i class="fa-solid fa-circle-exclamation"></i> Ya empezó un mes nuevo — cerrá el anterior
+              </span>
+            </div>
 
             <div class="top-products-list" id="top-products-list">
-              <!-- Mock items basados en la imagen -->
-              <div class="top-product-item">
-                <div class="top-product-rank">1</div>
-                <img src="https://placehold.co/100x100?text=Ventana" class="top-product-img" />
-                <div class="top-product-info">
-                  <div class="top-product-name">Ventana De Aluminio Blanco 100 X 110 Con Vidrio. Con Reja</div>
-                  <div class="top-product-visits">154 visitas</div>
-                </div>
-              </div>
-              <div class="top-product-item">
-                <div class="top-product-rank">2</div>
-                <img src="https://placehold.co/100x100?text=Raja" class="top-product-img" />
-                <div class="top-product-info">
-                  <div class="top-product-name">Raja Vidrio Entero</div>
-                  <div class="top-product-visits">150 visitas</div>
-                </div>
-              </div>
-              <div class="top-product-item">
-                <div class="top-product-rank">3</div>
-                <img src="https://placehold.co/100x100?text=Oblak" class="top-product-img" />
-                <div class="top-product-info">
-                  <div class="top-product-name">Línea Prima Plus- Modelo 1709 Grafito - Oblak</div>
-                  <div class="top-product-visits">126 visitas</div>
-                </div>
-              </div>
-              <div class="top-product-item">
-                <div class="top-product-rank">4</div>
-                <img src="https://placehold.co/100x100?text=Ventana" class="top-product-img" />
-                <div class="top-product-info">
-                  <div class="top-product-name">Ventana Corrediza Simple Vidrio Repartido 150x150 Cm</div>
-                  <div class="top-product-visits">117 visitas</div>
-                </div>
-              </div>
-              <div class="top-product-item">
-                <div class="top-product-rank">5</div>
-                <img src="https://placehold.co/100x100?text=Oblak" class="top-product-img" />
-                <div class="top-product-info">
-                  <div class="top-product-name">Línea Prima Plus -Modelo 1788 Grafito - Oblak</div>
-                  <div class="top-product-visits">112 visitas</div>
-                </div>
+              <div style="text-align:center;padding:20px;color:var(--muted);font-size:0.85rem">
+                <i class="fa-solid fa-spinner fa-spin"></i> Cargando…
               </div>
             </div>
           </div>
@@ -2506,6 +2606,32 @@
         <button class="btn-cancel" onclick="cerrarConfirm()">Cancelar</button>
         <button class="btn-save" style="background:var(--danger)" id="btn-confirm-del" onclick="confirmarEliminar()">
           <i class="fa-solid fa-trash"></i> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRMAR CERRAR MES -->
+  <div class="modal-overlay" id="cerrar-mes-modal">
+    <div class="modal" style="max-width:460px">
+      <div class="modal-header">
+        <h2 style="color:var(--brand)">
+          <i class="fa-solid fa-flag-checkered" style="background:rgba(236,100,52,0.1);color:var(--accent)"></i>
+          Cerrar mes
+        </h2>
+        <button class="modal-close" onclick="cerrarCerrarMesModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p>Se va a <strong>archivar el top actual</strong> de productos (<span id="cerrar-mes-periodo">período actual</span>) y las visitas de todos los productos vuelven a <strong>cero</strong> para empezar a medir el mes nuevo.</p>
+        <p style="font-size:0.82rem;color:var(--muted);margin-top:10px">
+          <i class="fa-solid fa-box-archive"></i> El top archivado queda guardado y lo podés consultar desde el selector "Mes actual".<br>
+          <i class="fa-solid fa-chart-line"></i> El gráfico de visitas diarias <strong>no</strong> se toca.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="cerrarCerrarMesModal()">Cancelar</button>
+        <button class="btn-save" id="btn-confirm-cerrar" onclick="confirmarCerrarMes()">
+          <i class="fa-solid fa-flag-checkered"></i> Cerrar mes y reiniciar
         </button>
       </div>
     </div>
@@ -3472,6 +3598,7 @@
         document.querySelector('.topbar-right').style.visibility = 'hidden';
         if (filterBar) filterBar.style.display = 'none';
         if (statsBar) statsBar.style.display = 'none';
+        cargarResetMeta();
         initStatsCharts();
       } else if (v === 'config') {
         topbarEl.innerHTML = `<div class="icon-wrap" style="background:rgba(236,100,52,0.1);color:var(--accent)"><i class="fa-solid fa-gear"></i></div><h1>Configuración</h1>`;
@@ -3975,6 +4102,312 @@
     ═══════════════════════════════════════════════════════════════ */
     let visitsChartInstance = null;
 
+    /* ── Reinicio mensual del top de productos ──────────────────── */
+    let ultimoResetISO = null;      // fecha del último reinicio (ISO) o null si nunca se reinició
+    let historialCierres = [];      // cache de meses ya cerrados
+
+    const _mesKey    = d => d.toISOString().slice(0, 7);   // 'YYYY-MM'
+    const _fmtFecha  = d => d.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const _fmtMesAnio = d => {
+      const s = d.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' });
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    };
+
+    // Métrica activa del ranking: 'visits' (más vistos) | 'consultas' (más consultados por WhatsApp)
+    let topMetric = 'visits';
+    const _unidad = m => m === 'consultas' ? 'consultas' : 'visitas';
+
+    // HTML de un ítem del ranking (reutilizado por mes actual e historial, para cualquier métrica)
+    function topItemHTML(i, imagen, nombre, valor, unidad) {
+      return `
+        <div class="top-product-item">
+          <div class="top-product-rank">${i + 1}</div>
+          <img src="${imagen || ''}" class="top-product-img" onerror="this.src='https://placehold.co/100x100?text=Prod'" />
+          <div class="top-product-info">
+            <div class="top-product-name">${nombre}</div>
+            <div class="top-product-visits">${valor} ${unidad}</div>
+          </div>
+        </div>`;
+    }
+
+    // Productos del período actual (con ambas métricas), cache para PDF y re-render de tabs
+    let topActualCache = [];
+
+    // Contador "N productos con <unidad>"
+    function setConteo(n, metric = topMetric) {
+      const el = document.getElementById('top-conteo');
+      if (!el) return;
+      if (n > 0) {
+        el.textContent = `${n} producto${n !== 1 ? 's' : ''} con ${_unidad(metric)}`;
+        el.style.display = 'inline-flex';
+      } else {
+        el.textContent = '';
+        el.style.display = 'none';
+      }
+    }
+
+    // Ordena una lista de productos por la métrica dada, pinta el top-5 y el conteo
+    function pintarTop(arr, metric) {
+      const listEl = document.getElementById('top-products-list');
+      if (!listEl) return;
+      const conValor = arr.filter(p => (p[metric] || 0) > 0);
+      setConteo(conValor.length, metric);
+      if (!conValor.length) {
+        listEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:0.85rem">Sin datos para esta métrica todavía.</div>';
+        return;
+      }
+      const top = [...conValor].sort((a, b) => (b[metric] || 0) - (a[metric] || 0)).slice(0, 5);
+      const unidad = _unidad(metric);
+      listEl.innerHTML = top.map((p, i) => topItemHTML(i, p.imagen, p.nombre || p.sku, p[metric] || 0, unidad)).join('');
+    }
+
+    // Cambiar entre "Más vistos" y "Más consultados"
+    function setTopMetric(m) {
+      topMetric = m;
+      document.querySelectorAll('.top-tab').forEach(t => t.classList.toggle('active', t.dataset.metric === m));
+      const sel = document.getElementById('stats-hist-select');
+      if (sel && sel.value) {
+        verHistorial(sel.value);          // re-render del mes archivado con la nueva métrica
+      } else {
+        pintarTop(topActualCache, topMetric);
+      }
+    }
+
+    // Render del ranking del período actual (acumulado desde el último reinicio).
+    // Una sola lectura trae todos los productos con actividad; ordenamos en el cliente por la métrica activa.
+    async function renderTopActual() {
+      const topListEl = document.getElementById('top-products-list');
+      if (!topListEl) return;
+      try {
+        const snap = await db.collection('analytics_products').get();
+        topActualCache = snap.docs.map(d => {
+          const p = d.data();
+          return { sku: d.id, nombre: p.nombre || d.id, imagen: p.imagen || '', visits: p.visits || 0, consultas: p.consultas || 0 };
+        });
+        pintarTop(topActualCache, topMetric);
+      } catch (e) {
+        console.error('Error al cargar el ranking de productos:', e);
+        topListEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--danger);font-size:0.85rem"><i class="fa-solid fa-triangle-exclamation"></i> No se pudieron cargar los datos.</div>';
+        setConteo(0);
+      }
+    }
+
+    // Lee la metadata del reinicio + el historial, y actualiza subtítulo/badge/selector
+    async function cargarResetMeta() {
+      const desdeEl = document.getElementById('stats-top-desde');
+      const badgeEl = document.getElementById('nuevo-mes-badge');
+      try {
+        const [metaSnap, histSnap] = await Promise.all([
+          db.collection('analytics').doc('reset_meta').get(),
+          db.collection('analytics').doc('historial_top').get()
+        ]);
+
+        ultimoResetISO = metaSnap.exists ? (metaSnap.data().lastResetISO || null) : null;
+
+        // Solo actualizamos subtítulo/badge si estamos mirando el mes actual
+        const sel = document.getElementById('stats-hist-select');
+        const viendoHistorial = sel && sel.value;
+
+        if (!viendoHistorial) {
+          if (ultimoResetISO) {
+            const d = new Date(ultimoResetISO);
+            if (desdeEl) desdeEl.innerHTML = `Desde el <strong>${_fmtFecha(d)}</strong>`;
+            const nuevoMes = _mesKey(new Date()) !== _mesKey(d);
+            if (badgeEl) badgeEl.style.display = nuevoMes ? 'inline-flex' : 'none';
+          } else {
+            if (desdeEl) desdeEl.textContent = 'Acumulado (todavía sin reinicios)';
+            if (badgeEl) badgeEl.style.display = 'none';
+          }
+        }
+
+        historialCierres = histSnap.exists ? (histSnap.data().cierres || []) : [];
+        poblarSelectHistorial();
+
+        if (!viendoHistorial) await renderTopActual();
+      } catch (e) {
+        console.warn('No se pudo cargar la metadata de reinicio:', e);
+      }
+    }
+
+    function poblarSelectHistorial() {
+      const sel = document.getElementById('stats-hist-select');
+      if (!sel) return;
+      const prev = sel.value;
+      sel.innerHTML = '<option value="">Mes actual</option>' +
+        historialCierres.map((c, i) => `<option value="${i}">${c.etiqueta}</option>`).join('');
+      sel.value = (prev && historialCierres[prev]) ? prev : '';
+    }
+
+    // Cambiar entre mes actual y un mes archivado
+    function verHistorial(idx) {
+      const btn = document.getElementById('btn-cerrar-mes');
+      const desdeEl = document.getElementById('stats-top-desde');
+      const badgeEl = document.getElementById('nuevo-mes-badge');
+      const listEl = document.getElementById('top-products-list');
+
+      if (idx === '' || idx == null) {
+        if (btn) btn.style.display = '';
+        cargarResetMeta();        // re-renderiza top actual + conteo + subtítulo
+        return;
+      }
+
+      const c = historialCierres[idx];
+      if (!c) return;
+      if (btn) btn.style.display = 'none';        // no se puede "cerrar" un mes ya archivado
+      if (badgeEl) badgeEl.style.display = 'none';
+      if (desdeEl) {
+        const rango = (c.desde && c.hasta) ? ` (${_fmtFecha(new Date(c.desde))} – ${_fmtFecha(new Date(c.hasta))})` : '';
+        desdeEl.innerHTML = `<i class="fa-solid fa-box-archive"></i> Archivo · <strong>${c.etiqueta}</strong>${rango}`;
+      }
+      const items = c.items || [];
+      if (!items.length) {
+        setConteo(0);
+        listEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:0.85rem">Sin datos archivados en este mes.</div>';
+        return;
+      }
+      pintarTop(items, topMetric);
+    }
+
+    function abrirCerrarMes() {
+      const periodoEl = document.getElementById('cerrar-mes-periodo');
+      if (periodoEl) {
+        periodoEl.textContent = ultimoResetISO
+          ? `desde el ${_fmtFecha(new Date(ultimoResetISO))} hasta hoy`
+          : `todo el acumulado hasta hoy`;
+      }
+      document.getElementById('cerrar-mes-modal').classList.add('open');
+    }
+
+    function cerrarCerrarMesModal() {
+      document.getElementById('cerrar-mes-modal').classList.remove('open');
+    }
+
+    // Exporta a PDF el top que se está viendo (mes actual o mes archivado)
+    function exportarTopPDF() {
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        toast('No se pudo cargar el generador de PDF.', 'error');
+        return;
+      }
+      const sel = document.getElementById('stats-hist-select');
+      const metric = topMetric;
+      const tituloMetric = metric === 'consultas' ? 'más consultados' : 'más vistos';
+      const colTitulo = metric === 'consultas' ? 'Consultas' : 'Visitas';
+      let items, subtitulo, archivoNombre;
+
+      if (sel && sel.value) {
+        const c = historialCierres[sel.value];
+        if (!c) { toast('No hay datos para exportar.', 'error'); return; }
+        items = c.items || [];
+        subtitulo = `Período: ${c.etiqueta}` + ((c.desde && c.hasta) ? `  (${_fmtFecha(new Date(c.desde))} al ${_fmtFecha(new Date(c.hasta))})` : '');
+        archivoNombre = `top-${metric}-${String(c.etiqueta || 'mes').toLowerCase().replace(/\s+/g, '-')}.pdf`;
+      } else {
+        items = topActualCache;
+        const desde = ultimoResetISO ? `desde el ${_fmtFecha(new Date(ultimoResetISO))}` : '(acumulado histórico)';
+        subtitulo = `Período actual ${desde} · al ${_fmtFecha(new Date())}`;
+        archivoNombre = `top-${metric}-${_mesKey(new Date())}.pdf`;
+      }
+
+      const conValor = (items || []).filter(p => (p[metric] || 0) > 0).sort((a, b) => (b[metric] || 0) - (a[metric] || 0));
+      if (!conValor.length) { toast('No hay datos para exportar en esta métrica todavía.', 'error'); return; }
+
+      const N = conValor.length;
+      const filas = conValor.slice(0, 20);
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(18);
+      doc.setTextColor(39, 46, 104);
+      doc.text(`Rosso Materiales — Productos ${tituloMetric}`, 14, 20);
+      doc.setFontSize(11);
+      doc.setTextColor(100);
+      doc.text(subtitulo, 14, 28);
+      doc.text(`Generado: ${_fmtFecha(new Date())}  ·  ${N} producto${N !== 1 ? 's' : ''}${N > 20 ? ' (se listan los primeros 20)' : ''}`, 14, 34);
+
+      doc.autoTable({
+        startY: 42,
+        head: [['#', 'Producto', 'SKU', colTitulo]],
+        body: filas.map((p, i) => [i + 1, p.nombre || p.sku, p.sku || '', p[metric] || 0]),
+        theme: 'striped',
+        headStyles: { fillColor: [39, 46, 104] },
+        styles: { fontSize: 9 },
+        columnStyles: { 0: { cellWidth: 12, halign: 'center' }, 3: { cellWidth: 24, halign: 'right' } }
+      });
+
+      doc.save(archivoNombre);
+    }
+
+    async function confirmarCerrarMes() {
+      const btn = document.getElementById('btn-confirm-cerrar');
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cerrando...';
+      try {
+        const ahora = new Date();
+        const desde = ultimoResetISO ? new Date(ultimoResetISO) : null;
+
+        // 1) Traer TODOS los productos con actividad (una sola lectura) para archivar y borrar
+        const allSnap = await db.collection('analytics_products').get();
+        const all = allSnap.docs.map(d => {
+          const p = d.data();
+          return { sku: d.id, nombre: p.nombre || d.id, imagen: p.imagen || '', visits: p.visits || 0, consultas: p.consultas || 0 };
+        });
+
+        // Archivo = unión del top 20 por visitas y top 20 por consultas (conserva ambos rankings)
+        const topN = metric => [...all].sort((a, b) => (b[metric] || 0) - (a[metric] || 0)).slice(0, 20);
+        const mapa = new Map();
+        [...topN('visits'), ...topN('consultas')].forEach(p => {
+          if ((p.visits || 0) > 0 || (p.consultas || 0) > 0) mapa.set(p.sku, p);
+        });
+        const items = [...mapa.values()];
+
+        const etiqueta = desde ? _fmtMesAnio(desde) : `Hasta ${_fmtFecha(ahora)}`;
+        const cierre = {
+          etiqueta,
+          desde: desde ? desde.toISOString() : null,
+          hasta: ahora.toISOString(),
+          cerradoEn: ahora.toISOString(),
+          items
+        };
+
+        // 2) Reiniciar PRIMERO: borrar todos los docs de analytics_products (paso que
+        //    exige ser admin). Si falla acá, no archivamos nada y no queda basura.
+        const docs = allSnap.docs;
+        for (let i = 0; i < docs.length; i += 400) {
+          const batch = db.batch();
+          docs.slice(i, i + 400).forEach(d => batch.delete(d.ref));
+          await batch.commit();
+        }
+
+        // 3) Archivar (leer historial, insertar al frente, guardar)
+        const histRef = db.collection('analytics').doc('historial_top');
+        const histSnap = await histRef.get();
+        const cierres = histSnap.exists ? (histSnap.data().cierres || []) : [];
+        cierres.unshift(cierre);
+        await histRef.set({ cierres }, { merge: true });
+
+        // 4) Registrar el reinicio
+        await db.collection('analytics').doc('reset_meta').set({
+          lastResetISO: ahora.toISOString(),
+          mes: _mesKey(ahora),
+          lastReset: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        cerrarCerrarMesModal();
+        toast('Mes cerrado. Visitas reiniciadas a cero.', 'success');
+
+        // 5) Refrescar vista al mes actual (cargarResetMeta re-renderiza el top)
+        const sel = document.getElementById('stats-hist-select');
+        if (sel) sel.value = '';
+        await cargarResetMeta();
+      } catch (e) {
+        toast('Error al cerrar el mes: ' + e.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }
+    }
+
     function toggleCustomDateRange() {
       const select = document.getElementById('stats-date-range');
       const container = document.getElementById('custom-date-container');
@@ -4055,27 +4488,10 @@
       if (subtitleEl) subtitleEl.textContent = subtitleText;
 
       try {
-        // 1. Obtener Top Productos (Histórico)
-        const prodSnap = await db.collection('analytics_products').orderBy('visits', 'desc').limit(5).get();
-        const topListEl = document.getElementById('top-products-list');
-        if (!prodSnap.empty) {
-          topListEl.innerHTML = prodSnap.docs.map((d, i) => {
-            const p = d.data();
-            return `
-              <div class="top-product-item">
-                <div class="top-product-rank">${i + 1}</div>
-                <img src="${p.imagen || ''}" class="top-product-img" onerror="this.src='https://placehold.co/100x100?text=Prod'" />
-                <div class="top-product-info">
-                  <div class="top-product-name">${p.nombre || d.id}</div>
-                  <div class="top-product-visits">${p.visits || 0} visitas</div>
-                </div>
-              </div>`;
-          }).join('');
-        } else {
-          topListEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:0.85rem">No hay datos suficientes aún.</div>';
-        }
+        // El top de productos NO depende del rango de fechas (lo maneja cargarResetMeta).
+        // Acá solo calculamos el gráfico de visitas diarias y sus sumas.
 
-        // 2. Obtener Datos Diarios para el Gráfico y Sumas (últimos X días o rango personalizado)
+        // Obtener Datos Diarios para el Gráfico y Sumas (últimos X días o rango personalizado)
         // Consultamos todos los días
         const dailyPromises = lastXDays.map(date => db.collection('analytics_daily').doc(date).get());
         const dailySnaps = await Promise.all(dailyPromises);
@@ -4164,7 +4580,7 @@
           }
         });
       } catch (e) {
-        console.error('Error al cargar estadísticas:', e);
+        console.error('Error al cargar el gráfico de visitas:', e);
       }
     }
 

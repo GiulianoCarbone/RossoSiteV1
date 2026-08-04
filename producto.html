@@ -584,7 +584,7 @@
           <button class="btn-pdp-add" id="btn-add" onclick="agregarALista()">
             <i class="fa-solid fa-list-check"></i> Agregar a mi lista
           </button>
-          <a class="btn-pdp-wp" id="btn-wp" href="#" target="_blank" rel="noopener" onclick="trackEvent('contacts')">
+          <a class="btn-pdp-wp" id="btn-wp" href="#" target="_blank" rel="noopener" onclick="trackConsultaProducto()">
             <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp
           </a>
           <button class="btn-pdp-calc" id="btn-calc" onclick="abrirCalculadora()" style="display:none">
@@ -1229,8 +1229,29 @@
           imagen: metadata.imagen || ''
         }, { merge: true });
       }
+      // Consulta de WhatsApp atribuida a un producto puntual
+      if (type === 'contacts' && metadata.sku) {
+        batch.set(db.collection('analytics_products').doc(metadata.sku), {
+          consultas: firebase.firestore.FieldValue.increment(1),
+          nombre: metadata.nombre || '',
+          imagen: metadata.imagen || ''
+        }, { merge: true });
+      }
       await batch.commit();
     } catch (e) { console.warn('Analytics error:', e); }
+  }
+
+  // Clic en "Consultar por WhatsApp" desde la ficha: suma contacto global + consulta al producto
+  function trackConsultaProducto() {
+    if (producto && producto.sku) {
+      trackEvent('contacts', {
+        sku: producto.sku,
+        nombre: producto.nombre,
+        imagen: getImg(producto, 'thumb')
+      });
+    } else {
+      trackEvent('contacts');
+    }
   }
 
   // Mobile menu
