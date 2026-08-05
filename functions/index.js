@@ -25,6 +25,10 @@ const ADMIN_EMAILS = ['rossomateriales@gmail.com'];
 const DEEPSEEK_URL = 'https://api.deepseek.com/chat/completions';
 const MODEL = 'deepseek-chat';
 
+// Base de conocimiento del bot interno: texto REAL del manual de productos
+// (rubros, tipos, usos y "argumento clave" de cada uno) + 2 productos nuevos.
+const MANUAL = require('./manual-conocimiento');
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /* ── Tavily (con reintento ante 429) ───────────────────────────────────── */
@@ -297,6 +301,149 @@ exports.chat = onRequest(
       return res.json({ ok: true, respuesta: limpiarSkus(parsed.respuesta), productos });
     } catch (e) {
       console.error('chat error:', e);
+      return res.status(500).json({ error: 'Error interno' });
+    }
+  }
+);
+
+/* ═════════════════════════════════════════════════════════════════════════
+   CHATBOT INTERNO (`chatInterno`) — panel corporativo (equipo de vendedores)
+   Reemplaza el flujo de n8n. A diferencia del bot del catálogo (público, para
+   clientes), este es para el EQUIPO y conoce DOS fuentes:
+     • El MANUAL DE PRODUCTOS completo (texto real: rubros, usos, argumentos de
+       venta). Va en el system prompt → estático → DeepSeek lo cachea (barato).
+     • El CATÁLOGO real (SKUs disponibles) pre-filtrado por la consulta, para
+       decir qué tenemos concretamente y armar las tarjetas.
+   El panel es HTML estático público con login casero (sin token verificable),
+   así que la protección es rate-limit por IP + techo global, con su propio
+   namespace para no interferir con el bot del catálogo.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+const CHAT_INTERNO_SYSTEM = `Sos "Rosso Pro", el asesor de ventas INTERNO de Rosso Materiales (corralón de construcción y sanitarios/baño en Tucumán y Salta, Argentina). Tu usuario es un VENDEDOR del equipo, NO un cliente final. Tu objetivo es que ASESORE mejor: entender la necesidad, darle criterio para elegir y, cuando corresponda, recomendar el producto adecuado.
+
+FUENTES:
+- Al final de estas instrucciones tenés el MANUAL DE PRODUCTOS completo de Rosso (rubros, tipos, usos y "ARGUMENTO CLAVE" de cada uno). Es tu fuente principal de conocimiento técnico y comercial.
+- En el mensaje del usuario te paso una lista PRODUCTOS DEL CATÁLOGO reales y disponibles (con su "sku"), pre-filtrados según la consulta. SOLO de ahí podés sacar productos concretos.
+
+CÓMO RESPONDER (lo más importante):
+- PRIMERO entender, DESPUÉS recomendar. NO arranques tirando productos apenas te consultan algo general. Una consulta como "un cliente quiere hacer el piso del baño" todavía no alcanza para recomendar.
+- Si faltan datos para elegir bien (medida del ambiente/m², si es piso o pared, presupuesto o gama, estilo/color, tránsito, terminación, en baño la resistencia al agua y que sea antideslizante, etc.), hacé 1 o 2 PREGUNTAS clave para acotar. No abrumes con un cuestionario largo: las 1-2 preguntas que más definen la elección.
+- Usá el MANUAL para DAR CRITERIO: explicale al vendedor qué factores importan y cómo se decide (por ej. cerámico vs porcelanato, esmaltado vs rectificado, PEI/tránsito, antideslizante para baño). Que entienda para poder asesorar al cliente, no solo que copie una lista.
+- Recomendá productos concretos (con tarjetas) SOLO cuando ya tengas contexto suficiente, o cuando el vendedor te lo pida explícitamente ("¿qué tenés?", "pasame opciones"). Mientras estés indagando o dando criterio, devolvé "skus": [] (sin tarjetas).
+- Cuando sí recomiendes, ofrecé POCAS opciones bien elegidas (2 o 3, no una lista larga) y sumá el "argumento clave" para el cliente.
+
+REGLAS:
+- Respondé en español rioplatense, tono cercano y profesional de compañero de equipo (podés tutear). Claro, ordenado y CONCISO.
+- NO inventes productos, marcas, medidas, rendimientos, precios ni stock que no estén en el manual o en la lista. Si no lo sabés, decilo con franqueza.
+- En el TEXTO nombrá los productos SOLO por su nombre (NUNCA escribas el sku ni códigos; las tarjetas se muestran aparte). En el JSON los identificás por "sku".
+- Precio y stock exacto NO los tenés: para eso derivá a consultar el sistema/mostrador.
+- Si la consulta no tiene nada que ver con productos o ventas de Rosso, redirigí con amabilidad.
+- Podés usar Markdown simple (listas con "- ", **negrita**) para que se lea ordenado.
+
+Devolvé EXCLUSIVAMENTE un JSON:
+{"respuesta":"texto para el vendedor (markdown simple)","skus":["sku1","sku2"]}
+- "skus": hasta 3, SOLO de la lista provista, ordenados por relevancia. Si todavía estás indagando o dando criterio, [].`;
+
+// System message completo (instrucciones + manual). Es idéntico en cada llamada
+// → funciona como prefijo cacheado por DeepSeek (solo se paga caro la 1ª vez).
+const CHAT_INTERNO_SYSTEM_FULL =
+  CHAT_INTERNO_SYSTEM + '\n\n===== MANUAL DE PRODUCTOS ROSSO =====\n' + MANUAL;
+
+function buildInternoUser(mensaje, productos, categorias) {
+  const lista = productos.map((p) =>
+    `- sku ${p.sku} | ${p.nombre} (${p.categoria}${p.marca ? '/' + p.marca : ''}) — ${(p.descripcion || '').slice(0, 160)}`).join('\n');
+  return `CONSULTA DEL VENDEDOR:\n${mensaje}\n\nCATEGORÍAS DEL CATÁLOGO: ${categorias.join(', ')}\n\nPRODUCTOS DEL CATÁLOGO relevantes (reales y disponibles; elegí de acá por sku):\n${lista || '(no se encontraron productos del catálogo para esta consulta; respondé igual usando el manual)'}`;
+}
+
+// Rate-limit por IP para el bot interno (equipo chico → límites más holgados que
+// el bot público). Namespace propio ("int_") para no chocar con `chat`.
+async function checkRateLimitInterno(ip) {
+  const ipKey = 'int_' + (String(ip).replace(/[^a-zA-Z0-9]/g, '_').slice(0, 56) || 'desconocido');
+  const ref = admin.firestore().collection('chatlimits').doc(ipKey);
+  const now = Date.now();
+  return admin.firestore().runTransaction(async (tx) => {
+    const doc = await tx.get(ref);
+    const d = doc.exists ? doc.data() : {};
+    let { minStart = 0, minCount = 0, dayStart = 0, dayCount = 0 } = d;
+    if (now - minStart > 60000) { minStart = now; minCount = 0; }
+    if (now - dayStart > 86400000) { dayStart = now; dayCount = 0; }
+    minCount++; dayCount++;
+    tx.set(ref, { minStart, minCount, dayStart, dayCount }, { merge: true });
+    if (minCount > 20) return { ok: false, msg: 'Estás enviando mensajes muy rápido. Esperá unos segundos.' };
+    if (dayCount > 400) return { ok: false, msg: 'Llegaste al límite de consultas por hoy.' };
+    return { ok: true };
+  });
+}
+
+// Techo global diario del bot interno (corta el gasto ante abuso). Doc propio.
+const GLOBAL_INTERNO_CAP = 3000;
+async function checkGlobalInterno() {
+  const ref = admin.firestore().collection('chatlimits').doc('_global_interno_diario');
+  const now = Date.now();
+  return admin.firestore().runTransaction(async (tx) => {
+    const doc = await tx.get(ref);
+    const d = doc.exists ? doc.data() : {};
+    let { dayStart = 0, dayCount = 0 } = d;
+    if (now - dayStart > 86400000) { dayStart = now; dayCount = 0; }
+    dayCount++;
+    tx.set(ref, { dayStart, dayCount }, { merge: true });
+    return { ok: dayCount <= GLOBAL_INTERNO_CAP };
+  });
+}
+
+exports.chatInterno = onRequest(
+  { secrets: [DEEPSEEK_API_KEY], cors: true, region: 'us-central1' },
+  async (req, res) => {
+    try {
+      if (req.method !== 'POST') return res.status(405).json({ error: 'Método no permitido' });
+
+      const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.ip || 'desconocido';
+      const gate = await checkRateLimitInterno(ip);
+      if (!gate.ok) return res.status(429).json({ error: gate.msg });
+
+      const mensaje = String((req.body && req.body.mensaje) || '').trim();
+      const history = Array.isArray(req.body && req.body.history) ? req.body.history : [];
+      if (!mensaje) return res.status(400).json({ error: 'Escribí una consulta.' });
+      if (mensaje.length > 400) return res.status(400).json({ error: 'El mensaje es demasiado largo.' });
+
+      const global = await checkGlobalInterno();
+      if (!global.ok) {
+        return res.json({
+          ok: true,
+          respuesta: 'Estoy recibiendo muchísimas consultas en este momento 🙏. Probá de nuevo en un rato.',
+          productos: [],
+        });
+      }
+
+      const catalogo = await getCatalogo();
+      const categorias = [...new Set(catalogo.map((p) => p.categoria).filter(Boolean))];
+      const relevantes = filtrarRelevantes(catalogo, mensaje, 30);
+
+      const histMsgs = history.slice(-6).map((h) => ({
+        role: h.role === 'user' ? 'user' : 'assistant',
+        content: String(h.content || '').slice(0, 500),
+      }));
+
+      const messages = [
+        { role: 'system', content: CHAT_INTERNO_SYSTEM_FULL },
+        ...histMsgs,
+        { role: 'user', content: buildInternoUser(mensaje, relevantes, categorias) },
+      ];
+
+      const txt = await deepseekChat(messages, DEEPSEEK_API_KEY.value(), true, 700);
+
+      let parsed;
+      try { parsed = JSON.parse(txt || '{}'); }
+      catch { parsed = { respuesta: txt || 'Disculpá, no te entendí bien. ¿Me das un poco más de detalle?', skus: [] }; }
+
+      const porSku = new Map(catalogo.map((p) => [String(p.sku), p]));
+      const productos = (parsed.skus || [])
+        .map((s) => porSku.get(String(s))).filter(Boolean).slice(0, 5)
+        .map((p) => ({ sku: p.sku, nombre: p.nombre, categoria: p.categoria, descripcion: p.descripcion, imagen: p.imagen }));
+
+      return res.json({ ok: true, respuesta: limpiarSkus(parsed.respuesta), productos });
+    } catch (e) {
+      console.error('chatInterno error:', e);
       return res.status(500).json({ error: 'Error interno' });
     }
   }

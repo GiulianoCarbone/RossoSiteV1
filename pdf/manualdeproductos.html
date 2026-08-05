@@ -1,119 +1,304 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual de Productos - Uso Interno | Rosso Materiales</title>
-    <link href="../assets/FAV.png" rel="icon">
-    <link href="../style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual de Productos - Uso Interno | Rosso Materiales</title>
+  <meta name="description" content="Manual de productos de Rosso Materiales para el equipo de ventas. Guía por sección y rubro con la ficha de venta de cada producto. Uso interno." />
+  <meta name="robots" content="noindex,nofollow" />
+  <link href="../assets/FAV.png" rel="icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link href="../style.css" rel="stylesheet" />
+  <style>
+    :root{
+      --brand:#272e68; --brand-2:#1f244f; --accent:#ec6434;
+      --ink:#1f2937; --muted:#6b7280; --line:#e6e8ee; --bg:#f4f6fa; --card:#ffffff;
+      --shadow-sm:0 1px 2px rgba(16,24,40,.04),0 2px 6px rgba(16,24,40,.06);
+      --shadow-md:0 8px 26px rgba(16,24,40,.14);
+      --header-h:64px; --sec:#2b6cb0;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    img{max-width:100%;display:block}
+    .container{width:min(1180px,94%);margin-inline:auto}
 
-    <style>
-        :root {
-            --header-height: 70px; /* Definimos una altura para el header */
-        }
+    .main-header{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line);height:var(--header-h)}
+    .main-nav{display:flex;align-items:center;justify-content:space-between;height:100%}
+    .back-link{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--brand-2);font-weight:600;font-size:.98rem}
+    .back-link:hover{color:var(--accent)}
+    .logo-image{height:38px;width:auto}
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
+    .page-header{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-2) 100%);color:#fff;padding:20px 0 18px}
+    .page-header .container{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px;justify-content:space-between}
+    .ph-left h1{margin:0;font-size:clamp(1.5rem,3.4vw,2.2rem);font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .ph-badge{font-size:.62rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);color:#fff;padding:5px 9px;border-radius:999px}
+    .ph-left p{margin:.5rem 0 0;color:#c8cce6;font-size:.95rem;max-width:62ch}
+    .ph-stats{display:flex;gap:20px;color:#fff}
+    .ph-stat{text-align:center;line-height:1.1}
+    .ph-stat b{display:block;font-size:1.5rem;font-weight:800}
+    .ph-stat span{font-size:.72rem;color:#c8cce6;text-transform:uppercase;letter-spacing:.06em}
 
-        body {
-            display: flex;
-            flex-direction: column;
-            background-color: #f4f7f6; /* Fondo consistente con el panel */
-        }       
+    .controls-bar{position:sticky;top:var(--header-h);z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+    .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:14px 0}
+    .search-wrap{position:relative;flex:1 1 320px;min-width:240px}
+    .search-wrap i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#9aa3b2;font-size:.95rem}
+    .search-bar{width:100%;padding:12px 40px;border:1px solid var(--line);border-radius:11px;font-size:1rem;background:#fff;outline:none;transition:.15s}
+    .search-bar:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(39,46,104,.12)}
+    .search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:none;color:#9aa3b2;cursor:pointer;font-size:1rem;padding:6px;display:none}
+    .search-clear:hover{color:var(--accent)}
+    .filter-bar{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{border:1px solid var(--line);background:#fff;color:#475569;padding:9px 13px;border-radius:9px;font-weight:600;font-size:.84rem;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+    .chip:hover{border-color:#aab2c2;color:var(--brand)}
+    .chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+    .chip[data-filter="grueso"][aria-pressed="true"]{background:#2b6cb0;border-color:#2b6cb0}
+    .chip[data-filter="ferreteria"][aria-pressed="true"]{background:#475569;border-color:#475569}
+    .chip[data-filter="intermedia"][aria-pressed="true"]{background:#dd6b20;border-color:#dd6b20}
+    .chip[data-filter="terminacion"][aria-pressed="true"]{background:#2c7a7b;border-color:#2c7a7b}
+    .count{margin-left:auto;color:var(--muted);font-size:.88rem;font-weight:600;white-space:nowrap}
 
-        /* Contenedor del Manual (Iframe) */
-        #manual-wrapper {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            flex-grow: 1; 
-            padding-top: var(--header-height); /* Usamos la variable para el espacio */
-            box-sizing: border-box;
-            overflow: auto; 
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .flipbook-container {
-             flex-grow: 1;
-             display: flex;
-        }
+    main{padding:6px 0 56px}
+    .rubro-section{margin-top:22px}
+    .rubro-title{display:flex;align-items:center;gap:10px;margin:0 0 13px;font-size:1.08rem;font-weight:800;color:var(--brand);padding-bottom:9px;border-bottom:2px solid var(--sec)}
+    .rubro-title i{color:var(--sec)}
+    .rubro-count{margin-left:2px;font-size:.7rem;font-weight:700;color:#fff;background:var(--sec);padding:3px 9px;border-radius:999px}
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px}
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
+    .card{cursor:pointer;text-align:left;padding:0;border:1px solid var(--line);background:var(--card);border-radius:13px;overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .16s,box-shadow .16s,border-color .16s;display:flex;flex-direction:column;font-family:inherit}
+    .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:#d4d9e6}
+    .card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .card-thumb{aspect-ratio:210/297;background:#eef1f6;overflow:hidden;position:relative}
+    .card-thumb img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .3s}
+    .card:hover .card-thumb img{transform:scale(1.04)}
+    .card-pg{position:absolute;top:7px;left:7px;font-size:.6rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;background:var(--sec);color:#fff;padding:3px 8px;border-radius:999px;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+    .card-pg.card-new{background:var(--accent)}
+    .card-zoom{position:absolute;right:7px;bottom:7px;width:28px;height:28px;border-radius:50%;background:rgba(31,36,79,.82);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.74rem;opacity:0;transition:.16s}
+    .card:hover .card-zoom{opacity:1}
+    .card-body{padding:9px 11px 11px}
+    .card-brand{display:block;font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent)}
+    .card-name{display:block;margin-top:1px;font-size:.92rem;font-weight:700;color:var(--ink);line-height:1.22}
 
-        /* --- ESTILOS DEL HEADER --- */
-        .main-header {
-            position: fixed; /* Lo deja fijo arriba */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: var(--header-height); /* Altura controlada */
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-        }
+    .empty{display:none;text-align:center;padding:70px 20px;color:var(--muted)}
+    .empty i{font-size:2.4rem;color:#c3cad8;margin-bottom:14px}
+    .empty h3{margin:0 0 6px;color:var(--ink)}
 
-        .main-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* <-- ESTA LÍNEA ES CLAVE */
-            width: 100%;
-            padding: 0 20px; 
-            box-sizing: border-box;
-        }
+    .viewer{position:fixed;inset:0;z-index:100;background:rgba(15,18,38,.86);backdrop-filter:blur(4px);display:none;flex-direction:column;padding:14px}
+    .viewer.open{display:flex}
+    .viewer-top{display:flex;align-items:center;gap:14px;color:#fff;padding:4px 4px 10px}
+    .viewer-info{min-width:0}
+    .viewer-name{font-weight:800;font-size:1.05rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .viewer-sub{font-size:.8rem;color:#b9bedd;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .viewer-pos{margin-left:auto;font-size:.82rem;color:#b9bedd;white-space:nowrap}
+    .viewer-open{color:#fff;text-decoration:none;font-size:.82rem;border:1px solid rgba(255,255,255,.3);padding:7px 11px;border-radius:8px;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+    .viewer-open:hover{background:rgba(255,255,255,.12)}
+    .viewer-close{border:none;background:rgba(255,255,255,.14);color:#fff;width:38px;height:38px;border-radius:9px;cursor:pointer;font-size:1.05rem;flex-shrink:0}
+    .viewer-close:hover{background:rgba(255,255,255,.26)}
+    .viewer-stage{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;min-height:0}
+    .viewer-img-wrap{height:100%;display:flex;align-items:center;justify-content:center;min-width:0}
+    .viewer-img-wrap img{max-height:100%;max-width:100%;width:auto;height:auto;border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,.5);background:#fff}
+    .vnav{flex-shrink:0;border:none;background:rgba(255,255,255,.14);color:#fff;width:46px;height:46px;border-radius:50%;cursor:pointer;font-size:1.1rem;transition:.15s}
+    .vnav:hover:not(:disabled){background:rgba(255,255,255,.3)}
+    .vnav:disabled{opacity:.25;cursor:default}
 
-        .logo-image {
-            max-height: 50px; 
-            width: auto;
-        }
-
-        /* --- ESTILOS NUEVOS PARA EL BOTÓN "VOLVER" --- */
-      .back-link {
-            font: 1em sans-serif;
-            text-decoration: none;
-            color: #1f244f;
-            font-weight: 600;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px; /* Espacio entre el ícono y el texto */
-        }
-        .back-link:hover {
-            color: #ec6434;
-        }
-    </style>
+    @media (max-width:640px){
+      .ph-stats{gap:14px}
+      .ph-stat b{font-size:1.2rem}
+      .cards-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+      .card-name{font-size:.86rem}
+      .count{margin-left:0;width:100%}
+      .vnav{position:absolute;bottom:18px;z-index:2;background:rgba(255,255,255,.2)}
+      .vnav.prev{left:18px}.vnav.next{right:18px}
+      .viewer-stage{position:relative}
+    }
+  </style>
 </head>
 <body>
-    <div id="manual-wrapper">
-        <header class="main-header" role="banner">
-            <nav class="main-nav" aria-label="Primaria">
-                
-                <a href="/panel-corporativo.html" class="back-link">
-                    <i class="fa-solid fa-chevron-left"></i>
-                    <span>Volver</span>
-                </a>
-                
-                <a href="/index.html" class="logo" aria-label="Ir al inicio">
-                    <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
-                </a>
-            </nav>
-        </header>
-        
-        <main class="flipbook-container">
-            <iframe allowfullscreen="allowfullscreen" allow="clipboard-write" scrolling="no" class="fp-iframe" src="https://heyzine.com/flip-book/12ffb4da13.html"></iframe>
+  <header class="main-header">
+    <nav class="main-nav container" aria-label="Primaria">
+      <a href="/panel-corporativo.html" class="back-link"><i class="fa-solid fa-chevron-left"></i><span>Volver al panel</span></a>
+      <a href="/index.html" class="logo" aria-label="Ir al inicio">
+        <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" />
+      </a>
+    </nav>
+  </header>
+
+  <section class="page-header">
+    <div class="container">
+      <div class="ph-left">
+        <h1><i class="fa-solid fa-book-open"></i> Manual de Productos <span class="ph-badge">Edición 2025 · Uso interno</span></h1>
+        <p>Guía de venta por sección de obra y rubro. Buscá un rubro (o su marca) y abrí la ficha original del manual con características, beneficios y argumentos.</p>
+      </div>
+      <div class="ph-stats">
+        <div class="ph-stat"><b>56</b><span>Rubros</span></div>
+        <div class="ph-stat"><b>4</b><span>Secciones</span></div>
+        <div class="ph-stat"><b>62</b><span>Páginas</span></div>
+      </div>
     </div>
- 
-    <script src="../script.js"></script>
+  </section>
+
+  <div class="controls-bar">
+    <div class="controls container">
+      <div class="search-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="search" class="search-bar" type="search" autocomplete="off" placeholder="Buscar rubro o marca (ej: cemento, rotoplas, durlock)..." aria-label="Buscar" />
+        <button id="search-clear" class="search-clear" aria-label="Limpiar"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="filter-bar" role="group" aria-label="Filtrar por sección">
+        <button class="chip" data-filter="all" aria-pressed="true">Todas</button>
+        <button class="chip" data-filter="grueso" aria-pressed="false"><i class="fa-solid fa-trowel-bricks"></i> Grueso</button>
+        <button class="chip" data-filter="ferreteria" aria-pressed="false"><i class="fa-solid fa-screwdriver-wrench"></i> Ferretería</button>
+        <button class="chip" data-filter="intermedia" aria-pressed="false"><i class="fa-solid fa-layer-group"></i> Intermedia</button>
+        <button class="chip" data-filter="terminacion" aria-pressed="false"><i class="fa-solid fa-paint-roller"></i> Terminaciones</button>
+      </div>
+      <div id="count" class="count"></div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <div id="results"></div>
+      <div id="empty" class="empty">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <h3>Sin resultados</h3>
+        <p>Probá con otro rubro o marca (ej: cemento, rotoplas, grifería).</p>
+      </div>
+    </div>
+  </main>
+
+  <div id="viewer" class="viewer" aria-modal="true" role="dialog">
+    <div class="viewer-top">
+      <div class="viewer-info">
+        <div id="viewer-name" class="viewer-name"></div>
+        <div id="viewer-sub" class="viewer-sub"></div>
+      </div>
+      <div id="viewer-pos" class="viewer-pos"></div>
+      <a id="viewer-open" class="viewer-open" target="_blank" rel="noopener"><i class="fa-solid fa-up-right-from-square"></i> Ver página</a>
+      <button id="viewer-close" class="viewer-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="viewer-stage">
+      <button id="viewer-prev" class="vnav prev" aria-label="Anterior"><i class="fa-solid fa-chevron-left"></i></button>
+      <div class="viewer-img-wrap"><img id="viewer-img" src="" alt="" /></div>
+      <button id="viewer-next" class="vnav next" aria-label="Siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const PRODUCTS = [{"p":4,"pg":5,"n":"Cemento","b":"Holcim","s":"grueso","k":"holcim portland cpn cpc ecoplanet aglomerante hormigon bolsa"},{"p":5,"pg":6,"n":"Cemento de Alba\u00f1iler\u00eda","b":"Holcim","s":"grueso","k":"holcim ecoplanet maestro mortero alba\u00f1ileria cal reemplazo"},{"p":6,"pg":7,"n":"Cal","b":"","s":"grueso","k":"cal hidratada mortero plasticidad revoque alba\u00f1ileria"},{"p":7,"pg":8,"n":"Aditivos","b":"Ceresita","s":"grueso","k":"ceresita hidrofugo aditivo impermeabilizante pasta humedad ascendente"},{"p":8,"pg":9,"n":"Revoques","b":"","s":"grueso","k":"revoque fino grueso mortero terminacion pared alisado weber"},{"p":9,"pg":10,"n":"Ladrillos","b":"","s":"grueso","k":"ladrillos huecos ceramicos portante muro pared comun"},{"p":10,"pg":11,"n":"Bloques","b":"","s":"grueso","k":"bloques hormigon premoldeado mamposteria cemento"},{"p":11,"pg":12,"n":"Hierros","b":"","s":"grueso","k":"hierro barras acero adn420 torsionado liso construccion armadura gerdau"},{"p":12,"pg":13,"n":"Mallas","b":"","s":"grueso","k":"malla electrosoldada acero sima losa contrapiso refuerzo gerdau"},{"p":13,"pg":14,"n":"Viguetas","b":"","s":"grueso","k":"viguetas pretensadas losa entrepiso techo estructura gerdau"},{"p":14,"pg":15,"n":"Bovedillas","b":"","s":"grueso","k":"bovedillas eps poliestireno losa alivianada telgopor relleno"},{"p":15,"pg":16,"n":"Membranas Impermeabilizantes","b":"","s":"grueso","k":"membrana asfaltica liquida geotextil aluminio impermeabilizante techo rollo"},{"p":16,"pg":17,"n":"Aislantes","b":"","s":"grueso","k":"aislante lana de vidrio isover isolant termico acustico rollo panel"},{"p":17,"pg":18,"n":"Chapas Lisas","b":"","s":"grueso","k":"chapa lisa acero laminada plana herreria industria"},{"p":18,"pg":19,"n":"Chapas para Techos","b":"","s":"grueso","k":"chapa techo sinusoidal trapezoidal acanalada galvanizada color t101"},{"p":20,"pg":21,"n":"Herramientas y Consumibles","b":"","s":"ferreteria","k":"herramientas discos corte amoladora consumibles mechas diamantado abrasivo"},{"p":21,"pg":22,"n":"Herrajes","b":"","s":"ferreteria","k":"herrajes bisagras cerraduras picaportes puertas ventanas libro pomela"},{"p":22,"pg":23,"n":"Fijaciones","b":"","s":"ferreteria","k":"fijaciones tarugos tornillos drywall tacos brocas expansion"},{"p":23,"pg":24,"n":"Clavos","b":"","s":"ferreteria","k":"clavos punta paris acero carpinteria cabeza"},{"p":24,"pg":25,"n":"Ventilaci\u00f3n","b":"","s":"ferreteria","k":"ventilacion rejillas gas aire circulacion humedad"},{"p":25,"pg":26,"n":"Pinturas","b":"","s":"ferreteria","k":"pintura latex interior exterior esmalte sintetico mate satinado"},{"p":26,"pg":27,"n":"Selladores y Cintas","b":"","s":"ferreteria","k":"sellador silicona acrilico cinta enmascarar poliuretano junta"},{"p":27,"pg":28,"n":"Enduidos","b":"","s":"ferreteria","k":"enduido interior exterior masilla plaste alisar yeso"},{"p":29,"pg":30,"n":"Tanques","b":"Rotoplas","s":"intermedia","k":"tanque rotoplas agua tricapa cisterna deposito polietileno"},{"p":30,"pg":31,"n":"Biodigestores","b":"Rotoplas","s":"intermedia","k":"biodigestor rotoplas cloacal septico camara aguas residuales"},{"p":31,"pg":32,"n":"Perfiler\u00eda Met\u00e1lica","b":"","s":"intermedia","k":"perfileria galvanizada montante solera durlock construccion seco steel framing"},{"p":32,"pg":33,"n":"Cielorrasos","b":"","s":"intermedia","k":"cielorraso yeso pvc desmontable junta tomada techo"},{"p":33,"pg":34,"n":"Placas de Yeso","b":"","s":"intermedia","k":"placa yeso durlock drywall roca tabique pared construccion seco"},{"p":34,"pg":35,"n":"Placas Cementicias","b":"Volcanboard","s":"intermedia","k":"placa cementicia volcanboard superboard fibrocemento exterior humedo"},{"p":35,"pg":36,"n":"Ca\u00f1er\u00edas Gruesas","b":"","s":"intermedia","k":"ca\u00f1eria cloacal desague pvc agua polietileno sanitaria gruesa"},{"p":36,"pg":37,"n":"Instalaciones Gas y Agua","b":"","s":"intermedia","k":"termofusion ppr gas agua caliente epoxi instalacion interna sigas"},{"p":38,"pg":39,"n":"Cer\u00e1micos y Revestimientos","b":"","s":"terminacion","k":"ceramico revestimiento piso pared esmaltado zocalo"},{"p":39,"pg":40,"n":"Porcelanatos","b":"","s":"terminacion","k":"porcelanato pulido mate rectificado premium simil"},{"p":62,"pg":63,"n":"Revestimientos WPC","b":"Vigorita","s":"terminacion","k":"revestimiento wpc vigorita panel decorativo pared interior madera polimero wood plastic composite listones simil madera deco","nuevo":1},{"p":63,"pg":64,"n":"Placas UV","b":"Vigorita","s":"terminacion","k":"placa uv spc vigorita revestimiento pared interior rigida marmol piedra simil stone plastic composite panel decorativo remodelacion","nuevo":1},{"p":40,"pg":41,"n":"Guardacantos y Listeles","b":"","s":"terminacion","k":"guardacanto listelo perfil terminacion angulo atrim"},{"p":41,"pg":42,"n":"Pastinas","b":"","s":"terminacion","k":"pastina junta relleno color impermeable ceramico"},{"p":42,"pg":43,"n":"Pegamentos","b":"","s":"terminacion","k":"pegamento adhesivo cementicio c1 c2 klaukol mortero porcelanato"},{"p":43,"pg":44,"n":"Sistemas de Nivelaci\u00f3n","b":"","s":"terminacion","k":"nivelacion clip cu\u00f1a nivelador crucetas porcelanato piso"},{"p":44,"pg":45,"n":"Pisos Vin\u00edlicos","b":"","s":"terminacion","k":"piso vinilico spc click simil madera flotante"},{"p":45,"pg":46,"n":"Z\u00f3calos y Perfiles Vin\u00edlicos","b":"","s":"terminacion","k":"zocalo perfil vinilico terminacion piso"},{"p":46,"pg":47,"n":"Inodoros","b":"","s":"terminacion","k":"inodoro largo corto pozo mochila ferrum roca sanitario loza"},{"p":47,"pg":48,"n":"Bidet","b":"","s":"terminacion","k":"bidet loza sanitario griferia"},{"p":48,"pg":49,"n":"Lavatorios","b":"","s":"terminacion","k":"lavatorio columna pedestal bacha mano loza mural"},{"p":49,"pg":50,"n":"Dep\u00f3sitos para Inodoros","b":"","s":"terminacion","k":"deposito mochila descarga inodoro apoyar embutir"},{"p":50,"pg":51,"n":"Piletas de Lavadero","b":"","s":"terminacion","k":"pileta lavadero loza acero inoxidable ropa"},{"p":51,"pg":52,"n":"Bachas de Ba\u00f1o","b":"","s":"terminacion","k":"bacha ba\u00f1o apoyar bajo mesada loza dise\u00f1o"},{"p":52,"pg":53,"n":"Bachas de Cocina","b":"","s":"terminacion","k":"bacha cocina acero inoxidable granito simple doble"},{"p":53,"pg":54,"n":"Ba\u00f1eras","b":"","s":"terminacion","k":"ba\u00f1era hidromasaje acrilica isla pedido"},{"p":54,"pg":55,"n":"Grifer\u00eda de Cocina","b":"","s":"terminacion","k":"griferia cocina monocomando fv canilla mesada"},{"p":55,"pg":56,"n":"Grifer\u00eda de Ba\u00f1o","b":"","s":"terminacion","k":"griferia ba\u00f1o monocomando fv ducha juego lavatorio bidet"},{"p":56,"pg":57,"n":"Mesadas","b":"","s":"terminacion","k":"mesada acero inoxidable granito cocina ba\u00f1o"},{"p":57,"pg":58,"n":"Puertas","b":"","s":"terminacion","k":"puerta placa interior exterior madera aluminio abertura"},{"p":58,"pg":59,"n":"Ventanas","b":"","s":"terminacion","k":"ventana aluminio corrediza abrir mosquitero abertura"},{"p":59,"pg":60,"n":"Accesorios y Complementos","b":"","s":"terminacion","k":"accesorios toalleros portarrollo botiquin espejo ba\u00f1o cocina"},{"p":60,"pg":61,"n":"Calefacci\u00f3n","b":"Tromen","s":"terminacion","k":"calefaccion tromen estufa hogar le\u00f1a salamandra parrilla cocina"}];
+    const SECTIONS = [{"id":"grueso","label":"Grueso","color":"#2b6cb0","icon":"fa-trowel-bricks"},{"id":"ferreteria","label":"Ferreter\u00eda","color":"#475569","icon":"fa-screwdriver-wrench"},{"id":"intermedia","label":"Obra Intermedia","color":"#dd6b20","icon":"fa-layer-group"},{"id":"terminacion","label":"Terminaciones","color":"#2c7a7b","icon":"fa-paint-roller"}];
+    const pad = n => String(n).padStart(3,'0');
+    const thumb = p => '../assets/manual/thumb/p'+pad(p)+'.webp';
+    const full  = p => '../assets/manual/full/p'+pad(p)+'.webp';
+    const norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const esc = s => (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const secMeta = id => SECTIONS.find(s=>s.id===id) || {label:id,color:'#666'};
+
+    let state = { q:'', section:'all' };
+    let currentList = [];
+    let viewerIdx = -1;
+
+    function applyFilter(){
+      const q = norm(state.q);
+      currentList = PRODUCTS.filter(p=>{
+        if(state.section!=='all' && p.s!==state.section) return false;
+        if(!q) return true;
+        return norm(p.n).includes(q) || norm(p.b).includes(q) || norm(p.k).includes(q);
+      });
+      return currentList;
+    }
+
+    function render(){
+      const list = applyFilter();
+      const container = document.getElementById('results');
+      container.innerHTML = '';
+      const bySection = new Map();
+      list.forEach((p,i)=>{
+        if(!bySection.has(p.s)) bySection.set(p.s, []);
+        bySection.get(p.s).push({p, idx:i});
+      });
+      SECTIONS.forEach(sec=>{
+        const arr = bySection.get(sec.id);
+        if(!arr || !arr.length) return;
+        const secEl = document.createElement('section');
+        secEl.className = 'rubro-section';
+        secEl.style.setProperty('--sec', sec.color);
+        secEl.innerHTML = '<h2 class="rubro-title"><i class="fa-solid '+sec.icon+'"></i> '+sec.label+' <span class="rubro-count">'+arr.length+'</span></h2>';
+        const grid = document.createElement('div'); grid.className='cards-grid';
+        arr.forEach(({p, idx})=>{
+          const btn = document.createElement('button');
+          btn.className='card'; btn.type='button';
+          btn.innerHTML =
+            '<span class="card-thumb"><img loading="lazy" src="'+thumb(p.p)+'" alt="'+esc(p.n)+'">'+
+            (p.nuevo ? '<span class="card-pg card-new">Nuevo</span>' : '<span class="card-pg">Pág. '+String(p.pg).padStart(2,'0')+'</span>')+
+            '<span class="card-zoom"><i class="fa-solid fa-expand"></i></span></span>'+
+            '<span class="card-body">'+
+              (p.b ? '<span class="card-brand">'+esc(p.b)+'</span>' : '')+
+              '<span class="card-name">'+esc(p.n)+'</span>'+
+            '</span>';
+          btn.addEventListener('click', ()=>openViewer(idx));
+          grid.appendChild(btn);
+        });
+        secEl.appendChild(grid);
+        container.appendChild(secEl);
+      });
+      document.getElementById('count').textContent = list.length + (list.length===1?' rubro':' rubros');
+      document.getElementById('empty').style.display = list.length ? 'none' : 'block';
+    }
+
+    function openViewer(idx){
+      viewerIdx = idx;
+      updateViewer();
+      document.getElementById('viewer').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function updateViewer(){
+      const p = currentList[viewerIdx];
+      if(!p) return;
+      const img = document.getElementById('viewer-img');
+      img.src = full(p.p); img.alt = p.n;
+      const meta = secMeta(p.s);
+      document.getElementById('viewer-name').textContent = p.n;
+      document.getElementById('viewer-sub').textContent = (p.b? p.b+'  ·  ':'') + meta.label + (p.nuevo ? '  ·  Producto nuevo' : '  ·  Página ' + p.pg);
+      document.getElementById('viewer-pos').textContent = (viewerIdx+1)+' / '+currentList.length;
+      document.getElementById('viewer-open').href = full(p.p);
+      [viewerIdx-1, viewerIdx+1].forEach(j=>{ if(currentList[j]){ const im=new Image(); im.src=full(currentList[j].p); } });
+      document.getElementById('viewer-prev').disabled = viewerIdx<=0;
+      document.getElementById('viewer-next').disabled = viewerIdx>=currentList.length-1;
+    }
+    function nav(d){ const n=viewerIdx+d; if(n>=0 && n<currentList.length){ viewerIdx=n; updateViewer(); } }
+    function closeViewer(){ document.getElementById('viewer').classList.remove('open'); document.body.style.overflow=''; }
+
+    document.getElementById('viewer-prev').addEventListener('click', ()=>nav(-1));
+    document.getElementById('viewer-next').addEventListener('click', ()=>nav(1));
+    document.getElementById('viewer-close').addEventListener('click', closeViewer);
+    document.getElementById('viewer').addEventListener('click', e=>{ if(e.target.id==='viewer' || e.target.classList.contains('viewer-stage') || e.target.classList.contains('viewer-img-wrap')) closeViewer(); });
+    document.addEventListener('keydown', e=>{
+      if(!document.getElementById('viewer').classList.contains('open')) return;
+      if(e.key==='Escape') closeViewer();
+      else if(e.key==='ArrowLeft') nav(-1);
+      else if(e.key==='ArrowRight') nav(1);
+    });
+    let tx=0;
+    document.getElementById('viewer-img').addEventListener('touchstart', e=>{ tx=e.changedTouches[0].clientX; }, {passive:true});
+    document.getElementById('viewer-img').addEventListener('touchend', e=>{ const dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>50) nav(dx<0?1:-1); }, {passive:true});
+
+    const search = document.getElementById('search');
+    const clearBtn = document.getElementById('search-clear');
+    search.addEventListener('input', ()=>{
+      state.q = search.value;
+      clearBtn.style.display = search.value ? 'block' : 'none';
+      render();
+    });
+    clearBtn.addEventListener('click', ()=>{ search.value=''; state.q=''; clearBtn.style.display='none'; search.focus(); render(); });
+    document.querySelectorAll('.chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        state.section = chip.dataset.filter;
+        document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed', c===chip ? 'true':'false'));
+        render();
+        window.scrollTo({top:0, behavior:'smooth'});
+      });
+    });
+
+    render();
+  </script>
 </body>
 </html>
