@@ -8,7 +8,9 @@
     "generar": "node generar-descripciones.mjs",
     "generar:todos": "node generar-descripciones.mjs --all",
     "scrape": "node enriquecer-scrape.mjs",
-    "scrape:todos": "node enriquecer-scrape.mjs --all"
+    "scrape:todos": "node enriquecer-scrape.mjs --all",
+    "rebalancear": "node rebalancear-preguntas.mjs",
+    "rebalancear:todos": "node rebalancear-preguntas.mjs --all --emit"
   },
   "engines": {
     "node": ">=18"

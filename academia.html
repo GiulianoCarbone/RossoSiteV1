@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Academia Rosso · Capacitación de Vendedores</title>
+
+  <link rel="icon" href="/assets/FAV.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --panel-bg: #f4f7f6;
+      --card-bg: #ffffff;
+      --brand: #272e68;
+      --brand-dark: #1f244f;
+      --brand-light: #3e489b;
+      --accent: #ec6434;
+      --accent-hover: #d95324;
+      --card: #ffffff;
+      --text: #1f2937;
+      --text-soft: #4b5567;
+      --muted: #6b7185;
+      --border-color: #e5e7eb;
+      --line: #e2e8f0;
+      --fill-track: #e2e8f0;
+      --ok: #10b981;
+      --ok-soft: #ecfdf5;
+      --ok-ink: #065f46;
+      --bad: #ef4444;
+      --bad-soft: #fef2f2;
+      --bad-ink: #991b1b;
+      --warn-bg: #fffbeb;
+      --warn-ink: #92400e;
+      --warn-accent: #f59e0b;
+      --note-bg: #eff6ff;
+      --note-ink: #1e40af;
+      --disabled-bg: #f3f4f6;
+      --disabled-line: #e5e7eb;
+      --font-display: "Outfit", "Inter", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, -apple-system, sans-serif;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.1);
+      --ease-out: cubic-bezier(.22, .61, .36, 1);
+      --ease-in-out: cubic-bezier(.65, .05, .36, 1);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      background-color: var(--panel-bg);
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* Foco visible por teclado */
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn:focus-visible, .opt:focus-visible, .back-link:focus-visible, .btn-back:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+    /* ---------- Header Corporativo ---------- */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: #ffffff;
+      color: var(--brand);
+      padding: 14px clamp(16px, 4vw, 40px);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+    }
+    .topbar .brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .topbar .logo-image { height: 42px; width: auto; object-fit: contain; }
+    .topbar .brand-divider { width: 1px; height: 26px; background: var(--border-color); margin: 0 2px; }
+    .topbar .brand-badge {
+      display: inline-flex; align-items: center; gap: 6px; background: #eef2ff; color: var(--brand);
+      padding: 4px 10px; border-radius: 20px; font-family: var(--font-display); font-weight: 800; font-size: .85rem;
+    }
+    .topbar .brand-badge i { color: var(--accent); }
+    .topbar .brand-text h1 {
+      margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 1.2rem;
+      color: var(--brand); letter-spacing: -0.2px; line-height: 1.1;
+    }
+    .topbar .brand-text small {
+      display: block; font-family: var(--font-body); font-weight: 500; font-size: .75rem;
+      color: var(--text-soft); letter-spacing: 0.5px; margin-top: 1px;
+    }
+    .btn-back {
+      background: #ffffff; color: var(--brand); border: 1.5px solid var(--border-color);
+      padding: 9px 18px; border-radius: 30px; font-family: var(--font-body); font-weight: 600; font-size: .88rem;
+      display: inline-flex; align-items: center; gap: 8px; transition: all .2s var(--ease-out); text-decoration: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+    }
+    .btn-back i { color: var(--accent); transition: transform 0.2s ease; }
+    .btn-back:hover {
+      background: var(--brand); color: #ffffff; border-color: var(--brand);
+      box-shadow: 0 4px 12px rgba(39, 46, 104, 0.2); transform: translateY(-2px);
+    }
+    .btn-back:hover i { color: #ffffff; transform: translateX(-3px); }
+
+    .wrap { max-width: 1060px; margin: 0 auto; padding: clamp(24px, 4vw, 40px) clamp(16px, 4vw, 30px) 80px; }
+
+    /* ---------- Pantallas ---------- */
+    .screen { display: none; animation: fade .3s var(--ease-out); }
+    .screen.active { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* ---------- Credencial / Legajo ---------- */
+    .legajo {
+      color: #fff; border: none; border-radius: 16px;
+      padding: 28px clamp(20px, 4vw, 36px);
+      display: flex; flex-wrap: wrap; align-items: center; gap: 22px 30px;
+      justify-content: space-between; margin-bottom: 34px; position: relative;
+      background: linear-gradient(135deg, var(--brand) 0%, #3e489b 100%);
+      box-shadow: 0 10px 30px rgba(39, 46, 104, 0.25);
+      overflow: hidden;
+    }
+    .legajo::after {
+      content: ""; position: absolute; right: -40px; bottom: -40px; width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(236, 100, 52, 0.25) 0%, transparent 70%);
+      pointer-events: none; border-radius: 50%;
+    }
+    .cred-left { position: relative; z-index: 1; }
+    .cred-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font-body); text-transform: uppercase; letter-spacing: 1px; font-size: .72rem;
+      color: #fff; font-weight: 700; background: rgba(255,255,255,0.18);
+      padding: 4px 12px; border-radius: 20px; backdrop-filter: blur(4px); margin-bottom: 8px;
+    }
+    .cred-name {
+      font-family: var(--font-display); text-transform: capitalize; font-weight: 800;
+      font-size: clamp(2rem, 5vw, 2.75rem); line-height: 1; margin: 4px 0; letter-spacing: -0.5px;
+    }
+    .cred-sub { margin: 0; opacity: .88; font-size: .95rem; font-weight: 500; }
+    .legajo-stats {
+      display: flex; gap: 12px; position: relative; z-index: 1;
+    }
+    .stat {
+      padding: 12px 20px; text-align: center; min-width: 90px;
+      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px; backdrop-filter: blur(6px);
+      transition: transform .2s ease;
+    }
+    .stat:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.18); }
+    .stat b {
+      display: block; font-family: var(--font-display); font-size: 2.1rem; font-weight: 800;
+      line-height: 1; font-variant-numeric: tabular-nums; color: #fff;
+    }
+    .stat small {
+      font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.8px;
+      font-size: .68rem; opacity: .85; font-weight: 600; margin-top: 4px; display: block;
+    }
+
+    /* ---------- Títulos de sección ---------- */
+    .sec-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 0 22px; }
+    .sec-title h2 {
+      margin: 0; font-family: var(--font-display); font-size: 1.45rem; font-weight: 800;
+      letter-spacing: -0.3px; color: var(--brand); display: flex; align-items: center; gap: 10px;
+    }
+    .sec-title h2::before {
+      content: ""; width: 4px; height: 22px; background: var(--accent); border-radius: 4px; display: inline-block;
+    }
+    .sec-title .pill {
+      font-family: var(--font-body); text-transform: uppercase; letter-spacing: .5px;
+      font-size: .75rem; background: #ffffff; border: 1px solid var(--border-color); color: var(--brand);
+      padding: 5px 12px; border-radius: 20px; font-weight: 700; white-space: nowrap; box-shadow: var(--shadow);
+    }
+
+    /* ---------- Grilla de módulos ---------- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+    .mod-card {
+      background: var(--card); border: 1px solid var(--border-color); border-radius: 14px;
+      padding: 24px; transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out);
+      display: flex; flex-direction: column; gap: 14px; position: relative;
+      box-shadow: var(--shadow);
+    }
+    .mod-card.clickable { cursor: pointer; }
+    .mod-card.clickable:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+    .mod-card.soon { opacity: .7; background: #fafafa; }
+    .mod-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .mod-num {
+      width: 44px; height: 44px; border-radius: 10px; background: #eef2ff; color: var(--brand);
+      font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; display: grid; place-items: center;
+      transition: background .2s, color .2s;
+    }
+    .mod-card.clickable:hover .mod-num { background: var(--accent); color: #fff; }
+    .mod-rubro {
+      font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.5px;
+      font-size: .68rem; color: var(--brand); background: #f1f5f9; padding: 4px 10px; font-weight: 700; border-radius: 20px;
+    }
+    .mod-card h3 {
+      margin: 0; font-family: var(--font-display); font-size: 1.4rem; font-weight: 800;
+      line-height: 1.15; color: var(--brand); letter-spacing: -0.2px;
+    }
+    .mod-desc { font-size: .9rem; color: var(--text-soft); margin: 0; line-height: 1.5; flex-grow: 1; }
+    .mod-foot {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding-top: 14px; border-top: 1px solid var(--border-color);
+    }
+    .lvl-dots { display: flex; gap: 6px; }
+    .lvl-dots span { width: 22px; height: 6px; background: var(--fill-track); border-radius: 4px; transition: background .2s; }
+    .lvl-dots span.done { background: var(--ok); }
+    .lvl-dots span.cur { background: var(--accent); }
+    .mod-go {
+      font-family: var(--font-body); font-size: .85rem; font-weight: 700; color: var(--brand);
+      display: inline-flex; align-items: center; gap: 6px; transition: color .2s;
+    }
+    .mod-card.clickable:hover .mod-go { color: var(--accent); }
+    .mod-go i { transition: transform 0.2s ease; }
+    .mod-card.clickable:hover .mod-go i { transform: translateX(4px); }
+    .badge-soon, .badge-done {
+      position: absolute; top: 16px; right: 16px; font-family: var(--font-body);
+      text-transform: uppercase; letter-spacing: .5px; font-size: .65rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px;
+    }
+    .badge-soon { background: #e2e8f0; color: var(--text-soft); }
+    .badge-done { background: var(--ok-soft); color: var(--ok-ink); }
+
+    /* ---------- Pantalla de niveles ---------- */
+    .back-link {
+      background: none; border: none; color: var(--brand); font-family: var(--font-body);
+      font-weight: 700; font-size: .88rem; display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 20px; padding: 6px 0; cursor: pointer; transition: color .2s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .back-link i { transition: transform .2s; }
+    .back-link:hover i { transform: translateX(-3px); }
+    .lvl-list { display: flex; flex-direction: column; gap: 16px; }
+    .lvl-card {
+      background: var(--card); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .lvl-card:hover:not(.locked) { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+    .lvl-card.locked { opacity: .6; background: #fafafa; }
+    .lvl-card.passed { border-color: var(--ok); background: #f0fdf4; }
+    .lvl-num {
+      width: 52px; height: 52px; border-radius: 12px; background: var(--brand); color: #fff;
+      font-family: var(--font-display); font-weight: 800; display: grid; place-items: center; font-size: 1.5rem; flex-shrink: 0;
+    }
+    .lvl-card.locked .lvl-num { background: #94a3b8; }
+    .lvl-card.passed .lvl-num { background: var(--ok); }
+    .lvl-info { flex-grow: 1; min-width: 0; }
+    .lvl-info h4 { margin: 0 0 4px; font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; color: var(--brand); }
+    .lvl-info p { margin: 0; font-size: .88rem; color: var(--text-soft); }
+    .lvl-meta { font-family: var(--font-body); font-size: .78rem; color: var(--text-soft); margin-top: 8px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .lvl-meta b { color: var(--ok-ink); font-weight: 700; }
+    
+    /* Botones Corporativos */
+    .btn {
+      background: var(--accent); color: #fff; border: none; padding: 11px 22px; border-radius: 30px;
+      font-family: var(--font-body); font-weight: 700; font-size: .92rem;
+      display: inline-flex; align-items: center; gap: 8px; transition: all .2s var(--ease-out);
+      white-space: nowrap; box-shadow: 0 4px 12px rgba(236, 100, 52, 0.25); text-decoration: none;
+    }
+    .btn:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(236, 100, 52, 0.35); }
+    .btn:active:not(:disabled) { transform: translateY(0); }
+    .btn.ghost { background: #ffffff; color: var(--brand); border: 1.5px solid var(--border-color); box-shadow: var(--shadow); }
+    .btn.ghost:hover:not(:disabled) { background: var(--brand); color: #ffffff; border-color: var(--brand); }
+    .btn:disabled { background: #e2e8f0; color: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none; }
+    .btn-lg { padding: 14px 32px; font-size: 1rem; border-radius: 30px; }
+
+    /* ---------- Quiz ---------- */
+    .quiz-card {
+      background: var(--card); border: 1px solid var(--border-color); border-radius: 16px;
+      padding: clamp(20px, 4vw, 32px); box-shadow: var(--shadow);
+    }
+    .quiz-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+    .quiz-head .q-mod { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; color: var(--brand); }
+    .quiz-head .q-lvl { font-family: var(--font-body); font-size: .82rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .quiz-head-right { display: flex; align-items: center; gap: 12px; }
+    .timer {
+      display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 800;
+      font-variant-numeric: tabular-nums; background: #f8fafc; border: 1px solid var(--border-color);
+      color: var(--brand); padding: 8px 16px; border-radius: 30px; font-size: 1.05rem;
+    }
+    .timer i { color: var(--accent); }
+    .timer.warn { background: var(--warn-bg); color: var(--warn-ink); border-color: var(--warn-accent); }
+    .timer.warn i { color: var(--warn-ink); }
+    .timer.danger { background: var(--bad); color: #fff; border-color: var(--bad); animation: tpulse .55s var(--ease-in-out) infinite; }
+    .timer.danger i { color: #fff; }
+    @keyframes tpulse { 50% { transform: scale(1.05); } }
+
+    .rules-note {
+      background: var(--note-bg); border-radius: 12px; color: var(--note-ink);
+      padding: 14px 18px; font-size: .9rem; line-height: 1.5; margin: 0 0 24px;
+      display: flex; gap: 12px; align-items: flex-start; border: 1px solid #bfdbfe;
+    }
+    .rules-note i { margin-top: 3px; color: #2563eb; font-size: 1.1rem; }
+    .progress { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-bottom: 24px; }
+    .progress > i {
+      display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--brand), var(--accent)); transition: transform .3s var(--ease-out);
+    }
+    .q-count { font-family: var(--font-body); text-transform: uppercase; letter-spacing: 1px; font-size: .8rem; color: var(--accent); font-weight: 700; margin-bottom: 10px; }
+    .q-text { font-family: var(--font-display); font-size: clamp(1.35rem, 3.5vw, 1.75rem); font-weight: 800; line-height: 1.25; margin: 0 0 24px; color: var(--brand); }
+    .opts { display: flex; flex-direction: column; gap: 12px; }
+    .opt {
+      text-align: left; background: #ffffff; border: 1.5px solid var(--border-color); border-radius: 12px;
+      padding: 16px 20px; font-size: 1rem; font-weight: 500; color: var(--text);
+      display: flex; align-items: center; gap: 16px; transition: all .2s var(--ease-out);
+    }
+    .opt:hover:not(:disabled) { border-color: var(--brand); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .opt .k {
+      width: 32px; height: 32px; border-radius: 8px; background: #f1f5f9; display: grid; place-items: center;
+      font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: var(--brand); flex-shrink: 0;
+      transition: background .2s, color .2s;
+    }
+    .opt:hover:not(:disabled) .k { background: var(--brand); color: #fff; }
+    .opt.correct { border-color: var(--ok); background: var(--ok-soft); color: var(--ok-ink); }
+    .opt.correct .k { background: var(--ok); color: #fff; }
+    .opt.wrong { border-color: var(--bad); background: var(--bad-soft); color: var(--bad-ink); }
+    .opt.wrong .k { background: var(--bad); color: #fff; }
+    .opt:disabled { cursor: default; transform: none; box-shadow: none; }
+    
+    .feedback {
+      margin-top: 24px; border-radius: 12px; padding: 16px 20px; font-size: .95rem; line-height: 1.55;
+      display: none; align-items: flex-start; gap: 14px;
+    }
+    .feedback.show { display: flex; }
+    .feedback.ok { background: var(--ok-soft); border-left: 4px solid var(--ok); color: var(--ok-ink); }
+    .feedback.no { background: var(--bad-soft); border-left: 4px solid var(--bad); color: var(--bad-ink); }
+    .feedback i { font-size: 1.25rem; margin-top: 2px; }
+    .feedback b { display: block; margin-bottom: 4px; font-family: var(--font-display); font-size: 1.05rem; }
+    .quiz-foot { margin-top: 28px; display: flex; justify-content: flex-end; }
+
+    /* ---------- Resultado ---------- */
+    .result {
+      text-align: center; background: var(--card); border: 1px solid var(--border-color);
+      border-radius: 20px; padding: 44px clamp(20px, 5vw, 52px); max-width: 580px; margin: 10px auto;
+      box-shadow: var(--shadow-hover); position: relative; overflow: hidden;
+    }
+    .result.pass { border-top: 6px solid var(--ok); }
+    .result.fail { border-top: 6px solid var(--bad); }
+    .result .medal {
+      width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center;
+      font-size: 2.5rem; margin: 0 auto 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .result.pass .medal { background: var(--ok-soft); color: var(--ok); }
+    .result.fail .medal { background: var(--bad-soft); color: var(--bad); }
+    .result h2 { margin: 0 0 8px; font-family: var(--font-display); font-size: 1.85rem; font-weight: 800; color: var(--brand); }
+    .result .score {
+      font-family: var(--font-display); font-size: 3.75rem; font-weight: 800; margin: 8px 0 4px;
+      color: var(--brand); font-variant-numeric: tabular-nums; line-height: 1;
+    }
+    .result.fail .score { color: var(--bad); }
+    .result .score small { font-family: var(--font-body); font-size: 1.1rem; color: var(--muted); font-weight: 600; margin-left: 4px; }
+    .result p { color: var(--text-soft); margin: 8px 0 0; font-size: 1rem; }
+    .result .points {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 20px;
+      background: linear-gradient(135deg, var(--brand) 0%, #3e489b 100%); color: #fff;
+      padding: 10px 22px; border-radius: 30px; font-family: var(--font-display); font-weight: 700;
+      font-size: 1.05rem; box-shadow: 0 4px 15px rgba(39, 46, 104, 0.2);
+    }
+    .result .actions { margin-top: 32px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ---------- Estados ---------- */
+    .center-state { min-height: 60vh; display: grid; place-items: center; text-align: center; }
+    .center-state .box {
+      max-width: 440px; background: #ffffff; padding: 40px 30px; border-radius: 16px;
+      border: 1px solid var(--border-color); box-shadow: var(--shadow);
+    }
+    .center-state .ico {
+      width: 70px; height: 70px; border-radius: 50%; background: #eef2ff; color: var(--brand);
+      display: grid; place-items: center; font-size: 2rem; margin: 0 auto 20px;
+    }
+    .center-state h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; margin: 0 0 10px; color: var(--brand); }
+    .center-state p { color: var(--text-soft); margin: 0 0 24px; line-height: 1.6; font-size: .95rem; }
+    .spinner {
+      width: 48px; height: 48px; border: 4px solid #e2e8f0; border-top-color: var(--accent);
+      border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--brand); color: #fff; padding: 14px 22px; border-radius: 30px; font-size: .88rem;
+      font-family: var(--font-body); font-weight: 600; opacity: 0; pointer-events: none;
+      transition: opacity .3s var(--ease-out), transform .3s var(--ease-out); z-index: 100;
+      display: flex; align-items: center; gap: 10px; max-width: 90vw; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.warn { background: var(--warn-accent); }
+
+    @media (max-width: 560px) {
+      .legajo { flex-direction: column; align-items: flex-start; }
+      .legajo-stats { width: 100%; justify-content: space-between; }
+      .stat { flex: 1; min-width: 0; padding: 10px 8px; }
+      .stat b { font-size: 1.6rem; }
+      .lvl-card { flex-wrap: wrap; }
+      .lvl-card .btn { width: 100%; justify-content: center; }
+    }
+    /* ---------- Tabs del Home ---------- */
+    .home-tabs {
+      display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 2px solid var(--border-color);
+    }
+    .home-tab {
+      background: transparent; border: none; padding: 12px 20px; font-family: var(--font-display);
+      font-weight: 800; font-size: 1.05rem; color: var(--text-soft); border-bottom: 3px solid transparent;
+      display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: all .2s ease;
+      margin-bottom: -2px;
+    }
+    .home-tab:hover { color: var(--brand); }
+    .home-tab.active { color: var(--brand); border-bottom-color: var(--accent); }
+    .home-tab i { color: var(--accent); }
+
+    /* ---------- Sección Ranking / Leaderboard ---------- */
+    .rank-filter-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 28px; flex-wrap: wrap;
+    }
+    .rank-filters { display: flex; gap: 6px; background: #e2e8f0; padding: 4px; border-radius: 30px; }
+    .rank-filter-btn {
+      border: none; background: transparent; padding: 7px 18px; border-radius: 20px;
+      font-family: var(--font-body); font-weight: 600; font-size: .82rem; color: var(--text-soft); transition: all .2s;
+    }
+    .rank-filter-btn.active { background: #ffffff; color: var(--brand); box-shadow: 0 2px 6px rgba(0,0,0,0.08); font-weight: 700; }
+    .rank-refresh {
+      border: 1px solid var(--border-color); background: #fff; color: var(--brand);
+      width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+      font-size: .95rem; cursor: pointer; transition: all .2s var(--ease-out); box-shadow: var(--shadow); flex-shrink: 0;
+    }
+    .rank-refresh:hover { background: var(--brand); color: #fff; border-color: var(--brand); }
+    .rank-refresh.spinning { pointer-events: none; }
+    .rank-refresh.spinning i { animation: spin .8s linear infinite; }
+    
+    /* Podio Top 3 */
+    .podium-container {
+      display: flex; justify-content: center; align-items: flex-end; gap: 16px; margin: 24px 0 36px; padding: 10px 0;
+    }
+    .podium-card {
+      background: #ffffff; border: 1px solid var(--border-color); border-radius: 18px; padding: 22px 16px;
+      text-align: center; display: flex; flex-direction: column; align-items: center; width: 31%; max-width: 210px;
+      position: relative; box-shadow: var(--shadow); transition: transform .2s ease;
+    }
+    .podium-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .podium-card.first {
+      order: 2; width: 36%; max-width: 230px; padding: 28px 18px; border-color: #fbbf24;
+      background: linear-gradient(180deg, #fffdf5 0%, #ffffff 100%); box-shadow: 0 10px 25px rgba(251, 191, 36, 0.22);
+    }
+    .podium-card.second { order: 1; border-color: #cbd5e1; }
+    .podium-card.third { order: 3; border-color: #fdba74; }
+    
+    .podium-rank {
+      position: absolute; top: -14px; width: 34px; height: 34px; border-radius: 50%;
+      display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: .95rem; color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .podium-card.first .podium-rank { background: linear-gradient(135deg, #f59e0b, #d97706); width: 40px; height: 40px; top: -20px; font-size: 1.15rem; }
+    .podium-card.second .podium-rank { background: linear-gradient(135deg, #94a3b8, #64748b); }
+    .podium-card.third .podium-rank { background: linear-gradient(135deg, #ea580c, #c2410c); }
+    
+    .podium-avatar {
+      width: 56px; height: 56px; border-radius: 50%; background: #eef2ff; color: var(--brand);
+      display: grid; place-items: center; font-size: 1.6rem; margin-top: 6px; margin-bottom: 10px;
+    }
+    .podium-card.first .podium-avatar {
+      width: 68px; height: 68px; font-size: 2rem; background: #fef3c7; color: #b45309; border: 3px solid #fbbf24;
+    }
+    .podium-name { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: var(--brand); margin: 0 0 2px; text-transform: capitalize; word-break: break-word; }
+    .podium-suc { font-size: .78rem; color: var(--text-soft); margin-bottom: 12px; font-weight: 500; }
+    .podium-pts {
+      font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; color: var(--accent);
+      background: #fff4e6; padding: 5px 14px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .podium-card.first .podium-pts { background: var(--brand); color: #fff; }
+
+    /* Lista de Ranking (Posición 4 en adelante) */
+    .rank-list { display: flex; flex-direction: column; gap: 12px; }
+    .rank-item {
+      background: #ffffff; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 22px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; box-shadow: var(--shadow);
+      transition: all .2s ease;
+    }
+    .rank-item:hover { transform: translateX(3px); border-color: var(--brand); }
+    .rank-item.is-me {
+      background: #eef2ff; border: 2px solid var(--brand); box-shadow: 0 6px 20px rgba(39, 46, 104, 0.15);
+    }
+    .rank-item-left { display: flex; align-items: center; gap: 16px; min-width: 0; }
+    .rank-pos {
+      width: 36px; height: 36px; border-radius: 10px; background: #f1f5f9; color: var(--brand);
+      font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; display: grid; place-items: center; flex-shrink: 0;
+    }
+    .rank-item.is-me .rank-pos { background: var(--brand); color: #fff; }
+    .rank-user h5 { margin: 0 0 3px; font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--brand); text-transform: capitalize; }
+    .rank-user p { margin: 0; font-size: .82rem; color: var(--text-soft); }
+    .rank-pts { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; color: var(--accent); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+
+    @media (max-width: 560px) {
+      .podium-container { gap: 8px; }
+      .podium-card { padding: 16px 8px; width: 32%; }
+      .podium-card.first { padding: 20px 8px; width: 36%; }
+      .podium-avatar { width: 44px; height: 44px; font-size: 1.2rem; }
+      .podium-card.first .podium-avatar { width: 54px; height: 54px; font-size: 1.5rem; }
+      .podium-name { font-size: .95rem; }
+      .podium-pts { font-size: .85rem; padding: 4px 8px; }
+    }
+
+    /* ---------- XP & Racha en Legajo ---------- */
+    .cred-greeting { font-size: .88rem; font-weight: 600; opacity: .9; margin: 0 0 2px; }
+    .streak-badge {
+      display: inline-flex; align-items: center; gap: 6px; background: #fff4e6; color: #d97706;
+      font-family: var(--font-display); font-weight: 800; font-size: .78rem; padding: 3px 10px;
+      border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-left: 6px;
+    }
+    .xp-wrap { margin-top: 12px; max-width: 300px; }
+    .xp-bar-bg { height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin-bottom: 4px; }
+    .xp-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #fbbf24, var(--accent)); transition: width .4s var(--ease-out); }
+    .xp-info { font-size: .72rem; opacity: .88; font-weight: 600; display: flex; justify-content: space-between; }
+
+    /* ---------- Modal Certificado ---------- */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px);
+      z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px;
+      animation: fade .25s var(--ease-out);
+    }
+    .cert-box {
+      background: #ffffff; border: 6px solid var(--brand); border-radius: 16px; padding: 32px clamp(20px, 4vw, 44px);
+      max-width: 620px; width: 100%; text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      outline: 2px double #fbbf24; outline-offset: -6px;
+    }
+    .cert-close {
+      position: absolute; top: 16px; right: 16px; background: #f1f5f9; border: none; width: 34px; height: 34px;
+      border-radius: 50%; display: grid; place-items: center; font-size: 1rem; color: var(--brand); cursor: pointer;
+      transition: all .2s;
+    }
+    .cert-close:hover { background: var(--bad-soft); color: var(--bad); }
+    .cert-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .cert-logo { height: 40px; width: auto; }
+    .cert-stamp {
+      width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #fbbf24, #d97706);
+      color: #fff; display: grid; place-items: center; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+    }
+    .cert-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--brand); letter-spacing: 2px; margin: 12px 0 4px; }
+    .cert-sub { color: var(--text-soft); font-size: .9rem; margin: 0 0 8px; }
+    .cert-name { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--accent); margin: 4px 0 10px; text-transform: capitalize; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; display: inline-block; min-width: 240px; }
+    .cert-text { color: var(--text-soft); font-size: .92rem; line-height: 1.45; margin: 0 0 8px; }
+    .cert-module { font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: var(--brand); margin: 0 0 20px; }
+    .cert-footer { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px dashed var(--border-color); padding-top: 16px; text-align: left; }
+    .cert-footer small { display: block; font-size: .7rem; color: var(--text-soft); text-transform: uppercase; }
+    .cert-footer b { font-family: var(--font-display); font-size: 1rem; color: var(--brand); }
+    .cert-seal { display: flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 700; color: var(--ok-ink); background: var(--ok-soft); padding: 5px 12px; border-radius: 20px; }
+    .cert-actions { margin-top: 24px; display: flex; gap: 12px; justify-content: center; }
+
+    /* ---------- Ficha del producto (imagen del manual) ---------- */
+    .ficha {
+      display: flex; gap: 20px; background: var(--card); border: 1px solid var(--border-color);
+      border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); margin-bottom: 18px; flex-wrap: wrap;
+    }
+    .ficha-thumb {
+      flex-shrink: 0; width: 130px; height: 168px; border: 1px solid var(--border-color); border-radius: 10px;
+      overflow: hidden; padding: 0; background: #f8fafc; cursor: pointer; position: relative;
+      transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out);
+    }
+    .ficha-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ficha-thumb:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .ficha-zoom {
+      position: absolute; bottom: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(39, 46, 104, .85); color: #fff; display: grid; place-items: center; font-size: .85rem;
+    }
+    .ficha-body { flex: 1; min-width: 220px; }
+    .ficha-tag {
+      display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body);
+      text-transform: uppercase; letter-spacing: .5px; font-size: .68rem; font-weight: 700;
+      color: var(--accent); background: #fff4e6; padding: 4px 10px; border-radius: 20px;
+    }
+    .ficha-body h4 { margin: 10px 0 8px; font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: var(--brand); }
+    .ficha-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .ficha-meta .chip {
+      display: inline-flex; align-items: center; gap: 6px; font-size: .76rem; font-weight: 600;
+      color: var(--text-soft); background: #f1f5f9; border: 1px solid var(--border-color); padding: 4px 11px; border-radius: 20px;
+    }
+    .ficha-meta .chip i { color: var(--brand); }
+    .ficha-meta .chip.ok { color: var(--ok-ink); background: var(--ok-soft); border-color: #a7f3d0; }
+    .ficha-meta .chip.ok i { color: var(--ok); }
+    .ficha-desc { margin: 0 0 12px; font-size: .9rem; color: var(--text-soft); line-height: 1.5; }
+    .lvl-actions { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+
+    /* ---------- Examen final ---------- */
+    .lvl-card.final { border-color: var(--warn-accent); background: linear-gradient(180deg, #fffdf5 0%, #ffffff 100%); }
+    .lvl-card.final .lvl-num { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .lvl-card.final.locked .lvl-num { background: #94a3b8; }
+    .lvl-card.final.passed { border-color: var(--ok); background: #f0fdf4; }
+    .lvl-card.final.passed .lvl-num { background: var(--ok); }
+
+    /* ---------- Tip de mostrador en el feedback ---------- */
+    .feedback .tip {
+      margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0, 0, 0, .15);
+      display: flex; gap: 8px; align-items: flex-start; font-weight: 500; font-size: .9rem;
+    }
+    .feedback .tip i { font-size: 1rem; margin-top: 2px; color: var(--warn-accent); }
+    .feedback .tip b { display: inline; font-family: var(--font-body); font-size: .9rem; }
+
+    /* ---------- Examen Maestro (certificación general) ---------- */
+    .maestro-banner {
+      position: relative; overflow: hidden; border-radius: var(--radius); margin-bottom: 26px; color: #fff;
+      background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 55%, #3e489b 100%);
+      border: 1px solid var(--brand-dark); box-shadow: 0 10px 30px rgba(39, 46, 104, .28);
+      padding: 24px clamp(20px, 4vw, 32px);
+      display: flex; align-items: center; gap: 22px; flex-wrap: wrap; justify-content: space-between;
+    }
+    .maestro-banner:empty { display: none; }
+    .maestro-banner::after {
+      content: ""; position: absolute; right: -30px; top: -30px; width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(251, 191, 36, .28) 0%, transparent 70%); pointer-events: none;
+    }
+    .maestro-left { display: flex; align-items: center; gap: 18px; min-width: 260px; flex: 1; position: relative; z-index: 1; }
+    .maestro-medal {
+      width: 60px; height: 60px; border-radius: 16px; background: linear-gradient(135deg, #fbbf24, #d97706);
+      display: grid; place-items: center; font-size: 1.7rem; color: #fff; flex-shrink: 0; box-shadow: 0 6px 16px rgba(217, 119, 6, .4);
+    }
+    .maestro-info h3 { margin: 0 0 4px; font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; letter-spacing: -.2px; }
+    .maestro-info p { margin: 0; font-size: .88rem; opacity: .9; line-height: 1.4; }
+    .maestro-tag {
+      display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); text-transform: uppercase;
+      letter-spacing: 1px; font-size: .66rem; font-weight: 700; background: rgba(251, 191, 36, .22); color: #fde68a;
+      padding: 4px 10px; border-radius: 20px; margin-bottom: 8px;
+    }
+    .maestro-right { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+    .maestro-prep { font-size: .78rem; opacity: .88; font-weight: 600; }
+    .maestro-banner .btn.gold { background: linear-gradient(135deg, #fbbf24, #d97706); color: #fff; box-shadow: 0 4px 14px rgba(217, 119, 6, .4); }
+    .maestro-banner .btn.gold:hover:not(:disabled) { background: linear-gradient(135deg, #f59e0b, #c2410c); }
+    .maestro-banner.locked { background: linear-gradient(135deg, #3a3f5c 0%, #4a5170 100%); border-color: #3a3f5c; box-shadow: 0 8px 22px rgba(0, 0, 0, .18); }
+    .maestro-banner.locked::after { display: none; }
+    .maestro-banner.locked .maestro-medal { background: linear-gradient(135deg, #94a3b8, #64748b); box-shadow: none; }
+    .maestro-banner .btn.gold:disabled { background: rgba(255, 255, 255, .15); color: rgba(255, 255, 255, .6); box-shadow: none; cursor: not-allowed; }
+    @media (max-width: 560px) { .maestro-right { align-items: flex-start; width: 100%; } }
+
+    /* ---------- Lightbox: página del manual ---------- */
+    .lightbox-inner { max-width: 900px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .lightbox-inner img { max-width: 100%; max-height: 80vh; border-radius: 10px; box-shadow: 0 20px 50px rgba(0, 0, 0, .4); background: #fff; }
+    .lightbox-cap { color: #fff; font-family: var(--font-body); font-weight: 600; font-size: .9rem; text-align: center; }
+    .lightbox-close {
+      position: fixed; top: 20px; right: 24px; background: rgba(255, 255, 255, .15); border: none; color: #fff;
+      width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: grid; place-items: center;
+    }
+    .lightbox-close:hover { background: rgba(255, 255, 255, .3); }
+
+    @media (max-width: 560px) {
+      .ficha-thumb { width: 100%; height: 200px; }
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      .modal-overlay, .modal-overlay * { visibility: visible; }
+      .modal-overlay { position: absolute; inset: 0; background: #fff; padding: 0; backdrop-filter: none; }
+      .cert-box { border-width: 4px; box-shadow: none; max-width: 100%; }
+      .no-print { display: none !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .screen { animation: none; }
+      .timer.danger { animation: none; }
+      .mod-card.clickable:hover, .btn:hover, .opt:hover:not(:disabled) { transform: none; box-shadow: none; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="/panel-corporativo.html" class="brand">
+      <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="logo-image" onerror="this.onerror=null; this.src='assets/logo2.png';" />
+      <div class="brand-divider"></div>
+      <div class="brand-badge"><i class="fa-solid fa-graduation-cap"></i> Academia</div>
+    </a>
+    <a class="btn-back" href="/panel-corporativo.html"><i class="fa-solid fa-arrow-left"></i> Volver al panel</a>
+  </header>
+
+  <main class="wrap">
+
+    <!-- Loading -->
+    <section id="screen-loading" class="screen active">
+      <div class="center-state"><div class="box">
+        <div class="spinner"></div>
+        <p>Cargando tu legajo…</p>
+      </div></div>
+    </section>
+
+    <!-- No login -->
+    <section id="screen-login" class="screen">
+      <div class="center-state"><div class="box">
+        <div class="ico"><i class="fa-solid fa-lock"></i></div>
+        <h2>Iniciá sesión en el panel</h2>
+        <p>Para acceder a la Academia y llevar tu registro, primero tenés que ingresar con tu nombre y DNI en el Panel Corporativo.</p>
+        <a class="btn btn-lg" href="/panel-corporativo.html"><i class="fa-solid fa-right-to-bracket"></i> Ir al panel</a>
+      </div></div>
+    </section>
+
+    <!-- Home / Legajo + módulos + ranking -->
+    <section id="screen-home" class="screen">
+      <div class="legajo">
+        <div class="cred-left">
+          <div class="cred-greeting" id="vendor-greeting">¡Buen día!</div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <p class="cred-name" id="vendor-name" style="margin: 0;">vendedor</p>
+            <div class="streak-badge"><i class="fa-solid fa-fire"></i> <span id="streak-count">1</span> día</div>
+          </div>
+          <p class="cred-sub" id="vendor-suc" style="margin-top: 4px;">Equipo de ventas Rosso</p>
+
+          <div class="xp-wrap">
+            <div class="xp-bar-bg"><div class="xp-bar-fill" id="xp-bar-fill"></div></div>
+            <div class="xp-info">
+              <span id="xp-rank">Asesor Trainee</span>
+              <span id="xp-pts">0 / 250 XP</span>
+            </div>
+          </div>
+        </div>
+        <div class="legajo-stats">
+          <div class="stat"><b id="stat-points">0</b><small>Puntos</small></div>
+          <div class="stat"><b id="stat-levels">0</b><small>Niveles</small></div>
+          <div class="stat"><b id="stat-mods">0</b><small>Módulos</small></div>
+        </div>
+      </div>
+
+      <!-- Acceso Rápido al Manual de Productos -->
+      <div style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: #ffffff; padding: 16px 22px; border-radius: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow); flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 14px; min-width: 260px; flex: 1;">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: #eef2ff; color: var(--brand); display: grid; place-items: center; font-size: 1.25rem; flex-shrink: 0;">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+          <div>
+            <h4 style="margin: 0 0 2px; font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--brand);">Manual de Productos Oficial</h4>
+            <p style="margin: 0; font-size: .84rem; color: var(--text-soft);">Consultá fichas técnicas, ventajas y argumentos de venta antes de rendir los exámenes.</p>
+          </div>
+        </div>
+        <a href="pdf/manualdeproductos.html" target="_blank" class="btn" style="padding: 10px 20px; font-size: .88rem; white-space: nowrap;">
+          <i class="fa-solid fa-book-open"></i> Abrir Manual <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: .75rem; margin-left: 2px;"></i>
+        </a>
+      </div>
+
+      <!-- Navegación por pestañas en Home -->
+      <div class="home-tabs">
+        <button class="home-tab active" id="tab-mods-btn" onclick="switchHomeTab('mods')">
+          <i class="fa-solid fa-cubes"></i> Módulos de producto
+        </button>
+        <button class="home-tab" id="tab-rank-btn" onclick="switchHomeTab('rank')">
+          <i class="fa-solid fa-trophy"></i> Tabla de Posiciones
+        </button>
+      </div>
+
+      <!-- Vista 1: Módulos de producto -->
+      <div id="view-mods">
+        <!-- Examen Maestro Rosso (certificación general) -->
+        <div id="maestro-banner" class="maestro-banner"></div>
+
+        <div class="sec-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <h2>Módulos de producto</h2>
+            <span class="pill" id="mods-count"></span>
+          </div>
+          <select id="rubro-filter" onchange="renderHome()" style="padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-family: var(--font-body); font-size: 0.9rem; color: var(--text); background: white; cursor: pointer; outline: none; min-width: 200px;">
+            <option value="todos">Todos los rubros</option>
+            <option value="Obra Gruesa">Obra Gruesa</option>
+            <option value="Ferretería">Ferretería</option>
+            <option value="Obra Intermedia">Obra Intermedia</option>
+            <option value="Terminaciones">Terminaciones</option>
+          </select>
+        </div>
+        <div class="grid" id="mod-grid"></div>
+      </div>
+
+      <!-- Vista 2: Tabla de Posiciones (Ranking) -->
+      <div id="view-rank" style="display: none;">
+        <div class="rank-filter-bar">
+          <div class="sec-title" style="margin: 0;">
+            <h2>Tabla de Posiciones</h2>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div class="rank-filters">
+              <button class="rank-filter-btn active" data-mode="all" onclick="filterLeaderboard('all')">Ranking General</button>
+              <button class="rank-filter-btn" data-mode="sucursal" onclick="filterLeaderboard('sucursal')">Mi Sucursal</button>
+            </div>
+            <button class="rank-refresh" onclick="loadLeaderboard()" title="Actualizar tabla"><i class="fa-solid fa-rotate"></i></button>
+          </div>
+        </div>
+
+        <!-- Podio Top 3 -->
+        <div class="podium-container" id="podium-container"></div>
+
+        <!-- Lista de Posiciones 4+ -->
+        <div class="rank-list" id="ranking-list-container"></div>
+      </div>
+    </section>
+
+    <!-- Levels -->
+    <section id="screen-levels" class="screen">
+      <button class="back-link" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Volver a módulos</button>
+      <div class="sec-title" style="margin-bottom: 6px;">
+        <h2 id="lvl-title">Módulo</h2>
+      </div>
+      <p class="mod-desc" id="lvl-subtitle" style="margin: 0 0 16px;"></p>
+      <div class="rules-note">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>Cada pregunta tiene <b>tiempo límite</b>. Si salís de la pantalla o cambiás de pestaña, esa pregunta se registrará como <b>incorrecta</b>. ¡Demostrá tu conocimiento!</div>
+      </div>
+      <div class="lvl-list" id="lvl-list"></div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="screen-quiz" class="screen">
+      <div class="quiz-card">
+        <div class="quiz-head">
+          <div>
+            <div class="q-mod" id="quiz-mod">Módulo</div>
+            <div class="q-lvl" id="quiz-lvl">Nivel</div>
+          </div>
+          <div class="quiz-head-right">
+            <div class="timer" id="quiz-timer"><i class="fa-solid fa-stopwatch"></i> <span>0:00</span></div>
+            <button class="btn ghost" onclick="quitQuiz()" style="padding: 8px 16px; font-size: .82rem;"><i class="fa-solid fa-xmark"></i> Salir</button>
+          </div>
+        </div>
+        <div class="progress"><i id="quiz-bar" style="transform: scaleX(0)"></i></div>
+        <div class="q-count" id="quiz-count">Pregunta 1</div>
+        <p class="q-text" id="quiz-question"></p>
+        <div class="opts" id="quiz-opts"></div>
+        <div class="feedback" id="quiz-feedback"></div>
+        <div class="quiz-foot">
+          <button class="btn" id="quiz-next" style="display:none;" onclick="nextQuestion()">Siguiente <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <section id="screen-result" class="screen">
+      <div class="result" id="result-box">
+        <div class="medal" id="result-medal"></div>
+        <h2 id="result-title"></h2>
+        <div class="score"><span id="result-score">0</span><small>% correcto</small></div>
+        <p id="result-detail"></p>
+        <div class="points" id="result-points" style="display:none;"><i class="fa-solid fa-star"></i> <span></span></div>
+        <div class="actions">
+          <button class="btn ghost" onclick="goHome()"><i class="fa-solid fa-house"></i> Ir al inicio</button>
+          <button class="btn ghost" id="result-repaso" style="display:none;"></button>
+          <button class="btn" id="result-cta"></button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast"><i class="fa-solid fa-circle-info"></i> <span></span></div>
+
+  <!-- Modal Certificado Digital -->
+  <div class="modal-overlay" id="cert-modal" style="display:none;">
+    <div class="cert-box" id="cert-printable">
+      <button class="cert-close no-print" onclick="closeCert()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="cert-header">
+        <img src="https://i.ibb.co/PzZscw0G/Logo-Rosso-Institucional-1.png" alt="Rosso Materiales" class="cert-logo" onerror="this.onerror=null; this.src='assets/logo2.png';" />
+        <div class="cert-stamp"><i class="fa-solid fa-award"></i></div>
+      </div>
+      <h3 class="cert-title">CERTIFICADO DE CAPACITACIÓN</h3>
+      <p class="cert-sub">Otorgado formalmente a:</p>
+      <h2 class="cert-name" id="cert-vendor-name">Nombre Vendedor</h2>
+      <p class="cert-text" id="cert-text">Por haber demostrado conocimiento técnico y excelencia comercial en el módulo de producto:</p>
+      <h3 class="cert-module" id="cert-module-name">Módulo de Producto</h3>
+      <div class="cert-footer">
+        <div>
+          <small>Fecha de Emisión</small>
+          <b id="cert-date">--/--/----</b>
+        </div>
+        <div class="cert-seal">
+          <i class="fa-solid fa-certificate"></i>
+          <span>Capacitación Oficial Rosso</span>
+        </div>
+      </div>
+      <div class="cert-actions no-print">
+        <button class="btn ghost" onclick="closeCert()"><i class="fa-solid fa-arrow-left"></i> Cerrar</button>
+        <button class="btn" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox: página del manual de productos -->
+  <div class="modal-overlay" id="img-modal" style="display:none;" onclick="if(event.target===this)closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="lightbox-inner">
+      <img id="lightbox-img" src="" alt="Página del manual" />
+      <div class="lightbox-cap" id="lightbox-cap"></div>
+    </div>
+  </div>
+
+  <!-- Firebase (mismo proyecto que el panel corporativo) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="js/quiz-data.js"></script>
+
+  <script>
+  /* ============================================================
+     ACADEMIA ROSSO — Fase 1: motor de quiz + tracking Firestore
+     ------------------------------------------------------------
+     - Reutiliza la sesión del panel (localStorage "vendedorLogueado").
+     - Guarda el progreso en la colección "academia_progreso".
+     - El contenido vive en el array MODULOS (banco de preguntas).
+       Para sumar productos: agregar objetos con sus niveles.
+     ============================================================ */
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD9p16QACzSifXaTl1TojcuUKDijuE77S0",
+    authDomain: "backend-panel-vendedores.firebaseapp.com",
+    projectId: "backend-panel-vendedores",
+    storageBucket: "backend-panel-vendedores.firebasestorage.app",
+    messagingSenderId: "24873830395",
+    appId: "1:24873830395:web:ea6749407f991ee8226d5e",
+    measurementId: "G-E4Z0Y849KF",
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  /* ============================================================
+     BANCO DE MÓDULOS
+     Estructura de cada nivel:
+       { nivel, nombre, objetivo, aprobar (%), preguntas: [
+           { q, opciones: [...], correcta: idx, explica }
+       ]}
+     ============================================================ */
+
+  const modById = (id) => MODULOS.find(m => m.id === id);
+
+  /* ============================================================
+     FICHA DEL MANUAL (idea 4)
+     Mapa módulo → índice de imagen del manual (assets/manual/…).
+     Reutiliza los índices de pdf/manualdeproductos.html. La página
+     humana que se muestra es (índice + 1).
+     ============================================================ */
+  const MANUAL_IMG = {
+    "cemento": 4, "cemento-albanileria": 5, "cal-hidratada": 6, "aditivos-hidrofugos": 7,
+    "revoque-fino": 8, "ladrillos": 9, "bloques": 10, "hierros": 11, "mallas": 12,
+    "viguetas": 13, "bovedillas": 14, "membranas": 15, "aislantes": 16, "chapas-lisas": 17,
+    "chapas-techos": 18, "herramientas": 20, "herrajes": 21, "fijaciones": 22, "clavos": 23,
+    "ventilacion": 24, "pinturas": 25, "selladores": 26, "enduidos": 27, "tanques": 29,
+    "biodigestores": 30, "perfileria": 31, "cielorrasos": 32, "placas-yeso": 33, "volcanboard": 34,
+    "canerias-gruesas": 35, "gas-agua": 36, "ceramicos": 38, "porcelanatos": 39, "guardacantos": 40,
+    "pastinas": 41, "pegamentos": 42, "sistemas-nivelacion": 43, "pisos-vinilicos": 44, "zocalos-perfiles": 45,
+    "inodoros": 46, "bidet": 47, "lavatorios": 48, "depositos-inodoros": 49, "piletas-lavadero": 50,
+    "bachas-bano": 51, "bachas-cocina": 52, "baneras": 53, "griferias-cocina": 54, "griferias-bano": 55,
+    "mesadas": 56, "puertas": 57, "ventanas": 58, "accesorios-bano": 59, "calefaccion": 60,
+    "revestimiento_wpc": 62, "placas_uv": 63
+  };
+  const MANUAL_MARCA = {
+    "cemento": "Holcim", "cemento-albanileria": "Holcim", "aditivos-hidrofugos": "Ceresita",
+    "tanques": "Rotoplas", "biodigestores": "Rotoplas", "volcanboard": "Volcanboard",
+    "calefaccion": "Tromen", "revestimiento_wpc": "Vigorita", "placas_uv": "Vigorita"
+  };
+  const pad3 = (n) => String(n).padStart(3, "0");
+
+  /* ============================================================
+     ESTADO
+     ============================================================ */
+  let vendor = { nombre: null, dni: null, sucursal: null, key: null };
+  let progress = { modulos: {} };            // documento de Firestore del vendedor
+  let current = null;                        // quiz en curso
+  let savedOffline = false;                  // si falló Firestore, no bloquear
+
+  /* ============================================================
+     ARRANQUE
+     ============================================================ */
+  document.addEventListener("DOMContentLoaded", init);
+  document.addEventListener("visibilitychange", onTabHidden);
+
+  async function init() {
+    const nombre = localStorage.getItem("vendedorLogueado");
+    if (!nombre) { showScreen("login"); return; }
+    vendor.nombre = nombre;
+
+    // Buscar el vendedor para obtener DNI y sucursal (clave estable del legajo)
+    try {
+      const snap = await db.collection("vendedores").where("nombre", "==", nombre).limit(1).get();
+      if (!snap.empty) {
+        const v = snap.docs[0].data();
+        vendor.dni = v.dni || null;
+        vendor.sucursal = v.sucursal || v.local || null;
+      }
+    } catch (e) { console.warn("No se pudo enriquecer el vendedor:", e); }
+
+    vendor.key = sanitizeKey(vendor.dni || vendor.nombre);
+
+    // Cargar progreso
+    try {
+      const doc = await db.collection("academia_progreso").doc(vendor.key).get();
+      if (doc.exists) progress = doc.data();
+      if (!progress.modulos) progress.modulos = {};
+    } catch (e) {
+      console.warn("No se pudo cargar el progreso:", e);
+      toast("No pudimos cargar tu progreso guardado.", true);
+    }
+
+    renderHome();
+    showScreen("home");
+  }
+
+  function sanitizeKey(s) {
+    return String(s).trim().replace(/[\/\.\#\$\[\]]/g, "_").replace(/\s+/g, "_").slice(0, 120);
+  }
+
+  /* ============================================================
+     HOME / LEGAJO
+     ============================================================ */
+  function renderHome() {
+    // Saludo dinámico según horario
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? "¡Buen día! 👋" : (hour < 20 ? "¡Buenas tardes! 👋" : "¡Buenas noches! 👋");
+    document.getElementById("vendor-greeting").textContent = greeting;
+
+    document.getElementById("vendor-name").textContent = firstName(vendor.nombre);
+    const sucEl = document.getElementById("vendor-suc");
+    if (sucEl) sucEl.textContent = vendor.sucursal ? ("Sucursal " + vendor.sucursal) : "Equipo de ventas Rosso";
+
+    // Calcular Racha de Días (Streak)
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const lastActive = localStorage.getItem("rosso_last_active");
+    let streak = parseInt(localStorage.getItem("rosso_streak_count") || "1", 10);
+
+    if (lastActive) {
+      const lastDate = new Date(lastActive);
+      const todayDate = new Date(todayStr);
+      const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+      if (diffDays === 1) {
+        // Entró día consecutivo
+      } else if (diffDays > 1) {
+        streak = 1; // Resetea racha si pasó más de un día
+      }
+    }
+    localStorage.setItem("rosso_last_active", todayStr);
+    localStorage.setItem("rosso_streak_count", String(streak));
+    document.getElementById("streak-count").textContent = streak;
+
+    // Stats y XP
+    let totalPoints = 0, totalLevels = 0, totalMods = 0;
+    MODULOS.forEach(m => {
+      const mp = progress.modulos[m.id];
+      if (mp) {
+        const niveles = mp.niveles || {};
+        const passed = Object.values(niveles).filter(n => n.aprobado).length;
+        totalLevels += passed;
+        totalPoints += Object.values(niveles).reduce((a, n) => a + (n.mejorPuntos || 0), 0);
+        if (mp.examenFinal) {
+          totalPoints += (mp.examenFinal.mejorPuntos || 0);
+          if (mp.examenFinal.aprobado) totalLevels++;
+        }
+        if (passed > 0 || (mp.examenFinal && mp.examenFinal.aprobado)) totalMods++;
+      }
+    });
+    if (progress.examenMaestro) totalPoints += (progress.examenMaestro.mejorPuntos || 0);
+    document.getElementById("stat-points").textContent = totalPoints;
+    document.getElementById("stat-levels").textContent = totalLevels;
+    document.getElementById("stat-mods").textContent = totalMods;
+
+    // Rango y Barra XP
+    let xpRank = "Asesor Trainee";
+    let xpMax = 250;
+    let xpPct = Math.min(100, Math.round((totalPoints / xpMax) * 100));
+
+    if (totalPoints >= 600) {
+      xpRank = "Asesor Máster 🌟";
+      xpMax = 1000;
+      xpPct = Math.min(100, Math.round((totalPoints / xpMax) * 100));
+    } else if (totalPoints >= 250) {
+      xpRank = "Asesor Especialista ⭐";
+      xpMax = 600;
+      xpPct = Math.min(100, Math.round(((totalPoints - 250) / 350) * 100));
+    }
+
+    document.getElementById("xp-rank").textContent = xpRank;
+    document.getElementById("xp-pts").textContent = `${totalPoints} / ${xpMax} XP`;
+    document.getElementById("xp-bar-fill").style.width = `${xpPct}%`;
+
+    const active = MODULOS.filter(m => m.niveles.length > 0).length;
+    document.getElementById("mods-count").textContent = active + " disponible" + (active === 1 ? "" : "s");
+
+    // Grid
+    const grid = document.getElementById("mod-grid");
+    grid.innerHTML = "";
+    
+    const filterValue = document.getElementById("rubro-filter") ? document.getElementById("rubro-filter").value : "todos";
+    
+    MODULOS.forEach(m => {
+      if (filterValue !== "todos" && m.rubro !== filterValue) return;
+      grid.appendChild(moduleCard(m));
+    });
+
+    renderMaestroBanner();
+  }
+
+  function moduleCard(m) {
+    const available = m.niveles.length > 0;
+    const mp = progress.modulos[m.id] || { niveles: {} };
+    const passedCount = Object.values(mp.niveles || {}).filter(n => n.aprobado).length;
+    const totalLevels = m.niveles.length;
+    const regularPassed = available && passedCount === totalLevels;
+    const finalPassed = !!(mp.examenFinal && mp.examenFinal.aprobado);
+
+    const el = document.createElement("div");
+    el.className = "mod-card" + (available ? " clickable" : " soon");
+    if (available) el.onclick = () => openModule(m.id);
+
+    const num = String(MODULOS.indexOf(m) + 1).padStart(2, "0");
+
+    let dots = "";
+    for (let i = 0; i < totalLevels; i++) {
+      const cls = i < passedCount ? "done" : (i === passedCount ? "cur" : "");
+      dots += `<span class="${cls}"></span>`;
+    }
+
+    el.innerHTML = `
+      ${available
+        ? (finalPassed
+            ? `<button class="badge-done" onclick="event.stopPropagation(); openCertificate('${m.id}')" style="border:none; cursor:pointer;" title="Ver Certificado"><i class="fa-solid fa-award"></i> Ver Certificado</button>`
+            : (regularPassed ? `<span class="badge-done" style="background:var(--warn-bg); color:var(--warn-ink);"><i class="fa-solid fa-medal"></i> Examen final</span>` : ""))
+        : `<span class="badge-soon">Próximamente</span>`}
+      <div class="mod-top">
+        <span class="mod-num">${num}</span>
+        <span class="mod-rubro">${m.rubro}</span>
+      </div>
+      <h3>${m.producto}</h3>
+      <p class="mod-desc">${m.descripcion}</p>
+      <div class="mod-foot">
+        <div class="lvl-dots">${dots || '<span></span><span></span><span></span>'}</div>
+        ${available
+          ? `<span class="mod-go">${passedCount ? "Continuar" : "Empezar"} <i class="fa-solid fa-arrow-right"></i></span>`
+          : `<span class="mod-go" style="color:var(--muted)">En preparación</span>`}
+      </div>`;
+    return el;
+  }
+
+  function goHome() { renderHome(); showScreen("home"); }
+
+  /* ============================================================
+     TABLA DE POSICIONES / RANKING
+     ============================================================ */
+  let leaderboardData = [];
+  let leaderboardLoaded = false;   // cache de sesión: evita releer toda la colección al re-abrir la pestaña
+  let currentRankFilter = "all";
+
+  function switchHomeTab(tab) {
+    const modsBtn = document.getElementById("tab-mods-btn");
+    const rankBtn = document.getElementById("tab-rank-btn");
+    const viewMods = document.getElementById("view-mods");
+    const viewRank = document.getElementById("view-rank");
+
+    if (modsBtn) modsBtn.classList.toggle("active", tab === "mods");
+    if (rankBtn) rankBtn.classList.toggle("active", tab === "rank");
+
+    if (viewMods) viewMods.style.display = tab === "mods" ? "block" : "none";
+    if (viewRank) viewRank.style.display = tab === "rank" ? "block" : "none";
+
+    if (tab === "rank") {
+      // Si ya lo cargamos en esta sesión, re-usamos (sin nueva lectura a Firestore)
+      if (leaderboardLoaded) renderLeaderboardUI();
+      else loadLeaderboard();
+    }
+  }
+
+  async function loadLeaderboard() {
+    const podiumEl = document.getElementById("podium-container");
+    const listEl = document.getElementById("ranking-list-container");
+    if (!podiumEl || !listEl) return;
+
+    const refreshBtn = document.querySelector(".rank-refresh");
+    if (refreshBtn) refreshBtn.classList.add("spinning");
+    podiumEl.innerHTML = `<div class="spinner" style="margin: 30px auto;"></div>`;
+    listEl.innerHTML = "";
+
+    try {
+      const snap = await db.collection("academia_progreso").get();
+      const list = [];
+
+      snap.forEach(doc => {
+        const d = doc.data();
+        let totalPts = 0;
+        let levelsPassed = 0;
+
+        if (d.modulos) {
+          Object.values(d.modulos).forEach(m => {
+            if (m.niveles) {
+              Object.values(m.niveles).forEach(n => {
+                if (n.aprobado) {
+                  levelsPassed++;
+                  totalPts += (n.mejorPuntos || 0);
+                }
+              });
+            }
+            if (m.examenFinal) {
+              totalPts += (m.examenFinal.mejorPuntos || 0);
+              if (m.examenFinal.aprobado) levelsPassed++;
+            }
+          });
+        }
+        if (d.examenMaestro) {
+          totalPts += (d.examenMaestro.mejorPuntos || 0);
+          if (d.examenMaestro.aprobado) levelsPassed++;
+        }
+
+        list.push({
+          key: doc.id,
+          nombre: d.nombre || "Vendedor",
+          dni: d.dni || "",
+          sucursal: d.sucursal || "Rosso",
+          puntos: totalPts,
+          niveles: levelsPassed
+        });
+      });
+
+      // Ordenar por puntos desc, luego niveles desc
+      list.sort((a, b) => b.puntos - a.puntos || b.niveles - a.niveles);
+      leaderboardData = list;
+      leaderboardLoaded = true;
+      renderLeaderboardUI();
+    } catch (e) {
+      console.error("Error al cargar ranking:", e);
+      podiumEl.innerHTML = `<p style="color:var(--text-soft); text-align:center; padding: 20px;">No se pudo cargar la tabla de posiciones.</p>`;
+    } finally {
+      if (refreshBtn) refreshBtn.classList.remove("spinning");
+    }
+  }
+
+  function filterLeaderboard(mode) {
+    currentRankFilter = mode;
+    document.querySelectorAll(".rank-filter-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.mode === mode);
+    });
+    renderLeaderboardUI();
+  }
+
+  function renderLeaderboardUI() {
+    let filtered = leaderboardData;
+    if (currentRankFilter === "sucursal" && vendor.sucursal) {
+      filtered = leaderboardData.filter(v => 
+        v.sucursal && v.sucursal.toLowerCase().includes(vendor.sucursal.toLowerCase())
+      );
+    }
+
+    const podiumEl = document.getElementById("podium-container");
+    const listEl = document.getElementById("ranking-list-container");
+
+    if (filtered.length === 0) {
+      podiumEl.innerHTML = "";
+      listEl.innerHTML = `
+        <div class="center-state" style="min-height: 25vh;">
+          <div class="box" style="padding: 24px;">
+            <div class="ico" style="width: 50px; height: 50px; font-size: 1.4rem; margin: 0 auto 12px;"><i class="fa-solid fa-trophy"></i></div>
+            <h3 style="font-family: var(--font-display); color: var(--brand); margin: 0 0 6px;">¡Sin registros aún!</h3>
+            <p style="margin: 0; font-size: .88rem;">Sé el primero en completar módulos para liderar la tabla.</p>
+          </div>
+        </div>`;
+      return;
+    }
+
+    // Podio (Top 3)
+    const top3 = filtered.slice(0, 3);
+    let podiumHtml = "";
+
+    // 2do lugar (izquierda)
+    if (top3[1]) {
+      const v = top3[1];
+      podiumHtml += `
+        <div class="podium-card second">
+          <div class="podium-rank">2</div>
+          <div class="podium-avatar"><i class="fa-solid fa-user-ninja"></i></div>
+          <h4 class="podium-name">${firstName(v.nombre)}</h4>
+          <span class="podium-suc">${v.sucursal ? "Suc. " + v.sucursal : "Rosso"}</span>
+          <span class="podium-pts"><i class="fa-solid fa-star"></i> ${v.puntos} pts</span>
+        </div>`;
+    }
+
+    // 1er lugar (centro elevado)
+    if (top3[0]) {
+      const v = top3[0];
+      podiumHtml += `
+        <div class="podium-card first">
+          <div class="podium-rank">👑 1</div>
+          <div class="podium-avatar"><i class="fa-solid fa-trophy"></i></div>
+          <h4 class="podium-name">${firstName(v.nombre)}</h4>
+          <span class="podium-suc">${v.sucursal ? "Suc. " + v.sucursal : "Rosso"}</span>
+          <span class="podium-pts"><i class="fa-solid fa-star"></i> ${v.puntos} pts</span>
+        </div>`;
+    }
+
+    // 3er lugar (derecha)
+    if (top3[2]) {
+      const v = top3[2];
+      podiumHtml += `
+        <div class="podium-card third">
+          <div class="podium-rank">3</div>
+          <div class="podium-avatar"><i class="fa-solid fa-user"></i></div>
+          <h4 class="podium-name">${firstName(v.nombre)}</h4>
+          <span class="podium-suc">${v.sucursal ? "Suc. " + v.sucursal : "Rosso"}</span>
+          <span class="podium-pts"><i class="fa-solid fa-star"></i> ${v.puntos} pts</span>
+        </div>`;
+    }
+
+    podiumEl.innerHTML = podiumHtml;
+
+    // Lista (Posición 4+)
+    let listHtml = "";
+
+    filtered.forEach((v, idx) => {
+      const rankNum = idx + 1;
+      const isMe = vendor.key && v.key === vendor.key;
+      
+      if (rankNum > 3 || isMe) {
+        listHtml += `
+          <div class="rank-item ${isMe ? "is-me" : ""}">
+            <div class="rank-item-left">
+              <span class="rank-pos">${rankNum}</span>
+              <div class="rank-user">
+                <h5>${v.nombre} ${isMe ? `<small style="color:var(--accent); font-weight:700;">(Tú)</small>` : ""}</h5>
+                <p>${v.sucursal ? "Sucursal " + v.sucursal : "Rosso"} · ${v.niveles} nivel${v.niveles === 1 ? "" : "es"} completado${v.niveles === 1 ? "" : "s"}</p>
+              </div>
+            </div>
+            <div class="rank-pts"><i class="fa-solid fa-star"></i> ${v.puntos} pts</div>
+          </div>`;
+      }
+    });
+
+    listEl.innerHTML = listHtml;
+  }
+
+  /* ============================================================
+     NIVELES
+     ============================================================ */
+  let openModId = null;
+
+  function openModule(id) {
+    openModId = id;
+    const m = modById(id);
+    document.getElementById("lvl-title").textContent = m.producto;
+    document.getElementById("lvl-subtitle").textContent = m.descripcion;
+
+    const mp = progress.modulos[id] || { niveles: {} };
+    const passedCount = Object.values(mp.niveles || {}).filter(n => n.aprobado).length;
+    const regularPassed = m.niveles.length > 0 && passedCount === m.niveles.length;
+    const finalPassed = !!(mp.examenFinal && mp.examenFinal.aprobado);
+
+    const list = document.getElementById("lvl-list");
+    list.innerHTML = "";
+
+    // Ficha del producto (imagen del manual + datos) — idea 4
+    const ficha = fichaProducto(m, finalPassed);
+    if (ficha) list.appendChild(ficha);
+
+    // Botones de acción rápida
+    const actionsBox = document.createElement("div");
+    actionsBox.className = "lvl-actions";
+    actionsBox.innerHTML = `
+      <a class="btn ghost" href="pdf/manualdeproductos.html" target="_blank" style="font-size: .88rem;">
+        <i class="fa-solid fa-book-open"></i> Abrir Manual completo
+      </a>
+      ${finalPassed ? `<button class="btn" onclick="openCertificate('${id}')" style="font-size: .88rem;"><i class="fa-solid fa-award"></i> Ver Mi Certificado</button>` : ''}
+    `;
+    list.appendChild(actionsBox);
+
+    m.niveles.forEach((lvl, idx) => {
+      const np = (mp.niveles || {})[lvl.nivel] || null;
+      const passed = np && np.aprobado;
+      // Desbloqueado si es el primero o si aprobó el nivel anterior
+      const prev = idx === 0 ? null : (mp.niveles || {})[m.niveles[idx - 1].nivel];
+      const unlocked = idx === 0 || (prev && prev.aprobado);
+
+      const card = document.createElement("div");
+      card.className = "lvl-card" + (passed ? " passed" : "") + (!unlocked ? " locked" : "");
+
+      let metaHtml = "";
+      if (np) {
+        metaHtml = `<div class="lvl-meta">
+          ${passed ? `<span><b><i class="fa-solid fa-circle-check"></i> Aprobado</b></span>` : `<span><i class="fa-solid fa-rotate"></i> Intentado</span>`}
+          <span>Mejor: ${np.mejorScore || 0}%</span>
+          <span>Intentos: ${np.intentos || 0}</span>
+        </div>`;
+      }
+
+      card.innerHTML = `
+        <div class="lvl-num">${!unlocked ? '<i class="fa-solid fa-lock"></i>' : lvl.nivel}</div>
+        <div class="lvl-info">
+          <h4>Nivel ${lvl.nivel} · ${lvl.nombre}</h4>
+          <p>${lvl.objetivo} · ${lvl.preguntas.length} preguntas · ${lvl.aprobar}% para aprobar</p>
+          ${metaHtml}
+        </div>`;
+
+      const btn = document.createElement("button");
+      btn.className = "btn" + (passed ? " ghost" : "");
+      if (!unlocked) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-lock"></i> Bloqueado';
+      } else {
+        btn.innerHTML = passed
+          ? '<i class="fa-solid fa-rotate-right"></i> Repasar'
+          : '<i class="fa-solid fa-play"></i> Comenzar';
+        btn.onclick = () => startQuiz(id, lvl.nivel);
+      }
+      card.appendChild(btn);
+      list.appendChild(card);
+    });
+
+    // Examen Final — idea 5: se desbloquea al aprobar todos los niveles
+    if (m.niveles.length > 0) {
+      const ef = mp.examenFinal || null;
+      const card = document.createElement("div");
+      card.className = "lvl-card final" + (finalPassed ? " passed" : "") + (!regularPassed ? " locked" : "");
+
+      let metaHtml = "";
+      if (ef) {
+        metaHtml = `<div class="lvl-meta">
+          ${ef.aprobado ? `<span><b><i class="fa-solid fa-circle-check"></i> Certificado obtenido</b></span>` : `<span><i class="fa-solid fa-rotate"></i> Intentado</span>`}
+          <span>Mejor: ${ef.mejorScore || 0}%</span>
+          <span>Intentos: ${ef.intentos || 0}</span>
+        </div>`;
+      }
+
+      card.innerHTML = `
+        <div class="lvl-num">${!regularPassed ? '<i class="fa-solid fa-lock"></i>' : '<i class="fa-solid fa-medal"></i>'}</div>
+        <div class="lvl-info">
+          <h4>Examen Final · Certificación</h4>
+          <p>Preguntas mezcladas de todos los niveles · ${EXAM_APROBAR}% para certificarte${regularPassed ? "" : " · aprobá todos los niveles para desbloquear"}</p>
+          ${metaHtml}
+        </div>`;
+
+      const btn = document.createElement("button");
+      btn.className = "btn" + (finalPassed ? " ghost" : "");
+      if (!regularPassed) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-lock"></i> Bloqueado';
+      } else {
+        btn.innerHTML = finalPassed
+          ? '<i class="fa-solid fa-rotate-right"></i> Repetir examen'
+          : '<i class="fa-solid fa-medal"></i> Rendir examen final';
+        btn.onclick = () => startExamenFinal(id);
+      }
+      card.appendChild(btn);
+      list.appendChild(card);
+    }
+
+    showScreen("levels");
+  }
+
+  // Panel de ficha del producto (reutiliza la página del manual)
+  function fichaProducto(m, finalPassed) {
+    const p = MANUAL_IMG[m.id];
+    if (p === undefined) return null;
+    const pg = p + 1;
+    const marca = MANUAL_MARCA[m.id];
+    const wrap = document.createElement("div");
+    wrap.className = "ficha";
+    wrap.innerHTML = `
+      <button class="ficha-thumb" onclick="openLightbox(${p})" title="Ver la página del manual">
+        <img src="assets/manual/thumb/p${pad3(p)}.webp" alt="Ficha de ${m.producto}" loading="lazy" />
+        <span class="ficha-zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+      <div class="ficha-body">
+        <span class="ficha-tag"><i class="fa-solid fa-file-lines"></i> Ficha del producto</span>
+        <h4>${m.producto}</h4>
+        <div class="ficha-meta">
+          ${marca ? `<span class="chip"><i class="fa-solid fa-tag"></i> ${marca}</span>` : ""}
+          <span class="chip"><i class="fa-solid fa-layer-group"></i> ${m.rubro}</span>
+          <span class="chip"><i class="fa-solid fa-book-open"></i> Manual pág. ${pg}</span>
+          ${finalPassed ? `<span class="chip ok"><i class="fa-solid fa-award"></i> Certificado</span>` : ""}
+        </div>
+        <p class="ficha-desc">${m.descripcion}</p>
+        <button class="btn ghost" onclick="openLightbox(${p})" style="font-size: .84rem;"><i class="fa-solid fa-expand"></i> Ver ficha del manual</button>
+      </div>`;
+    return wrap;
+  }
+
+  function openLightbox(p) {
+    document.getElementById("lightbox-img").src = "assets/manual/full/p" + pad3(p) + ".webp";
+    const prod = modById(openModId) ? modById(openModId).producto : "";
+    document.getElementById("lightbox-cap").textContent = prod + " · Manual de Productos Rosso";
+    document.getElementById("img-modal").style.display = "flex";
+  }
+  function closeLightbox() {
+    document.getElementById("img-modal").style.display = "none";
+    document.getElementById("lightbox-img").src = "";
+  }
+
+  /* ============================================================
+     QUIZ
+     ============================================================ */
+  function startQuiz(modId, nivel) {
+    const m = modById(modId);
+    const lvl = m.niveles.find(l => l.nivel === nivel);
+    
+    // Seleccionar 5 preguntas al azar del banco del nivel (Random Question Pool)
+    let questions = shuffle([...lvl.preguntas]);
+    if (questions.length > 5) {
+      questions = questions.slice(0, 5);
+    }
+
+    current = { modId, nivel, lvl, questions, qIndex: 0, correctas: 0, answered: false, tipo: "nivel", wrong: [], leftTab: 0 };
+    document.getElementById("quiz-mod").textContent = m.producto;
+    document.getElementById("quiz-lvl").textContent = `Nivel ${nivel} · ${lvl.nombre}`;
+    renderQuestion();
+    showScreen("quiz");
+  }
+
+  function renderQuestion() {
+    const { questions, qIndex } = current;
+    const total = questions.length;
+    const p = questions[qIndex];
+    current.answered = false;
+    // Se mezcla el orden de las opciones: la correcta no cae siempre en la misma letra
+    current.optOrder = shuffle(p.opciones.map((_, i) => i));
+
+    document.getElementById("quiz-bar").style.transform = "scaleX(" + (qIndex / total) + ")";
+    document.getElementById("quiz-count").textContent = `Pregunta ${qIndex + 1} de ${total}`;
+    document.getElementById("quiz-question").textContent = p.q;
+
+    const opts = document.getElementById("quiz-opts");
+    opts.innerHTML = "";
+    const keys = ["A", "B", "C", "D", "E"];
+    current.optOrder.forEach((orig, d) => {
+      const b = document.createElement("button");
+      b.className = "opt";
+      b.innerHTML = `<span class="k">${keys[d]}</span> <span>${p.opciones[orig]}</span>`;
+      b.onclick = () => answer(d);
+      opts.appendChild(b);
+    });
+
+    const fb = document.getElementById("quiz-feedback");
+    fb.className = "feedback";
+    fb.innerHTML = "";
+    document.getElementById("quiz-next").style.display = "none";
+
+    startTimer();
+  }
+
+  function answer(d) {
+    if (current.answered) return;
+    lockQuestion(d);
+  }
+
+  // Cierra la pregunta: por respuesta (d = posición elegida), o sin elección
+  // (d = -1) cuando se acaba el tiempo o el vendedor cambia de pestaña.
+  function lockQuestion(d, motivo) {
+    current.answered = true;
+    stopTimer();
+    const p = current.questions[current.qIndex];
+    const correctDisplay = current.optOrder.indexOf(p.correcta); // posición mostrada de la correcta
+    const buttons = document.querySelectorAll("#quiz-opts .opt");
+
+    buttons.forEach((b, idx) => {
+      b.disabled = true;
+      if (idx === correctDisplay) b.classList.add("correct");
+      else if (idx === d) b.classList.add("wrong");
+    });
+
+    const ok = d >= 0 && current.optOrder[d] === p.correcta;
+    if (ok) current.correctas++;
+    else (current.wrong = current.wrong || []).push(p);
+
+    const tipHtml = p.tip
+      ? `<div class="tip"><i class="fa-solid fa-lightbulb"></i> <span><b>Tip de mostrador:</b> ${p.tip}</span></div>`
+      : "";
+    const fb = document.getElementById("quiz-feedback");
+    fb.className = "feedback show " + (ok ? "ok" : "no");
+    fb.innerHTML = `<i class="fa-solid ${ok ? "fa-circle-check" : "fa-circle-xmark"}"></i>
+      <div><b>${ok ? "¡Correcto!" : (motivo || "Respuesta incorrecta")}</b>${p.explica || ""}${tipHtml}</div>`;
+
+    const nextBtn = document.getElementById("quiz-next");
+    const isLast = current.qIndex === current.questions.length - 1;
+    nextBtn.innerHTML = isLast
+      ? 'Ver resultado <i class="fa-solid fa-flag-checkered"></i>'
+      : 'Siguiente <i class="fa-solid fa-arrow-right"></i>';
+    nextBtn.style.display = "inline-flex";
+  }
+
+  /* ---------- Cronómetro por pregunta (evita consultar en otra pestaña) ---------- */
+  const TIME_BY_LEVEL = { 1: 20, 2: 25, 3: 30, 4: 35 };  // segundos por nivel
+
+  function startTimer() {
+    const timerEl = document.getElementById("quiz-timer");
+    const p = current.questions[current.qIndex];
+
+    // El repaso es práctica: sin cronómetro ni presión de tiempo
+    if (current.tipo === "repaso") {
+      if (timerEl) timerEl.style.display = "none";
+      return;
+    }
+    if (timerEl) timerEl.style.display = "inline-flex";
+
+    const base = current.tipo === "final" ? EXAM_TIME : current.tipo === "maestro" ? MAESTRO_TIME : (TIME_BY_LEVEL[current.nivel] || 25);
+    current.timeLeft = p.t || base;
+    updateTimerUI();
+    clearInterval(current.timer);
+    current.timer = setInterval(() => {
+      current.timeLeft--;
+      updateTimerUI();
+      if (current.timeLeft <= 0) {
+        stopTimer();
+        lockQuestion(-1, '<i class="fa-solid fa-stopwatch"></i> ¡Se acabó el tiempo!');
+      }
+    }, 1000);
+  }
+
+  function stopTimer() { if (current) clearInterval(current.timer); }
+
+  function updateTimerUI() {
+    const el = document.getElementById("quiz-timer");
+    if (!el) return;
+    const s = Math.max(0, current.timeLeft);
+    el.querySelector("span").textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+    el.className = "timer" + (s <= 5 ? " danger" : (s <= 10 ? " warn" : ""));
+  }
+
+  function quizIsActive() {
+    return document.getElementById("screen-quiz").classList.contains("active");
+  }
+
+  // Si cambia de pestaña / minimiza con una pregunta abierta → cuenta incorrecta.
+  function onTabHidden() {
+    if (!document.hidden || !current || current.answered || !quizIsActive()) return;
+    if (current.tipo === "repaso") return; // el repaso no penaliza
+    current.leftTab = (current.leftTab || 0) + 1;
+    lockQuestion(-1, "Saliste de la pantalla: la pregunta cuenta como incorrecta.");
+  }
+
+  function nextQuestion() {
+    if (current.qIndex < current.questions.length - 1) {
+      current.qIndex++;
+      renderQuestion();
+    } else {
+      finishQuiz();
+    }
+  }
+
+  function quitQuiz() {
+    if (confirm("¿Salir del quiz? Se perderá el progreso de este intento.")) {
+      stopTimer();
+      openModule(current.modId);
+    }
+  }
+
+  /* ============================================================
+     RESULTADO + GUARDADO
+     ============================================================ */
+  const BASE_POINTS = { 1: 100, 2: 150, 3: 250, 4: 300 };
+  const EXAM_POINTS = 500;    // puntos base del examen final (idea 5)
+  const EXAM_APROBAR = 90;    // % para certificarse
+  const EXAM_QCOUNT = 12;     // preguntas mezcladas de todos los niveles
+  const EXAM_TIME = 30;       // segundos por pregunta en el examen final
+
+  const MAESTRO_APROBAR = 90; // % para la Certificación General
+  const MAESTRO_QCOUNT = 20;  // preguntas mezcladas de todos los productos (1 por módulo)
+  const MAESTRO_POINTS = 1000;// puntos base del examen maestro
+  const MAESTRO_TIME = 30;    // segundos por pregunta
+
+  // Banco de preguntas falladas en el último intento (para el repaso — idea 3)
+  let repasoPool = [];
+  let repasoCtx = { modId: null, prod: "" };
+
+  async function finishQuiz() {
+    stopTimer();
+    const total = current.questions.length;
+    const pct = total ? Math.round(current.correctas / total * 100) : 0;
+
+    // Guardar las falladas de este intento para ofrecer el repaso
+    repasoPool = (current.wrong || []).slice();
+    repasoCtx = {
+      modId: current.modId,
+      prod: (modById(current.modId) && modById(current.modId).producto)
+            || (current.tipo === "maestro" ? "Examen Maestro Rosso" : "Repaso")
+    };
+
+    // --- Modo repaso: práctica, no puntúa ni guarda progreso ---
+    if (current.tipo === "repaso") {
+      renderResultUI({
+        kind: "repaso", aprobado: pct >= 60, pct, correctas: current.correctas, total, puntos: 0,
+        title: "Repaso terminado",
+        detail: `Practicaste ${total} pregunta${total === 1 ? "" : "s"} que habías fallado. Este repaso no afecta tu puntaje.`
+      });
+      return;
+    }
+
+    const { modId, nivel, lvl } = current;
+    const isMaestro = current.tipo === "maestro";
+    const isFinal = current.tipo === "final";
+    const aprobado = pct >= lvl.aprobar;
+    const basePts = isMaestro ? MAESTRO_POINTS : isFinal ? EXAM_POINTS : (BASE_POINTS[nivel] || 100);
+    const puntos = aprobado ? Math.round(basePts * pct / 100) : 0;
+
+    // Actualizar progreso (mejor intento gana)
+    if (isMaestro) {
+      const prev = progress.examenMaestro || { intentos: 0, mejorScore: 0, mejorPuntos: 0, aprobado: false };
+      progress.examenMaestro = {
+        aprobado: prev.aprobado || aprobado,
+        mejorScore: Math.max(prev.mejorScore || 0, pct),
+        mejorPuntos: Math.max(prev.mejorPuntos || 0, puntos),
+        intentos: (prev.intentos || 0) + 1,
+        salidas: (prev.salidas || 0) + (current.leftTab || 0),
+        ultima: Date.now()
+      };
+    } else {
+      if (!progress.modulos) progress.modulos = {};
+      if (!progress.modulos[modId]) progress.modulos[modId] = { niveles: {} };
+      const mp = progress.modulos[modId];
+      if (!mp.niveles) mp.niveles = {};
+
+      if (isFinal) {
+        const prev = mp.examenFinal || { intentos: 0, mejorScore: 0, mejorPuntos: 0, aprobado: false };
+        mp.examenFinal = {
+          aprobado: prev.aprobado || aprobado,
+          mejorScore: Math.max(prev.mejorScore || 0, pct),
+          mejorPuntos: Math.max(prev.mejorPuntos || 0, puntos),
+          intentos: (prev.intentos || 0) + 1,
+          salidas: (prev.salidas || 0) + (current.leftTab || 0),
+          ultima: Date.now()
+        };
+      } else {
+        const prevN = mp.niveles[nivel] || { intentos: 0, mejorScore: 0, mejorPuntos: 0, aprobado: false };
+        mp.niveles[nivel] = {
+          aprobado: prevN.aprobado || aprobado,
+          mejorScore: Math.max(prevN.mejorScore || 0, pct),
+          mejorPuntos: Math.max(prevN.mejorPuntos || 0, puntos),
+          intentos: (prevN.intentos || 0) + 1,
+          salidas: (prevN.salidas || 0) + (current.leftTab || 0),
+          ultima: Date.now()
+        };
+        mp.nivelMax = Math.max(mp.nivelMax || 0, ...Object.keys(mp.niveles).filter(k => mp.niveles[k].aprobado).map(Number), 0);
+      }
+    }
+
+    await saveProgress();
+
+    renderResultUI({
+      kind: isMaestro ? "maestro" : isFinal ? "final" : "nivel", isMaestro, isFinal, aprobado, pct,
+      correctas: current.correctas, total, puntos, modId, nivel,
+      title: isMaestro
+        ? (aprobado ? "¡Certificación General obtenida!" : "Examen Maestro no superado")
+        : isFinal
+        ? (aprobado ? "¡Examen final aprobado!" : "Examen final no superado")
+        : (aprobado ? "¡Nivel aprobado!" : "Casi… ¡seguí intentando!"),
+      detail: isMaestro
+        ? `Acertaste ${current.correctas} de ${total}. Necesitás ${lvl.aprobar}% para la Certificación General Rosso.`
+        : isFinal
+        ? `Acertaste ${current.correctas} de ${total}. Necesitás ${lvl.aprobar}% para certificarte.`
+        : `Acertaste ${current.correctas} de ${total}. Necesitás ${lvl.aprobar}% para aprobar este nivel.`
+    });
+  }
+
+  // Render unificado de la pantalla de resultado (nivel / examen final / repaso)
+  function renderResultUI(o) {
+    const box = document.getElementById("result-box");
+    box.className = "result " + (o.aprobado ? "pass" : "fail");
+    document.getElementById("result-medal").innerHTML =
+      o.kind === "repaso" ? '<i class="fa-solid fa-book-open-reader"></i>'
+      : o.aprobado ? (o.isMaestro ? '<i class="fa-solid fa-trophy"></i>' : o.isFinal ? '<i class="fa-solid fa-medal"></i>' : '<i class="fa-solid fa-award"></i>')
+      : '<i class="fa-solid fa-arrow-rotate-right"></i>';
+    document.getElementById("result-title").textContent = o.title;
+    document.getElementById("result-score").textContent = o.pct;
+    document.getElementById("result-detail").textContent = o.detail;
+
+    const pts = document.getElementById("result-points");
+    if (o.puntos > 0) {
+      pts.style.display = "inline-flex";
+      pts.querySelector("span").textContent = `+${o.puntos} puntos`;
+    } else {
+      pts.style.display = "none";
+    }
+
+    // Botón "repasar las que fallé"
+    const rep = document.getElementById("result-repaso");
+    if (repasoPool.length > 0) {
+      rep.style.display = "inline-flex";
+      rep.innerHTML = `<i class="fa-solid fa-rotate"></i> ${repasoPool.length === 1 ? "Repasar la que fallé" : "Repasar las " + repasoPool.length + " que fallé"}`;
+      rep.onclick = startRepaso;
+    } else {
+      rep.style.display = "none";
+    }
+
+    // CTA principal según contexto
+    const cta = document.getElementById("result-cta");
+    if (o.kind === "repaso") {
+      cta.innerHTML = repasoCtx.modId ? '<i class="fa-solid fa-list-check"></i> Volver al módulo' : '<i class="fa-solid fa-house"></i> Volver al inicio';
+      cta.onclick = () => repasoCtx.modId ? openModule(repasoCtx.modId) : goHome();
+    } else if (o.isMaestro) {
+      if (o.aprobado) {
+        cta.innerHTML = '<i class="fa-solid fa-award"></i> Ver Certificación General';
+        cta.onclick = () => openCertificate("__maestro__");
+      } else {
+        cta.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Reintentar examen';
+        cta.onclick = () => startExamenMaestro();
+      }
+    } else if (o.isFinal) {
+      if (o.aprobado) {
+        cta.innerHTML = '<i class="fa-solid fa-award"></i> Ver certificado';
+        cta.onclick = () => openCertificate(o.modId);
+      } else {
+        cta.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Reintentar examen';
+        cta.onclick = () => startExamenFinal(o.modId);
+      }
+    } else {
+      const m = modById(o.modId);
+      const nextLvl = m.niveles.find(l => l.nivel === o.nivel + 1);
+      const mp = progress.modulos[o.modId] || { niveles: {} };
+      const regularPassed = m.niveles.every(l => (mp.niveles || {})[l.nivel] && mp.niveles[l.nivel].aprobado);
+      if (o.aprobado && nextLvl) {
+        cta.innerHTML = '<i class="fa-solid fa-arrow-right"></i> Siguiente nivel';
+        cta.onclick = () => startQuiz(o.modId, o.nivel + 1);
+      } else if (o.aprobado && regularPassed) {
+        cta.innerHTML = '<i class="fa-solid fa-medal"></i> Rendir Examen Final';
+        cta.onclick = () => startExamenFinal(o.modId);
+      } else if (!o.aprobado) {
+        cta.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Reintentar';
+        cta.onclick = () => startQuiz(o.modId, o.nivel);
+      } else {
+        cta.innerHTML = '<i class="fa-solid fa-list-check"></i> Ver niveles';
+        cta.onclick = () => openModule(o.modId);
+      }
+    }
+
+    // Confeti (más en el examen final y el maestro)
+    if (o.aprobado && o.kind !== "repaso" && typeof confetti === "function") {
+      const big = o.isFinal || o.isMaestro;
+      confetti({ particleCount: big ? 200 : 100, spread: big ? 100 : 70, origin: { y: 0.6 } });
+      if (big) setTimeout(() => confetti({ particleCount: 120, spread: 120, origin: { y: 0.5 } }), 250);
+    }
+
+    showScreen("result");
+  }
+
+  // Examen final: mezcla preguntas de todos los niveles del módulo (idea 5)
+  function startExamenFinal(modId) {
+    const m = modById(modId);
+    let pool = [];
+    m.niveles.forEach(l => { pool = pool.concat(l.preguntas); });
+    let questions = shuffle(pool);
+    if (questions.length > EXAM_QCOUNT) questions = questions.slice(0, EXAM_QCOUNT);
+    current = { modId, tipo: "final", nivel: "final", lvl: { aprobar: EXAM_APROBAR, nombre: "Examen Final" },
+                questions, qIndex: 0, correctas: 0, answered: false, wrong: [], leftTab: 0 };
+    document.getElementById("quiz-mod").textContent = m.producto;
+    document.getElementById("quiz-lvl").textContent = "Examen Final · Certificación";
+    renderQuestion();
+    showScreen("quiz");
+  }
+
+  // Repaso de errores: re-práctica de las preguntas falladas, sin puntaje (idea 3)
+  function startRepaso() {
+    if (!repasoPool.length) return;
+    current = { modId: repasoCtx.modId, tipo: "repaso", nivel: "repaso", lvl: { aprobar: 0, nombre: "Repaso" },
+                questions: shuffle(repasoPool.slice()), qIndex: 0, correctas: 0, answered: false, wrong: [], leftTab: 0 };
+    document.getElementById("quiz-mod").textContent = repasoCtx.prod || "Repaso";
+    document.getElementById("quiz-lvl").textContent = "Repaso de errores · sin puntaje";
+    renderQuestion();
+    showScreen("quiz");
+  }
+
+  /* ============================================================
+     EXAMEN MAESTRO — mezcla todos los productos (certificación general)
+     ============================================================ */
+  // Progreso hacia la certificación general: cuántos módulos tienen su examen final aprobado
+  function maestroProgreso() {
+    const totalMods = MODULOS.filter(m => m.niveles.length > 0).length;
+    let dominados = 0;
+    MODULOS.forEach(m => {
+      const mp = progress.modulos[m.id];
+      if (mp && mp.examenFinal && mp.examenFinal.aprobado) dominados++;
+    });
+    return { dominados, totalMods, unlocked: dominados >= totalMods };
+  }
+
+  function startExamenMaestro() {
+    const prog = maestroProgreso();
+    const yaCertificado = !!(progress.examenMaestro && progress.examenMaestro.aprobado);
+    // Bloqueado hasta completar TODOS los módulos (examen final de cada uno)
+    if (!prog.unlocked && !yaCertificado) {
+      toast("Aprobá el examen final de los " + prog.totalMods + " módulos para desbloquear el Examen Maestro.", true);
+      return;
+    }
+    // Una pregunta de cada módulo (máxima variedad de productos)
+    const mods = shuffle(MODULOS.filter(m => m.niveles.some(l => l.preguntas.length)));
+    const questions = [];
+    for (const m of mods) {
+      if (questions.length >= MAESTRO_QCOUNT) break;
+      let pool = [];
+      m.niveles.forEach(l => { pool = pool.concat(l.preguntas); });
+      if (pool.length) questions.push(shuffle(pool)[0]);
+    }
+    current = { modId: null, tipo: "maestro", nivel: "maestro", lvl: { aprobar: MAESTRO_APROBAR, nombre: "Examen Maestro" },
+                questions: shuffle(questions), qIndex: 0, correctas: 0, answered: false, wrong: [], leftTab: 0 };
+    document.getElementById("quiz-mod").textContent = "Examen Maestro Rosso";
+    document.getElementById("quiz-lvl").textContent = "Certificación General · Todos los productos";
+    renderQuestion();
+    showScreen("quiz");
+  }
+
+  function renderMaestroBanner() {
+    const el = document.getElementById("maestro-banner");
+    if (!el) return;
+    const em = progress.examenMaestro || null;
+    const passed = !!(em && em.aprobado);
+    const { dominados, totalMods, unlocked } = maestroProgreso();
+    const faltan = totalMods - dominados;
+    el.classList.toggle("locked", !unlocked && !passed);
+
+    let icon, desc, action;
+    if (passed) {
+      icon = "trophy";
+      desc = "¡Sos Asesor Máster Certificado! El desafío que mezcla preguntas de todos los productos.";
+      action = `<button class="btn gold" onclick="openCertificate('__maestro__')"><i class="fa-solid fa-award"></i> Ver Certificación General</button>`;
+    } else if (unlocked) {
+      icon = "crown";
+      desc = "¡Desbloqueado! " + MAESTRO_QCOUNT + " preguntas mezcladas de todos los productos · " + MAESTRO_APROBAR + "% para certificarte.";
+      action = `<button class="btn gold" onclick="startExamenMaestro()"><i class="fa-solid fa-crown"></i> Rendir Examen Maestro</button>`;
+    } else {
+      icon = "lock";
+      desc = "Completá el examen final de los " + totalMods + " módulos para desbloquear la Certificación General. Te falta" + (faltan === 1 ? "" : "n") + " " + faltan + " módulo" + (faltan === 1 ? "" : "s") + ".";
+      action = `<button class="btn gold" disabled><i class="fa-solid fa-lock"></i> Bloqueado</button>`;
+    }
+
+    el.innerHTML = `
+      <div class="maestro-left">
+        <div class="maestro-medal"><i class="fa-solid fa-${icon}"></i></div>
+        <div class="maestro-info">
+          <span class="maestro-tag"><i class="fa-solid fa-star"></i> Certificación General</span>
+          <h3>Examen Maestro Rosso</h3>
+          <p>${desc}</p>
+        </div>
+      </div>
+      <div class="maestro-right">
+        <span class="maestro-prep"><i class="fa-solid fa-graduation-cap"></i> ${dominados}/${totalMods} módulos dominados${em ? " · mejor " + (em.mejorScore || 0) + "%" : ""}</span>
+        ${action}
+      </div>`;
+  }
+
+  /* ============================================================
+     CERTIFICADO DIGITAL
+     ============================================================ */
+  function openCertificate(modId) {
+    const isMaestro = modId === "__maestro__";
+    const m = modById(modId);
+    document.getElementById("cert-vendor-name").textContent = vendor.nombre || "Vendedor Rosso";
+    document.getElementById("cert-module-name").textContent =
+      isMaestro ? "Certificación General · Todos los productos" : (m ? m.producto : "Capacitación Técnica");
+    const ct = document.getElementById("cert-text");
+    if (ct) ct.textContent = isMaestro
+      ? "Por acreditar dominio integral de todo el catálogo Rosso y excelencia comercial, obteniendo la máxima distinción:"
+      : "Por haber demostrado conocimiento técnico y excelencia comercial en el módulo de producto:";
+    const today = new Date();
+    document.getElementById("cert-date").textContent = today.toLocaleDateString("es-AR", { day: '2-digit', month: '2-digit', year: 'numeric' });
+    document.getElementById("cert-modal").style.display = "flex";
+  }
+
+  function closeCert() {
+    document.getElementById("cert-modal").style.display = "none";
+  }
+
+  async function saveProgress() {
+    const payload = {
+      nombre: vendor.nombre,
+      dni: vendor.dni || null,
+      sucursal: vendor.sucursal || null,
+      modulos: progress.modulos,
+      examenMaestro: progress.examenMaestro || null,
+      actualizado: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    try {
+      await db.collection("academia_progreso").doc(vendor.key).set(payload, { merge: true });
+      leaderboardLoaded = false; // tu puntaje cambió: el ranking se recarga la próxima vez que lo abras
+    } catch (e) {
+      console.error("No se pudo guardar el progreso:", e);
+      savedOffline = true;
+      toast("No se pudo guardar en la nube. Tu progreso local sigue disponible en esta sesión.", true);
+    }
+  }
+
+  /* ============================================================
+     UTILIDADES
+     ============================================================ */
+  function showScreen(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById("screen-" + id).classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Fisher-Yates: mezcla una copia sin mutar el original
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function firstName(full) {
+    if (!full) return "vendedor";
+    // El nombre viene como "Apellido Nombre..." → mostrar el/los nombre(s)
+    const parts = full.replace(/,/g, "").trim().split(/\s+/);
+    return parts.length > 1 ? parts.slice(1).join(" ") : parts[0];
+  }
+
+  let toastTimer = null;
+  function toast(msg, warn) {
+    const t = document.getElementById("toast");
+    t.querySelector("span").textContent = msg;
+    t.className = "toast show" + (warn ? " warn" : "");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.className = "toast" + (warn ? " warn" : ""); }, 4200);
+  }
+  </script>
+</body>
+</html>

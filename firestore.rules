@@ -53,6 +53,11 @@ service cloud.firestore {
     // Contadores diarios de uso por vendedor (TTL propia sobre expiresAt, 400 días).
     match /usage_daily/{doc}     { allow read, write: if true; }
 
+    // ── ACADEMIA: legajo de capacitación por vendedor (academia.html) ──
+    // Mismo modelo interno que el resto del panel (login casero por DNI).
+    // Lectura abierta para poder armar el ranking; escritura del propio legajo.
+    match /academia_progreso/{doc} { allow read, write: if true; }
+
     // ── Todo lo no contemplado: DENEGADO por defecto ───────────────
     match /{document=**} { allow read, write: if false; }
   }
