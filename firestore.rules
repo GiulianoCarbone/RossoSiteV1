@@ -52,6 +52,9 @@ service cloud.firestore {
     match /session_logs/{doc}    { allow read, write: if true; }
     // Contadores diarios de uso por vendedor (TTL propia sobre expiresAt, 400 días).
     match /usage_daily/{doc}     { allow read, write: if true; }
+    // Racha de días consecutivos en el panel. Un doc por vendedor, se escribe
+    // 1 vez por día desde el cliente; nadie la borra salvo un admin.
+    match /rachas/{doc}          { allow read: if true; allow create, update: if true; allow delete: if isAdmin(); }
 
     // ── ACADEMIA: legajo de capacitación por vendedor (academia.html) ──
     // Mismo modelo interno que el resto del panel (login casero por DNI).

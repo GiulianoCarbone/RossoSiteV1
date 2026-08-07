@@ -416,6 +416,11 @@
       background: var(--card-bg);
       padding: 20px 0;
       border-bottom: 1px solid var(--border-color);
+      /* El header queda por encima de la grilla para que lo que se despliega desde
+         acá (racha, campana) no lo tapen las tarjetas. Debajo de modales (3000+),
+         del overlay de login (2000) y del menú hamburguesa. */
+      position: relative;
+      z-index: 900;
     }
 
     .panel-header-content {
@@ -428,6 +433,278 @@
       font-size: 1.4rem;
       color: var(--brand);
       margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* --- SALUDO DEL HEADER --- */
+    .panel-header-greeting {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+      /* `backwards` y no `both`: con `both` la animación queda "aplicada" al terminar
+         y el elemento sigue creando un contexto de apilado que encerraba al tooltip. */
+      animation: greeting-in .5s ease backwards;
+    }
+
+    @keyframes greeting-in {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .panel-header-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+    }
+
+    .panel-header-date {
+      margin: 0;
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    /* --- RACHA DE DÍAS (misma idea que el legajo de la Academia) --- */
+    .streak-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .streak-wrap[hidden] {
+      display: none;
+    }
+
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff4e6;
+      color: #d97706;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: .78rem;
+      padding: 4px 11px;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .08);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background .3s ease, color .3s ease, box-shadow .3s ease, transform .2s ease;
+    }
+
+    .streak-badge:hover {
+      transform: translateY(-1px);
+    }
+
+    .streak-badge:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* --- Tarjeta de detalle de la racha --- */
+    .streak-tooltip {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 0;
+      z-index: 60;
+      width: max-content;
+      max-width: min(320px, 78vw);
+      padding: 16px;
+      background: var(--card-bg, #fff);
+      border: 1px solid rgba(0, 0, 0, .06);
+      border-radius: 14px;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, .18);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: opacity .22s ease, transform .22s ease, visibility .22s;
+      pointer-events: none;
+    }
+
+    /* Pico que apunta a la insignia */
+    .streak-tooltip::before {
+      content: "";
+      position: absolute;
+      top: -7px;
+      left: 24px;
+      width: 12px;
+      height: 12px;
+      background: var(--card-bg, #fff);
+      border-left: 1px solid rgba(0, 0, 0, .06);
+      border-top: 1px solid rgba(0, 0, 0, .06);
+      transform: rotate(45deg);
+    }
+
+    .streak-wrap:hover .streak-tooltip,
+    .streak-wrap:focus-within .streak-tooltip,
+    .streak-wrap.is-open .streak-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      pointer-events: auto;
+    }
+
+    .streak-tooltip-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .streak-tooltip-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fb923c, #ea580c);
+      color: white;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(234, 88, 12, .3);
+    }
+
+    .streak-tooltip-title {
+      display: block;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--brand);
+      line-height: 1.2;
+    }
+
+    .streak-tooltip-sub {
+      display: block;
+      margin-top: 2px;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .streak-tooltip-track {
+      height: 7px;
+      border-radius: 7px;
+      background: #f1f5f9;
+      overflow: hidden;
+    }
+
+    .streak-tooltip-track span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: 7px;
+      background: linear-gradient(90deg, #fbbf24, #ea580c);
+      transition: width .5s cubic-bezier(.22, .61, .36, 1);
+    }
+
+    .streak-tooltip-foot {
+      margin: 10px 0 0;
+      font-size: .78rem;
+      font-weight: 600;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    /* Referencia del equipo: se carga recién al abrir la tarjeta */
+    .streak-team {
+      margin: 12px 0 0;
+      padding-top: 10px;
+      border-top: 1px dashed #e2e8f0;
+      font-size: .76rem;
+      font-weight: 600;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .streak-team[hidden] {
+      display: none;
+    }
+
+    .streak-team i {
+      margin-right: 5px;
+      color: #f59e0b;
+    }
+
+    .streak-team strong {
+      color: var(--brand);
+    }
+
+    @media (max-width: 600px) {
+      .streak-tooltip {
+        left: auto;
+        right: 0;
+      }
+
+      .streak-tooltip::before {
+        left: auto;
+        right: 24px;
+      }
+    }
+
+    .streak-badge i {
+      animation: streak-flame 1.8s ease-in-out infinite;
+    }
+
+    @keyframes streak-flame {
+
+      0%,
+      100% {
+        transform: scale(1) rotate(-3deg);
+      }
+
+      50% {
+        transform: scale(1.15) rotate(3deg);
+      }
+    }
+
+    /* A partir de una semana seguida, la insignia se "prende" */
+    .streak-badge--hot {
+      background: linear-gradient(135deg, #fb923c, #ea580c);
+      color: white;
+      box-shadow: 0 3px 10px rgba(234, 88, 12, .35);
+    }
+
+    .greeting-icon {
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    .greeting-icon--dia {
+      color: #f59e0b;
+    }
+
+    .greeting-icon--tarde {
+      color: var(--accent);
+    }
+
+    .greeting-icon--noche {
+      color: #6366f1;
+    }
+
+    .greeting-icon--cumple {
+      color: var(--accent);
+      animation: trophy-bounce 2s ease-in-out infinite;
+    }
+
+    @media (max-width: 600px) {
+      .panel-header-content h1 {
+        font-size: 1.15rem;
+        gap: 8px;
+      }
+
+      .panel-header-date {
+        font-size: .78rem;
+      }
     }
 
     .panel-user-info {
@@ -539,6 +816,22 @@
       list-style: none;
       padding: 0;
       margin: 0;
+    }
+
+    /* Se muestra solo si las tres secciones de novedades quedaron vacías */
+    .news-empty {
+      margin: 0;
+      padding: 24px 10px;
+      text-align: center;
+      font-size: .9rem;
+      color: var(--muted);
+    }
+
+    .news-empty i {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.6rem;
+      opacity: .45;
     }
 
     .news-item {
@@ -2390,7 +2683,31 @@
     <main>
       <div class="panel-header">
         <div class="container panel-header-content">
-          <h1 id="welcome-message">Panel Corporativo</h1>
+          <div class="panel-header-greeting">
+            <h1 id="welcome-message">Panel Corporativo</h1>
+            <div class="panel-header-meta">
+              <p class="panel-header-date" id="welcome-date"></p>
+              <div class="streak-wrap" id="streak-wrap" hidden>
+                <button type="button" class="streak-badge" id="streak-badge" aria-expanded="false"
+                  aria-controls="streak-tooltip">
+                  <i class="fa-solid fa-fire"></i>
+                  <span id="streak-count">1</span> <span id="streak-label">día</span>
+                </button>
+                <div class="streak-tooltip" id="streak-tooltip" role="tooltip">
+                  <div class="streak-tooltip-head">
+                    <span class="streak-tooltip-icon"><i class="fa-solid fa-fire"></i></span>
+                    <div>
+                      <strong class="streak-tooltip-title" id="streak-tip-title">Racha de 1 día</strong>
+                      <small class="streak-tooltip-sub" id="streak-tip-sub">Tu mejor racha: 1 día</small>
+                    </div>
+                  </div>
+                  <div class="streak-tooltip-track"><span id="streak-tip-bar"></span></div>
+                  <p class="streak-tooltip-foot" id="streak-tip-foot"></p>
+                  <p class="streak-team" id="streak-team" hidden></p>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- INICIO NOTIFICACIONES -->
           <div class="notification-wrapper" id="notification-wrapper" onclick="solicitarPermiso()"
@@ -2567,6 +2884,9 @@
                 <ul id="birthday-list"></ul>
               </div>
             </div>
+            <p id="news-empty-msg" class="news-empty" style="display: none;">
+              <i class="fa-regular fa-newspaper"></i> Por ahora no hay novedades para mostrar.
+            </p>
           </div>
         </div>
         <!-- SECCIÓN HERRAMIENTAS -->
@@ -3239,6 +3559,382 @@
         { title: "Ecommerce", url: "https://wa.me/5493814146917" },
       ];
 
+      // --- SALUDO SEGÚN LA HORA DEL DÍA ---
+      function getSaludo(date = new Date()) {
+        const hora = date.getHours();
+        if (hora >= 5 && hora < 13) return { texto: "Buen día", icono: "fa-sun", clase: "greeting-icon--dia" };
+        if (hora >= 13 && hora < 20) return { texto: "Buenas tardes", icono: "fa-cloud-sun", clase: "greeting-icon--tarde" };
+        return { texto: "Buenas noches", icono: "fa-moon", clase: "greeting-icon--noche" };
+      }
+
+      // En la base el nombre viene como "Apellido Nombre1 Nombre2" -> nos quedamos con "Nombre1"
+      function getNombrePila(nombreCompleto) {
+        const partes = String(nombreCompleto || "").replace(/,/g, " ").split(" ").filter(Boolean);
+        const pila = partes.length > 1 ? partes[1] : (partes[0] || "");
+        return pila.charAt(0).toUpperCase() + pila.slice(1).toLowerCase();
+      }
+
+      function getFechaLarga(date = new Date()) {
+        const texto = date.toLocaleDateString("es-AR", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+        });
+        return texto.charAt(0).toUpperCase() + texto.slice(1);
+      }
+
+      // Compara nombres sin acentos ni mayúsculas (la base y cumpleanos.json usan formatos distintos)
+      function normalizarNombre(texto) {
+        return String(texto || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/,/g, " ")
+          .trim();
+      }
+
+      // --- ¿HOY CUMPLE AÑOS EL USUARIO LOGUEADO? ---
+      async function esCumpleDelUsuario(nombreCompleto) {
+        try {
+          const response = await fetch("cumpleanos.json");
+          if (!response.ok) return false;
+          const lista = await response.json();
+
+          const hoy = new Date();
+          const fechaHoy = `${String(hoy.getMonth() + 1).padStart(2, "0")}-${String(hoy.getDate()).padStart(2, "0")}`;
+          const tokensUsuario = normalizarNombre(nombreCompleto).split(" ").filter(Boolean);
+
+          // cumpleanos.json guarda "Nombre Apellido"; alcanza con que todas sus partes
+          // estén en el nombre completo del usuario logueado
+          return lista.some((emp) => {
+            if (emp.fecha !== fechaHoy) return false;
+            const tokensEmp = normalizarNombre(emp.nombre).split(" ").filter(Boolean);
+            return tokensEmp.length > 1 && tokensEmp.every((t) => tokensUsuario.includes(t));
+          });
+        } catch (error) {
+          console.error("Error verificando cumpleaños del usuario:", error);
+          return false;
+        }
+      }
+
+      // --- RACHA DE DÍAS CONSECUTIVOS ---
+      // Vive en Firestore (colección `rachas`, un doc por vendedor) para que sea la
+      // misma en todos los dispositivos, con el navegador como caché para pintar sin
+      // esperar a la red y como respaldo si Firestore no responde.
+      function diasDeDiferencia(desdeISO, hastaISO) {
+        const desde = new Date(`${desdeISO}T00:00:00`);
+        const hasta = new Date(`${hastaISO}T00:00:00`);
+        return Math.round((hasta - desde) / 86400000);
+      }
+
+      // La empresa trabaja de lunes a sábado: el domingo no suma días de racha,
+      // pero tampoco la corta. 0 = domingo (getDay).
+      const DIAS_NO_LABORABLES = [0];
+
+      // Feriados que tampoco deben cortar la racha, en formato "YYYY-MM-DD".
+      // Se cargan a mano: ej. ["2026-08-17", "2026-10-12"].
+      const FERIADOS = [];
+
+      function esDiaLaboral(fechaISO) {
+        if (FERIADOS.includes(fechaISO)) return false;
+        const dia = new Date(`${fechaISO}T00:00:00`).getDay();
+        return !DIAS_NO_LABORABLES.includes(dia);
+      }
+
+      // Días laborables que quedaron SIN visitar entre dos fechas (sin contar los extremos).
+      // Si da 0, la racha sigue viva aunque hayan pasado varios días de calendario.
+      function laborablesPerdidos(desdeISO, hastaISO) {
+        let perdidos = 0;
+        const cursor = new Date(`${desdeISO}T00:00:00`);
+        const fin = new Date(`${hastaISO}T00:00:00`);
+
+        cursor.setDate(cursor.getDate() + 1);
+        while (cursor < fin) {
+          if (esDiaLaboral(toDateKey(cursor))) perdidos++;
+          cursor.setDate(cursor.getDate() + 1);
+        }
+        return perdidos;
+      }
+
+      function claveRacha(nombreUsuario) {
+        return `rosso_panel_racha_${normalizarNombre(nombreUsuario).replace(/\s+/g, "_")}`;
+      }
+
+      // Mismo criterio de ID que usage_daily / active_sessions
+      function rachaDocRef(nombreUsuario) {
+        return db.collection("rachas").doc(nombreUsuario.replace(/\s+/g, "-").toLowerCase());
+      }
+
+      function leerRachaLocal(clave) {
+        try {
+          const guardado = localStorage.getItem(clave);
+          return guardado ? JSON.parse(guardado) : null;
+        } catch (error) {
+          console.warn("Racha local ilegible, se reinicia:", error);
+          return null;
+        }
+      }
+
+      function guardarRachaLocal(clave, datos) {
+        try {
+          localStorage.setItem(clave, JSON.stringify(datos));
+        } catch (error) {
+          console.warn("No se pudo cachear la racha:", error);
+        }
+      }
+
+      // Ante dos versiones de la racha (este dispositivo y la nube) gana la que
+      // llegó más lejos en el tiempo; el récord histórico es el mayor de ambas.
+      function fusionarRachas(a, b) {
+        if (!a || !a.ultimo) return (b && b.ultimo) ? b : (a || b);
+        if (!b || !b.ultimo) return a;
+
+        let base;
+        if (a.ultimo > b.ultimo) base = Object.assign({}, a);
+        else if (b.ultimo > a.ultimo) base = Object.assign({}, b);
+        else base = (a.dias || 0) >= (b.dias || 0) ? Object.assign({}, a) : Object.assign({}, b);
+
+        base.mejor = Math.max(a.mejor || 0, b.mejor || 0, base.dias || 0);
+        return base;
+      }
+
+      // Aplica la visita de hoy sobre un estado de racha, sin mutar el original
+      function aplicarVisitaDeHoy(datos) {
+        const hoy = toDateKey(new Date());
+        const estado = Object.assign({ ultimo: null, dias: 0, mejor: 0 }, datos || {});
+
+        if (estado.ultimo === hoy) return { estado, sumoDia: false };
+
+        let sumoDia = false;
+        if (!estado.ultimo || diasDeDiferencia(estado.ultimo, hoy) < 0) {
+          estado.dias = 1;                        // primera vez, o el reloj fue hacia atrás
+        } else if (laborablesPerdidos(estado.ultimo, hoy) === 0) {
+          // No se salteó ningún día laboral. Si hoy no lo es (domingo/feriado) la racha
+          // se mantiene pero no crece: se descansa sin perder lo hecho.
+          if (esDiaLaboral(hoy)) {
+            estado.dias = (estado.dias || 0) + 1;
+            sumoDia = true;
+          }
+        } else {
+          estado.dias = 1;                        // faltó a un día laboral: se cortó
+        }
+        estado.ultimo = hoy;
+        estado.mejor = Math.max(estado.mejor || 0, estado.dias);
+        return { estado, sumoDia };
+      }
+
+      const plural = (n, singular, plural) => `${n} ${n === 1 ? singular : plural}`;
+
+      function renderRacha(datos) {
+        const wrap = document.getElementById("streak-wrap");
+        const badge = document.getElementById("streak-badge");
+        if (!wrap || !badge) return;
+
+        const dias = Math.max(1, datos.dias || 1);
+        const mejor = Math.max(dias, datos.mejor || 0);
+
+        document.getElementById("streak-count").textContent = dias;
+        document.getElementById("streak-label").textContent = dias === 1 ? "día" : "días";
+        badge.classList.toggle("streak-badge--hot", dias >= 7);
+
+        // Progreso hacia el próximo festejo (cada 5 días).
+        // El día del hito la barra se muestra llena: recién ahí arranca el ciclo nuevo.
+        const proximoHito = (Math.floor(dias / 5) + 1) * 5;
+        const avance = dias % 5 === 0 ? 5 : dias - (proximoHito - 5);
+        const faltan = proximoHito - dias;
+
+        document.getElementById("streak-tip-title").textContent = `Racha de ${plural(dias, "día", "días")}`;
+        document.getElementById("streak-tip-sub").textContent = dias === 1
+          ? "¡Arrancaste hoy!"
+          : (dias === mejor ? "🏆 Estás en tu mejor marca" : `Tu mejor racha: ${plural(mejor, "día", "días")}`);
+        document.getElementById("streak-tip-bar").style.width = `${(avance / 5) * 100}%`;
+
+        // El domingo (o un feriado) la racha no avanza, y conviene decirlo para que
+        // nadie crea que la perdió por no entrar
+        const hoyEsLaboral = esDiaLaboral(toDateKey(new Date()));
+        document.getElementById("streak-tip-foot").textContent = !hoyEsLaboral
+          ? "Hoy no se trabaja: la racha te espera intacta hasta mañana 😴"
+          : (dias % 5 === 0
+            ? `¡Llegaste a ${dias}! Seguí así para el próximo festejo a los ${proximoHito}.`
+            : `Te ${faltan === 1 ? "falta" : "faltan"} ${plural(faltan, "día", "días")} para el próximo festejo 🎉`);
+
+        wrap.hidden = false;
+      }
+
+      // --- REFERENCIA DEL EQUIPO (la racha viva más larga) ---
+      // Los docs solo se actualizan cuando la persona entra, así que el campo `dias`
+      // puede estar viejo: si la última visita no fue hoy ni ayer, la racha está cortada.
+      function rachaEfectiva(datos, hoy) {
+        if (!datos || !datos.ultimo) return 0;
+        if (diasDeDiferencia(datos.ultimo, hoy) < 0) return 0;   // fecha futura = dato corrupto
+        // Mismo criterio laboral que la racha propia: el domingo no la corta
+        return laborablesPerdidos(datos.ultimo, hoy) === 0 ? (datos.dias || 0) : 0;
+      }
+
+      // Con menos de esto no hay nada que destacar: al arrancar están todos en 1 día
+      // y señalar a un "líder" elegido por orden de documento sería inventar una ventaja.
+      const MIN_DIAS_REFERENCIA = 2;
+
+      let mejorDelEquipo = null;
+      let mejorDelEquipoPedido = false;
+
+      function pintarMejorDelEquipo() {
+        const linea = document.getElementById("streak-team");
+        if (!linea) return;
+
+        if (!mejorDelEquipo || mejorDelEquipo.dias < MIN_DIAS_REFERENCIA) {
+          linea.hidden = true;
+          return;
+        }
+
+        const yo = normalizarNombre(localStorage.getItem("vendedorLogueado") || "");
+        const lideres = mejorDelEquipo.nombres;
+        const soyLider = lideres.some((n) => normalizarNombre(n) === yo);
+        const empatados = lideres.length;
+
+        if (soyLider && empatados === 1) {
+          linea.innerHTML = '<i class="fa-solid fa-medal"></i> Tenés la racha más larga del equipo 🔥';
+        } else if (soyLider) {
+          linea.innerHTML = '<i class="fa-solid fa-medal"></i> Compartís el primer puesto con <strong></strong>';
+          linea.querySelector("strong").textContent =
+            plural(empatados - 1, "compañero", "compañeros");
+        } else {
+          linea.innerHTML = '<i class="fa-solid fa-medal"></i> La más larga del equipo: <strong></strong>';
+          // Con empate no se nombra a nadie; el nombre va como texto porque lo escribe el cliente
+          linea.querySelector("strong").textContent = empatados === 1
+            ? `${plural(mejorDelEquipo.dias, "día", "días")} (${getNombrePila(lideres[0])})`
+            : `${plural(mejorDelEquipo.dias, "día", "días")} (${empatados} personas)`;
+        }
+
+        linea.hidden = false;
+      }
+
+      // Se dispara al abrir la tarjeta, una sola vez por sesión: quien nunca la abre
+      // no genera ni una lectura.
+      async function asegurarMejorDelEquipo() {
+        if (mejorDelEquipoPedido) return;
+        mejorDelEquipoPedido = true;
+
+        const linea = document.getElementById("streak-team");
+        if (!linea) return;
+        linea.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Buscando la racha más larga…';
+        linea.hidden = false;
+
+        try {
+          const snapshot = await db.collection("rachas").get();
+          const hoy = toDateKey(new Date());
+
+          // Se acumulan TODOS los que comparten el máximo, para poder distinguir
+          // un líder real de un empate general
+          snapshot.forEach((doc) => {
+            const datos = doc.data();
+            const viva = rachaEfectiva(datos, hoy);
+            if (viva <= 0) return;
+
+            if (!mejorDelEquipo || viva > mejorDelEquipo.dias) {
+              mejorDelEquipo = { dias: viva, nombres: [datos.nombre || ""] };
+            } else if (viva === mejorDelEquipo.dias) {
+              mejorDelEquipo.nombres.push(datos.nombre || "");
+            }
+          });
+
+          pintarMejorDelEquipo();
+        } catch (error) {
+          console.warn("No se pudo leer las rachas del equipo:", error);
+          linea.hidden = true;
+          mejorDelEquipoPedido = false;   // permite reintentar en el próximo hover
+        }
+      }
+
+      // La tarjeta se abre al pasar el mouse; en celular, tocando la insignia
+      (function initStreakTooltip() {
+        const wrap = document.getElementById("streak-wrap");
+        const badge = document.getElementById("streak-badge");
+        if (!wrap || !badge) return;
+
+        wrap.addEventListener("mouseenter", asegurarMejorDelEquipo);
+        wrap.addEventListener("focusin", asegurarMejorDelEquipo);
+
+        function cerrar() {
+          wrap.classList.remove("is-open");
+          badge.setAttribute("aria-expanded", "false");
+        }
+
+        badge.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const abierto = wrap.classList.toggle("is-open");
+          badge.setAttribute("aria-expanded", abierto ? "true" : "false");
+          if (abierto) asegurarMejorDelEquipo();
+        });
+
+        document.addEventListener("click", cerrar);
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") cerrar();
+        });
+      })();
+
+      async function actualizarRacha(nombreUsuario) {
+        const clave = claveRacha(nombreUsuario);
+        const local = leerRachaLocal(clave);
+
+        // 1) Pintamos ya mismo con lo que hay en el navegador: la insignia no espera a la red
+        const provisorio = aplicarVisitaDeHoy(local);
+        guardarRachaLocal(clave, provisorio.estado);
+        renderRacha(provisorio.estado);
+
+        // 2) Reconciliamos con la nube (1 lectura por ingreso, 1 escritura por día)
+        let estadoFinal = provisorio.estado;
+        let sumoDia = provisorio.sumoDia;
+
+        try {
+          const doc = await rachaDocRef(nombreUsuario).get();
+          const remoto = doc.exists ? doc.data() : null;
+          const definitivo = aplicarVisitaDeHoy(fusionarRachas(local, remoto));
+
+          estadoFinal = definitivo.estado;
+          sumoDia = definitivo.sumoDia;
+
+          guardarRachaLocal(clave, estadoFinal);
+          renderRacha(estadoFinal);
+
+          await rachaDocRef(nombreUsuario).set({
+            nombre: nombreUsuario,
+            ultimo: estadoFinal.ultimo,
+            dias: estadoFinal.dias,
+            mejor: estadoFinal.mejor,
+            actualizado: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+        } catch (error) {
+          // Sin red o sin permisos la racha sigue andando, pero solo en este dispositivo
+          console.warn("Racha: no se pudo sincronizar con Firestore.", error);
+        }
+
+        // Festejo en cada múltiplo de 5 días, solo cuando la racha acaba de crecer
+        if (sumoDia && estadoFinal.dias % 5 === 0 && typeof triggerConfetti === "function") {
+          setTimeout(triggerConfetti, 900);
+        }
+      }
+
+      let saludoInterval = null;
+      let esCumpleHoy = false;
+
+      function renderWelcomeMessage(nombre) {
+        const el = document.getElementById("welcome-message");
+        const fechaEl = document.getElementById("welcome-date");
+        if (!el) return;
+
+        const pila = getNombrePila(nombre);
+
+        if (esCumpleHoy) {
+          el.innerHTML = `<i class="fa-solid fa-cake-candles greeting-icon greeting-icon--cumple"></i>¡Feliz cumple, <span style="color: var(--accent);">${pila}</span>! 🎂`;
+        } else {
+          const saludo = getSaludo();
+          el.innerHTML = `<i class="fa-solid ${saludo.icono} greeting-icon ${saludo.clase}"></i>¡${saludo.texto}, <span style="color: var(--accent);">${pila}</span>!`;
+        }
+
+        if (fechaEl) fechaEl.textContent = getFechaLarga();
+      }
+
       // --- LÓGICA DE LOGIN Y RENDERIZADO INICIAL ---
       function checkLogin() {
         // ***** LÍNEA CORREGIDA *****
@@ -3246,9 +3942,25 @@
         if (loggedInUserName) {
           document.getElementById("login-overlay").style.display = "none";
           document.getElementById("panel-wrapper").style.display = "block";
-          document.getElementById(
-            "welcome-message"
-          ).innerHTML = `¡Hola, <span style="color: var(--accent);">${loggedInUserName}</span>!`;
+          renderWelcomeMessage(loggedInUserName);
+          actualizarRacha(loggedInUserName);
+          // Si el panel queda abierto, el saludo se actualiza solo al cambiar la franja horaria
+          if (saludoInterval) clearInterval(saludoInterval);
+          saludoInterval = setInterval(() => renderWelcomeMessage(loggedInUserName), 5 * 60 * 1000);
+
+          // Si hoy cumple años, el saludo se reemplaza y festejamos (una sola vez por día)
+          esCumpleDelUsuario(loggedInUserName).then((cumple) => {
+            if (!cumple) return;
+            esCumpleHoy = true;
+            renderWelcomeMessage(loggedInUserName);
+
+            const claveFestejo = `cumpleFestejado-${new Date().toISOString().slice(0, 10)}`;
+            if (!localStorage.getItem(claveFestejo)) {
+              localStorage.setItem(claveFestejo, "1");
+              if (typeof triggerConfetti === "function") setTimeout(triggerConfetti, 700);
+            }
+          });
+
           populateBirthdays();
           populateNews();
           populateNotifications();
@@ -3637,6 +4349,8 @@
         } catch (error) {
           console.error("Error al cargar cumpleaños:", error);
           birthdaySection.style.display = "none";
+        } finally {
+          refreshNewsEmptyState();
         }
       }
 
@@ -3733,6 +4447,31 @@
       }
 
       // --- LÓGICA DE NOTICIAS (SOLO MURO) ---
+      // Un título sin nada debajo es ruido: la sección entera se oculta si su lista quedó vacía
+      function toggleNewsSection(listId) {
+        const list = document.getElementById(listId);
+        if (!list) return false;
+
+        const tieneContenido = list.children.length > 0;
+        const section = list.closest(".news-section");
+        if (section) section.style.display = tieneContenido ? "" : "none";
+        return tieneContenido;
+      }
+
+      // Se llama desde populateNews y populateBirthdays (cargan por separado)
+      function refreshNewsEmptyState() {
+        const hayComerciales = toggleNewsSection("comerciales-news-list");
+        const hayRrhh = toggleNewsSection("rrhh-news-list");
+
+        const birthdaySection = document.getElementById("birthday-section");
+        const hayCumples = !!birthdaySection && birthdaySection.style.display !== "none";
+
+        const mensajeVacio = document.getElementById("news-empty-msg");
+        if (mensajeVacio) {
+          mensajeVacio.style.display = (hayComerciales || hayRrhh || hayCumples) ? "none" : "";
+        }
+      }
+
       function populateNews() {
         db.collection("news")
           .orderBy("timestamp", "desc")
@@ -3790,6 +4529,7 @@
               });
 
               initializeReactions();
+              refreshNewsEmptyState();
             },
             (error) => {
               console.error("Error al obtener noticias: ", error);
