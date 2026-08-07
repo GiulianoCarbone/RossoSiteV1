@@ -1816,6 +1816,289 @@
       }
     }
 
+    /* ====== CARRUSEL DE DESTACADOS (Concurso / Vendedor / Reseña) ====== */
+    .hero-carousel {
+      position: relative;
+      grid-column: 1 / -1;
+      /* Hueco para que el pulso neón (blur de hasta 30px) no se corte */
+      --hero-gutter: 32px;
+    }
+
+    .hero-carousel-viewport {
+      /* El padding vertical deja respirar el glow; el margen negativo lo compensa
+         para que la tarjeta quede alineada con el resto de la grilla.
+         Sin padding horizontal, así el slide siguiente no asoma por el costado. */
+      overflow: hidden;
+      padding: var(--hero-gutter) 0;
+      margin: calc(-1 * var(--hero-gutter));
+    }
+
+    .hero-carousel-track {
+      display: flex;
+      align-items: stretch;
+      touch-action: pan-y;
+      transition: transform .55s cubic-bezier(.22, .61, .36, 1);
+      will-change: transform;
+    }
+
+    .hero-carousel-track.is-dragging {
+      transition: none;
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .hero-slide {
+      box-sizing: border-box;
+      flex: 0 0 100%;
+      min-width: 100%;
+      /* el aire lateral vive acá adentro: el glow se ve y nada se asoma al costado */
+      padding: 0 var(--hero-gutter);
+      display: flex;
+    }
+
+    /* Todos los slides toman la altura del más alto (el del desafío) */
+    .hero-slide>* {
+      flex: 1 1 auto;
+      min-width: 0;
+      transition: opacity .4s ease;
+    }
+
+    .hero-slide img {
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    /* --- Tarjetas clickeables (vendedor / reseña) --- */
+    .hero-link-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: white;
+      overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .hero-link-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 34px rgba(0, 0, 0, .18);
+    }
+
+    .hero-link-card .panel-card-header {
+      border-bottom: 1px solid rgba(255, 255, 255, .18);
+    }
+
+    .hero-link-card .panel-card-header h3,
+    .hero-link-card .panel-card-icon {
+      color: white;
+    }
+
+    .hero-vendedor-slide {
+      background: linear-gradient(135deg, var(--brand) 0%, #3e489b 100%);
+    }
+
+    .hero-review-slide {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .hero-slide-goto {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .18);
+      color: white;
+      font-size: .95rem;
+      transition: background .25s ease, transform .25s ease;
+    }
+
+    .hero-link-card:hover .hero-slide-goto {
+      background: rgba(255, 255, 255, .32);
+      transform: translateX(4px);
+    }
+
+    /* Imagen arriba y texto abajo, tanto en desktop como en mobile */
+    .hero-slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 24px;
+      padding: 26px 24px;
+    }
+
+    .hero-slide-body>.hero-slide-text {
+      max-width: 620px;
+    }
+
+    .hero-vendedor-photo {
+      width: 170px;
+      height: 170px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 4px solid var(--accent);
+      object-fit: cover;
+      background: rgba(255, 255, 255, .12);
+    }
+
+    /* La miniatura se adapta a la captura: se ve completa, sin recortes */
+    .hero-review-thumb {
+      max-width: 100%;
+      flex-shrink: 0;
+      line-height: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .15);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, .2);
+    }
+
+    .hero-review-thumb img {
+      width: auto;
+      max-width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .hero-slide-text {
+      min-width: 0;
+    }
+
+    .hero-slide-name {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin: 0 0 8px;
+      line-height: 1.2;
+    }
+
+    .hero-slide-desc {
+      margin: 0;
+      opacity: .92;
+      line-height: 1.55;
+      font-size: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .hero-slide-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 9px 18px;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, .16);
+      border: 1px solid rgba(255, 255, 255, .35);
+      font-size: .88rem;
+      font-weight: 700;
+      transition: background .25s ease, gap .25s ease;
+    }
+
+    .hero-link-card:hover .hero-slide-cta {
+      background: rgba(255, 255, 255, .28);
+      gap: 12px;
+    }
+
+    /* --- Controles --- */
+    .hero-carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0, 0, 0, .06);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .92);
+      color: var(--brand);
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 3;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .14);
+      opacity: 0;
+      transition: opacity .3s ease, background .25s ease, transform .25s ease;
+    }
+
+    .hero-carousel:hover .hero-carousel-arrow,
+    .hero-carousel:focus-within .hero-carousel-arrow {
+      opacity: 1;
+    }
+
+    .hero-carousel-arrow:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .hero-carousel-arrow.prev {
+      left: -6px;
+    }
+
+    .hero-carousel-arrow.next {
+      right: -6px;
+    }
+
+    /* Resalta la sección destino cuando se llega desde el carrusel */
+    .hero-target-flash {
+      animation: hero-flash 1.6s ease;
+    }
+
+    @keyframes hero-flash {
+
+      0%,
+      100% {
+        box-shadow: var(--shadow);
+      }
+
+      30% {
+        box-shadow: 0 0 0 4px rgba(236, 100, 52, .55), 0 12px 30px rgba(0, 0, 0, .18);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero-carousel-arrow {
+        display: none;
+      }
+
+      .hero-slide-body {
+        gap: 18px;
+        padding: 22px 16px;
+      }
+
+      .hero-vendedor-photo {
+        width: 110px;
+        height: 110px;
+      }
+
+      .hero-review-thumb img {
+        max-height: 200px;
+      }
+
+      .hero-slide-name {
+        font-size: 1.25rem;
+      }
+
+      .hero-slide-desc {
+        font-size: .92rem;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-carousel-track {
+        transition: none;
+      }
+    }
+
     /* --- NORMALIZAR TÍTULOS DEL MODAL DE BASES DEL CONCURSO --- */
     #contest-terms-body h1,
     #contest-terms-body h2,
@@ -2076,6 +2359,12 @@
           </a>
         </li>
         <li class="hamburger-menu-item">
+          <a href="#vendedor-destacado">
+            <i class="fa-solid fa-crown"></i>
+            <span>Vendedor Destacado</span>
+          </a>
+        </li>
+        <li class="hamburger-menu-item">
           <a href="#resena-destacada">
             <i class="fa-solid fa-star"></i>
             <span>Reseña Destacada</span>
@@ -2128,56 +2417,130 @@
       </div>
 
       <div class="container panel-grid">
-        <!-- SECCIÓN CONCURSO (PROVISORIA) -->
-        <div class="panel-card contest-card contest-card-neon" id="contest-section"
-          style="grid-column: 1 / -1; background: white; position: relative; overflow: hidden; transition: transform 0.3s ease;">
+        <!-- ====== CARRUSEL DE DESTACADOS (auto-rotativo) ====== -->
+        <div class="hero-carousel" id="hero-carousel" role="region" aria-roledescription="carrusel"
+          aria-label="Destacados del panel">
+          <div class="hero-carousel-viewport" id="hero-carousel-viewport">
+            <div class="hero-carousel-track" id="hero-carousel-track">
 
-          <div class="panel-card-header contest-card-header"
-            style="position: relative; z-index: 1; border-bottom: 1px solid #f1f1f1;">
-            <div class="panel-card-icon-title">
-              <span class="panel-card-icon"><i class="fa-solid fa-trophy"
-                  style="animation: none; color: var(--accent);"></i></span>
-              <h3 style="color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
-                Desafío ABERTURAS-D 🏆</h3>
+              <!-- SLIDE 1: CONCURSO -->
+              <div class="hero-slide" role="group" aria-roledescription="diapositiva" aria-label="1 de 3: Concurso">
+                <div class="panel-card contest-card contest-card-neon" id="contest-section"
+                  style="background: white; position: relative; overflow: hidden; transition: transform 0.3s ease;">
+
+                  <div class="panel-card-header contest-card-header"
+                    style="position: relative; z-index: 1; border-bottom: 1px solid #f1f1f1;">
+                    <div class="panel-card-icon-title">
+                      <span class="panel-card-icon"><i class="fa-solid fa-trophy"
+                          style="animation: none; color: var(--accent);"></i></span>
+                      <h3 style="color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Desafío ABERTURAS-D 🏆</h3>
+                    </div>
+                  </div>
+                  <div class="panel-card-body contest-card-body"
+                    style="text-align: center; padding: 30px 20px; position: relative; z-index: 1;">
+                    <!-- Image Container with Floating Animation -->
+                    <div style="margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; width: 100%;">
+                      <img src="" alt="Premio del Concurso - Cafetera espresso CUK 20 bar con espumador + 2 vasos"
+                        class="floating-prize" id="contest-prize-image" style="opacity: 0; transition: opacity 0.4s ease;">
+
+                    </div>
+                    <p class="contest-card-text"
+                      style="font-size: 1.15rem; color: #374151; max-width: 600px; margin: 0 auto 15px; line-height: 1.6;">
+                      <span class="contest-prominent-title"
+                        style="display: block; font-size: 1.6rem; color: var(--accent); font-weight: 900; margin-bottom: 8px; text-transform: uppercase;">¡ABERTURAS-D!
+                        🏆</span>
+                      El vendedor con mayor cantidad de <strong>unidades vendidas de la lista aberturas-D</strong> gana una
+                      <strong>cafetera espresso CUK 20 bar con espumador + 2 vasos</strong>.
+                    </p>
+                    <!-- SUBTLE COUNTDOWN -->
+                    <p id="countdown-timer" style="font-size: 0.9rem; color: #6b7280; margin-bottom: 25px; font-weight: 500;">
+                      El concurso finaliza en: <span id="time-left" style="color: var(--accent); font-weight: 700;">--d --h --m
+                        --s</span>
+                    </p>
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                      <button onclick="openContestModal()"
+                        style="padding: 14px 30px; background: linear-gradient(to right, var(--accent), #c2411c); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(236, 100, 52, 0.3);">
+                        <i class="fa-solid fa-file-contract"></i> Conocé más
+                      </button>
+                      <button id="ranking-btn" onclick="openRankingModal()"
+                        style="padding: 14px 30px; background: white; color: var(--accent); border: 2px solid var(--accent); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: all 0.2s;">
+                        <i class="fa-solid fa-ranking-star"></i> Ver Ranking
+                      </button>
+                      <button id="winners-btn" onclick="openWinnersModal()"
+                        style="display: none; padding: 14px 30px; background: linear-gradient(to right, #059669, #10b981); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: all 0.2s; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
+                        <i class="fa-solid fa-trophy"></i> Ver Ganadores
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SLIDE 2: VENDEDOR DESTACADO -->
+              <div class="hero-slide" role="group" aria-roledescription="diapositiva"
+                aria-label="2 de 3: Vendedor destacado">
+                <a class="panel-card hero-link-card hero-vendedor-slide" href="#vendedor-destacado"
+                  data-hero-target="vendedor-destacado">
+                  <div class="panel-card-header">
+                    <div class="panel-card-icon-title">
+                      <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
+                      <h3>Vendedor Destacado</h3>
+                    </div>
+                    <span class="hero-slide-goto" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+                  </div>
+                  <div class="panel-card-body hero-slide-body dyn-loading" id="hero-vendedor-body">
+                    <img id="carousel-vendedor-img" class="hero-vendedor-photo"
+                      src="/assets/VENDEDORDESTACADO/Gabriel-Lamas.webp" alt="Foto del vendedor destacado" />
+                    <div class="hero-slide-text">
+                      <h4 id="carousel-vendedor-name" class="hero-slide-name">Darío Maidana</h4>
+                      <p id="carousel-vendedor-desc" class="hero-slide-desc">
+                        Conocé la historia detrás del reconocimiento de este mes.
+                      </p>
+                      <span class="hero-slide-cta">Ver reconocimiento <i class="fa-solid fa-chevron-right"></i></span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <!-- SLIDE 3: RESEÑA DESTACADA -->
+              <div class="hero-slide" role="group" aria-roledescription="diapositiva"
+                aria-label="3 de 3: Reseña destacada">
+                <a class="panel-card hero-link-card hero-review-slide" href="#resena-destacada"
+                  data-hero-target="resena-destacada">
+                  <div class="panel-card-header">
+                    <div class="panel-card-icon-title">
+                      <span class="panel-card-icon"><i class="fa-solid fa-star"></i></span>
+                      <h3>Reseña Destacada del Mes</h3>
+                    </div>
+                    <span class="hero-slide-goto" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+                  </div>
+                  <div class="panel-card-body hero-slide-body dyn-loading" id="hero-review-body">
+                    <div class="hero-review-thumb" id="hero-review-thumb" style="display: none;">
+                      <img id="carousel-review-img" src="" alt="Captura de la reseña destacada" />
+                    </div>
+                    <div class="hero-slide-text">
+                      <h4 id="carousel-review-branch" class="hero-slide-name">¡Felicitaciones!</h4>
+                      <p class="hero-slide-desc">
+                        Nuestros clientes hablan del equipo: mirá la reseña que nos dejaron este mes.
+                      </p>
+                      <span class="hero-slide-cta">Ver reseña completa <i class="fa-solid fa-chevron-right"></i></span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
             </div>
           </div>
-          <div class="panel-card-body contest-card-body"
-            style="text-align: center; padding: 30px 20px; position: relative; z-index: 1;">
-            <!-- Image Container with Floating Animation -->
-            <div style="margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; width: 100%;">
-              <img src="" alt="Premio del Concurso - Cafetera espresso CUK 20 bar con espumador + 2 vasos"
-                class="floating-prize" id="contest-prize-image" style="opacity: 0; transition: opacity 0.4s ease;">
 
-            </div>
-            <p class="contest-card-text"
-              style="font-size: 1.15rem; color: #374151; max-width: 600px; margin: 0 auto 15px; line-height: 1.6;">
-              <span class="contest-prominent-title"
-                style="display: block; font-size: 1.6rem; color: var(--accent); font-weight: 900; margin-bottom: 8px; text-transform: uppercase;">¡ABERTURAS-D!
-                🏆</span>
-              El vendedor con mayor cantidad de <strong>unidades vendidas de la lista aberturas-D</strong> gana una
-              <strong>cafetera espresso CUK 20 bar con espumador + 2 vasos</strong>.
-            </p>
-            <!-- SUBTLE COUNTDOWN -->
-            <p id="countdown-timer" style="font-size: 0.9rem; color: #6b7280; margin-bottom: 25px; font-weight: 500;">
-              El concurso finaliza en: <span id="time-left" style="color: var(--accent); font-weight: 700;">--d --h --m
-                --s</span>
-            </p>
-            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-              <button onclick="openContestModal()"
-                style="padding: 14px 30px; background: linear-gradient(to right, var(--accent), #c2411c); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(236, 100, 52, 0.3);">
-                <i class="fa-solid fa-file-contract"></i> Conocé más
-              </button>
-              <button id="ranking-btn" onclick="openRankingModal()"
-                style="padding: 14px 30px; background: white; color: var(--accent); border: 2px solid var(--accent); border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: all 0.2s;">
-                <i class="fa-solid fa-ranking-star"></i> Ver Ranking
-              </button>
-              <button id="winners-btn" onclick="openWinnersModal()"
-                style="display: none; padding: 14px 30px; background: linear-gradient(to right, #059669, #10b981); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: all 0.2s; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
-                <i class="fa-solid fa-trophy"></i> Ver Ganadores
-              </button>
-            </div>
-          </div>
+          <button class="hero-carousel-arrow prev" id="hero-prev" type="button" aria-label="Anterior">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="hero-carousel-arrow next" id="hero-next" type="button" aria-label="Siguiente">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+
         </div>
+        <!-- ====== FIN CARRUSEL DE DESTACADOS ====== -->
 
         <!-- SECCIÓN NOVEDADES -->
         <div class="panel-card" id="novedades">
@@ -2399,7 +2762,7 @@
           </div>
         </div>
         <!-- SECCIÓN EMPLEADO DEL MES-->
-        <div class="panel-card featured-employee-card">
+        <div class="panel-card featured-employee-card" id="vendedor-destacado">
           <div class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
@@ -3891,11 +4254,24 @@
             if (branchName && data.branchName) {
               branchName.textContent = `¡Felicitaciones ${data.branchName}!`;
             }
+
+            // Espejo en el carrusel de destacados
+            const carouselImg = document.getElementById("carousel-review-img");
+            const carouselThumb = document.getElementById("hero-review-thumb");
+            if (carouselImg && data.imageUrl) {
+              carouselImg.src = data.imageUrl;
+              if (carouselThumb) carouselThumb.style.display = '';
+            }
+            const carouselBranch = document.getElementById("carousel-review-branch");
+            if (carouselBranch && data.branchName) {
+              carouselBranch.textContent = `¡Felicitaciones ${data.branchName}!`;
+            }
           }
         } catch (error) {
           console.error("Error cargando reseña destacada:", error);
         } finally {
           revealDyn('.review-body');
+          revealDyn('#hero-review-body');
         }
       }
 
@@ -3911,11 +4287,21 @@
             if (imgEl && data.imageUrl) imgEl.src = data.imageUrl;
             if (nameEl && data.name) nameEl.textContent = data.name;
             if (descEl && data.description) descEl.textContent = data.description;
+
+            // Espejo en el carrusel de destacados
+            const cImg = document.getElementById("carousel-vendedor-img");
+            const cName = document.getElementById("carousel-vendedor-name");
+            const cDesc = document.getElementById("carousel-vendedor-desc");
+            if (cImg && data.imageUrl) cImg.src = data.imageUrl;
+            if (cName && data.name) cName.textContent = data.name;
+            if (cDesc && data.description) cDesc.textContent = data.description;
           }
           revealDyn('.employee-body');
+          revealDyn('#hero-vendedor-body');
         }, error => {
           console.error("Error escuchando vendedor destacado:", error);
           revealDyn('.employee-body');
+          revealDyn('#hero-vendedor-body');
         });
       }
 
@@ -4704,6 +5090,144 @@
     }
 
     startCountdown();
+
+    // ====== CARRUSEL DE DESTACADOS (auto-rotativo) ======
+    (function initHeroCarousel() {
+      const root = document.getElementById('hero-carousel');
+      const track = document.getElementById('hero-carousel-track');
+      const prevBtn = document.getElementById('hero-prev');
+      const nextBtn = document.getElementById('hero-next');
+      if (!root || !track) return;
+
+      const slides = Array.from(track.querySelectorAll('.hero-slide'));
+      if (slides.length < 2) return;
+
+      const DELAY = 7000;               // ms por slide
+      let index = 0;
+      let timer = null;
+      let paused = false;
+
+      function goTo(i, instant) {
+        index = (i + slides.length) % slides.length;
+        if (instant) track.style.transition = 'none';
+        track.style.transform = 'translateX(' + (-index * 100) + '%)';
+        if (instant) requestAnimationFrame(() => { track.style.transition = ''; });
+
+        slides.forEach((s, n) => {
+          const hidden = n !== index;
+          s.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+          // Los slides ocultos no deben ser alcanzables con Tab
+          s.querySelectorAll('a, button').forEach(el => {
+            if (hidden) el.setAttribute('tabindex', '-1');
+            else el.removeAttribute('tabindex');
+          });
+        });
+      }
+
+      // --- Autoplay ---
+      function restartTimer() {
+        clearTimeout(timer);
+        if (paused) return;
+        timer = setTimeout(() => { goTo(index + 1); restartTimer(); }, DELAY);
+      }
+
+      function pause() {
+        if (paused) return;
+        paused = true;
+        clearTimeout(timer);
+      }
+
+      function resume() {
+        if (!paused) return;
+        paused = false;
+        restartTimer();
+      }
+
+      root.addEventListener('mouseenter', pause);
+      root.addEventListener('mouseleave', resume);
+      root.addEventListener('focusin', pause);
+      root.addEventListener('focusout', resume);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) clearTimeout(timer);
+        else if (!paused) restartTimer();
+      });
+
+      if (prevBtn) prevBtn.addEventListener('click', () => { goTo(index - 1); restartTimer(); });
+      if (nextBtn) nextBtn.addEventListener('click', () => { goTo(index + 1); restartTimer(); });
+
+      root.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') { goTo(index - 1); restartTimer(); }
+        if (e.key === 'ArrowRight') { goTo(index + 1); restartTimer(); }
+      });
+
+      // --- Swipe / drag (sin pointer capture: no interfiere con los botones del concurso) ---
+      let startX = 0, startY = 0, deltaX = 0, dragging = false, moved = false;
+
+      function onPointerMove(e) {
+        if (!dragging) return;
+        deltaX = e.clientX - startX;
+        const deltaY = e.clientY - startY;
+        // Si el gesto es claramente vertical, se deja scrollear la página
+        if (!moved && Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 12) { endDrag(); return; }
+        if (Math.abs(deltaX) > 8) moved = true;
+        if (moved) {
+          track.classList.add('is-dragging');
+          const pct = (deltaX / track.offsetWidth) * 100;
+          track.style.transform = 'translateX(' + (-index * 100 + pct) + '%)';
+        }
+      }
+
+      function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', endDrag);
+        window.removeEventListener('pointercancel', endDrag);
+        track.classList.remove('is-dragging');
+        const threshold = Math.max(50, track.offsetWidth * 0.15);
+        if (deltaX > threshold) goTo(index - 1);
+        else if (deltaX < -threshold) goTo(index + 1);
+        else goTo(index);
+        resume();
+      }
+
+      track.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        dragging = true; moved = false; startX = e.clientX; startY = e.clientY; deltaX = 0;
+        pause();
+        window.addEventListener('pointermove', onPointerMove);
+        window.addEventListener('pointerup', endDrag);
+        window.addEventListener('pointercancel', endDrag);
+      });
+
+      // Evita que un swipe dispare el link de la tarjeta
+      track.addEventListener('click', (e) => {
+        if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+      }, true);
+
+      // --- Click en slide 2/3: destaca la sección destino al llegar ---
+      root.querySelectorAll('[data-hero-target]').forEach(link => {
+        link.addEventListener('click', () => {
+          const target = document.getElementById(link.dataset.heroTarget);
+          if (!target) return;
+          target.classList.remove('hero-target-flash');
+          void target.offsetWidth;
+          target.classList.add('hero-target-flash');
+          setTimeout(() => target.classList.remove('hero-target-flash'), 1800);
+        });
+      });
+
+      // Red de seguridad: si Firestore no responde, igual se muestra el contenido del slide
+      setTimeout(() => {
+        root.querySelectorAll('.dyn-loading').forEach(el => {
+          el.classList.remove('dyn-loading');
+          el.classList.add('dyn-ready');
+        });
+      }, 8000);
+
+      goTo(0, true);
+      restartTimer();
+    })();
 
     // --- FUNCIONES MODAL CALCULADORA ---
     function openCalculatorModal() {
