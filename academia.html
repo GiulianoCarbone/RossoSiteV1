@@ -511,6 +511,14 @@
       display: inline-flex; align-items: center; gap: 6px; background: #fff4e6; color: #d97706;
       font-family: var(--font-display); font-weight: 800; font-size: .78rem; padding: 3px 10px;
       border-radius: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-left: 6px;
+      cursor: help;
+    }
+    /* La clase gana sobre el [hidden] del navegador, así que hay que apagarla a mano */
+    .streak-badge[hidden] { display: none; }
+    /* A partir de una semana la insignia se "prende" */
+    .streak-badge--hot {
+      background: linear-gradient(135deg, #f97316, #dc2626); color: #fff;
+      box-shadow: 0 2px 10px rgba(249, 115, 22, 0.45);
     }
     .xp-wrap { margin-top: 12px; max-width: 300px; }
     .xp-bar-bg { height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin-bottom: 4px; }
@@ -702,7 +710,7 @@
           <div class="cred-greeting" id="vendor-greeting">¡Buen día!</div>
           <div style="display: flex; align-items: center; gap: 8px;">
             <p class="cred-name" id="vendor-name" style="margin: 0;">vendedor</p>
-            <div class="streak-badge"><i class="fa-solid fa-fire"></i> <span id="streak-count">1</span> día</div>
+            <div class="streak-badge" id="streak-badge" hidden><i class="fa-solid fa-fire"></i> <span id="streak-count">1</span> <span id="streak-label">día</span></div>
           </div>
           <p class="cred-sub" id="vendor-suc" style="margin-top: 4px;">Equipo de ventas Rosso</p>
 
@@ -993,12 +1001,208 @@
       toast("No pudimos cargar tu progreso guardado.", true);
     }
 
+    // Racha compartida con el panel: pinta al toque desde la caché y después
+    // reconcilia con Firestore. Sin await para no demorar el legajo.
+    actualizarRacha(vendor.nombre);
+
     renderHome();
     showScreen("home");
   }
 
   function sanitizeKey(s) {
     return String(s).trim().replace(/[\/\.\#\$\[\]]/g, "_").replace(/\s+/g, "_").slice(0, 120);
+  }
+
+  /* ============================================================
+     RACHA DE DÍAS CONSECUTIVOS
+     Es la MISMA racha del panel corporativo: mismo documento
+     (colección `rachas`, id = nombre con guiones en minúsculas) y misma
+     caché en localStorage. Entrar al panel o a la academia cuenta igual,
+     así que el número coincide en los dos lados.
+     OJO: DIAS_NO_LABORABLES y FERIADOS están duplicados en
+     panel-corporativo.html; si se cargan feriados, cargarlos en ambos.
+     ============================================================ */
+
+  // Clave YYYY-MM-DD en hora local. Con toISOString() se correría de día:
+  // en UTC-3 todo lo posterior a las 21:00 caería en la fecha siguiente.
+  function toDateKey(date) {
+    const mes = String(date.getMonth() + 1).padStart(2, "0");
+    const dia = String(date.getDate()).padStart(2, "0");
+    return `${date.getFullYear()}-${mes}-${dia}`;
+  }
+
+  function diasDeDiferencia(desdeISO, hastaISO) {
+    const desde = new Date(`${desdeISO}T00:00:00`);
+    const hasta = new Date(`${hastaISO}T00:00:00`);
+    return Math.round((hasta - desde) / 86400000);
+  }
+
+  // La empresa trabaja de lunes a sábado: el domingo no suma días de racha,
+  // pero tampoco la corta. 0 = domingo (getDay).
+  const DIAS_NO_LABORABLES = [0];
+
+  // Feriados que tampoco deben cortar la racha, en formato "YYYY-MM-DD".
+  const FERIADOS = [];
+
+  function esDiaLaboral(fechaISO) {
+    if (FERIADOS.includes(fechaISO)) return false;
+    const dia = new Date(`${fechaISO}T00:00:00`).getDay();
+    return !DIAS_NO_LABORABLES.includes(dia);
+  }
+
+  // Días laborables que quedaron SIN visitar entre dos fechas (sin contar los extremos).
+  // Si da 0, la racha sigue viva aunque hayan pasado varios días de calendario.
+  function laborablesPerdidos(desdeISO, hastaISO) {
+    let perdidos = 0;
+    const cursor = new Date(`${desdeISO}T00:00:00`);
+    const fin = new Date(`${hastaISO}T00:00:00`);
+
+    cursor.setDate(cursor.getDate() + 1);
+    while (cursor < fin) {
+      if (esDiaLaboral(toDateKey(cursor))) perdidos++;
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return perdidos;
+  }
+
+  // Mismo formato de clave que el panel para compartir la caché del navegador
+  function claveRacha(nombreUsuario) {
+    const normalizado = String(nombreUsuario || "").toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/,/g, " ").trim();
+    return `rosso_panel_racha_${normalizado.replace(/\s+/g, "_")}`;
+  }
+
+  // Mismo criterio de ID que usage_daily / active_sessions
+  function rachaDocRef(nombreUsuario) {
+    return db.collection("rachas").doc(nombreUsuario.replace(/\s+/g, "-").toLowerCase());
+  }
+
+  function leerRachaLocal(clave) {
+    try {
+      const guardado = localStorage.getItem(clave);
+      return guardado ? JSON.parse(guardado) : null;
+    } catch (e) {
+      console.warn("Racha local ilegible, se reinicia:", e);
+      return null;
+    }
+  }
+
+  function guardarRachaLocal(clave, datos) {
+    try {
+      localStorage.setItem(clave, JSON.stringify(datos));
+    } catch (e) {
+      console.warn("No se pudo cachear la racha:", e);
+    }
+  }
+
+  // Ante dos versiones de la racha (este dispositivo y la nube) gana la que
+  // llegó más lejos en el tiempo; el récord histórico es el mayor de ambas.
+  function fusionarRachas(a, b) {
+    if (!a || !a.ultimo) return (b && b.ultimo) ? b : (a || b);
+    if (!b || !b.ultimo) return a;
+
+    let base;
+    if (a.ultimo > b.ultimo) base = Object.assign({}, a);
+    else if (b.ultimo > a.ultimo) base = Object.assign({}, b);
+    else base = (a.dias || 0) >= (b.dias || 0) ? Object.assign({}, a) : Object.assign({}, b);
+
+    base.mejor = Math.max(a.mejor || 0, b.mejor || 0, base.dias || 0);
+    return base;
+  }
+
+  // Aplica la visita de hoy sobre un estado de racha, sin mutar el original
+  function aplicarVisitaDeHoy(datos) {
+    const hoy = toDateKey(new Date());
+    const estado = Object.assign({ ultimo: null, dias: 0, mejor: 0 }, datos || {});
+
+    if (estado.ultimo === hoy) return { estado, sumoDia: false };
+
+    let sumoDia = false;
+    if (!estado.ultimo || diasDeDiferencia(estado.ultimo, hoy) < 0) {
+      estado.dias = 1;                        // primera vez, o el reloj fue hacia atrás
+    } else if (laborablesPerdidos(estado.ultimo, hoy) === 0) {
+      // No se salteó ningún día laboral. Si hoy no lo es (domingo/feriado) la racha
+      // se mantiene pero no crece: se descansa sin perder lo hecho.
+      if (esDiaLaboral(hoy)) {
+        estado.dias = (estado.dias || 0) + 1;
+        sumoDia = true;
+      }
+    } else {
+      estado.dias = 1;                        // faltó a un día laboral: se cortó
+    }
+    estado.ultimo = hoy;
+    estado.mejor = Math.max(estado.mejor || 0, estado.dias);
+    return { estado, sumoDia };
+  }
+
+  function renderRacha(datos) {
+    const badge = document.getElementById("streak-badge");
+    if (!badge) return;
+
+    const dias = Math.max(1, datos.dias || 1);
+    const mejor = Math.max(dias, datos.mejor || 0);
+    const enDias = (n) => `${n} ${n === 1 ? "día" : "días"}`;
+
+    document.getElementById("streak-count").textContent = dias;
+    document.getElementById("streak-label").textContent = dias === 1 ? "día" : "días";
+    badge.classList.toggle("streak-badge--hot", dias >= 7);
+    badge.title = dias === 1
+      ? "¡Arrancaste hoy! Entrá mañana para seguir la racha."
+      : (dias === mejor
+        ? `🏆 Estás en tu mejor marca: ${enDias(dias)} seguidos`
+        : `${enDias(dias)} seguidos · tu mejor racha: ${enDias(mejor)}`);
+    badge.hidden = false;
+  }
+
+  async function actualizarRacha(nombreUsuario) {
+    if (!nombreUsuario) return;
+
+    // Restos de la racha vieja (era solo local y quedaba clavada en 1). Se limpian
+    // para que no queden claves huérfanas en el navegador de nadie.
+    try {
+      localStorage.removeItem("rosso_streak_count");
+      localStorage.removeItem("rosso_last_active");
+    } catch (e) { /* modo privado: da igual */ }
+
+    const clave = claveRacha(nombreUsuario);
+    const local = leerRachaLocal(clave);
+
+    // 1) Pintamos ya mismo con lo que hay en el navegador: la insignia no espera a la red
+    const provisorio = aplicarVisitaDeHoy(local);
+    guardarRachaLocal(clave, provisorio.estado);
+    renderRacha(provisorio.estado);
+
+    // 2) Reconciliamos con la nube (1 lectura por ingreso, 1 escritura por día)
+    let estadoFinal = provisorio.estado;
+    let sumoDia = provisorio.sumoDia;
+
+    try {
+      const doc = await rachaDocRef(nombreUsuario).get();
+      const remoto = doc.exists ? doc.data() : null;
+      const definitivo = aplicarVisitaDeHoy(fusionarRachas(local, remoto));
+
+      estadoFinal = definitivo.estado;
+      sumoDia = definitivo.sumoDia;
+
+      guardarRachaLocal(clave, estadoFinal);
+      renderRacha(estadoFinal);
+
+      await rachaDocRef(nombreUsuario).set({
+        nombre: nombreUsuario,
+        ultimo: estadoFinal.ultimo,
+        dias: estadoFinal.dias,
+        mejor: estadoFinal.mejor,
+        actualizado: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    } catch (e) {
+      // Sin red o sin permisos la racha sigue andando, pero solo en este dispositivo
+      console.warn("Racha: no se pudo sincronizar con Firestore.", e);
+    }
+
+    // Festejo en cada múltiplo de 5 días, solo cuando la racha acaba de crecer
+    if (sumoDia && estadoFinal.dias % 5 === 0 && typeof confetti === "function") {
+      setTimeout(() => confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } }), 700);
+    }
   }
 
   /* ============================================================
@@ -1014,24 +1218,8 @@
     const sucEl = document.getElementById("vendor-suc");
     if (sucEl) sucEl.textContent = vendor.sucursal ? ("Sucursal " + vendor.sucursal) : "Equipo de ventas Rosso";
 
-    // Calcular Racha de Días (Streak)
-    const todayStr = new Date().toISOString().slice(0, 10);
-    const lastActive = localStorage.getItem("rosso_last_active");
-    let streak = parseInt(localStorage.getItem("rosso_streak_count") || "1", 10);
-
-    if (lastActive) {
-      const lastDate = new Date(lastActive);
-      const todayDate = new Date(todayStr);
-      const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
-      if (diffDays === 1) {
-        // Entró día consecutivo
-      } else if (diffDays > 1) {
-        streak = 1; // Resetea racha si pasó más de un día
-      }
-    }
-    localStorage.setItem("rosso_last_active", todayStr);
-    localStorage.setItem("rosso_streak_count", String(streak));
-    document.getElementById("streak-count").textContent = streak;
+    // La racha NO se calcula acá: renderHome() vuelve a correr con cada filtro y
+    // con cada vuelta al inicio. Se resuelve una sola vez en init(), vía actualizarRacha().
 
     // Stats y XP
     let totalPoints = 0, totalLevels = 0, totalMods = 0;
