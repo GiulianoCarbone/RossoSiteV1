@@ -640,14 +640,24 @@
     }
 
     @media (max-width: 600px) {
-      .streak-tooltip {
-        left: auto;
-        right: 0;
+      /* La insignia queda a mitad del renglón: anclando la tarjeta a ella se salía de
+         la pantalla. Al sacarle el `position` al wrapper, el ancla pasa a ser
+         .panel-header y la tarjeta ocupa el ancho del contenedor, como un desplegable. */
+      .streak-wrap {
+        position: static;
       }
 
+      .streak-tooltip {
+        top: calc(100% + 8px);
+        left: 5vw;
+        right: 5vw;
+        width: auto;
+        max-width: none;
+      }
+
+      /* Sin ancla fija, el pico no puede apuntar a la insignia */
       .streak-tooltip::before {
-        left: auto;
-        right: 24px;
+        display: none;
       }
     }
 
