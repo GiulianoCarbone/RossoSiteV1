@@ -1285,6 +1285,36 @@
       transform: rotate(180deg);
     }
 
+    /* --- TARJETAS PLEGABLES SOLO EN MOBILE (mismo patrón que el directorio) --- */
+    .collapsible-mobile {
+      display: block;
+    }
+
+    .collapsible-mobile>summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .collapsible-mobile>summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .collapsible-mobile[open]>summary .summary-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* En desktop se comportan como una tarjeta común: siempre abiertas y sin flecha */
+    @media (min-width: 769px) {
+      .collapsible-mobile>summary {
+        cursor: default;
+        pointer-events: none;
+      }
+
+      .collapsible-mobile>summary .summary-arrow {
+        display: none;
+      }
+    }
+
     /* --- ESTILOS REACCIONES --- */
     .news-footer {
       position: absolute;
@@ -3025,13 +3055,14 @@
           </div>
         </div>
         <!-- SECCIÓN CALENDARIO DE EVENTOS -->
-        <div class="panel-card" id="capacitaciones">
-          <div class="panel-card-header">
+        <details class="panel-card collapsible-mobile" id="capacitaciones">
+          <summary class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-calendar-days"></i></span>
               <h3>Calendario de Eventos</h3>
             </div>
-          </div>
+            <span class="summary-arrow"></span>
+          </summary>
           <div class="panel-card-body calendar-container">
             <div class="calendar-header">
               <button id="prev-month-btn" aria-label="Mes anterior">
@@ -3048,7 +3079,7 @@
               <p>Seleccioná una fecha destacada para ver el evento.</p>
             </div>
           </div>
-        </div>
+        </details>
 
         <!-- SECCIÓN APOYO EN REDES -->
         <div class="panel-card" id="redes-sociales">
@@ -3150,13 +3181,14 @@
         </details>
 
         <!-- SECCIÓN BUZÓN DE SUGERENCIAS -->
-        <div class="panel-card" id="buzon">
-          <div class="panel-card-header">
+        <details class="panel-card collapsible-mobile" id="buzon">
+          <summary class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-lightbulb"></i></span>
               <h3>Buzón de Sugerencias</h3>
             </div>
-          </div>
+            <span class="summary-arrow"></span>
+          </summary>
           <div class="panel-card-body">
             <form id="suggestion-form">
               <p style="
@@ -3183,7 +3215,7 @@
                   "></div>
             </form>
           </div>
-        </div>
+        </details>
       </div>
     </main>
   </div>
@@ -3855,6 +3887,22 @@
           mejorDelEquipoPedido = false;   // permite reintentar en el próximo hover
         }
       }
+
+      // El atributo `open` no se puede forzar desde CSS: en mobile estas tarjetas
+      // arrancan plegadas y en desktop quedan siempre desplegadas.
+      (function initCollapsibleMobile() {
+        const tarjetas = document.querySelectorAll(".collapsible-mobile");
+        if (!tarjetas.length) return;
+
+        const esMobile = window.matchMedia("(max-width: 768px)");
+
+        function aplicar() {
+          tarjetas.forEach((tarjeta) => { tarjeta.open = !esMobile.matches; });
+        }
+
+        aplicar();
+        esMobile.addEventListener("change", aplicar);
+      })();
 
       // La tarjeta se abre al pasar el mouse; en celular, tocando la insignia
       (function initStreakTooltip() {
