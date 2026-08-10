@@ -2129,6 +2129,29 @@
             Ajustes globales del catálogo público.
           </p>
 
+          <!-- ── SNAPSHOT DEL CATÁLOGO PÚBLICO ── -->
+          <div
+            style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.02);margin-bottom:16px">
+            <h3
+              style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px">
+              <i class="fa-solid fa-cloud-arrow-up" style="color:var(--accent)"></i> Catálogo público
+            </h3>
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:14px">
+              La web pública lee una copia del catálogo en vez de la colección entera. Se actualiza sola cada vez que
+              guardás un producto o una categoría. Si algo quedó desincronizado, regenerala desde acá.
+            </p>
+
+            <div id="snapshot-estado"
+              style="font-size:0.8rem;padding:10px 12px;background:#f9fafb;border:1px solid var(--border);border-radius:8px;margin-bottom:14px">
+              <span style="color:var(--muted)">Cargando estado...</span>
+            </div>
+
+            <button onclick="regenerarSnapshot()" id="btn-snapshot-regen"
+              style="background:var(--brand);color:white;border:none;border-radius:8px;padding:10px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;transition:background 0.2s">
+              <i class="fa-solid fa-rotate"></i> Regenerar catálogo público
+            </button>
+          </div>
+
           <div
             style="background:white;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.02)">
             <h3
@@ -2792,6 +2815,222 @@
       }
     }
 
+    /* ══════════════════════════════════════════════════════════════
+       SNAPSHOT DEL CATÁLOGO PÚBLICO  (config/catalogoSnapshot)
+       ─────────────────────────────────────────────────────────────
+       catalogo.html leía las colecciones enteras en cada visita: ~764
+       lecturas por visitante (491 de `catalogo` + 260 de
+       `analytics_products` + categorías y config). En vez de eso el
+       panel deja acá una copia lista para servir y el público lee UN
+       documento.
+
+       Medido con el catálogo real: 475 productos visibles ocupan
+       ~246 KB, el 24% del tope de 1 MiB. Entran ~1800 productos antes
+       de quedar cortos.
+
+       La fuente de verdad sigue siendo la colección `catalogo`: esto es
+       dato derivado y desechable. Si la escritura falla, la web pública
+       vuelve sola al camino viejo (leer la colección) y se reconstruye
+       con el botón "Regenerar" de Configuración.
+    ═══════════════════════════════════════════════════════════════ */
+    const SNAPSHOT_DOC    = 'catalogoSnapshot';
+    const SNAPSHOT_LIMITE = 1048576;   // 1 MiB: tope duro de Firestore por documento
+    const SNAPSHOT_TOP_VISTAS = 250;   // cuántos productos del ranking guardamos
+
+    let destacadosOrdenCargado = false;
+    let snapshotUltimaSync = null;
+    let snapshotUltimoError = null;
+
+    // El orden de destacados vive en config/destacados y hoy sólo se carga al
+    // abrir la vista Configuración. Sin esto, un guardado hecho antes de pasar
+    // por esa vista escribiría el snapshot con el orden vacío y lo perdería.
+    async function asegurarDestacadosOrden() {
+      if (destacadosOrdenCargado) return;
+      try {
+        const doc = await db.collection('config').doc('destacados').get();
+        const data = doc.exists ? doc.data() : {};
+        if (Array.isArray(data.orden)) destacadosOrden = data.orden;
+        destacadosOrdenCargado = true;
+      } catch (e) {
+        console.warn('No se pudo leer el orden de destacados:', e);
+      }
+    }
+
+    // Ranking "más vistos" (es el orden por defecto del catálogo público).
+    // Lo resolvemos acá para que el visitante no tenga que bajarse
+    // analytics_products entera.
+    //
+    // Cuesta SNAPSHOT_TOP_VISTAS lecturas, así que lo refrescamos una sola vez
+    // por sesión del panel: en los guardados siguientes omitimos el campo y el
+    // merge deja intacto el ranking que ya está escrito. El botón "Regenerar"
+    // lo fuerza. Que el ranking tenga unas horas de atraso no molesta a nadie.
+    let rankingRefrescado = false;
+
+    async function leerRankingVistas(forzar = false) {
+      if (rankingRefrescado && !forzar) return null;
+      try {
+        const snap = await db.collection('analytics_products')
+          .orderBy('visits', 'desc')
+          .limit(SNAPSHOT_TOP_VISTAS)
+          .get();
+        rankingRefrescado = true;
+        return snap.docs
+          .map(d => ({ sku: d.id, visits: d.data().visits || 0 }))
+          .filter(x => x.visits > 0);
+      } catch (e) {
+        console.warn('No se pudo leer el ranking de vistas:', e);
+        return null;   // null = no tocar el ranking que ya está guardado
+      }
+    }
+
+    function construirSnapshot() {
+      const productos = todosLosProductos
+        .filter(p => p.disponible !== false)
+        .map(p => {
+          const o = {
+            sku:          String(p.sku || p.id || ''),
+            nombre:       p.nombre || '',
+            categoria:    p.categoria || '',
+            subcategoria: p.subcategoria || '',
+            marca:        p.marca || '',
+            descripcion:  p.descripcion || '',
+            unidad:       p.unidad || '',
+            imagenes:     Array.isArray(p.imagenes) ? p.imagenes.filter(Boolean) : [],
+            imagenLegacy: p.imagenLegacy || '',
+            destacado:    !!p.destacado,
+            disponible:   true
+          };
+          // `precio` sólo existe en destacados; no lo mandamos como null
+          const precio = Number(p.precio);
+          if (p.precio != null && p.precio !== '' && !isNaN(precio)) o.precio = precio;
+          return o;
+        })
+        .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+
+      const cats = categorias.map(c => ({
+        nombre: c.nombre,
+        subcategorias: Array.isArray(c.subcategorias) ? c.subcategorias : []
+      }));
+
+      // Sólo dejamos en el orden los SKUs que siguen destacados y visibles
+      const destacadosVivos = new Set(productos.filter(p => p.destacado).map(p => p.sku));
+      const orden = destacadosOrden.filter(sku => destacadosVivos.has(sku));
+
+      return { productos, categorias: cats, destacadosOrden: orden };
+    }
+
+    function pesoSnapshot(datos) {
+      try { return new Blob([JSON.stringify(datos)]).size; }
+      catch (e) { return JSON.stringify(datos).length; }
+    }
+
+    // Reescribe el snapshot público. Devuelve true/false; nunca tira.
+    async function escribirSnapshot({ forzarRanking = false } = {}) {
+      await asegurarDestacadosOrden();
+      const datos = construirSnapshot();
+      const bytes = pesoSnapshot(datos);
+      const kb = (bytes / 1024).toFixed(0);
+
+      if (bytes > SNAPSHOT_LIMITE * 0.95) {
+        snapshotUltimoError = `No entra: ${kb} KB de 1024 KB`;
+        pintarEstadoSnapshot();
+        toast(`El catálogo ya no entra en el snapshot (${kb} KB de 1024 KB). La web pública va a seguir leyendo la colección.`, 'error');
+        return false;
+      }
+
+      const payload = {
+        ...datos,
+        n: datos.productos.length,
+        bytes,
+        v: firebase.firestore.FieldValue.increment(1),
+        actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      // El ranking es opcional: si no toca refrescarlo (o falla la consulta),
+      // omitimos el campo y el merge deja el que ya estaba escrito.
+      const ranking = await leerRankingVistas(forzarRanking);
+      if (ranking) payload.vistas = ranking;
+
+      try {
+        // merge:true para que `increment` opere sobre el valor previo.
+        // Los arrays se reemplazan enteros igual, así que no queda basura vieja.
+        await db.collection('config').doc(SNAPSHOT_DOC).set(payload, { merge: true });
+        snapshotUltimaSync = new Date();
+        snapshotUltimoError = null;
+        pintarEstadoSnapshot();
+        if (bytes > SNAPSHOT_LIMITE * 0.7) {
+          toast(`Atención: el snapshot va por ${kb} KB de 1024 KB.`, 'error');
+        }
+        return true;
+      } catch (e) {
+        console.error('Error al escribir el snapshot:', e);
+        snapshotUltimoError = e.message || 'error desconocido';
+        pintarEstadoSnapshot();
+        toast('El cambio se guardó, pero NO se actualizó la web pública. Andá a Configuración → Regenerar catálogo público.', 'error');
+        return false;
+      }
+    }
+
+    // Botón de pánico: relee la colección entera y reconstruye el snapshot
+    // desde cero. Sirve para cualquier desincronización.
+    async function regenerarSnapshot() {
+      const btn = document.getElementById('btn-snapshot-regen');
+      const original = btn ? btn.innerHTML : '';
+      if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Regenerando...'; }
+      try {
+        const snap = await db.collection('catalogo').orderBy('nombre').get();
+        todosLosProductos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        destacadosOrdenCargado = false;
+        await asegurarDestacadosOrden();
+        const ok = await escribirSnapshot({ forzarRanking: true });
+        actualizarStats();
+        filtrarProductos();
+        if (ok) toast(`Catálogo público regenerado (${todosLosProductos.length} productos).`, 'success');
+      } catch (e) {
+        console.error(e);
+        toast('Error al regenerar: ' + e.message, 'error');
+      } finally {
+        if (btn) { btn.disabled = false; btn.innerHTML = original; }
+      }
+    }
+
+    async function cargarEstadoSnapshot() {
+      try {
+        const doc = await db.collection('config').doc(SNAPSHOT_DOC).get();
+        if (doc.exists) {
+          const d = doc.data();
+          snapshotUltimaSync = d.actualizadoEn?.toDate ? d.actualizadoEn.toDate() : null;
+          snapshotUltimoError = null;
+          pintarEstadoSnapshot(d.n, d.bytes);
+          return;
+        }
+        snapshotUltimoError = 'todavía no se generó';
+      } catch (e) {
+        snapshotUltimoError = e.message || 'no se pudo leer';
+      }
+      pintarEstadoSnapshot();
+    }
+
+    function pintarEstadoSnapshot(n, bytes) {
+      const el = document.getElementById('snapshot-estado');
+      if (!el) return;
+
+      if (snapshotUltimoError) {
+        el.innerHTML = `<span style="color:#dc2626;font-weight:700"><i class="fa-solid fa-triangle-exclamation"></i> Desincronizado</span>
+          <span style="color:var(--muted)"> — ${escHtml(snapshotUltimoError)}. La web pública está leyendo la colección directamente.</span>`;
+        return;
+      }
+
+      const cuando = snapshotUltimaSync
+        ? snapshotUltimaSync.toLocaleString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        : '—';
+      const cuantos = n != null ? n : todosLosProductos.filter(p => p.disponible !== false).length;
+      const peso = bytes != null ? ` · ${(bytes / 1024).toFixed(0)} KB de 1024` : '';
+
+      el.innerHTML = `<span style="color:#16a34a;font-weight:700"><i class="fa-solid fa-circle-check"></i> Sincronizado</span>
+        <span style="color:var(--muted)"> — ${cuantos} productos${peso}. Última actualización: ${cuando}.</span>`;
+    }
+
     function actualizarStats() {
       document.getElementById('stat-total').textContent = todosLosProductos.length;
       document.getElementById('stat-visible').textContent = todosLosProductos.filter(p => p.disponible !== false).length;
@@ -2997,6 +3236,7 @@
         actualizarStats();
         renderGrid();
         toast(nuevo ? 'Producto activado.' : 'Producto desactivado.', 'success');
+        await escribirSnapshot();
       } catch (e) {
         toast('Error: ' + e.message, 'error');
       }
@@ -3114,6 +3354,7 @@
         toast(`SKU cambiado: ${skuActual} → ${sku}`, 'success');
         cerrarModal();
         filtrarProductos();
+        await escribirSnapshot();
       } catch (e) {
         toast('Error al cambiar SKU: ' + e.message, 'error');
       }
@@ -3209,6 +3450,7 @@
         poblarSelectCategoria();
         filtrarProductos();
         cerrarModal();
+        await escribirSnapshot();
       } catch (e) {
         toast('Error: ' + e.message, 'error');
         console.error(e);
@@ -3245,6 +3487,7 @@
         filtrarProductos();
         cerrarConfirm();
         toast('Producto eliminado.', 'success');
+        await escribirSnapshot();
       } catch (e) {
         toast('Error al eliminar: ' + e.message, 'error');
       } finally {
@@ -3456,6 +3699,7 @@
         poblarSelectCategoria();
         renderCatList();
         toast(`Categoría "${nombre}" creada.`, 'success');
+        await escribirSnapshot();
       } catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
@@ -3476,6 +3720,7 @@
         poblarSelectCategoria();
         renderCatList();
         toast(`Subcategoría "${nombre}" agregada.`, 'success');
+        await escribirSnapshot();
       } catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
@@ -3493,6 +3738,7 @@
         poblarSelectCategoria();
         renderCatList();
         toast('Subcategoría eliminada.', 'success');
+        await escribirSnapshot();
       } catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
@@ -3510,6 +3756,7 @@
         poblarSelectCategoria();
         renderCatList();
         toast('Categoría eliminada.', 'success');
+        await escribirSnapshot();
       } catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
@@ -3555,6 +3802,7 @@
         renderCatList();
         filtrarProductos();
         toast(`Categoría renombrada a "${nuevoNombre}".${snap.empty ? '' : ` (${snap.size} producto${snap.size !== 1 ? 's' : ''} actualizados)`}`, 'success');
+        await escribirSnapshot();
       } catch (e) { toast('Error: ' + e.message, 'error'); }
     }
 
@@ -3610,6 +3858,7 @@
         cargarConfigOfertas();
         cargarConfigSlider();
         cargarConfigDestacados();
+        cargarEstadoSnapshot();
       } else if (v === 'importar') {
         topbarEl.innerHTML = `<div class="icon-wrap" style="background:rgba(236,100,52,0.1);color:var(--accent)"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h1>Descripciones IA</h1>`;
         document.querySelector('.search-wrap').style.visibility = 'hidden';
@@ -3925,6 +4174,7 @@
         const doc = await db.collection('config').doc('destacados').get();
         const data = doc.exists ? doc.data() : {};
         destacadosOrden = Array.isArray(data.orden) ? data.orden : [];
+        destacadosOrdenCargado = true;
       } catch (e) {
         console.error('Error cargando config destacados:', e);
         destacadosOrden = [];
@@ -4073,6 +4323,9 @@
           orden: destacadosOrden,
           actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
         });
+
+        destacadosOrdenCargado = true;
+        await escribirSnapshot();
 
         msg.textContent = '¡Orden de destacados guardado!';
         msg.style.display = 'block';
@@ -4701,6 +4954,7 @@
       }
       toast(`${hechos} descripciones aplicadas${errores ? `, ${errores} con error` : ''}`, errores ? 'error' : 'success');
       renderBorradores();
+      if (hechos) await escribirSnapshot();
     }
 
     /* ══════════════════════════════════════════════════════════════

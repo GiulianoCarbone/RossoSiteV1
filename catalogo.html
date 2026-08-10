@@ -3679,6 +3679,77 @@
     /* ══════════════════════════════════════════════════════════
        CARGA INICIAL
     ══════════════════════════════════════════════════════════ */
+    /* ──────────────────────────────────────────────────────────
+       SNAPSHOT: el catálogo entero (productos + categorías +
+       orden de destacados + ranking de vistas) en UN documento,
+       que reescribe el panel cada vez que se toca algo.
+
+       Antes esta página bajaba las colecciones completas en cada
+       visita: ~764 lecturas por visitante (491 de `catalogo` + 260 de
+       `analytics_products` + categorías). Ahora es 1.
+
+       Es dato derivado: si el snapshot no existe o falla, caemos al
+       camino viejo (leer las colecciones) y la página funciona igual.
+    ────────────────────────────────────────────────────────── */
+    const SNAP_KEY   = 'rosso_snapshot';
+    const SNAP_V_KEY = 'rosso_snapshot_v';
+
+    function aplicarSnapshot(d) {
+      if (!d || !Array.isArray(d.productos) || d.productos.length === 0) return false;
+
+      todosLosProductos = d.productos;
+
+      if (Array.isArray(d.categorias) && d.categorias.length) {
+        const vistas = new Set();
+        categorias = d.categorias.filter(c => {
+          if (!c || !c.nombre || vistas.has(c.nombre)) return false;
+          vistas.add(c.nombre);
+          return true;
+        });
+      }
+
+      destacadosOrden = Array.isArray(d.destacadosOrden) ? d.destacadosOrden : [];
+
+      // El ranking viene como [{sku, visits}] — lo pasamos al mapa que usa el orden
+      vistasPorSku = {};
+      if (Array.isArray(d.vistas)) {
+        d.vistas.forEach(x => { if (x && x.sku) vistasPorSku[x.sku] = x.visits || 0; });
+      }
+      return true;
+    }
+
+    function pintarCatalogo() {
+      const ls = document.getElementById('loading-state');
+      if (ls) ls.style.display = 'none';
+      document.getElementById('product-grid').style.display = '';
+      renderSidebar();
+      renderCatSlider();
+      renderCarousel();
+      filtrarProductos();
+    }
+
+    // Caché local: sólo para pintar al instante en la próxima visita.
+    // No ahorra lecturas (igual leemos el snapshot), pero evita el skeleton.
+    function guardarCacheSnapshot(d) {
+      try {
+        localStorage.setItem(SNAP_KEY, JSON.stringify({
+          productos: d.productos,
+          categorias: d.categorias || [],
+          destacadosOrden: d.destacadosOrden || [],
+          vistas: d.vistas || []
+        }));
+        localStorage.setItem(SNAP_V_KEY, String(d.v));
+      } catch (e) { /* cuota llena o modo privado: no es crítico */ }
+    }
+
+    // producto.html lee esta clave para abrir la ficha sin ir a Firestore
+    function guardarCacheSesion() {
+      try {
+        sessionStorage.setItem('rosso_catalog_cache', JSON.stringify(todosLosProductos));
+        sessionStorage.setItem('rosso_destacados_orden', JSON.stringify(destacadosOrden));
+      } catch (e) { /* no es crítico */ }
+    }
+
     async function init() {
       // Analytics: Visita al catálogo
       trackEvent('visits');
@@ -3686,34 +3757,52 @@
       // Deep-linking: restaurar búsqueda / filtros desde la URL (?q=&cat=&sub=)
       aplicarFiltrosDeURL();
 
-      // Si hay caché, mostrar instantáneo y refrescar en background
-      const cached = sessionStorage.getItem('rosso_catalog_cache');
-      if (cached) {
-        try {
-          todosLosProductos = JSON.parse(cached);
-          const cachedOrden = sessionStorage.getItem('rosso_destacados_orden');
-          if (cachedOrden) destacadosOrden = JSON.parse(cachedOrden);
-          const cachedVistas = sessionStorage.getItem('rosso_vistas');
-          if (cachedVistas) vistasPorSku = JSON.parse(cachedVistas);
-          const ls = document.getElementById('loading-state');
-          if (ls) ls.style.display = 'none';
-          document.getElementById('product-grid').style.display = '';
-          // Cargar categorías y renderizar con datos cacheados
-          await cargarCategorias();
-          renderSidebar();
-          renderCarousel();
+      // ── 1. Pintado instantáneo desde el caché local (0 lecturas) ──
+      let pintado = false;
+      try {
+        const raw = localStorage.getItem(SNAP_KEY);
+        if (raw && aplicarSnapshot(JSON.parse(raw))) {
+          pintarCatalogo();
           initCountdown();
-          filtrarProductos();
           setView(vistaActual);
-          // Refrescar datos en background silenciosamente
-          cargarProductos(true);
-          cargarVistas();
-          return;
-        } catch (e) { /* caché corrupta, ignorar y cargar normal */ }
+          pintado = true;
+        }
+      } catch (e) { /* caché corrupta: seguimos de largo */ }
+
+      if (!pintado) mostrarSkeleton();
+
+      // ── 2. Snapshot fresco desde Firestore (1 lectura) ──
+      try {
+        const doc = await db.collection('config').doc('catalogoSnapshot').get();
+        if (doc.exists) {
+          const d = doc.data();
+          let vLocal = null;
+          try { vLocal = localStorage.getItem(SNAP_V_KEY); } catch (e) { /* modo privado */ }
+
+          // Si la versión no cambió, lo que ya está en pantalla sirve
+          if (pintado && vLocal != null && String(d.v) === vLocal) {
+            guardarCacheSesion();
+            return;
+          }
+
+          if (aplicarSnapshot(d)) {
+            pintarCatalogo();
+            if (!pintado) initCountdown();
+            setView(vistaActual);
+            guardarCacheSnapshot(d);
+            guardarCacheSesion();
+            return;
+          }
+        }
+        console.warn('Snapshot ausente o vacío; leyendo las colecciones.');
+      } catch (e) {
+        console.warn('No se pudo leer el snapshot del catálogo:', e);
       }
-      mostrarSkeleton();
+
+      // ── 3. Fallback: camino viejo, colecciones completas ──
+      if (!pintado) mostrarSkeleton();
       await Promise.all([cargarCategorias(), cargarProductos(), cargarVistas()]);
-      initCountdown();
+      if (!pintado) initCountdown();   // si ya pintamos, el countdown ya arrancó
       setView(vistaActual);
     }
 
