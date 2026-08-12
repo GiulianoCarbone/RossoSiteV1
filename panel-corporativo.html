@@ -2268,9 +2268,11 @@
       max-width: 620px;
     }
 
+    /* Crece con el ancho de la pantalla: 150px en un celular angosto, 210px de tablet
+       para arriba. Al ser fluida no necesita override en el media query de mobile. */
     .hero-vendedor-photo {
-      width: 170px;
-      height: 170px;
+      width: clamp(150px, 40vw, 210px);
+      height: clamp(150px, 40vw, 210px);
       flex-shrink: 0;
       border-radius: 50%;
       border: 4px solid var(--accent);
@@ -2404,11 +2406,6 @@
       .hero-slide-body {
         gap: 18px;
         padding: 22px 16px;
-      }
-
-      .hero-vendedor-photo {
-        width: 110px;
-        height: 110px;
       }
 
       .hero-review-thumb img {
