@@ -25,14 +25,46 @@
         }
     </script>
     <style>
+        /* ============================================================
+           SISTEMA DE DISEÑO DEL PANEL
+           Paleta alineada a la marca (misma que style.css): azul #272e68
+           + naranja #ec6434. Todo lo demás sale de estos tokens: si hay
+           que retocar el look, se toca acá y no regla por regla.
+           ============================================================ */
         :root {
-            --panel-bg: #f4f7f6;
+            --brand: #272e68;
+            --brand-dark: #1f244f;
+            --brand-soft: #eef0f8;
+            --accent: #ec6434;
+            --accent-dark: #cf4f22;
+            --accent-soft: #fdf0ea;
+
+            --panel-bg: #f4f6fa;
             --card-bg: #ffffff;
-            --sidebar-bg: #1f2937;
-            --sidebar-text: #f3f4f6;
-            --accent: #d95324;
-            --brand: #1a1a1a;
+            --sidebar-bg: #1f244f;
+            --sidebar-text: #eaecf5;
+            --sidebar-muted: #9aa1c4;
+
+            --ink: #111827;
+            --ink-soft: #374151;
+            --muted: #6b7280;
+            --line: #e5e8f0;
+            --line-soft: #f1f3f8;
+
+            --ok: #16a34a;
+            --danger: #dc2626;
+            --warn: #d97706;
+            --info: #2563eb;
+
+            --radius: 14px;
+            --radius-sm: 10px;
+            --shadow-sm: 0 1px 2px rgba(16, 24, 40, .06);
+            --shadow-md: 0 6px 18px rgba(16, 24, 40, .07);
+            --shadow-lg: 0 24px 48px rgba(16, 24, 40, .18);
+            --ease: cubic-bezier(.2, .7, .3, 1);
         }
+
+        * { box-sizing: border-box; }
 
         body,
         html {
@@ -41,98 +73,182 @@
             height: 100%;
             background-color: var(--panel-bg);
             font-family: "Inter", sans-serif;
+            color: var(--ink);
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Login Overlay */
+        /* Scrollbars discretas (Chrome/Edge) */
+        #main-content::-webkit-scrollbar,
+        .sidebar-nav::-webkit-scrollbar,
+        .seg-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+        #main-content::-webkit-scrollbar-thumb,
+        .seg-scroll::-webkit-scrollbar-thumb {
+            background: #d3d8e4;
+            border: 3px solid var(--panel-bg);
+            border-radius: 8px;
+        }
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, .18);
+            border-radius: 8px;
+        }
+        #main-content::-webkit-scrollbar-thumb:hover { background: #b9c0d1; }
+
+        /* Foco visible y consistente en todo el panel */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* ===== Login ===== */
         #login-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #f0f2f5;
+            inset: 0;
+            background:
+                radial-gradient(900px 500px at 15% -10%, rgba(236, 100, 52, .18), transparent 60%),
+                linear-gradient(160deg, var(--brand) 0%, var(--brand-dark) 55%, #171b3d 100%);
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
             z-index: 2000;
         }
 
         #login-container {
-            background: white;
+            background: var(--card-bg);
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 90%;
+            border-radius: 18px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
             max-width: 400px;
             text-align: center;
         }
 
         #login-container img.logo {
-            max-width: 180px;
-            margin-bottom: 24px;
+            max-width: 170px;
+            margin-bottom: 20px;
             margin-inline: auto;
         }
 
+        #login-container h2 {
+            margin: 0 0 26px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             text-align: left;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 7px;
             font-weight: 600;
-            color: #555;
+            font-size: .88rem;
+            color: var(--ink-soft);
         }
 
         .input-group input,
         .input-group textarea,
         .input-group select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
-            box-sizing: border-box;
+            padding: 11px 13px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            font-size: .95rem;
+            font-family: inherit;
+            color: var(--ink);
+            background: #fff;
+            transition: border-color .18s var(--ease), box-shadow .18s var(--ease);
         }
 
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(39, 46, 104, .12);
+        }
+
+        .input-group small {
+            display: block;
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: .8rem;
+        }
+
+        /* ===== Botones =====
+           `button` sigue siendo ancho completo por defecto: hay formularios
+           en todo el panel que cuentan con eso. Los botones de acción de las
+           cabeceras se declaran auto acá y ya no necesitan width inline. */
         button {
             width: 100%;
-            padding: 12px;
+            padding: 11px 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             background-color: var(--accent);
             color: white;
-            font-size: 1rem;
+            font-size: .95rem;
+            font-family: inherit;
             font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: background-color .18s var(--ease), transform .18s var(--ease), box-shadow .18s var(--ease);
         }
 
-        button:hover {
-            background-color: #bd461e;
+        button:hover { background-color: var(--accent-dark); }
+        button:active { transform: translateY(1px); }
+        button:disabled { opacity: .55; cursor: not-allowed; }
+
+        .section-header button,
+        .section-header .admin-btn,
+        .admin-item-actions button,
+        .modal-header button { width: auto; }
+
+        /* Variantes de color (reemplazan los background inline sueltos) */
+        .btn-brand { background-color: var(--brand); }
+        .btn-brand:hover { background-color: var(--brand-dark); }
+        .btn-neutral { background-color: #6b7280; }
+        .btn-neutral:hover { background-color: #4b5563; }
+        .btn-success { background-color: var(--ok); }
+        .btn-success:hover { background-color: #15803d; }
+        .btn-danger { background-color: var(--danger); }
+        .btn-danger:hover { background-color: #b91c1c; }
+        .btn-info { background-color: var(--info); }
+        .btn-info:hover { background-color: #1d4ed8; }
+
+        .admin-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
         }
 
         #login-error {
-            color: #d9534f;
-            margin-top: 15px;
+            color: var(--danger);
+            margin-top: 14px;
             font-weight: 600;
+            font-size: .9rem;
             min-height: 20px;
         }
 
-        /* Admin Layout */
+        /* ===== Layout ===== */
         #admin-wrapper {
-            display: none;
-            /* Initially hidden */
             display: flex;
             height: 100vh;
             overflow: hidden;
         }
 
-        /* Sidebar */
+        /* ===== Sidebar ===== */
         #sidebar {
-            width: 250px;
-            background-color: var(--sidebar-bg);
+            width: 256px;
+            background: linear-gradient(180deg, var(--brand) 0%, var(--sidebar-bg) 100%);
             color: var(--sidebar-text);
             display: flex;
             flex-direction: column;
@@ -140,115 +256,264 @@
         }
 
         .sidebar-header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 18px 18px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
         }
+
+        .brand-mark {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: var(--accent);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .brand-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+        .brand-text strong { font-size: .98rem; font-weight: 700; color: #fff; letter-spacing: .01em; }
+        .brand-text span { font-size: .72rem; color: var(--sidebar-muted); }
 
         .sidebar-header h2 {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: white;
         }
 
         #mobile-menu-toggle {
             display: none;
-            /* Hidden on desktop */
-            background: none;
+            background: rgba(255, 255, 255, .1);
             border: none;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.05rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
             cursor: pointer;
+            margin-left: auto;
+            flex-shrink: 0;
         }
+        #mobile-menu-toggle:hover { background: rgba(255, 255, 255, .18); }
 
         .sidebar-nav {
             flex: 1;
-            padding: 20px 0;
+            padding: 14px 12px 18px;
             overflow-y: auto;
         }
 
+        .nav-group {
+            display: block;
+            padding: 14px 12px 6px;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            color: var(--sidebar-muted);
+        }
+        .nav-group:first-child { padding-top: 4px; }
+
         .nav-item {
+            position: relative;
             display: flex;
             align-items: center;
-            padding: 15px 25px;
-            color: #9ca3af;
+            gap: 12px;
+            padding: 10px 12px;
+            margin-bottom: 2px;
+            border-radius: var(--radius-sm);
+            color: #c6cbe4;
+            font-size: .92rem;
+            font-weight: 500;
             text-decoration: none;
-            transition: all 0.2s;
             cursor: pointer;
+            transition: background-color .16s var(--ease), color .16s var(--ease);
         }
 
-        .nav-item:hover,
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, .08);
+            color: #fff;
+        }
+
         .nav-item.active {
-            background-color: #374151;
-            color: white;
+            background-color: rgba(255, 255, 255, .13);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Marca de posición: barra naranja sobre el item activo */
+        .nav-item.active::before {
+            content: "";
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 22px;
+            border-radius: 0 3px 3px 0;
+            background: var(--accent);
         }
 
         .nav-item i {
-            margin-right: 15px;
-            width: 20px;
+            width: 18px;
+            font-size: .95rem;
             text-align: center;
+            flex-shrink: 0;
+            opacity: .85;
         }
+        .nav-item.active i { color: var(--accent); opacity: 1; }
+
+        .nav-item--external { color: var(--sidebar-muted); }
+        .nav-mobile-only { display: none; }
 
         .sidebar-footer {
-            padding: 20px;
-            border-top: 1px solid #374151;
+            padding: 14px;
+            border-top: 1px solid rgba(255, 255, 255, .1);
         }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            min-width: 0;
+        }
+
+        .admin-user .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .14);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: .8rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        .admin-user-info { min-width: 0; line-height: 1.3; }
+        .admin-user-info strong {
+            display: block;
+            font-size: .8rem;
+            font-weight: 600;
+            color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .admin-user-info small { font-size: .7rem; color: var(--sidebar-muted); }
 
         .logout-btn {
             background-color: transparent;
-            border: 1px solid #4b5563;
-            color: #9ca3af;
+            border: 1px solid rgba(255, 255, 255, .22);
+            color: #c6cbe4;
+            font-size: .85rem;
+            font-weight: 600;
+            padding: 9px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .logout-btn:hover {
-            background-color: #374151;
+            background-color: rgba(255, 255, 255, .12);
             color: white;
         }
 
-        /* Main Content */
+        /* ===== Contenido ===== */
         #main-content {
             flex: 1;
             overflow-y: auto;
-            padding: 30px;
-            background-color: #f3f4f6;
+            padding: 0 32px 48px;
+            background-color: var(--panel-bg);
+            scroll-behavior: smooth;
         }
 
         .content-section {
             display: none;
-            max-width: 1000px;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
         .content-section.active {
             display: block;
+            animation: sectionIn .22s var(--ease);
         }
 
+        @keyframes sectionIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        /* Cabecera fija: el título y sus acciones siguen a mano al scrollear
+           listas largas (seguimiento, invitaciones, noticias). */
         .section-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 24px 0 16px;
+            margin-bottom: 22px;
+            background: var(--panel-bg);
+            border-bottom: 1px solid var(--line);
         }
 
         .section-header h1 {
             margin: 0;
             color: var(--brand);
-            font-size: 2rem;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
-        /* Cards & Lists */
-        .card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            margin-bottom: 20px;
+        /* ===== Tarjetas =====
+           OJO: style.css (sitio público) define `.card { display:flex;
+           flex-direction:column; height:100%; text-align:center }` para las
+           tarjetas de la home. Sin resetearlo, en el panel todo el contenido
+           de las cards queda centrado y los botones se estiran al ancho
+           completo por ser flex items. */
+        .card,
+        .panel-card {
+            display: block;
+            height: auto;
+            text-align: left;
+            background: var(--card-bg);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 22px;
+            margin-bottom: 18px;
         }
+
+        .card h3,
+        .panel-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 4px;
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+
+        .card h3 i,
+        .panel-card h3 i { color: var(--accent); font-size: .95rem; }
 
         .admin-list {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .admin-item {
@@ -256,24 +521,35 @@
             align-items: flex-start;
             justify-content: space-between;
             gap: 15px;
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
+            background: var(--card-bg);
+            padding: 16px 18px;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow .18s var(--ease), border-color .18s var(--ease);
+        }
+
+        .admin-item:hover {
+            box-shadow: var(--shadow-md);
+            border-color: #d7dced;
         }
 
         .admin-item-content {
             flex-grow: 1;
+            min-width: 0;
         }
 
         .admin-item-content p {
-            margin: 5px 0 0;
-            color: #374151;
+            margin: 6px 0 0;
+            color: var(--ink-soft);
+            font-size: .92rem;
+            line-height: 1.5;
         }
 
         .admin-item-content small {
             color: var(--accent);
-            font-weight: 600;
+            font-weight: 700;
+            font-size: .78rem;
         }
 
         .admin-item-actions {
@@ -289,95 +565,131 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 6px;
+            border-radius: 9px;
+            font-size: .88rem;
         }
 
-        .btn-edit {
-            background-color: #007bff;
-        }
+        .btn-edit { background-color: var(--info); }
+        .btn-edit:hover { background-color: #1d4ed8; }
+        .btn-delete { background-color: var(--danger); }
+        .btn-delete:hover { background-color: #b91c1c; }
+        .btn-reset { background-color: #6b7280; }
+        .btn-reset:hover { background-color: #4b5563; }
 
-        .btn-delete {
-            background-color: #dc3545;
-        }
-
-        .btn-reset {
-            background-color: #6c757d;
-        }
-
-        /* Active Users */
+        /* ===== Usuarios activos (dashboard) ===== */
         #active-users-display {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 16px;
+            color: var(--muted);
+            font-size: .92rem;
         }
 
         #active-users-count {
             font-weight: 800;
-            color: #4f46e5;
+            font-size: 2rem;
+            color: var(--brand);
+            line-height: 1;
         }
 
         #active-users-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .user-tag {
-            background-color: #e0e7ff;
-            color: #3730a3;
+            background-color: var(--brand-soft);
+            color: var(--brand);
             padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: .85rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Modals */
+        /* ===== Modales ===== */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            inset: 0;
+            background: rgba(17, 24, 39, .55);
+            backdrop-filter: blur(2px);
             display: none;
             justify-content: center;
             align-items: center;
+            padding: 20px;
             z-index: 3000;
         }
 
         .modal-content {
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
+            padding: 26px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
             max-width: 500px;
+            max-height: 88vh;
+            overflow-y: auto;
+            animation: modalIn .2s var(--ease);
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(12px) scale(.985); }
+            to { opacity: 1; transform: none; }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 12px;
             margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .modal-header h4 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--ink);
         }
 
         .close-modal {
             background: none;
             border: none;
-            font-size: 1.5rem;
-            color: #6b7280;
-            width: auto;
+            font-size: 1.4rem;
+            line-height: 1;
+            color: var(--muted);
+            width: 32px;
+            height: 32px;
             padding: 0;
+            border-radius: 8px;
+            flex-shrink: 0;
         }
 
-        /* Responsive */
+        .close-modal:hover { background: var(--line-soft); color: var(--ink); }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .001ms !important;
+                transition-duration: .001ms !important;
+            }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            #sidebar { width: 220px; }
+            #main-content { padding: 0 20px 40px; }
+        }
+
         @media (max-width: 768px) {
             #admin-wrapper {
                 flex-direction: column;
+                height: 100dvh;
             }
 
             #sidebar {
@@ -385,46 +697,55 @@
                 height: auto;
                 flex-direction: row;
                 align-items: center;
-                padding: 10px;
-                justify-content: space-between;
+                padding: 0;
+                position: relative;
+                z-index: 200;
             }
 
             .sidebar-header {
                 border: none;
-                padding: 0;
-                text-align: left;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                padding: 10px 14px;
                 width: 100%;
             }
 
-            #mobile-menu-toggle {
-                display: block;
-                /* Visible on mobile */
-            }
+            #mobile-menu-toggle { display: block; }
 
             .sidebar-nav {
                 display: none;
                 position: absolute;
-                top: 60px;
+                top: 100%;
                 left: 0;
                 width: 100%;
+                max-height: calc(100vh - 60px);
                 background: var(--sidebar-bg);
+                box-shadow: 0 18px 30px rgba(16, 24, 40, .28);
+                padding: 10px 12px 16px;
                 z-index: 100;
             }
 
             .sidebar-nav.mobile-open {
                 display: block;
+                animation: sectionIn .18s var(--ease);
             }
 
-            .sidebar-footer {
-                display: none;
+            .nav-item.active::before { left: -12px; }
+            .nav-mobile-only { display: flex; }
+
+            .sidebar-footer { display: none; }
+
+            #main-content { padding: 0 16px 40px; }
+
+            .section-header {
+                padding: 16px 0 12px;
+                margin-bottom: 16px;
             }
 
-            #main-content {
-                padding: 20px;
-            }
+            .section-header h1 { font-size: 1.3rem; }
+
+            .card,
+            .panel-card { padding: 18px 16px; }
+
+            .modal-content { padding: 20px; }
         }
     </style>
 </head>
@@ -457,13 +778,23 @@
         <!-- Sidebar -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h2>Panel Admin</h2>
-                <button id="mobile-menu-toggle"><i class="fa-solid fa-bars"></i></button>
+                <span class="brand-mark"><i class="fa-solid fa-sliders"></i></span>
+                <span class="brand-text">
+                    <strong>Rosso Materiales</strong>
+                    <span>Panel de administración</span>
+                </span>
+                <button id="mobile-menu-toggle" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
             </div>
             <div class="sidebar-nav">
+                <span class="nav-group">Principal</span>
                 <a class="nav-item active" data-section="dashboard">
                     <i class="fa-solid fa-gauge"></i> Dashboard
                 </a>
+                <a class="nav-item" data-section="seguimiento">
+                    <i class="fa-solid fa-chart-line"></i> Seguimiento
+                </a>
+
+                <span class="nav-group">Comunicación</span>
                 <a class="nav-item" data-section="notifications">
                     <i class="fa-solid fa-bell"></i> Notificaciones
                 </a>
@@ -476,13 +807,16 @@
                 <a class="nav-item" data-section="suggestions">
                     <i class="fa-solid fa-envelope-open-text"></i> Sugerencias
                 </a>
+
+                <span class="nav-group">Equipo</span>
                 <a class="nav-item" data-section="vendedores">
                     <i class="fa-solid fa-users-cog"></i> Vendedores
                 </a>
-                <a class="nav-item" data-section="seguimiento">
-                    <i class="fa-solid fa-chart-line"></i> Seguimiento
+                <a class="nav-item" data-section="invitations">
+                    <i class="fa-solid fa-id-card-clip"></i> Invitaciones
                 </a>
 
+                <span class="nav-group">Contenido del panel</span>
                 <a class="nav-item" data-section="social-config">
                     <i class="fa-solid fa-share-nodes"></i> Redes Sociales
                 </a>
@@ -495,22 +829,31 @@
                 <a class="nav-item" data-section="contest-config">
                     <i class="fa-solid fa-trophy"></i> Configurar Concurso
                 </a>
-                <a class="nav-item" data-section="invitations">
-                    <i class="fa-solid fa-id-card-clip"></i> Invitaciones
-                </a>
 
-
+                <span class="nav-group">Otras herramientas</span>
                 <!-- Catálogo -->
-                <a href="admin/panel-catalogo.html" class="nav-item">
+                <a href="admin/panel-catalogo.html" class="nav-item nav-item--external">
                     <i class="fa-solid fa-box"></i> Catálogo
                 </a>
 
                 <!-- Link to go back to main site -->
-                <a href="admin/panel-corporativo.html" class="nav-item">
+                <a href="admin/panel-corporativo.html" class="nav-item nav-item--external">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Volver al Sitio
+                </a>
+
+                <!-- En mobile el footer se oculta: el logout vive acá dentro -->
+                <a class="nav-item nav-item--external nav-mobile-only" id="logout-btn-mobile">
+                    <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
                 </a>
             </div>
             <div class="sidebar-footer">
+                <div class="admin-user">
+                    <span class="avatar" id="admin-user-initial">A</span>
+                    <span class="admin-user-info">
+                        <strong id="admin-user-email">Administrador</strong>
+                        <small>Sesión activa</small>
+                    </span>
+                </div>
                 <button id="logout-btn" class="logout-btn">
                     <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
                 </button>
@@ -534,8 +877,8 @@
                     <div id="active-users-list">
                         <!-- Users populated here -->
                     </div>
-                    <button onclick="openConnectedTodayModal()"
-                        style="margin-top: 15px; width: auto; background-color: #4f46e5;">
+                    <button onclick="openConnectedTodayModal()" class="admin-btn btn-brand"
+                        style="margin-top: 15px; width: auto;">
                         <i class="fa-solid fa-clock-rotate-left"></i> Ver Conectados Hoy
                     </button>
                 </div>
@@ -571,11 +914,9 @@
                     <style>
                         .quick-actions-grid {
                             display: grid;
-                            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                            /* Reduced min-width to fit 2 cols on mobile */
+                            grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
                             gap: 12px;
-                            /* Slightly reduced gap */
-                            margin-top: 20px;
+                            margin-top: 18px;
                         }
 
                         .quick-action-card {
@@ -583,36 +924,49 @@
                             flex-direction: column;
                             align-items: center;
                             justify-content: center;
-                            padding: 15px;
-                            border-radius: 12px;
-                            border: 1px solid #e5e7eb;
-                            background-color: #ffffff;
+                            gap: 4px;
+                            padding: 18px 12px;
+                            border-radius: var(--radius);
+                            border: 1px solid var(--line);
+                            background-color: #fff;
                             text-decoration: none;
-                            color: #1f2937;
+                            color: var(--ink);
                             font-weight: 600;
-                            font-size: 0.95rem;
+                            font-size: .88rem;
+                            line-height: 1.3;
                             cursor: pointer;
-                            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                            transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease);
+                            box-shadow: var(--shadow-sm);
                             text-align: center;
                             height: 100%;
-                            min-height: 100px;
+                            min-height: 104px;
                         }
 
                         .quick-action-card:hover {
-                            transform: translateY(-3px);
-                            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-                            border-color: #d95324;
+                            transform: translateY(-2px);
+                            box-shadow: var(--shadow-md);
+                            border-color: var(--accent);
+                            /* button:hover pinta naranja: acá mandamos nosotros */
                             background-color: #ffffff !important;
-                            /* Force white background to override button:hover */
-                            color: #1f2937;
-                            /* Ensure text stays dark */
+                            color: var(--ink);
                         }
 
                         .quick-action-card .icon-wrapper {
-                            font-size: 1.5rem;
+                            width: 40px;
+                            height: 40px;
+                            display: grid;
+                            place-items: center;
+                            border-radius: 11px;
+                            background: var(--accent-soft);
+                            font-size: 1.05rem;
                             margin-bottom: 8px;
-                            color: #d95324;
+                            color: var(--accent);
+                            transition: background-color .18s var(--ease), color .18s var(--ease);
+                        }
+
+                        .quick-action-card:hover .icon-wrapper {
+                            background: var(--accent);
+                            color: #fff;
                         }
                     </style>
                 </div>
@@ -621,11 +975,23 @@
             <!-- SEGUIMIENTO SECTION -->
             <section id="seguimiento" class="content-section">
                 <div class="section-header">
-                    <h1>Seguimiento de Uso</h1>
-                    <button id="seg-export-pdf" style="width:auto; background-color:#4f46e5;">
+                    <h1>Seguimiento</h1>
+                    <button id="seg-export-pdf" class="admin-btn btn-brand">
                         <i class="fa-solid fa-file-pdf"></i> Exportar PDF
                     </button>
                 </div>
+
+                <div class="seg-view-tabs">
+                    <button type="button" class="seg-view-btn active" data-view="uso">
+                        <i class="fa-solid fa-chart-line"></i> Uso de la app
+                    </button>
+                    <button type="button" class="seg-view-btn" data-view="academia">
+                        <i class="fa-solid fa-graduation-cap"></i> Academia
+                    </button>
+                </div>
+
+                <!-- ===== VISTA: USO DE LA APP ===== -->
+                <div id="seg-view-uso">
 
                 <div class="card">
                     <div class="seg-controls">
@@ -685,6 +1051,99 @@
                         <p class="seg-empty">Cargando…</p>
                     </div>
                 </div>
+
+                </div><!-- /seg-view-uso -->
+
+                <!-- ===== VISTA: ACADEMIA ===== -->
+                <div id="seg-view-academia" style="display:none;">
+
+                    <div class="card">
+                        <div class="seg-controls">
+                            <div class="seg-filters">
+                                <select id="aca-filter-sucursal" class="seg-select">
+                                    <option value="">Todas las sucursales</option>
+                                </select>
+                                <select id="aca-filter-estado" class="seg-select">
+                                    <option value="">Todos los estados</option>
+                                    <option value="master">Certificados Máster</option>
+                                    <option value="avanzado">Avanzados (50%+)</option>
+                                    <option value="curso">En curso</option>
+                                    <option value="sin">Sin empezar</option>
+                                </select>
+                                <input type="search" id="aca-search" class="seg-select" placeholder="Buscar por nombre…"
+                                    style="min-width:190px;cursor:text;" />
+                            </div>
+                            <button type="button" id="aca-refresh" class="seg-period-btn"
+                                style="background:#f3f4f6;color:#4b5563;">
+                                <i class="fa-solid fa-rotate"></i> Actualizar
+                            </button>
+                        </div>
+
+                        <div class="seg-kpi-grid">
+                            <div class="seg-kpi">
+                                <span class="seg-kpi-value" id="aca-kpi-participacion">–</span>
+                                <span class="seg-kpi-label">Participación (empezaron / padrón)</span>
+                            </div>
+                            <div class="seg-kpi">
+                                <span class="seg-kpi-value" id="aca-kpi-avance">–</span>
+                                <span class="seg-kpi-label">Avance promedio del padrón</span>
+                            </div>
+                            <div class="seg-kpi">
+                                <span class="seg-kpi-value" id="aca-kpi-certificados">–</span>
+                                <span class="seg-kpi-label">Módulos certificados (examen final)</span>
+                            </div>
+                            <div class="seg-kpi">
+                                <span class="seg-kpi-value" id="aca-kpi-master">–</span>
+                                <span class="seg-kpi-label">Asesores Máster</span>
+                            </div>
+                        </div>
+                        <p id="aca-scope-note" class="seg-hint" style="margin-top:12px;margin-bottom:0;">Cargando…</p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fa-solid fa-store"></i> Academia por sucursal</h3>
+                        <p class="seg-hint">Participación y avance promedio de cada sucursal sobre el total de la
+                            academia.</p>
+                        <div id="aca-by-sucursal-wrap">
+                            <p class="seg-empty">Cargando…</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fa-solid fa-user-graduate"></i> Estado por vendedor</h3>
+                        <p class="seg-hint">Clic en una fila para ver el detalle módulo por módulo.
+                            <span class="seg-muted">Orden:</span>
+                            <select id="aca-sort" class="seg-select" style="padding:4px 8px;font-size:0.82rem;">
+                                <option value="avance">Avance</option>
+                                <option value="puntos">Puntos (XP)</option>
+                                <option value="reciente">Última actividad</option>
+                                <option value="nombre">Nombre</option>
+                            </select>
+                        </p>
+                        <div id="aca-vendedores-wrap">
+                            <p class="seg-empty">Cargando…</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fa-solid fa-layer-group"></i> Rendimiento por módulo</h3>
+                        <p class="seg-hint">Qué productos cuestan más: ordenado por menor tasa de certificación. Sirve
+                            para detectar contenido flojo o temas que hay que reforzar en capacitación.</p>
+                        <div id="aca-modulos-wrap">
+                            <p class="seg-empty">Cargando…</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fa-solid fa-user-clock"></i> Nunca entraron a la academia</h3>
+                        <p class="seg-hint">Del padrón trackeado (<span id="aca-total-vendedores">–</span> personas),
+                            quiénes no tienen ni un intento registrado.</p>
+                        <div id="aca-sinempezar-wrap">
+                            <p class="seg-empty">Cargando…</p>
+                        </div>
+                    </div>
+
+                </div><!-- /seg-view-academia -->
 
                 <style>
                     .seg-controls {
@@ -785,6 +1244,91 @@
                         margin: 3px;
                     }
                     .seg-scroll { overflow-x: auto; }
+
+                    /* --- Sub-pestañas Uso / Academia --- */
+                    .seg-view-tabs {
+                        display: inline-flex;
+                        gap: 4px;
+                        background: #eef0f5;
+                        border-radius: 12px;
+                        padding: 5px;
+                        margin-bottom: 20px;
+                    }
+                    .seg-view-btn {
+                        width: auto;
+                        background: transparent;
+                        color: #4b5563;
+                        padding: 9px 20px;
+                        font-size: 0.92rem;
+                        font-weight: 700;
+                        border-radius: 9px;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+                    .seg-view-btn:hover { background: #e2e5ec; }
+                    .seg-view-btn.active { background: var(--brand); color: #fff; }
+                    .seg-view-btn.active:hover { background: var(--brand); }
+
+                    /* --- Academia --- */
+                    .aca-row { cursor: pointer; }
+                    .aca-row:hover { background: #f9fafb; }
+                    .aca-name { font-weight: 600; color: #1f2937; }
+                    .aca-chip {
+                        display: inline-block;
+                        border-radius: 20px;
+                        padding: 3px 10px;
+                        font-size: 0.75rem;
+                        font-weight: 700;
+                        white-space: nowrap;
+                    }
+                    .aca-chip.master { background: #fef3c7; color: #92400e; }
+                    .aca-chip.avanzado { background: #dcfce7; color: #166534; }
+                    .aca-chip.curso { background: #e0e7ff; color: #3730a3; }
+                    .aca-chip.sin { background: #f3f4f6; color: #6b7280; }
+                    .aca-bar-track { background: #f3f4f6; border-radius: 6px; height: 8px; overflow: hidden; min-width: 70px; }
+                    .aca-bar-fill { height: 100%; border-radius: 6px; background: var(--brand); }
+                    .aca-bar-fill.high { background: #16a34a; }
+                    .aca-bar-fill.mid { background: var(--accent); }
+                    .aca-bar-fill.low { background: #9ca3af; }
+                    .aca-pct { font-variant-numeric: tabular-nums; font-weight: 700; color: #374151; }
+                    .aca-warn { color: #b45309; font-weight: 700; }
+                    /* Detalle del vendedor (modal) */
+                    .aca-detail-head {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 10px;
+                        align-items: center;
+                        margin-bottom: 16px;
+                        padding-bottom: 14px;
+                        border-bottom: 1px solid #eef0f3;
+                    }
+                    .aca-stat {
+                        background: #f9fafb;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 10px;
+                        padding: 8px 14px;
+                        font-size: 0.82rem;
+                        color: #6b7280;
+                    }
+                    .aca-stat b { display: block; font-size: 1.15rem; color: var(--brand); }
+                    .aca-mod-item {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 9px 4px;
+                        border-bottom: 1px solid #f3f4f6;
+                        font-size: 0.88rem;
+                    }
+                    .aca-mod-item .m-name { flex: 1; color: #1f2937; font-weight: 600; }
+                    .aca-lvl-dots { display: inline-flex; gap: 4px; }
+                    .aca-lvl-dots span {
+                        width: 9px; height: 9px; border-radius: 50%;
+                        background: #e5e7eb; display: inline-block;
+                    }
+                    .aca-lvl-dots span.done { background: #16a34a; }
+                    .aca-lvl-dots span.final { background: #f59e0b; }
+                    .aca-lvl-dots span.final.done { background: #d97706; }
                 </style>
             </section>
 
@@ -796,14 +1340,9 @@
                 <div class="card">
                     <p style="margin-bottom: 20px; color: #4b5563;">Desde aquí podés acceder a la herramienta de carga
                         masiva y gestión de vendedores.</p>
-                    <a href="admin/carga-masiva.html" target="_blank" class="admin-btn" style="
-                      background-color: #007bff;
-                      display: inline-flex;
-                      align-items: center;
-                      gap: 10px;
-                      text-decoration: none;
-                      padding: 12px 24px;
-                      border-radius: 8px;
+                    <a href="admin/carga-masiva.html" target="_blank" class="admin-btn btn-brand" style="
+                      padding: 12px 22px;
+                      border-radius: 10px;
                       font-weight: 700;
                       color: white;
                     ">
@@ -1115,7 +1654,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
                             </div>
                         </div>
                     </div>
-                    <button id="save-buttons-config-btn" style="margin-top: 15px; background-color: #2563eb;">Guardar Configuración de Botones</button>
+                    <button id="save-buttons-config-btn" class="btn-brand" style="margin-top: 15px;">Guardar Configuración de Botones</button>
                 </div>
 
                 <!-- Ranking Inputs -->
@@ -1128,7 +1667,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
                         <div style="text-align: right; margin-top: 10px;">
                             <button type="button" onclick="addRankingRow('A')" style="background: none; border: none; color: #d95324; font-weight: 700; cursor: pointer; text-decoration: underline;"><i class="fa-solid fa-plus"></i> Agregar Persona</button>
                         </div>
-                        <button type="submit" style="margin-top: 20px; background-color: #d95324; font-weight: 800;">ACTUALIZAR RANKING A</button>
+                        <button type="submit" style="margin-top: 20px; font-weight: 800;">ACTUALIZAR RANKING A</button>
                     </form>
                 </div>
 
@@ -1153,7 +1692,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
                         <div style="text-align: right; margin-top: 10px;">
                             <button type="button" onclick="addRankingRow('C')" style="background: none; border: none; color: #16a34a; font-weight: 700; cursor: pointer; text-decoration: underline;"><i class="fa-solid fa-plus"></i> Agregar Persona</button>
                         </div>
-                        <button type="submit" style="margin-top: 20px; background-color: #16a34a; font-weight: 800;">ACTUALIZAR RANKING C</button>
+                        <button type="submit" class="btn-success" style="margin-top: 20px; font-weight: 800;">ACTUALIZAR RANKING C</button>
                     </form>
                 </div>
 
@@ -1164,13 +1703,13 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 <div class="section-header">
                     <h1>Invitaciones</h1>
                     <div style="display: flex; gap: 10px;">
-                        <button onclick="loadInvitations()" class="admin-btn" style="width: auto; background-color: #6c757d;">
+                        <button onclick="loadInvitations()" class="admin-btn btn-neutral" title="Actualizar">
                             <i class="fa-solid fa-rotate"></i>
                         </button>
-                        <button id="export-invitations-btn" class="admin-btn" style="width: auto; background-color: #107c10;">
+                        <button id="export-invitations-btn" class="admin-btn btn-success">
                             <i class="fa-solid fa-file-excel"></i> Exportar CSV
                         </button>
-                        <button id="export-invitations-pdf-btn" class="admin-btn" style="width: auto; background-color: #dc2626;">
+                        <button id="export-invitations-pdf-btn" class="admin-btn btn-danger">
                             <i class="fa-solid fa-file-pdf"></i> Exportar PDF
                         </button>
                     </div>
@@ -1304,8 +1843,8 @@ PREMIO: 1 kit disco enlozado.</textarea>
                             id="connection-mode-badge"
                             style="font-size: 0.6em; background: #eee; padding: 2px 5px; border-radius: 4px;">Cargando...</span>
                     </h4>
-                    <button onclick="exportConnectedUsersPDF()" class="admin-btn"
-                        style="background-color: #dc2626; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer;">
+                    <button onclick="exportConnectedUsersPDF()" class="admin-btn btn-danger"
+                        style="padding: 6px 12px; font-size: 0.8rem;">
                         <i class="fa-solid fa-file-pdf"></i> Exportar PDF
                     </button>
                 </div>
@@ -1326,6 +1865,19 @@ PREMIO: 1 kit disco enlozado.</textarea>
             </div>
             <div id="user-history-list" style="max-height: 300px; overflow-y: auto;">
                 <!-- History populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: DETALLE ACADEMIA POR VENDEDOR -->
+    <div id="academia-detail-modal" class="modal-overlay" style="z-index: 3001;">
+        <div class="modal-content" style="max-width: 640px;">
+            <div class="modal-header">
+                <h4 id="aca-detail-title">Legajo de Academia</h4>
+                <button class="close-modal" onclick="closeModal('academia-detail-modal')">&times;</button>
+            </div>
+            <div id="aca-detail-body" style="max-height: 62vh; overflow-y: auto;">
+                <!-- Detalle poblado por JS -->
             </div>
         </div>
     </div>
@@ -1377,13 +1929,18 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 });
         });
 
-        document.getElementById("logout-btn").addEventListener("click", () => {
-            auth.signOut();
+        ["logout-btn", "logout-btn-mobile"].forEach(id => {
+            document.getElementById(id).addEventListener("click", () => auth.signOut());
         });
 
         function showPanel() {
             document.getElementById("login-overlay").style.display = "none";
             document.getElementById("admin-wrapper").style.display = "flex";
+            // Quién está operando el panel (el sidebar lo muestra al pie).
+            const email = (auth.currentUser && auth.currentUser.email) || "Administrador";
+            document.getElementById("admin-user-email").textContent = email;
+            document.getElementById("admin-user-email").title = email;
+            document.getElementById("admin-user-initial").textContent = email.charAt(0);
             if (panelIniciado) return;   // evita re-inicializar si onAuthStateChanged se dispara de nuevo
             panelIniciado = true;
             initDashboard();
@@ -1433,7 +1990,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
             if (sectionId === 'vendedor-config') loadVendedorConfig();
             if (sectionId === 'contest-config') loadContestConfig();
             if (sectionId === 'invitations') loadInvitations();
-            if (sectionId === 'seguimiento') loadSeguimiento();
+            if (sectionId === 'seguimiento') loadSegActiveView();
 
 
 
@@ -1480,6 +2037,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
         // mapeados a VENTAS. Caja, gerencia, depósito, admin, etc. quedan fuera a propósito.
         const TRACKABLE_AREAS = ['VENTAS'];
         let segPeriod = 'week';
+        let segView = 'uso';        // sub-pestaña activa: 'uso' | 'academia'
         let segData = null;         // dataset crudo del período (para filtrar sin re-consultar Firestore)
         let segLastReport = null;   // snapshot filtrado para el export PDF
 
@@ -1532,7 +2090,55 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 });
             });
             document.getElementById('seg-filter-sucursal').addEventListener('change', applySegFilters);
-            document.getElementById('seg-export-pdf').addEventListener('click', exportSeguimientoPDF);
+            // El botón de exportar es compartido: cada vista arma su propio PDF.
+            document.getElementById('seg-export-pdf').addEventListener('click', () => {
+                if (segView === 'academia') exportAcademiaPDF();
+                else exportSeguimientoPDF();
+            });
+            document.querySelectorAll('.seg-view-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchSegView(btn.dataset.view));
+            });
+            initAcademiaSeguimiento();
+        }
+
+        // Alterna entre "Uso de la app" y "Academia" dentro de la sección Seguimiento.
+        function switchSegView(view) {
+            if (view === segView) return;
+            segView = view;
+            document.querySelectorAll('.seg-view-btn').forEach(b =>
+                b.classList.toggle('active', b.dataset.view === view));
+            document.getElementById('seg-view-uso').style.display = view === 'uso' ? '' : 'none';
+            document.getElementById('seg-view-academia').style.display = view === 'academia' ? '' : 'none';
+            loadSegActiveView();
+        }
+
+        // Carga la vista visible (la llama el nav al entrar a Seguimiento y el toggle).
+        function loadSegActiveView() {
+            if (segView === 'academia') loadAcademia();
+            else loadSeguimiento();
+        }
+
+        // El padrón (colección `vendedores`) no cambia entre períodos ni entre vistas:
+        // se lee una sola vez por sesión del panel y se reusa. `forzar` lo relee.
+        let padronCache = null;
+        async function getPadronTrackeado(forzar) {
+            if (padronCache && !forzar) return padronCache;
+            const vendSnap = await db.collection('vendedores').get();
+            const index = {};
+            const trackablePadron = [];
+            vendSnap.forEach(doc => {
+                const v = doc.data();
+                if (!v.nombre) return;
+                // El puesto es la fuente de verdad. El campo `area` guardado quedó viejo:
+                // los encargados se sincronizaron como 'ENCARGADOS' antes de fusionarlos en
+                // VENTAS, así que confiar en v.area los deja fuera del ranking. Recalculamos.
+                const area = v.puesto ? areaDePuesto(v.puesto) : (v.area || 'ADMIN');
+                const info = { name: v.nombre, sucursal: nombreSucursal(v.sucursal), area, puesto: v.puesto || '' };
+                index[v.nombre] = info;
+                if (TRACKABLE_AREAS.includes(area) && !SUCURSAL_EXCLUIDAS.includes(info.sucursal)) trackablePadron.push(info);
+            });
+            padronCache = { index, trackablePadron };
+            return padronCache;
         }
 
         // Clave YYYY-MM-DD en hora local (igual que el panel corporativo).
@@ -1590,20 +2196,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
                 });
 
                 // Índice del padrón: nombre -> { sucursal, area, puesto }.
-                const vendSnap = await db.collection('vendedores').get();
-                const index = {};
-                const trackablePadron = [];
-                vendSnap.forEach(doc => {
-                    const v = doc.data();
-                    if (!v.nombre) return;
-                    // El puesto es la fuente de verdad. El campo `area` guardado quedó viejo:
-                    // los encargados se sincronizaron como 'ENCARGADOS' antes de fusionarlos en
-                    // VENTAS, así que confiar en v.area los deja fuera del ranking. Recalculamos.
-                    const area = v.puesto ? areaDePuesto(v.puesto) : (v.area || 'ADMIN');
-                    const info = { name: v.nombre, sucursal: nombreSucursal(v.sucursal), area, puesto: v.puesto || '' };
-                    index[v.nombre] = info;
-                    if (TRACKABLE_AREAS.includes(area) && !SUCURSAL_EXCLUIDAS.includes(info.sucursal)) trackablePadron.push(info);
-                });
+                const { index, trackablePadron } = await getPadronTrackeado();
 
                 // Activos = uso real cruzado contra el padrón trackeado. El resto queda "fuera de alcance".
                 const trackableNames = new Set(trackablePadron.map(p => p.name));
@@ -1826,6 +2419,580 @@ PREMIO: 1 kit disco enlozado.</textarea>
             }
 
             doc.save(`Reporte_Uso_${periodo}_${segDateKey(r.start)}.pdf`);
+        }
+
+        // ============================================================
+        // === ACADEMIA: ESTADO DE CAPACITACIÓN POR VENDEDOR ==========
+        // ============================================================
+        // Fuente: colección `academia_progreso` (un doc por vendedor, id = DNI
+        // sanitizado). Estructura de cada doc, escrita por academia.html:
+        //   { nombre, dni, sucursal, examenMaestro, actualizado,
+        //     modulos: { <modId>: {
+        //        niveles: { "1": { aprobado, mejorScore, mejorPuntos, intentos, salidas, ultima }, … },
+        //        examenFinal: { aprobado, mejorScore, mejorPuntos, intentos, salidas, ultima },
+        //        nivelMax } } }
+        // El catálogo de módulos vive en js/quiz-data.js (const MODULOS). Se carga
+        // en diferido: pesa ~570 KB y sólo hace falta al abrir esta vista.
+        const ACA_AVANZADO_PCT = 50;   // umbral para el chip "Avanzado"
+        const ACA_SALIDAS_ALERTA = 5;  // salidas de pestaña en quiz que ameritan mirar de cerca
+        let acaData = null;            // dataset crudo (para filtrar sin re-consultar Firestore)
+        let acaLastReport = null;      // snapshot filtrado para el export PDF
+        let acaRowsRender = [];        // filas tal como se pintaron: el modal las busca por índice
+
+        // Carga js/quiz-data.js una sola vez. El panel se sirve tanto desde la raíz
+        // como desde /admin según el deploy, así que probamos las rutas en orden.
+        let acaQuizPromise = null;
+        function loadQuizData() {
+            if (typeof MODULOS !== 'undefined') return Promise.resolve(MODULOS);
+            if (acaQuizPromise) return acaQuizPromise;
+            const rutas = ['../js/quiz-data.js', 'js/quiz-data.js', '/js/quiz-data.js'];
+            acaQuizPromise = new Promise((resolve, reject) => {
+                (function intentar(i) {
+                    if (i >= rutas.length) {
+                        acaQuizPromise = null;   // permite reintentar con el botón Actualizar
+                        reject(new Error('No se pudo cargar quiz-data.js'));
+                        return;
+                    }
+                    const s = document.createElement('script');
+                    s.src = rutas[i];
+                    // Un 404 que devuelve HTML "carga" igual: recién sabemos si sirvió
+                    // cuando MODULOS existe.
+                    s.onload = () => (typeof MODULOS !== 'undefined') ? resolve(MODULOS) : intentar(i + 1);
+                    s.onerror = () => intentar(i + 1);
+                    document.head.appendChild(s);
+                })(0);
+            });
+            return acaQuizPromise;
+        }
+
+        function initAcademiaSeguimiento() {
+            ['aca-filter-sucursal', 'aca-filter-estado', 'aca-sort'].forEach(id =>
+                document.getElementById(id).addEventListener('change', applyAcaFilters));
+            document.getElementById('aca-search').addEventListener('input', applyAcaFilters);
+            document.getElementById('aca-refresh').addEventListener('click', () => loadAcademia(true));
+        }
+
+        async function loadAcademia(forzar) {
+            if (acaData && !forzar) { applyAcaFilters(); return; }
+            const wraps = ['aca-vendedores-wrap', 'aca-by-sucursal-wrap', 'aca-modulos-wrap', 'aca-sinempezar-wrap'];
+            wraps.forEach(id => document.getElementById(id).innerHTML = '<p class="seg-empty">Cargando…</p>');
+
+            try {
+                const [mods, padron, snap] = await Promise.all([
+                    loadQuizData(),
+                    getPadronTrackeado(forzar),
+                    db.collection('academia_progreso').get()
+                ]);
+
+                // Catálogo activo: sólo módulos con contenido cargado. Cada módulo
+                // aporta sus niveles + 1 examen final al total a completar.
+                const catMods = mods.filter(m => m.niveles && m.niveles.length > 0);
+                const catIds = new Set(catMods.map(m => m.id));
+                const totalNiveles = catMods.reduce((s, m) => s + m.niveles.length, 0);
+                const catalogo = {
+                    mods: catMods, ids: catIds, totalNiveles,
+                    totalItems: totalNiveles + catMods.length
+                };
+
+                // Legajos con progreso real.
+                const legajos = [];
+                const conProgreso = new Set();
+                const nombresPadron = new Set(padron.trackablePadron.map(p => p.name));
+                snap.forEach(doc => {
+                    const d = doc.data() || {};
+                    const nombre = d.nombre || doc.id;
+                    const info = padron.index[nombre];
+                    const sucursal = info ? info.sucursal : nombreSucursal(d.sucursal);
+                    legajos.push(acaResumenLegajo(doc.id, nombre, sucursal, nombresPadron.has(nombre), d, catalogo));
+                    conProgreso.add(nombre);
+                });
+
+                // El padrón que nunca abrió la academia entra con el legajo en cero:
+                // así el avance promedio y la participación miden sobre el total real.
+                padron.trackablePadron.forEach(p => {
+                    if (conProgreso.has(p.name)) return;
+                    legajos.push(acaResumenLegajo(null, p.name, p.sucursal, true, null, catalogo));
+                });
+
+                acaData = { legajos, catalogo };
+                poblarAcaFiltros(legajos);
+                applyAcaFilters();
+            } catch (error) {
+                console.error('Error al cargar academia:', error);
+                document.getElementById('aca-vendedores-wrap').innerHTML =
+                    '<p style="color:#dc2626;">Error al cargar los datos de la academia. Revisá la consola.</p>';
+            }
+        }
+
+        // Colapsa el documento de un vendedor en las métricas que muestra el panel.
+        // `d` en null = alguien del padrón que nunca entró (legajo en cero).
+        function acaResumenLegajo(key, nombre, sucursal, enPadron, d, catalogo) {
+            const L = {
+                key: key, nombre: nombre, sucursal: sucursal || 'Sin asignar', enPadron: enPadron,
+                dni: (d && d.dni) || '', nivelesAprobados: 0, finalesAprobados: 0, modsIniciados: 0,
+                puntos: 0, intentos: 0, salidas: 0, promScore: 0, ultima: 0,
+                esMaster: false, maestro: (d && d.examenMaestro) || null, mods: {}, avance: 0, estado: 'sin'
+            };
+            let scoreSum = 0, scoreN = 0;
+
+            const modulos = (d && d.modulos) || {};
+            Object.keys(modulos).forEach(id => {
+                // Progreso de módulos que ya no están en el catálogo: no suma al avance
+                // (el denominador es el catálogo vigente), pero sí a intentos/última actividad.
+                const vigente = catalogo.ids.has(id);
+                const m = modulos[id] || {};
+                const niveles = m.niveles || {};
+                let toco = false;
+                let nivOk = 0;
+
+                Object.keys(niveles).forEach(k => {
+                    const n = niveles[k] || {};
+                    toco = true;
+                    L.intentos += n.intentos || 0;
+                    L.salidas += n.salidas || 0;
+                    L.ultima = Math.max(L.ultima, n.ultima || 0);
+                    if (typeof n.mejorScore === 'number') { scoreSum += n.mejorScore; scoreN++; }
+                    if (n.aprobado) {
+                        L.puntos += n.mejorPuntos || 0;
+                        if (vigente) { L.nivelesAprobados++; nivOk++; }
+                    }
+                });
+
+                const f = m.examenFinal;
+                if (f) {
+                    toco = true;
+                    L.intentos += f.intentos || 0;
+                    L.salidas += f.salidas || 0;
+                    L.ultima = Math.max(L.ultima, f.ultima || 0);
+                    L.puntos += f.mejorPuntos || 0;
+                    if (typeof f.mejorScore === 'number') { scoreSum += f.mejorScore; scoreN++; }
+                    if (f.aprobado && vigente) L.finalesAprobados++;
+                }
+
+                if (toco && vigente) {
+                    L.modsIniciados++;
+                    L.mods[id] = { nivelesOk: nivOk, niveles: niveles, examenFinal: f || null };
+                }
+            });
+
+            const em = L.maestro;
+            if (em) {
+                L.esMaster = !!em.aprobado;
+                L.puntos += em.mejorPuntos || 0;
+                L.intentos += em.intentos || 0;
+                L.salidas += em.salidas || 0;
+                L.ultima = Math.max(L.ultima, em.ultima || 0);
+            }
+            if (d && d.actualizado && typeof d.actualizado.toMillis === 'function') {
+                L.ultima = Math.max(L.ultima, d.actualizado.toMillis());
+            }
+
+            L.promScore = scoreN ? Math.round(scoreSum / scoreN) : 0;
+            L.aprobados = L.nivelesAprobados + L.finalesAprobados;
+            L.avance = catalogo.totalItems ? Math.round((L.aprobados / catalogo.totalItems) * 100) : 0;
+            L.estado = L.esMaster ? 'master'
+                : L.avance >= ACA_AVANZADO_PCT ? 'avanzado'
+                : (L.intentos > 0 || L.aprobados > 0) ? 'curso' : 'sin';
+            return L;
+        }
+
+        function poblarAcaFiltros(legajos) {
+            const sucs = [...new Set(legajos.map(l => l.sucursal))].sort((a, b) => a.localeCompare(b));
+            const sel = document.getElementById('aca-filter-sucursal');
+            const prev = sel.value;
+            sel.innerHTML = '<option value="">Todas las sucursales</option>' +
+                sucs.map(s => `<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+            sel.value = prev;
+        }
+
+        function applyAcaFilters() {
+            if (!acaData) return;
+            const fSuc = document.getElementById('aca-filter-sucursal').value;
+            const fEstado = document.getElementById('aca-filter-estado').value;
+            const q = document.getElementById('aca-search').value.trim().toLowerCase();
+            const orden = document.getElementById('aca-sort').value;
+            const cat = acaData.catalogo;
+
+            const rows = acaData.legajos.filter(l =>
+                (!fSuc || l.sucursal === fSuc) &&
+                (!fEstado || l.estado === fEstado) &&
+                (!q || l.nombre.toLowerCase().includes(q)));
+
+            // Los KPIs miden sólo el padrón trackeado: quien hizo la academia sin
+            // estar en él (otras áreas) se reporta aparte para no inflar la cobertura.
+            const padron = rows.filter(l => l.enPadron);
+            const fuera = rows.filter(l => !l.enPadron);
+            const empezaron = padron.filter(l => l.estado !== 'sin');
+            const sinEmpezar = padron.filter(l => l.estado === 'sin')
+                .sort((a, b) => a.nombre.localeCompare(b.nombre));
+            const avancePromedio = padron.length
+                ? Math.round(padron.reduce((s, l) => s + l.avance, 0) / padron.length) : 0;
+            const certificados = padron.reduce((s, l) => s + l.finalesAprobados, 0);
+            const masters = padron.filter(l => l.esMaster).length;
+
+            document.getElementById('aca-kpi-participacion').textContent =
+                `${empezaron.length}/${padron.length}`;
+            document.getElementById('aca-kpi-avance').textContent = `${avancePromedio}%`;
+            document.getElementById('aca-kpi-certificados').textContent = certificados.toLocaleString('es-AR');
+            document.getElementById('aca-kpi-master').textContent = masters;
+            document.getElementById('aca-total-vendedores').textContent = padron.length;
+
+            const partPct = padron.length ? Math.round((empezaron.length / padron.length) * 100) : 0;
+            let nota = `Participación: <b>${partPct}%</b> · Catálogo vigente: <b>${cat.mods.length}</b> módulos ` +
+                `(${cat.totalNiveles} niveles + ${cat.mods.length} exámenes finales = ${cat.totalItems} ítems a completar).`;
+            if (fuera.length) {
+                nota += ` <span class="seg-muted">· ${fuera.length} persona(s) fuera del padrón de ventas también rindieron.</span>`;
+            }
+            document.getElementById('aca-scope-note').innerHTML = nota;
+
+            // Orden de la tabla de vendedores.
+            const cmp = {
+                avance: (a, b) => b.avance - a.avance || b.puntos - a.puntos,
+                puntos: (a, b) => b.puntos - a.puntos || b.avance - a.avance,
+                reciente: (a, b) => b.ultima - a.ultima,
+                nombre: (a, b) => a.nombre.localeCompare(b.nombre)
+            }[orden] || ((a, b) => b.avance - a.avance);
+            const ordenados = rows.slice().sort(cmp);
+
+            const porSucursal = acaAgruparSucursal(rows.filter(l => l.enPadron));
+            const porModulo = acaPorModulo(rows, cat);
+
+            renderAcaVendedores(ordenados);
+            renderAcaSucursales(porSucursal);
+            renderAcaModulos(porModulo);
+            renderAcaSinEmpezar(sinEmpezar);
+
+            acaLastReport = {
+                rows: ordenados, padronTotal: padron.length, empezaron: empezaron.length, partPct,
+                avancePromedio, certificados, masters, sinEmpezar, porSucursal, porModulo,
+                fSuc, fEstado, catalogo: cat
+            };
+        }
+
+        // Participación y avance promedio por sucursal (sólo padrón trackeado).
+        function acaAgruparSucursal(rows) {
+            const g = {};
+            rows.forEach(l => {
+                const k = l.sucursal || '—';
+                const b = g[k] || (g[k] = { grupo: k, total: 0, activos: 0, avanceSum: 0, certificados: 0, puntos: 0, masters: 0 });
+                b.total++;
+                b.avanceSum += l.avance;
+                b.certificados += l.finalesAprobados;
+                b.puntos += l.puntos;
+                if (l.estado !== 'sin') b.activos++;
+                if (l.esMaster) b.masters++;
+            });
+            return Object.values(g).map(b => ({
+                ...b, avance: b.total ? Math.round(b.avanceSum / b.total) : 0
+            })).sort((a, b) => b.avance - a.avance || b.activos - a.activos);
+        }
+
+        // Dificultad real de cada módulo: quiénes lo tocaron, quiénes lo certificaron
+        // y con cuántos intentos. Los de abajo son los que hay que reforzar.
+        function acaPorModulo(rows, cat) {
+            const stats = cat.mods.map(m => ({
+                id: m.id, producto: m.producto, rubro: m.rubro || '—', niveles: m.niveles.length,
+                iniciados: 0, certificados: 0, intentos: 0, scoreSum: 0, scoreN: 0
+            }));
+            const byId = {};
+            stats.forEach(s => byId[s.id] = s);
+
+            rows.forEach(l => {
+                Object.keys(l.mods).forEach(id => {
+                    const s = byId[id];
+                    if (!s) return;
+                    const mp = l.mods[id];
+                    s.iniciados++;
+                    Object.keys(mp.niveles).forEach(k => {
+                        const n = mp.niveles[k] || {};
+                        s.intentos += n.intentos || 0;
+                    });
+                    const f = mp.examenFinal;
+                    if (f) {
+                        s.intentos += f.intentos || 0;
+                        if (typeof f.mejorScore === 'number') { s.scoreSum += f.mejorScore; s.scoreN++; }
+                        if (f.aprobado) s.certificados++;
+                    }
+                });
+            });
+
+            return stats.map(s => ({
+                ...s,
+                tasa: s.iniciados ? Math.round((s.certificados / s.iniciados) * 100) : null,
+                scoreProm: s.scoreN ? Math.round(s.scoreSum / s.scoreN) : null
+            })).sort((a, b) => {
+                // Sin actividad al final: no dicen nada sobre dificultad.
+                if (a.iniciados === 0 && b.iniciados !== 0) return 1;
+                if (b.iniciados === 0 && a.iniciados !== 0) return -1;
+                return (a.tasa === null ? 999 : a.tasa) - (b.tasa === null ? 999 : b.tasa)
+                    || b.iniciados - a.iniciados;
+            });
+        }
+
+        function acaBarClass(pct) {
+            return pct >= 66 ? 'high' : pct >= 25 ? 'mid' : 'low';
+        }
+
+        function acaChip(estado) {
+            const txt = { master: 'Máster', avanzado: 'Avanzado', curso: 'En curso', sin: 'Sin empezar' }[estado] || '—';
+            return `<span class="aca-chip ${estado}">${txt}</span>`;
+        }
+
+        function acaFmtFecha(ms) {
+            if (!ms) return '<span class="seg-muted">—</span>';
+            const d = new Date(ms);
+            const dias = Math.floor((Date.now() - ms) / 86400000);
+            const fecha = d.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' });
+            if (dias <= 0) return `hoy`;
+            if (dias === 1) return `ayer`;
+            if (dias < 30) return `${fecha} <span class="seg-muted">(${dias}d)</span>`;
+            return fecha;
+        }
+
+        function renderAcaVendedores(rows) {
+            const wrap = document.getElementById('aca-vendedores-wrap');
+            if (!rows.length) {
+                wrap.innerHTML = '<p class="seg-empty">Ningún vendedor coincide con los filtros.</p>';
+                return;
+            }
+            acaRowsRender = rows;
+            let html = '<div class="seg-scroll"><table class="seg-table"><thead><tr>' +
+                '<th class="seg-rank">#</th><th>Vendedor</th><th>Sucursal</th><th>Estado</th>' +
+                '<th class="seg-bar-cell">Avance</th><th class="num">Certif.</th><th class="num">Niveles</th>' +
+                '<th class="num">XP</th><th class="num">Prom.</th><th class="num">Intentos</th><th class="num">Última</th>' +
+                '</tr></thead><tbody>';
+            rows.forEach((l, i) => {
+                const alerta = l.salidas >= ACA_SALIDAS_ALERTA
+                    ? ` <i class="fa-solid fa-triangle-exclamation aca-warn" title="${l.salidas} salidas de pantalla durante los quizzes"></i>`
+                    : '';
+                const fuera = l.enPadron ? ''
+                    : ' <span class="seg-muted" title="No pertenece al padrón de ventas">· fuera de padrón</span>';
+                html += `<tr class="aca-row" onclick="openAcademiaDetail(${i})">
+                    <td class="seg-rank">${i + 1}</td>
+                    <td class="aca-name">${escapeHtml(l.nombre)}${alerta}${fuera}</td>
+                    <td>${escapeHtml(l.sucursal)}</td>
+                    <td>${acaChip(l.estado)}</td>
+                    <td class="seg-bar-cell">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div class="aca-bar-track" style="flex:1;"><div class="aca-bar-fill ${acaBarClass(l.avance)}" style="width:${l.avance}%"></div></div>
+                            <span class="aca-pct">${l.avance}%</span>
+                        </div>
+                    </td>
+                    <td class="num">${l.finalesAprobados}</td>
+                    <td class="num">${l.nivelesAprobados}</td>
+                    <td class="num">${l.puntos.toLocaleString('es-AR')}</td>
+                    <td class="num">${l.promScore ? l.promScore + '%' : '—'}</td>
+                    <td class="num">${l.intentos}</td>
+                    <td class="num">${acaFmtFecha(l.ultima)}</td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+            wrap.innerHTML = html;
+        }
+
+        function renderAcaSucursales(filas) {
+            const wrap = document.getElementById('aca-by-sucursal-wrap');
+            if (!filas.length) { wrap.innerHTML = '<p class="seg-empty">Sin datos.</p>'; return; }
+            let html = '<div class="seg-scroll"><table class="seg-table"><thead><tr>' +
+                '<th>Sucursal</th><th class="num">Participación</th><th class="num">Empezaron</th>' +
+                '<th class="num">Avance prom.</th><th class="num">Certif.</th><th class="num">Máster</th>' +
+                '</tr></thead><tbody>';
+            filas.forEach(f => {
+                const part = f.total ? Math.round((f.activos / f.total) * 100) : 0;
+                html += `<tr>
+                    <td>${escapeHtml(f.grupo)}</td>
+                    <td class="num"><span class="seg-cov"><span class="seg-cov-track"><span class="seg-cov-fill" style="width:${part}%"></span></span>${part}%</span></td>
+                    <td class="num">${f.activos}/${f.total}</td>
+                    <td class="num">${f.avance}%</td>
+                    <td class="num">${f.certificados}</td>
+                    <td class="num">${f.masters || '—'}</td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+            wrap.innerHTML = html;
+        }
+
+        function renderAcaModulos(filas) {
+            const wrap = document.getElementById('aca-modulos-wrap');
+            if (!filas.length) { wrap.innerHTML = '<p class="seg-empty">Sin módulos cargados.</p>'; return; }
+            const sinActividad = filas.filter(f => f.iniciados === 0).length;
+            let html = '<div class="seg-scroll"><table class="seg-table"><thead><tr>' +
+                '<th>Módulo</th><th>Rubro</th><th class="num">Niveles</th><th class="num">Lo cursaron</th>' +
+                '<th class="num">Certificaron</th><th class="num">Tasa</th><th class="num">Score final prom.</th>' +
+                '<th class="num">Intentos</th></tr></thead><tbody>';
+            filas.forEach(f => {
+                const tasa = f.tasa === null
+                    ? '<span class="seg-muted">—</span>'
+                    : `<span class="aca-pct">${f.tasa}%</span>`;
+                html += `<tr${f.iniciados === 0 ? ' style="opacity:.55;"' : ''}>
+                    <td class="aca-name">${escapeHtml(f.producto)}</td>
+                    <td class="seg-muted">${escapeHtml(f.rubro)}</td>
+                    <td class="num">${f.niveles}</td>
+                    <td class="num">${f.iniciados}</td>
+                    <td class="num">${f.certificados}</td>
+                    <td class="num">${tasa}</td>
+                    <td class="num">${f.scoreProm !== null ? f.scoreProm + '%' : '—'}</td>
+                    <td class="num">${f.intentos}</td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+            if (sinActividad) {
+                html += `<p class="seg-hint" style="margin:12px 0 0;">${sinActividad} módulo(s) todavía sin ningún intento registrado.</p>`;
+            }
+            wrap.innerHTML = html;
+        }
+
+        function renderAcaSinEmpezar(rows) {
+            const wrap = document.getElementById('aca-sinempezar-wrap');
+            if (!rows.length) {
+                wrap.innerHTML = '<p class="seg-empty" style="color:#16a34a;">✓ Todo el padrón filtrado tiene al menos un intento.</p>';
+                return;
+            }
+            wrap.innerHTML = rows.map(l =>
+                `<span class="seg-inactive-tag">${escapeHtml(l.nombre)}<span class="seg-muted"> · ${escapeHtml(l.sucursal)}</span></span>`
+            ).join('');
+        }
+
+        // Detalle módulo por módulo de un vendedor (índice de la fila renderizada).
+        function openAcademiaDetail(i) {
+            const l = acaRowsRender[i];
+            if (!l || !acaData) return;
+            const cat = acaData.catalogo;
+            document.getElementById('aca-detail-title').textContent = l.nombre;
+
+            const em = l.maestro;
+            const maestroTxt = l.esMaster
+                ? `<span class="aca-chip master"><i class="fa-solid fa-trophy"></i> Asesor Máster · ${em.mejorScore || 0}%</span>`
+                : em
+                    ? `<span class="aca-chip curso">Examen Maestro rendido · mejor ${em.mejorScore || 0}% (${em.intentos || 0} intento/s)</span>`
+                    : `<span class="aca-chip sin">Examen Maestro pendiente</span>`;
+
+            let html = `<div class="aca-detail-head">
+                <div class="aca-stat"><b>${l.avance}%</b> avance</div>
+                <div class="aca-stat"><b>${l.puntos.toLocaleString('es-AR')}</b> XP</div>
+                <div class="aca-stat"><b>${l.finalesAprobados}/${cat.mods.length}</b> certificados</div>
+                <div class="aca-stat"><b>${l.nivelesAprobados}/${cat.totalNiveles}</b> niveles</div>
+                <div class="aca-stat"><b>${l.intentos}</b> intentos</div>
+                <div class="aca-stat"><b>${l.promScore || 0}%</b> score prom.</div>
+            </div>
+            <p style="margin:0 0 14px;font-size:.88rem;color:#6b7280;">
+                ${escapeHtml(l.sucursal)}${l.dni ? ' · DNI ' + escapeHtml(l.dni) : ''} ·
+                última actividad: ${acaFmtFecha(l.ultima)}<br>${maestroTxt}
+                ${l.salidas >= ACA_SALIDAS_ALERTA ? `<br><span class="aca-warn"><i class="fa-solid fa-triangle-exclamation"></i> ${l.salidas} salidas de pantalla durante los quizzes.</span>` : ''}
+            </p>`;
+
+            const tocados = cat.mods.filter(m => l.mods[m.id]);
+            if (!tocados.length) {
+                html += '<p class="seg-empty">Todavía no rindió ningún módulo.</p>';
+            } else {
+                html += '<div>';
+                tocados.forEach(m => {
+                    const mp = l.mods[m.id];
+                    const f = mp.examenFinal;
+                    let dots = '';
+                    m.niveles.forEach(niv => {
+                        const n = mp.niveles[niv.nivel] || mp.niveles[String(niv.nivel)];
+                        dots += `<span class="${n && n.aprobado ? 'done' : ''}" title="Nivel ${niv.nivel}${n ? ' · mejor ' + (n.mejorScore || 0) + '%' : ' · sin rendir'}"></span>`;
+                    });
+                    dots += `<span class="final ${f && f.aprobado ? 'done' : ''}" title="Examen final${f ? ' · mejor ' + (f.mejorScore || 0) + '%' : ' · sin rendir'}"></span>`;
+                    const estado = f && f.aprobado
+                        ? '<span class="aca-chip avanzado">Certificado</span>'
+                        : mp.nivelesOk === m.niveles.length
+                            ? '<span class="aca-chip curso">Falta el final</span>'
+                            : `<span class="seg-muted">${mp.nivelesOk}/${m.niveles.length} niveles</span>`;
+                    html += `<div class="aca-mod-item">
+                        <span class="aca-lvl-dots">${dots}</span>
+                        <span class="m-name">${escapeHtml(m.producto)}</span>
+                        ${estado}
+                    </div>`;
+                });
+                html += '</div>';
+                const pendientes = cat.mods.length - tocados.length;
+                if (pendientes > 0) {
+                    html += `<p class="seg-hint" style="margin:14px 0 0;">${pendientes} módulo(s) sin abrir todavía.</p>`;
+                }
+            }
+
+            document.getElementById('aca-detail-body').innerHTML = html;
+            document.getElementById('academia-detail-modal').style.display = 'flex';
+        }
+        window.openAcademiaDetail = openAcademiaDetail;
+
+        function exportAcademiaPDF() {
+            if (!acaLastReport || !acaLastReport.rows.length) {
+                alert('No hay datos de academia para exportar.');
+                return;
+            }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const r = acaLastReport;
+            const hoy = new Date().toLocaleDateString('es-AR');
+            const filtro = [r.fSuc || 'Todas las sucursales', r.fEstado || 'Todos los estados'].join(' · ');
+
+            doc.setFontSize(18);
+            doc.text('Academia Rosso — Estado de capacitación', 14, 20);
+            doc.setFontSize(11);
+            doc.setTextColor(100);
+            doc.text(`Fecha: ${hoy}   ·   Filtro: ${filtro}`, 14, 28);
+            doc.text(`Participación: ${r.empezaron}/${r.padronTotal} (${r.partPct}%)   ·   Avance promedio: ${r.avancePromedio}%   ·   Certificados: ${r.certificados}   ·   Máster: ${r.masters}`, 14, 34);
+
+            doc.autoTable({
+                startY: 42,
+                head: [['Sucursal', 'Participación', 'Empezaron', 'Avance prom.', 'Certif.', 'Máster']],
+                body: r.porSucursal.map(f => {
+                    const part = f.total ? Math.round(f.activos / f.total * 100) : 0;
+                    return [f.grupo, `${part}%`, `${f.activos}/${f.total}`, `${f.avance}%`, f.certificados, f.masters];
+                }),
+                theme: 'grid',
+                headStyles: { fillColor: [39, 46, 104] },
+                styles: { fontSize: 9 }
+            });
+
+            let y = doc.lastAutoTable.finalY + 10;
+            doc.setFontSize(13); doc.setTextColor(30);
+            doc.text('Estado por vendedor', 14, y);
+            const estadoTxt = { master: 'Máster', avanzado: 'Avanzado', curso: 'En curso', sin: 'Sin empezar' };
+            doc.autoTable({
+                startY: y + 4,
+                head: [['#', 'Vendedor', 'Sucursal', 'Estado', 'Avance', 'Certif.', 'Niveles', 'XP', 'Intentos']],
+                body: r.rows.map((l, i) => [i + 1, l.nombre, l.sucursal, estadoTxt[l.estado] || '—',
+                    `${l.avance}%`, l.finalesAprobados, l.nivelesAprobados, l.puntos, l.intentos]),
+                theme: 'striped',
+                headStyles: { fillColor: [79, 70, 229] },
+                styles: { fontSize: 8 }
+            });
+
+            const flojos = r.porModulo.filter(f => f.iniciados > 0).slice(0, 15);
+            if (flojos.length) {
+                y = doc.lastAutoTable.finalY + 12;
+                doc.setFontSize(13); doc.setTextColor(30);
+                doc.text('Módulos con menor tasa de certificación', 14, y);
+                doc.autoTable({
+                    startY: y + 4,
+                    head: [['Módulo', 'Cursaron', 'Certificaron', 'Tasa', 'Score final prom.']],
+                    body: flojos.map(f => [f.producto, f.iniciados, f.certificados,
+                        f.tasa === null ? '—' : `${f.tasa}%`, f.scoreProm === null ? '—' : `${f.scoreProm}%`]),
+                    theme: 'grid',
+                    headStyles: { fillColor: [217, 119, 6] },
+                    styles: { fontSize: 8 }
+                });
+            }
+
+            if (r.sinEmpezar.length) {
+                y = doc.lastAutoTable.finalY + 12;
+                doc.setFontSize(13); doc.setTextColor(30);
+                doc.text(`Nunca entraron a la academia (${r.sinEmpezar.length})`, 14, y);
+                doc.autoTable({
+                    startY: y + 4,
+                    head: [['Nombre', 'Sucursal']],
+                    body: r.sinEmpezar.map(l => [l.nombre, l.sucursal]),
+                    theme: 'plain',
+                    headStyles: { fillColor: [185, 28, 28], textColor: 255 },
+                    styles: { fontSize: 9 }
+                });
+            }
+
+            doc.save(`Academia_Estado_${new Date().toISOString().slice(0, 10)}.pdf`);
         }
 
         // --- INVITATIONS LOGIC ---

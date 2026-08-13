@@ -16,6 +16,10 @@
   <!-- jsPDF + AutoTable (exportar top de productos a PDF) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.21/jspdf.plugin.autotable.min.js"></script>
+  <!-- Flatpickr (Selector de rango de fechas para estadísticas) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -1585,6 +1589,88 @@
     }
 
     /* ── STATS SECTION ────────────────────────────────────────── */
+    .stats-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .stats-filter-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stats-preset-select {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--brand);
+      background: #ffffff;
+      outline: none;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all .15s ease;
+    }
+
+    .stats-preset-select:hover {
+      border-color: #cbd5e1;
+    }
+
+    .stats-preset-select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(39, 46, 104, 0.1);
+    }
+
+    .stats-range-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      box-shadow: var(--shadow-sm);
+      transition: all .15s ease;
+    }
+
+    .stats-range-input-wrapper:hover {
+      border-color: #cbd5e1;
+    }
+
+    .stats-range-input-wrapper:focus-within {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(39, 46, 104, 0.1);
+    }
+
+    .stats-range-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .stats-range-input {
+      padding: 8px 14px 8px 34px;
+      border: none;
+      background: transparent;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+      width: 225px;
+      font-family: inherit;
+    }
+
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
@@ -1620,9 +1706,70 @@
       gap: 8px;
     }
 
-    .stats-card-title i {
-      color: var(--muted);
+    /* Tooltip informativo CSS */
+    .stats-info-tooltip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: help;
+      color: #9ca3af;
+      transition: color .15s;
+    }
+
+    .stats-info-tooltip:hover {
+      color: var(--brand);
+    }
+
+    .stats-info-tooltip i {
       font-size: 0.8rem;
+    }
+
+    .stats-info-tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: #ffffff;
+      font-size: 0.73rem;
+      font-weight: 500;
+      line-height: 1.35;
+      padding: 7px 11px;
+      border-radius: 7px;
+      white-space: normal;
+      width: max-content;
+      max-width: 230px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 9999;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .stats-info-tooltip::before {
+      content: '';
+      position: absolute;
+      bottom: calc(100% + 2px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #1f2937;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .18s ease;
+      z-index: 9999;
+    }
+
+    .stats-info-tooltip:hover::after,
+    .stats-info-tooltip:hover::before {
+      opacity: 1;
+      visibility: visible;
     }
 
     .stats-card-link {
@@ -1639,13 +1786,15 @@
 
     .stats-summary {
       display: flex;
-      gap: 40px;
-      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-bottom: 12px;
     }
 
     .stat-group {
       display: flex;
       flex-direction: column;
+      min-width: 100px;
     }
 
     .stat-value-row {
@@ -1658,36 +1807,183 @@
     .stat-dot {
       width: 10px;
       height: 10px;
-      background: #10b981;
       border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-visits {
+      background: #10b981;
+    }
+
+    .dot-contacts {
+      background: #ec6434;
+    }
+
+    .dot-conversion {
+      background: #3b82f6;
     }
 
     .stat-value {
-      font-size: 1.8rem;
+      font-size: 1.75rem;
       font-weight: 800;
       color: var(--brand);
       line-height: 1;
     }
 
-    .stat-label {
-      font-size: 0.85rem;
-      color: var(--muted);
-      font-weight: 500;
+    .stat-label-wrap {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .stat-label i {
-      font-size: 0.75rem;
+    .stat-label {
+      font-size: 0.83rem;
+      color: var(--muted);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .stat-trend {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+      cursor: default;
+    }
+
+    .stat-trend.trend-up {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .stat-trend.trend-down {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .stat-trend.trend-flat {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .stat-rate-sub {
+      font-size: 0.72rem;
       color: #9ca3af;
+      font-weight: 500;
+    }
+
+    .chart-series-toggles {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .series-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #f9fafb;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all .15s ease;
+      user-select: none;
+    }
+
+    .series-toggle-btn:hover {
+      border-color: #cbd5e1;
+      color: var(--text);
+    }
+
+    .series-toggle-btn.active {
+      background: #ffffff;
+      color: var(--brand);
+      border-color: #cbd5e1;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .series-toggle-btn.inactive {
+      opacity: 0.45;
+      text-decoration: line-through;
+      background: #f3f4f6;
+    }
+
+    .series-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
     }
 
     .stats-subtitle {
       font-size: 0.82rem;
       color: var(--muted);
       font-weight: 600;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
+    }
+
+    /* Flatpickr Custom Theme for Rosso Admin */
+    .flatpickr-calendar {
+      font-family: "Inter", system-ui, sans-serif !important;
+      border-radius: 12px !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08) !important;
+      border: 1px solid var(--border) !important;
+      padding: 8px !important;
+      background: #ffffff !important;
+      z-index: 9999 !important;
+    }
+    .flatpickr-months .flatpickr-month {
+      color: var(--brand) !important;
+      fill: var(--brand) !important;
+    }
+    .flatpickr-current-month {
+      font-size: 0.95rem !important;
+      font-weight: 700 !important;
+      color: var(--brand) !important;
+    }
+    span.flatpickr-weekday {
+      color: var(--muted) !important;
+      font-weight: 600 !important;
+      font-size: 0.75rem !important;
+    }
+    .flatpickr-day {
+      border-radius: 8px !important;
+      font-size: 0.82rem !important;
+      font-weight: 500 !important;
+      color: var(--text) !important;
+      height: 34px !important;
+      line-height: 34px !important;
+    }
+    .flatpickr-day.today {
+      border-color: var(--accent) !important;
+    }
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange {
+      background: var(--brand) !important;
+      border-color: var(--brand) !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+    }
+    .flatpickr-day.inRange {
+      background: rgba(39, 46, 104, 0.09) !important;
+      border-color: transparent !important;
+      box-shadow: -5px 0 0 rgba(39, 46, 104, 0.09), 5px 0 0 rgba(39, 46, 104, 0.09) !important;
+      color: var(--brand) !important;
+    }
+    .flatpickr-day:hover:not(.selected):not(.startRange):not(.endRange) {
+      background: #f3f4f6 !important;
     }
 
     /* Acciones tarjeta "Productos más visitados" (cerrar mes / historial) */
@@ -1868,6 +2164,21 @@
     @media (max-width: 992px) {
       .stats-grid {
         grid-template-columns: 1fr;
+      }
+      .stats-header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .stats-filter-wrap {
+        width: 100%;
+      }
+      .stats-range-input-wrapper {
+        flex: 1;
+        min-width: 190px;
+      }
+      .stats-range-input {
+        width: 100%;
       }
     }
 
@@ -2310,53 +2621,110 @@
       <!-- VISTA ESTADÍSTICAS -->
       <div class="grid-area" id="view-stats" style="display:none">
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-          <h2 style="font-size:1.1rem;font-weight:700;color:var(--brand)">Dashboard de Rendimiento</h2>
-          <div style="display:flex; align-items:center; gap: 8px; flex-wrap: wrap;">
-            <select id="stats-date-range" onchange="initStatsCharts()"
-              style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; font-family: inherit; cursor:pointer">
+        <!-- Barra Superior: Título + Filtro de Fechas Unificado -->
+        <div class="stats-header-bar">
+          <div>
+            <h2 style="font-size:1.15rem;font-weight:700;color:var(--brand);margin-bottom:2px">Dashboard de Rendimiento</h2>
+            <span class="stats-subtitle" id="stats-subtitle-visitas" style="margin-bottom:0">Últimos 7 días</span>
+          </div>
+
+          <div class="stats-filter-wrap">
+            <!-- Selector de Presets Rápidos -->
+            <select id="stats-date-preset" onchange="onPresetChange(this.value)" class="stats-preset-select" title="Seleccionar período predefinido">
+              <option value="today">Hoy</option>
+              <option value="yesterday">Ayer</option>
               <option value="7" selected>Últimos 7 días</option>
               <option value="15">Últimos 15 días</option>
               <option value="30">Últimos 30 días</option>
+              <option value="this_month">Este mes</option>
+              <option value="prev_month">Mes anterior</option>
               <option value="custom">Personalizado...</option>
             </select>
-            
-            <div id="custom-date-container" style="display:none; align-items:center; gap: 6px;">
-              <input type="date" id="stats-start-date" onchange="initStatsCharts()"
-                style="padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; font-family: inherit; cursor:pointer" />
-              <span style="font-size:0.8rem; color:var(--muted)">al</span>
-              <input type="date" id="stats-end-date" onchange="initStatsCharts()"
-                style="padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; font-family: inherit; cursor:pointer" />
+
+            <!-- Selector Único de Rango de Fechas (Flatpickr) -->
+            <div class="stats-range-input-wrapper" title="Hacé clic para elegir un rango de fechas en el calendario">
+              <i class="fa-regular fa-calendar stats-range-icon"></i>
+              <input type="text" id="stats-date-range-input" class="stats-range-input" placeholder="Seleccionar fechas..." readonly />
             </div>
           </div>
         </div>
 
         <div class="stats-grid">
 
-          <!-- Card: Visitas -->
+          <!-- Card: Actividad y Tráfico (Visitas + Contactos + Conversión) -->
           <div class="stats-card">
             <div class="stats-card-header">
-              <h3 class="stats-card-title">Visitas al catálogo <i class="fa-solid fa-circle-info"></i></h3>
+              <h3 class="stats-card-title">
+                Actividad y Tráfico
+                <span class="stats-info-tooltip" data-tooltip="Interacciones registradas en el catálogo durante el período seleccionado.">
+                  <i class="fa-solid fa-circle-info"></i>
+                </span>
+              </h3>
+              <div class="chart-series-toggles">
+                <button type="button" class="series-toggle-btn active" data-dataset="0" onclick="toggleDataset(0)" title="Mostrar / ocultar visitas en el gráfico">
+                  <span class="series-dot dot-visits"></span> Visitas
+                </button>
+                <button type="button" class="series-toggle-btn active" data-dataset="1" onclick="toggleDataset(1)" title="Mostrar / ocultar contactos en el gráfico">
+                  <span class="series-dot dot-contacts"></span> Contactos
+                </button>
+              </div>
             </div>
 
+            <!-- Resumen de KPIs con Tendencia y Tasa de Conversión -->
             <div class="stats-summary">
+              <!-- KPI 1: Visitas -->
               <div class="stat-group">
                 <div class="stat-value-row">
-                  <div class="stat-dot"></div>
-                  <span class="stat-value" id="stats-total-visitas"></span>
+                  <div class="stat-dot dot-visits"></div>
+                  <span class="stat-value" id="stats-total-visitas">-</span>
                 </div>
-                <span class="stat-label">Visitas <i class="fa-solid fa-circle-info"></i></span>
+                <div class="stat-label-wrap">
+                  <span class="stat-label">
+                    Visitas
+                    <span class="stats-info-tooltip" data-tooltip="Total de visitas al catálogo en este rango de fechas.">
+                      <i class="fa-solid fa-circle-info"></i>
+                    </span>
+                  </span>
+                  <span class="stat-trend" id="stats-trend-visitas" style="display:none"></span>
+                </div>
               </div>
+
+              <!-- KPI 2: Contactos -->
               <div class="stat-group">
                 <div class="stat-value-row">
-                  <span class="stat-value" id="stats-total-contactos"></span>
+                  <div class="stat-dot dot-contacts"></div>
+                  <span class="stat-value" id="stats-total-contactos">-</span>
                 </div>
-                <span class="stat-label">Contactos <i class="fa-solid fa-circle-info"></i></span>
+                <div class="stat-label-wrap">
+                  <span class="stat-label">
+                    Contactos
+                    <span class="stats-info-tooltip" data-tooltip="Total de consultas directas y clics en botones de WhatsApp en este rango.">
+                      <i class="fa-solid fa-circle-info"></i>
+                    </span>
+                  </span>
+                  <span class="stat-trend" id="stats-trend-contactos" style="display:none"></span>
+                </div>
+              </div>
+
+              <!-- KPI 3: Tasa de Conversión -->
+              <div class="stat-group">
+                <div class="stat-value-row">
+                  <div class="stat-dot dot-conversion"></div>
+                  <span class="stat-value" id="stats-conversion-rate">0%</span>
+                </div>
+                <div class="stat-label-wrap">
+                  <span class="stat-label">
+                    Conversión
+                    <span class="stats-info-tooltip" data-tooltip="Porcentaje de visitantes que iniciaron una consulta o contacto (Contactos / Visitas).">
+                      <i class="fa-solid fa-circle-info"></i>
+                    </span>
+                  </span>
+                  <span class="stat-rate-sub">Contactos / Visitas</span>
+                </div>
               </div>
             </div>
 
-            <div class="stats-subtitle" id="stats-subtitle-visitas">Últimos 7 días</div>
-
+            <!-- Gráfico de Visitas y Contactos -->
             <div class="chart-container">
               <canvas id="visitsChart"></canvas>
             </div>
@@ -2365,7 +2733,12 @@
           <!-- Card: Top Productos -->
           <div class="stats-card">
             <div class="stats-card-header" style="flex-wrap:wrap; gap:10px">
-              <h3 class="stats-card-title">Ranking de productos <i class="fa-solid fa-circle-info"></i></h3>
+              <h3 class="stats-card-title">
+                Ranking de productos
+                <span class="stats-info-tooltip" data-tooltip="Productos con mayor interés acumulado en el mes actual o en históricos cerrados.">
+                  <i class="fa-solid fa-circle-info"></i>
+                </span>
+              </h3>
               <div class="top-actions">
                 <select id="stats-hist-select" class="hist-select" onchange="verHistorial(this.value)" title="Ver el top de un mes ya cerrado">
                   <option value="">Mes actual</option>
@@ -4354,6 +4727,8 @@
        ESTADÍSTICAS
     ═══════════════════════════════════════════════════════════════ */
     let visitsChartInstance = null;
+    let fpStatsRange = null;
+    let currentStatsRange = { start: null, end: null };
 
     /* ── Reinicio mensual del top de productos ──────────────────── */
     let ultimoResetISO = null;      // fecha del último reinicio (ISO) o null si nunca se reinició
@@ -4661,14 +5036,126 @@
       }
     }
 
-    function toggleCustomDateRange() {
-      const select = document.getElementById('stats-date-range');
-      const container = document.getElementById('custom-date-container');
-      if (!select || !container) return;
-      if (select.value === 'custom') {
-        container.style.display = 'flex';
+    /* ── Utilidades de Fecha y Rango para Estadísticas ─────────── */
+    function _toISODateString(d) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function _formatDateDisplay(d) {
+      return d.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    function setupStatsDateFilter() {
+      const input = document.getElementById('stats-date-range-input');
+      if (!input) return;
+
+      if (!fpStatsRange && window.flatpickr) {
+        fpStatsRange = flatpickr(input, {
+          mode: 'range',
+          locale: 'es',
+          dateFormat: 'Y-m-d',
+          altInput: true,
+          altFormat: 'd/m/Y',
+          conjunction: ' a ',
+          maxDate: 'today',
+          onClose: function (selectedDates) {
+            if (selectedDates.length === 1) {
+              currentStatsRange.start = selectedDates[0];
+              currentStatsRange.end = selectedDates[0];
+              const presetSelect = document.getElementById('stats-date-preset');
+              if (presetSelect) presetSelect.value = 'custom';
+              initStatsCharts();
+            } else if (selectedDates.length === 2) {
+              currentStatsRange.start = selectedDates[0];
+              currentStatsRange.end = selectedDates[1];
+              const presetSelect = document.getElementById('stats-date-preset');
+              if (presetSelect) presetSelect.value = 'custom';
+              initStatsCharts();
+            }
+          }
+        });
+      }
+    }
+
+    function onPresetChange(preset) {
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+
+      let start = new Date(now);
+      let end = new Date(now);
+
+      if (preset === 'today') {
+        // start y end son hoy
+      } else if (preset === 'yesterday') {
+        start.setDate(now.getDate() - 1);
+        end.setDate(now.getDate() - 1);
+      } else if (preset === '7') {
+        start.setDate(now.getDate() - 6);
+      } else if (preset === '15') {
+        start.setDate(now.getDate() - 14);
+      } else if (preset === '30') {
+        start.setDate(now.getDate() - 29);
+      } else if (preset === 'this_month') {
+        start = new Date(now.getFullYear(), now.getMonth(), 1);
+      } else if (preset === 'prev_month') {
+        start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        end = new Date(now.getFullYear(), now.getMonth(), 0);
+      } else if (preset === 'custom') {
+        setupStatsDateFilter();
+        if (fpStatsRange) {
+          fpStatsRange.open();
+        }
+        return;
+      }
+
+      currentStatsRange.start = start;
+      currentStatsRange.end = end;
+
+      setupStatsDateFilter();
+      if (fpStatsRange) {
+        fpStatsRange.setDate([start, end], false);
+      }
+
+      initStatsCharts();
+    }
+
+    function toggleDataset(index) {
+      if (!visitsChartInstance) return;
+      const isVisible = visitsChartInstance.isDatasetVisible(index);
+      visitsChartInstance.setDatasetVisibility(index, !isVisible);
+      visitsChartInstance.update();
+
+      const btn = document.querySelector(`.series-toggle-btn[data-dataset="${index}"]`);
+      if (btn) {
+        if (!isVisible) {
+          btn.classList.add('active');
+          btn.classList.remove('inactive');
+        } else {
+          btn.classList.remove('active');
+          btn.classList.add('inactive');
+        }
+      }
+    }
+
+    function formatTrendBadge(current, previous) {
+      if (previous === 0 && current === 0) {
+        return `<span class="stat-trend trend-flat" title="Sin cambios respecto al período anterior (0)"><i class="fa-solid fa-minus"></i> 0%</span>`;
+      }
+      if (previous === 0 && current > 0) {
+        return `<span class="stat-trend trend-up" title="Sin registros previos (+${current})"><i class="fa-solid fa-arrow-trend-up"></i> +100%</span>`;
+      }
+      const diff = ((current - previous) / previous) * 100;
+      const sign = diff > 0 ? '+' : '';
+      const text = `${sign}${diff.toFixed(0)}%`;
+      if (diff > 0) {
+        return `<span class="stat-trend trend-up" title="Aumento de ${text} vs período previo (${previous})"><i class="fa-solid fa-arrow-trend-up"></i> ${text}</span>`;
+      } else if (diff < 0) {
+        return `<span class="stat-trend trend-down" title="Disminución de ${text} vs período previo (${previous})"><i class="fa-solid fa-arrow-trend-down"></i> ${text}</span>`;
       } else {
-        container.style.display = 'none';
+        return `<span class="stat-trend trend-flat" title="Sin variación vs período previo (${previous})"><i class="fa-solid fa-minus"></i> 0%</span>`;
       }
     }
 
@@ -4676,125 +5163,175 @@
       const ctx = document.getElementById('visitsChart')?.getContext('2d');
       if (!ctx) return;
 
-      toggleCustomDateRange();
+      setupStatsDateFilter();
 
-      const daysSelect = document.getElementById('stats-date-range');
-      const isCustom = daysSelect && daysSelect.value === 'custom';
-
-      let lastXDays = [];
-      const labels = [];
-      const dataVisits = [];
-      let subtitleText = '';
-
-      if (isCustom) {
-        let startVal = document.getElementById('stats-start-date').value;
-        let endVal = document.getElementById('stats-end-date').value;
-
-        if (!startVal || !endVal) {
-          const today = new Date();
-          const thirtyDaysAgo = new Date();
-          thirtyDaysAgo.setDate(today.getDate() - 30);
-          
-          startVal = thirtyDaysAgo.toISOString().split('T')[0];
-          endVal = today.toISOString().split('T')[0];
-          
-          document.getElementById('stats-start-date').value = startVal;
-          document.getElementById('stats-end-date').value = endVal;
-        }
-
-        const start = new Date(startVal + "T00:00:00");
-        const end = new Date(endVal + "T00:00:00");
-
-        if (start > end) {
-          toast('La fecha de inicio no puede ser posterior a la de fin.', 'error');
-          return;
-        }
-
-        const diffTime = Math.abs(end - start);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-        if (diffDays > 90) {
-          toast('El rango máximo permitido es de 90 días.', 'error');
-          return;
-        }
-
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          lastXDays.push(d.toISOString().split('T')[0]);
-          labels.push(d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' }));
-        }
-
-        const formatF = (dateObj) => dateObj.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        subtitleText = `Desde ${formatF(start)} hasta ${formatF(end)}`;
-      } else {
-        const days = daysSelect ? parseInt(daysSelect.value) : 7;
-        subtitleText = `Últimos ${days} días`;
-
-        const now = new Date();
-        for (let i = days - 1; i >= 0; i--) {
-          const d = new Date(now);
-          d.setDate(d.getDate() - i);
-          lastXDays.push(d.toISOString().split('T')[0]);
-          labels.push(d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' }));
+      // Si no hay rango seleccionado todavía, default a últimos 7 días
+      if (!currentStatsRange.start || !currentStatsRange.end) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const start7 = new Date(today);
+        start7.setDate(today.getDate() - 6);
+        currentStatsRange.start = start7;
+        currentStatsRange.end = today;
+        if (fpStatsRange) {
+          fpStatsRange.setDate([start7, today], false);
         }
       }
 
+      const start = new Date(currentStatsRange.start);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(currentStatsRange.end);
+      end.setHours(0, 0, 0, 0);
+
+      if (start > end) {
+        toast('La fecha de inicio no puede ser posterior a la de fin.', 'error');
+        return;
+      }
+
+      const diffTime = Math.abs(end - start);
+      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      if (diffDays > 90) {
+        toast('El rango máximo permitido es de 90 días.', 'error');
+        return;
+      }
+
+      // Días del período actual
+      const currentDays = [];
+      const labels = [];
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        currentDays.push(_toISODateString(d));
+        labels.push(d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' }));
+      }
+
+      // Días del período anterior equivalente para comparativa
+      const prevEnd = new Date(start);
+      prevEnd.setDate(prevEnd.getDate() - 1);
+      const prevStart = new Date(prevEnd);
+      prevStart.setDate(prevStart.getDate() - diffDays + 1);
+
+      const prevDays = [];
+      for (let d = new Date(prevStart); d <= prevEnd; d.setDate(d.getDate() + 1)) {
+        prevDays.push(_toISODateString(d));
+      }
+
+      // Subtítulo del dashboard
+      let subtitleText = '';
+      if (diffDays === 1) {
+        subtitleText = `Día ${_formatDateDisplay(start)}`;
+      } else {
+        subtitleText = `${_formatDateDisplay(start)} al ${_formatDateDisplay(end)} (${diffDays} días)`;
+      }
       const subtitleEl = document.getElementById('stats-subtitle-visitas');
       if (subtitleEl) subtitleEl.textContent = subtitleText;
 
       try {
-        // El top de productos NO depende del rango de fechas (lo maneja cargarResetMeta).
-        // Acá solo calculamos el gráfico de visitas diarias y sus sumas.
+        // Consultamos en paralelo el período actual y el anterior
+        const [currSnaps, prevSnaps] = await Promise.all([
+          Promise.all(currentDays.map(date => db.collection('analytics_daily').doc(date).get())),
+          Promise.all(prevDays.map(date => db.collection('analytics_daily').doc(date).get()))
+        ]);
 
-        // Obtener Datos Diarios para el Gráfico y Sumas (últimos X días o rango personalizado)
-        // Consultamos todos los días
-        const dailyPromises = lastXDays.map(date => db.collection('analytics_daily').doc(date).get());
-        const dailySnaps = await Promise.all(dailyPromises);
-
+        const dataVisits = [];
+        const dataContacts = [];
         let sumVisits = 0;
         let sumContacts = 0;
 
-        dailySnaps.forEach(snap => {
+        currSnaps.forEach(snap => {
           if (snap.exists) {
             const d = snap.data();
             const v = d.visits || 0;
             const c = d.contacts || 0;
             dataVisits.push(v);
+            dataContacts.push(c);
             sumVisits += v;
             sumContacts += c;
           } else {
             dataVisits.push(0);
+            dataContacts.push(0);
           }
         });
 
-        // 3. Actualizar Totales del Rango
-        document.getElementById('stats-total-visitas').textContent = sumVisits.toLocaleString('es-AR');
-        document.getElementById('stats-total-contactos').textContent = sumContacts.toLocaleString('es-AR');
+        let prevSumVisits = 0;
+        let prevSumContacts = 0;
+        prevSnaps.forEach(snap => {
+          if (snap.exists) {
+            const d = snap.data();
+            prevSumVisits += (d.visits || 0);
+            prevSumContacts += (d.contacts || 0);
+          }
+        });
 
-        // 4. Renderizar Gráfico
+        // 1. Actualizar KPIs principales
+        const elVisitas = document.getElementById('stats-total-visitas');
+        const elContactos = document.getElementById('stats-total-contactos');
+        const elConversion = document.getElementById('stats-conversion-rate');
+
+        if (elVisitas) elVisitas.textContent = sumVisits.toLocaleString('es-AR');
+        if (elContactos) elContactos.textContent = sumContacts.toLocaleString('es-AR');
+
+        // Tasa de conversión (%)
+        const convRate = sumVisits > 0 ? ((sumContacts / sumVisits) * 100).toFixed(1) : '0.0';
+        if (elConversion) elConversion.textContent = `${convRate}%`;
+
+        // 2. Tendencias vs período previo
+        const elTrendVisitas = document.getElementById('stats-trend-visitas');
+        const elTrendContactos = document.getElementById('stats-trend-contactos');
+        if (elTrendVisitas) {
+          elTrendVisitas.style.display = 'inline-flex';
+          elTrendVisitas.innerHTML = formatTrendBadge(sumVisits, prevSumVisits);
+        }
+        if (elTrendContactos) {
+          elTrendContactos.style.display = 'inline-flex';
+          elTrendContactos.innerHTML = formatTrendBadge(sumContacts, prevSumContacts);
+        }
+
+        // 3. Renderizar Gráfico Dual
         if (visitsChartInstance) visitsChartInstance.destroy();
 
-        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-        gradient.addColorStop(0, 'rgba(16, 185, 129, 0.2)');
-        gradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+        const gradVisits = ctx.createLinearGradient(0, 0, 0, 300);
+        gradVisits.addColorStop(0, 'rgba(16, 185, 129, 0.22)');
+        gradVisits.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+
+        const gradContacts = ctx.createLinearGradient(0, 0, 0, 300);
+        gradContacts.addColorStop(0, 'rgba(236, 100, 52, 0.22)');
+        gradContacts.addColorStop(1, 'rgba(236, 100, 52, 0.0)');
 
         visitsChartInstance = new Chart(ctx, {
           type: 'line',
           data: {
             labels: labels,
-            datasets: [{
-              label: 'Visitas',
-              data: dataVisits,
-              borderColor: '#10b981',
-              borderWidth: 3,
-              fill: true,
-              backgroundColor: gradient,
-              tension: 0.4,
-              pointRadius: 4,
-              pointBackgroundColor: '#10b981',
-              pointHoverRadius: 6,
-              pointHoverBackgroundColor: '#10b981',
-              pointHoverBorderColor: 'white',
-              pointHoverBorderWidth: 2
-            }]
+            datasets: [
+              {
+                label: 'Visitas',
+                data: dataVisits,
+                borderColor: '#10b981',
+                borderWidth: 2.5,
+                fill: true,
+                backgroundColor: gradVisits,
+                tension: 0.35,
+                pointRadius: 3.5,
+                pointBackgroundColor: '#10b981',
+                pointHoverRadius: 6,
+                pointHoverBackgroundColor: '#10b981',
+                pointHoverBorderColor: '#ffffff',
+                pointHoverBorderWidth: 2
+              },
+              {
+                label: 'Contactos',
+                data: dataContacts,
+                borderColor: '#ec6434',
+                borderWidth: 2.5,
+                fill: true,
+                backgroundColor: gradContacts,
+                tension: 0.35,
+                pointRadius: 3.5,
+                pointBackgroundColor: '#ec6434',
+                pointHoverRadius: 6,
+                pointHoverBackgroundColor: '#ec6434',
+                pointHoverBorderColor: '#ffffff',
+                pointHoverBorderWidth: 2
+              }
+            ]
           },
           options: {
             responsive: true,
@@ -4804,10 +5341,16 @@
               tooltip: {
                 mode: 'index',
                 intersect: false,
-                backgroundColor: '#111827',
+                backgroundColor: '#1f2937',
                 padding: 10,
-                titleFont: { size: 12 },
-                bodyFont: { size: 13, weight: 'bold' }
+                titleFont: { size: 12, family: 'Inter' },
+                bodyFont: { size: 13, weight: '600', family: 'Inter' },
+                cornerRadius: 8,
+                callbacks: {
+                  label: function (tooltipItem) {
+                    return ` ${tooltipItem.dataset.label}: ${tooltipItem.parsed.y.toLocaleString('es-AR')}`;
+                  }
+                }
               }
             },
             interaction: {
@@ -4821,19 +5364,19 @@
                 grid: { color: '#f3f4f6', drawBorder: false },
                 ticks: {
                   color: '#9ca3af',
-                  font: { size: 11 },
+                  font: { size: 11, family: 'Inter' },
                   callback: function (value) { return value >= 1000 ? (value / 1000).toFixed(1) + 'k' : value; }
                 }
               },
               x: {
                 grid: { display: false, drawBorder: false },
-                ticks: { color: '#9ca3af', font: { size: 11 } }
+                ticks: { color: '#9ca3af', font: { size: 11, family: 'Inter' } }
               }
             }
           }
         });
       } catch (e) {
-        console.error('Error al cargar el gráfico de visitas:', e);
+        console.error('Error al cargar el gráfico de estadísticas:', e);
       }
     }
 
