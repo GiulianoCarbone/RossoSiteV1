@@ -183,9 +183,16 @@
       typing.hidden = true;
       if (!resp.ok) {
         addBot(data.error || 'Disculpá, hubo un problema. Probá de nuevo en un momento.', null, true);
+      } else if (data.respuesta) {
+        addBot(data.respuesta, data.productos);
+        history.push({ role: 'assistant', content: data.respuesta });
       } else {
-        addBot(data.respuesta || 'No te entendí bien, ¿podés darme más detalle?', data.productos);
-        history.push({ role: 'assistant', content: data.respuesta || '' });
+        // Turno fallido: lo sacamos del historial (el mensaje del usuario se
+        // agregó antes del fetch). Dejar un turno sin respuesta —o peor, un
+        // "no te entendí" atribuido al bot— arrastra el problema a los
+        // mensajes siguientes.
+        history.pop();
+        addBot('Uh, se me cortó la respuesta 😅. ¿Me la repetís?', null, true);
       }
       saveState();
     } catch (e) {

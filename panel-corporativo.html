@@ -7080,12 +7080,16 @@
           if (!res.ok) {
             // El backend manda { error } en 429 (rate-limit) o 400 (validación).
             addMessage(data.error || 'Hubo un problema al conectar. Probá de nuevo en un momento.', 'error');
-          } else {
-            const reply = data.respuesta || 'No te entendí bien, ¿me das un poco más de detalle?';
-            addMessage(reply, 'bot');
+          } else if (data.respuesta) {
+            addMessage(data.respuesta, 'bot');
             renderCards(data.productos);
             chatHistory.push({ role: 'user', content: text });
-            chatHistory.push({ role: 'assistant', content: reply });
+            chatHistory.push({ role: 'assistant', content: data.respuesta });
+          } else {
+            // Turno fallido: NO lo guardamos en el historial. Si metiéramos un
+            // "no te entendí" como si lo hubiera dicho el bot, los turnos
+            // siguientes arrastrarían ese contexto y la charla se degradaría sola.
+            addMessage('Uh, se me cortó la respuesta 😅. ¿Me la repetís?', 'error');
           }
 
         } catch (err) {

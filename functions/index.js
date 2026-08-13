@@ -70,12 +70,12 @@ REGLAS: 2-4 frases (180-400 caracteres). Enfocate en qué es, para qué/dónde s
 PROHIBIDO inventar material, forma, color, instalación, medidas, rendimientos o garantías que no estén en los datos o el nombre. Es mejor omitir un dato que inventarlo. NUNCA menciones garantía ni plazos de garantía, ni uses las palabras «garantía»/«garantiza»/«garantizada».
 Si el nombre es ambiguo, describí de forma general por línea/marca/categoría. Texto plano, sin markdown ni comillas.`;
 
-async function deepseekChat(messages, key, jsonMode = false, maxTokens = 450) {
+async function deepseekChat(messages, key, jsonMode = false, maxTokens = 450, temperature = 0.2) {
   const r = await fetch(DEEPSEEK_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
     body: JSON.stringify({
-      model: MODEL, temperature: 0.2, max_tokens: maxTokens,
+      model: MODEL, temperature, max_tokens: maxTokens,
       ...(jsonMode ? { response_format: { type: 'json_object' } } : {}),
       messages,
     }),
@@ -178,8 +178,37 @@ async function getCatalogo() {
 
 const norm = (s) => (s || '').toLowerCase().normalize('NFD').replace(new RegExp('[\\u0300-\\u036f]', 'g'), '');
 
-function filtrarRelevantes(catalogo, mensaje, max = 25) {
-  const palabras = norm(mensaje).split(/[^a-z0-9]+/).filter((w) => w.length >= 4);
+// Palabras de la charla que matchean media descripción del catálogo y sólo
+// hacen ruido al puntuar ("para" aparece en casi todas).
+const VACIAS = new Set([
+  'para', 'pero', 'como', 'cuando', 'donde', 'esta', 'este', 'esto', 'estos', 'estas',
+  'tiene', 'tienen', 'tengo', 'tenes', 'quiero', 'quiere', 'queres', 'cliente', 'puedo',
+  'podes', 'ofrecer', 'opciones', 'opcion', 'pasame', 'dale', 'algo', 'mucho', 'mucha',
+  'todo', 'toda', 'todos', 'todas', 'sobre', 'entre', 'hasta', 'desde', 'cada', 'otro',
+  'otra', 'bien', 'tambien', 'porque', 'cual', 'cuales', 'necesito', 'necesita', 'busca',
+  'buscando', 'hacer', 'poner', 'seria', 'serian', 'decime', 'contame', 'gracias', 'hola',
+  'favor', 'mejor', 'mejores', 'recomendas', 'recomendar', 'concretas', 'concretos',
+]);
+
+/* Elige los productos que se le muestran al modelo.
+
+   Ojo con el `history`: buscar sólo por el último mensaje funciona en el primer
+   turno y falla en todos los demás, porque los seguimientos son cortos y no
+   nombran el producto. Medido contra el catálogo real: "dale, pasame 3 opciones
+   concretas" daba CERO candidatos, y "es para un baño" (charla sobre revestir
+   una pared) devolvía bidets, lavatorios y depósitos —matchean "baño"—, así que
+   el modelo contestaba con `skus: []` y el vendedor se quedaba sin fichas.
+   Sumando los últimos turnos del usuario, esas dos consultas traen
+   revestimientos de pared. */
+function filtrarRelevantes(catalogo, mensaje, max = 25, history = []) {
+  const previos = (history || [])
+    .filter((h) => h && h.role === 'user')
+    .slice(-2)
+    .map((h) => String(h.content || ''));
+  const consulta = [...previos, mensaje].join(' ');
+
+  const palabras = [...new Set(norm(consulta).split(/[^a-z0-9]+/))]
+    .filter((w) => w.length >= 4 && !VACIAS.has(w));
   if (!palabras.length) return catalogo.slice(0, max);
   const scored = catalogo.map((p) => {
     const texto = norm(`${p.nombre} ${p.categoria} ${p.subcategoria} ${p.marca} ${p.descripcion}`);
@@ -218,6 +247,84 @@ function limpiarSkus(texto) {
     .replace(/\s+([,.;:!?])/g, '$1')                                      // espacio antes de puntuación
     .replace(/\s{2,}/g, ' ')                                              // espacios dobles
     .trim();
+}
+
+/* ── Lectura tolerante de la respuesta del modelo ─────────────────────────
+   Devuelve { respuesta, skus } o null si no se pudo sacar nada usable.
+   Contempla tres formas: JSON bien formado, JSON cortado por max_tokens
+   (rescatamos el campo "respuesta" a mano en vez de mostrar la llave suelta)
+   y prosa a secas. */
+function leerRespuesta(txt) {
+  const t = String(txt || '').trim();
+  if (!t) return null;
+
+  try {
+    const o = JSON.parse(t);
+    if (o && typeof o === 'object') {
+      const r = limpiarSkus(o.respuesta);
+      return r ? { respuesta: r, skus: Array.isArray(o.skus) ? o.skus : [] } : null;
+    }
+  } catch {
+    // JSON cortado a la mitad: sacamos el texto de "respuesta" hasta donde llegó
+    const m = t.match(/"respuesta"\s*:\s*"((?:[^"\\]|\\.)*)/);
+    if (m) {
+      try {
+        const r = limpiarSkus(JSON.parse('"' + m[1].replace(/\\$/, '') + '"'));
+        if (r) return { respuesta: r, skus: [] };
+      } catch { /* ni eso: seguimos con el texto crudo */ }
+    }
+  }
+
+  const r = limpiarSkus(t);
+  return r ? { respuesta: r, skus: [] } : null;
+}
+
+/* ── Pedido al modelo con reintentos ──────────────────────────────────────
+   DeepSeek en modo JSON se traba: para ciertas combinaciones de prompt
+   devuelve contenido vacío (o sólo espacios, que `limpiarSkus` deja en ''), y
+   con temperature 0.2 lo hace SIEMPRE para el mismo prompt. Medido contra la
+   función en producción: un historial concreto del panel dio 6/6 respuestas
+   vacías mientras otro dio 6/6 correctas, intercalados. No hay manera de saber
+   de antemano qué prompt lo dispara, así que en vez de prevenirlo lo
+   detectamos y reintentamos:
+     1) otra vez en JSON con temperature alta, para salir del bucle;
+     2) si sigue vacía, sin modo JSON — ahí el bug no aparece. Perdemos las
+        fichas de producto de ese turno, pero el usuario recibe una respuesta
+        de verdad en lugar de un "no te entendí".
+   Los reintentos sólo corren cuando la respuesta vino vacía. */
+async function pedirJson(messages, key, maxTokens) {
+  const intentos = [
+    { json: true, temp: 0.2, empujon: false },
+    { json: true, temp: 0.9, empujon: true },
+    { json: false, temp: 0.5, empujon: false },
+  ];
+
+  for (let i = 0; i < intentos.length; i++) {
+    const { json, temp, empujon } = intentos[i];
+    // Subir la temperatura sola no alcanza (medido: el mismo prompt vuelve a
+    // salir vacío a 0.9). Sumamos un mensaje que cambia el final del prompt,
+    // que es lo que saca al modelo del bucle sin perder el modo JSON —y con él
+    // las fichas de producto, que en el tercer intento ya no vienen.
+    const msgs = empujon
+      // Sin ejemplo de valores: mostrar `"skus":[]` acá lo empujaba a copiarlo
+      // y devolver la lista vacía, justo lo que deja al vendedor sin fichas.
+      ? [...messages, { role: 'user', content: 'Respondé ahora en el formato JSON pedido, con los campos "respuesta" y "skus".' }]
+      : messages;
+    let txt;
+    try {
+      txt = await deepseekChat(msgs, key, json, maxTokens, temp);
+    } catch (e) {
+      console.error(`DeepSeek falló (intento ${i + 1}/${intentos.length}):`, e.message);
+      continue;
+    }
+    const out = leerRespuesta(txt);
+    if (out) {
+      if (i > 0) console.warn(`Respuesta recuperada en el intento ${i + 1}/${intentos.length}.`);
+      return out;
+    }
+    console.warn(`DeepSeek devolvió una respuesta vacía (intento ${i + 1}/${intentos.length}).`);
+  }
+  return null;
 }
 
 // Rate-limit por IP en Firestore: 10/min y 120/día
@@ -283,22 +390,28 @@ exports.chat = onRequest(
 
       const catalogo = await getCatalogo();
       const categorias = [...new Set(catalogo.map((p) => p.categoria).filter(Boolean))];
-      const relevantes = filtrarRelevantes(catalogo, mensaje, 25);
+      const relevantes = filtrarRelevantes(catalogo, mensaje, 25, history);
 
-      const txt = await deepseekChat(
+      const parsed = await pedirJson(
         [{ role: 'system', content: CHAT_SYSTEM }, { role: 'user', content: buildChatUser(mensaje, relevantes, categorias, history) }],
-        DEEPSEEK_API_KEY.value(), true, 500);
+        DEEPSEEK_API_KEY.value(), 500);
 
-      let parsed;
-      try { parsed = JSON.parse(txt || '{}'); }
-      catch { parsed = { respuesta: txt || 'Disculpá, no te entendí bien. ¿Podés darme un poco más de detalle?', skus: [] }; }
+      // Ni con reintentos salió nada: lo decimos como lo que es (un problema
+      // nuestro), en vez de echarle la culpa a cómo escribió el cliente.
+      if (!parsed) {
+        return res.json({
+          ok: true,
+          respuesta: 'Uh, se me cortó la respuesta 😅. ¿Me la repetís? Si sigue igual, escribinos por WhatsApp y te ayudamos.',
+          productos: [],
+        });
+      }
 
       const porSku = new Map(catalogo.map((p) => [String(p.sku), p]));
       const productos = (parsed.skus || [])
         .map((s) => porSku.get(String(s))).filter(Boolean).slice(0, 4)
         .map((p) => ({ sku: p.sku, nombre: p.nombre, categoria: p.categoria, descripcion: p.descripcion, imagen: p.imagen }));
 
-      return res.json({ ok: true, respuesta: limpiarSkus(parsed.respuesta), productos });
+      return res.json({ ok: true, respuesta: parsed.respuesta, productos });
     } catch (e) {
       console.error('chat error:', e);
       return res.status(500).json({ error: 'Error interno' });
@@ -417,7 +530,7 @@ exports.chatInterno = onRequest(
 
       const catalogo = await getCatalogo();
       const categorias = [...new Set(catalogo.map((p) => p.categoria).filter(Boolean))];
-      const relevantes = filtrarRelevantes(catalogo, mensaje, 30);
+      const relevantes = filtrarRelevantes(catalogo, mensaje, 30, history);
 
       const histMsgs = history.slice(-6).map((h) => ({
         role: h.role === 'user' ? 'user' : 'assistant',
@@ -430,18 +543,24 @@ exports.chatInterno = onRequest(
         { role: 'user', content: buildInternoUser(mensaje, relevantes, categorias) },
       ];
 
-      const txt = await deepseekChat(messages, DEEPSEEK_API_KEY.value(), true, 700);
+      const parsed = await pedirJson(messages, DEEPSEEK_API_KEY.value(), 700);
 
-      let parsed;
-      try { parsed = JSON.parse(txt || '{}'); }
-      catch { parsed = { respuesta: txt || 'Disculpá, no te entendí bien. ¿Me das un poco más de detalle?', skus: [] }; }
+      // Ni con reintentos salió nada. Avisamos que el problema es del bot: si
+      // dijéramos "no te entendí", el vendedor reescribe la consulta al pedo.
+      if (!parsed) {
+        return res.json({
+          ok: true,
+          respuesta: 'Uh, se me cortó la respuesta 😅. Mandámela de nuevo, por favor.',
+          productos: [],
+        });
+      }
 
       const porSku = new Map(catalogo.map((p) => [String(p.sku), p]));
       const productos = (parsed.skus || [])
         .map((s) => porSku.get(String(s))).filter(Boolean).slice(0, 5)
         .map((p) => ({ sku: p.sku, nombre: p.nombre, categoria: p.categoria, descripcion: p.descripcion, imagen: p.imagen }));
 
-      return res.json({ ok: true, respuesta: limpiarSkus(parsed.respuesta), productos });
+      return res.json({ ok: true, respuesta: parsed.respuesta, productos });
     } catch (e) {
       console.error('chatInterno error:', e);
       return res.status(500).json({ error: 'Error interno' });
