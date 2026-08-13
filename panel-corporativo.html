@@ -640,6 +640,7 @@
     }
 
     @media (max-width: 600px) {
+
       /* La insignia queda a mitad del renglón: anclando la tarjeta a ella se salía de
          la pantalla. Al sacarle el `position` al wrapper, el ancla pasa a ser
          .panel-header y la tarjeta ocupa el ancho del contenedor, como un desplegable. */
@@ -2691,7 +2692,7 @@
         <li class="hamburger-menu-item">
           <a href="#vendedor-destacado">
             <i class="fa-solid fa-crown"></i>
-            <span>Vendedor Destacado</span>
+            <span>Compañero Destacado</span>
           </a>
         </li>
         <li class="hamburger-menu-item">
@@ -2787,16 +2788,19 @@
                     <div class="panel-card-icon-title">
                       <span class="panel-card-icon"><i class="fa-solid fa-trophy"
                           style="animation: none; color: var(--accent);"></i></span>
-                      <h3 style="color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+                      <h3
+                        style="color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
                         Desafío ABERTURAS-D 🏆</h3>
                     </div>
                   </div>
                   <div class="panel-card-body contest-card-body"
                     style="text-align: center; padding: 30px 20px; position: relative; z-index: 1;">
                     <!-- Image Container with Floating Animation -->
-                    <div style="margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; width: 100%;">
+                    <div
+                      style="margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; width: 100%;">
                       <img src="" alt="Premio del Concurso - Cafetera espresso CUK 20 bar con espumador + 2 vasos"
-                        class="floating-prize" id="contest-prize-image" style="opacity: 0; transition: opacity 0.4s ease;">
+                        class="floating-prize" id="contest-prize-image"
+                        style="opacity: 0; transition: opacity 0.4s ease;">
 
                     </div>
                     <p class="contest-card-text"
@@ -2804,12 +2808,15 @@
                       <span class="contest-prominent-title"
                         style="display: block; font-size: 1.6rem; color: var(--accent); font-weight: 900; margin-bottom: 8px; text-transform: uppercase;">¡ABERTURAS-D!
                         🏆</span>
-                      El vendedor con mayor cantidad de <strong>unidades vendidas de la lista aberturas-D</strong> gana una
+                      El vendedor con mayor cantidad de <strong>unidades vendidas de la lista aberturas-D</strong> gana
+                      una
                       <strong>cafetera espresso CUK 20 bar con espumador + 2 vasos</strong>.
                     </p>
                     <!-- SUBTLE COUNTDOWN -->
-                    <p id="countdown-timer" style="font-size: 0.9rem; color: #6b7280; margin-bottom: 25px; font-weight: 500;">
-                      El concurso finaliza en: <span id="time-left" style="color: var(--accent); font-weight: 700;">--d --h --m
+                    <p id="countdown-timer"
+                      style="font-size: 0.9rem; color: #6b7280; margin-bottom: 25px; font-weight: 500;">
+                      El concurso finaliza en: <span id="time-left" style="color: var(--accent); font-weight: 700;">--d
+                        --h --m
                         --s</span>
                     </p>
                     <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
@@ -2830,21 +2837,21 @@
                 </div>
               </div>
 
-              <!-- SLIDE 2: VENDEDOR DESTACADO -->
+              <!-- SLIDE 2: COMPAÑERO DESTACADO -->
               <div class="hero-slide" role="group" aria-roledescription="diapositiva"
-                aria-label="2 de 3: Vendedor destacado">
+                aria-label="2 de 3: Compañero destacado">
                 <a class="panel-card hero-link-card hero-vendedor-slide" href="#vendedor-destacado"
                   data-hero-target="vendedor-destacado">
                   <div class="panel-card-header">
                     <div class="panel-card-icon-title">
                       <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
-                      <h3>Vendedor Destacado</h3>
+                      <h3>Compañero Destacado</h3>
                     </div>
                     <span class="hero-slide-goto" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
                   </div>
                   <div class="panel-card-body hero-slide-body dyn-loading" id="hero-vendedor-body">
                     <img id="carousel-vendedor-img" class="hero-vendedor-photo"
-                      src="/assets/VENDEDORDESTACADO/Gabriel-Lamas.webp" alt="Foto del vendedor destacado" />
+                      src="/assets/VENDEDORDESTACADO/Gabriel-Lamas.webp" alt="Foto del compañero destacado" />
                     <div class="hero-slide-text">
                       <h4 id="carousel-vendedor-name" class="hero-slide-name">Darío Maidana</h4>
                       <p id="carousel-vendedor-desc" class="hero-slide-desc">
@@ -3119,16 +3126,16 @@
             </div>
           </div>
         </div>
-        <!-- SECCIÓN EMPLEADO DEL MES-->
+        <!-- SECCIÓN COMPAÑERO DESTACADO -->
         <div class="panel-card featured-employee-card" id="vendedor-destacado">
           <div class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-crown"></i></span>
-              <h3>Vendedor Destacado</h3>
+              <h3>Compañero Destacado</h3>
             </div>
           </div>
           <div class="panel-card-body employee-body dyn-loading">
-            <img id="featured-vendedor-img" src="/assets/VENDEDORDESTACADO/Gabriel-Lamas.webp" alt="Foto de Juan Perez"
+            <img id="featured-vendedor-img" src="/assets/VENDEDORDESTACADO/Gabriel-Lamas.webp" alt="Foto del compañero destacado"
               class="employee-photo" />
             <h4 id="featured-vendedor-name" class="employee-name"> Darío Maidana</h4>
             <p id="featured-vendedor-desc" class="employee-title">
