@@ -1350,6 +1350,51 @@
         }
 
         /* ===== EMPTY STATES & SKELETON LOADERS ===== */
+        /* ── Solicitudes del Visualizador IA ─────────────────────────── */
+        .sol-filtros { display: flex; gap: 8px; flex-wrap: wrap; }
+        .sol-filtro-btn {
+            width: auto; padding: 7px 14px; font-size: .82rem; font-weight: 600;
+            border: 1px solid #d1d5db; border-radius: 999px;
+            background: #fff; color: var(--muted); cursor: pointer;
+        }
+        .sol-filtro-btn:hover { border-color: var(--brand); color: var(--brand); }
+        .sol-filtro-btn.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+
+        .sol-card {
+            display: grid; grid-template-columns: 150px 1fr auto; gap: 18px;
+            align-items: start; background: #fff; border-radius: var(--radius);
+            border: 1px solid #e5e7eb; box-shadow: var(--shadow-sm);
+            padding: 16px; margin-bottom: 12px;
+        }
+        .sol-card.is-nueva { border-left: 4px solid var(--accent); }
+        .sol-foto {
+            width: 150px; height: 110px; object-fit: cover; border-radius: 8px;
+            border: 1px solid #e5e7eb; background: #f3f4f6; cursor: zoom-in; display: block;
+        }
+        .sol-datos { min-width: 0; }
+        .sol-datos h4 { margin: 0 0 4px; font-size: 1rem; font-weight: 700; color: var(--ink); }
+        .sol-meta { font-size: .82rem; color: var(--muted); margin: 0 0 8px; }
+        .sol-linea { font-size: .86rem; color: var(--ink); margin: 3px 0; word-break: break-word; }
+        .sol-linea b { color: var(--muted); font-weight: 600; }
+        .sol-linea a { color: var(--brand); }
+        .sol-acciones { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }
+        .sol-acciones select {
+            padding: 7px 10px; border: 1px solid #d1d5db; border-radius: 8px;
+            font-size: .82rem; font-weight: 600; background: #fff; cursor: pointer;
+        }
+        .sol-chip {
+            display: inline-block; padding: 2px 10px; border-radius: 999px;
+            font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em;
+        }
+        .sol-chip.nueva     { background: #fef3c7; color: #92400e; }
+        .sol-chip.en_proceso{ background: #dbeafe; color: #1e40af; }
+        .sol-chip.enviada   { background: #d1fae5; color: #065f46; }
+        @media (max-width: 768px) {
+            .sol-card { grid-template-columns: 1fr; }
+            .sol-foto { width: 100%; height: 180px; }
+            .sol-acciones { flex-direction: row; flex-wrap: wrap; }
+        }
+
         .admin-empty-state {
             text-align: center;
             padding: 42px 20px;
@@ -1534,6 +1579,12 @@
                 <a class="nav-item" data-section="suggestions">
                     <i class="fa-solid fa-envelope-open-text"></i> Sugerencias
                     <span class="nav-badge nav-badge-count" id="nav-badge-suggestions" style="display:none">0</span>
+                </a>
+
+                <span class="nav-group">Clientes</span>
+                <a class="nav-item" data-section="solicitudes">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Visualizador IA
+                    <span class="nav-badge nav-badge-count" id="nav-badge-solicitudes" style="display:none">0</span>
                 </a>
 
                 <span class="nav-group">Equipo</span>
@@ -2327,6 +2378,22 @@
                 </div>
             </section>
 
+            <!-- SOLICITUDES DEL VISUALIZADOR IA -->
+            <section id="solicitudes" class="content-section">
+                <div class="section-header">
+                    <h1>Solicitudes del Visualizador IA</h1>
+                    <div class="sol-filtros">
+                        <button type="button" class="sol-filtro-btn active" data-estado="todas">Todas</button>
+                        <button type="button" class="sol-filtro-btn" data-estado="nueva">Nuevas</button>
+                        <button type="button" class="sol-filtro-btn" data-estado="en_proceso">En proceso</button>
+                        <button type="button" class="sol-filtro-btn" data-estado="enviada">Enviadas</button>
+                    </div>
+                </div>
+                <div id="admin-solicitudes-list" class="admin-list">
+                    <!-- Se puebla desde Firestore -->
+                </div>
+            </section>
+
             <!-- NOTIFICATIONS SECTION -->
             <section id="notifications" class="content-section">
                 <div class="section-header">
@@ -3038,6 +3105,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
             if (sectionId === 'news') loadNews();
             if (sectionId === 'trainings') loadTrainings();
             if (sectionId === 'suggestions') loadSuggestions();
+            if (sectionId === 'solicitudes') loadSolicitudes();
             if (sectionId === 'notifications') loadNotifications();
             if (sectionId === 'social-config') loadSocialConfig();
             if (sectionId === 'review-config') loadReviewConfig();
@@ -4256,13 +4324,21 @@ PREMIO: 1 kit disco enlozado.</textarea>
 
         async function updateDashboardQuickStats() {
             try {
-                const [newsSnap, trainSnap, suggSnap, acaSnap, padron] = await Promise.all([
+                const [newsSnap, trainSnap, suggSnap, acaSnap, padron, solSnap] = await Promise.all([
                     db.collection('news').get(),
                     db.collection('trainings').get(),
                     db.collection('sugerencias').get(),
                     db.collection('academia_progreso').get().catch(() => ({ size: 0, forEach: () => {} })),
-                    getPadronTrackeado(false).catch(() => ({ trackablePadron: [], index: {} }))
+                    getPadronTrackeado(false).catch(() => ({ trackablePadron: [], index: {} })),
+                    db.collection('solicitudes_visualizador').orderBy('fecha', 'desc').get().catch(() => null)
                 ]);
+
+                // Solicitudes del visualizador: aprovechamos la lectura para
+                // dejar el badge al día sin tener que entrar a la sección.
+                if (solSnap) {
+                    solCache = solSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    actualizarBadgeSolicitudes();
+                }
 
                 // News KPI
                 const totalNews = newsSnap.size;
@@ -5597,6 +5673,132 @@ PREMIO: 1 kit disco enlozado.</textarea>
             }
         }
 
+        /* ══════════════════════════════════════════════════════════════════
+           SOLICITUDES DEL VISUALIZADOR IA
+           Las escribe la Cloud Function `solicitudVisualizador` (las reglas
+           bloquean el create desde el cliente). Acá sólo se leen, se les
+           cambia el estado y se borran — todo eso pide ser admin.
+           Reemplazan al mail de Formspree: además de no perderse por cupo,
+           queda registro de cuáles ya se atendieron.
+           ══════════════════════════════════════════════════════════════════ */
+        const SOL_ESTADOS = {
+            nueva:      { label: 'Nueva',      icon: 'fa-circle-exclamation' },
+            en_proceso: { label: 'En proceso', icon: 'fa-spinner' },
+            enviada:    { label: 'Enviada',    icon: 'fa-circle-check' }
+        };
+        let solFiltro = 'todas';
+        let solCache = [];
+
+        async function loadSolicitudes() {
+            const container = document.getElementById('admin-solicitudes-list');
+            if (!container) return;
+            container.innerHTML = `<div class="skeleton-loader"></div><div class="skeleton-loader" style="height:50px;"></div>`;
+            try {
+                const snap = await db.collection('solicitudes_visualizador').orderBy('fecha', 'desc').get();
+                solCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            } catch (e) {
+                console.error('No se pudieron cargar las solicitudes:', e);
+                container.innerHTML = `
+                    <div class="admin-empty-state">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <h4>No pudimos cargar las solicitudes</h4>
+                        <p>Revisá la conexión y volvé a entrar a esta sección.</p>
+                    </div>`;
+                return;
+            }
+            renderSolicitudes();
+        }
+
+        function renderSolicitudes() {
+            const container = document.getElementById('admin-solicitudes-list');
+            if (!container) return;
+
+            const lista = solFiltro === 'todas'
+                ? solCache
+                : solCache.filter(s => (s.estado || 'nueva') === solFiltro);
+
+            if (!lista.length) {
+                const vacioTotal = solCache.length === 0;
+                container.innerHTML = `
+                    <div class="admin-empty-state">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <h4>${vacioTotal ? 'Todavía no hay solicitudes' : 'No hay solicitudes con este estado'}</h4>
+                        <p>${vacioTotal
+                            ? 'Cuando alguien pida un diseño desde el Visualizador IA, va a aparecer acá.'
+                            : 'Probá con otro filtro.'}</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = lista.map(s => {
+                const estado = SOL_ESTADOS[s.estado] ? s.estado : 'nueva';
+                const fecha = s.fecha?.toDate ? s.fecha.toDate().toLocaleString('es-AR') : 'Sin fecha';
+                const tel = escapeHtml(s.telefono || '');
+                // El WhatsApp del cliente viene como lo escribió: dejamos sólo
+                // los dígitos para armar el wa.me y que el link no se rompa.
+                const telDigitos = (s.telefono || '').replace(/\D/g, '');
+                return `
+                <div class="sol-card ${estado === 'nueva' ? 'is-nueva' : ''}">
+                    <img class="sol-foto" src="${escapeHtml(s.imagenUrl || '')}" alt="Ambiente del cliente"
+                         loading="lazy" onclick="window.open('${escapeHtml(s.imagenUrl || '')}','_blank')"
+                         onerror="this.removeAttribute('onclick');this.alt='La foto ya no está disponible';">
+                    <div class="sol-datos">
+                        <h4>${escapeHtml(s.nombre || 'Sin nombre')}
+                            <span class="sol-chip ${estado}">${SOL_ESTADOS[estado].label}</span>
+                        </h4>
+                        <p class="sol-meta">${fecha}</p>
+                        <p class="sol-linea"><b>Email:</b> <a href="mailto:${escapeHtml(s.email || '')}">${escapeHtml(s.email || '—')}</a></p>
+                        ${tel ? `<p class="sol-linea"><b>WhatsApp:</b> <a href="https://wa.me/${telDigitos}" target="_blank" rel="noopener">${tel}</a></p>` : ''}
+                        <p class="sol-linea"><b>Superficie:</b> ${escapeHtml(s.superficie || '—')}</p>
+                        <p class="sol-linea"><b>Revestimiento:</b> ${escapeHtml(s.productoNombre || '—')}${s.productoSku ? ` (SKU ${escapeHtml(s.productoSku)})` : ''}</p>
+                        ${s.productoUrl ? `<p class="sol-linea"><a href="${escapeHtml(s.productoUrl)}" target="_blank" rel="noopener">Ver ficha del producto <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>` : ''}
+                    </div>
+                    <div class="sol-acciones">
+                        <select onchange="cambiarEstadoSolicitud('${s.id}', this.value)" title="Estado de la solicitud">
+                            ${Object.entries(SOL_ESTADOS).map(([k, v]) =>
+                                `<option value="${k}" ${k === estado ? 'selected' : ''}>${v.label}</option>`).join('')}
+                        </select>
+                        <button class="action-btn btn-delete" onclick="deleteItem('solicitudes_visualizador', '${s.id}')" title="Eliminar">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        window.cambiarEstadoSolicitud = async (id, estado) => {
+            try {
+                await db.collection('solicitudes_visualizador').doc(id).update({ estado });
+                const item = solCache.find(s => s.id === id);
+                if (item) item.estado = estado;
+                renderSolicitudes();
+                actualizarBadgeSolicitudes();
+                toast('Estado actualizado.', 'success');
+            } catch (e) {
+                console.error('No se pudo cambiar el estado:', e);
+                toast('No se pudo actualizar el estado.', 'error');
+            }
+        };
+
+        // El badge cuenta sólo las NUEVAS: es un "te falta atender esto",
+        // no un total histórico que crecería para siempre.
+        function actualizarBadgeSolicitudes() {
+            const badge = document.getElementById('nav-badge-solicitudes');
+            if (!badge) return;
+            const nuevas = solCache.filter(s => (s.estado || 'nueva') === 'nueva').length;
+            badge.textContent = nuevas;
+            badge.style.display = nuevas > 0 ? 'inline-flex' : 'none';
+        }
+
+        document.querySelectorAll('.sol-filtro-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.sol-filtro-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                solFiltro = btn.dataset.estado;
+                renderSolicitudes();
+            });
+        });
+
         async function loadSuggestions() {
             const container = document.getElementById("admin-suggestions-list");
             container.innerHTML = `<div class="skeleton-loader"></div><div class="skeleton-loader" style="height:50px;"></div>`;
@@ -5649,6 +5851,7 @@ PREMIO: 1 kit disco enlozado.</textarea>
                         if (collection === 'news') loadNews();
                         if (collection === 'trainings') loadTrainings();
                         if (collection === 'sugerencias') loadSuggestions();
+                        if (collection === 'solicitudes_visualizador') loadSolicitudes();
                         if (collection === 'notifications') loadNotifications();
                         if (collection === 'vendedor-config') loadVendedorConfig();
                         if (collection === 'invitaciones') loadInvitations();

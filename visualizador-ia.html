@@ -307,6 +307,10 @@
     .modal-search { width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
     .modal-search:focus { outline: none; border-color: var(--brand); }
     .modal-no-results { display: none; text-align: center; color: var(--muted); padding: 30px 10px; font-weight: 500; }
+    /* Honeypot antispam: fuera de pantalla, no `display:none` (algunos bots
+       ignoran los campos ocultos con display). Invisible para el usuario. */
+    .hp-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
     .modal-status { text-align: center; color: var(--muted); padding: 40px 10px; font-weight: 500; }
     .modal-status i { color: var(--brand); margin-right: 6px; }
 
@@ -444,6 +448,12 @@
                 <label for="user-phone">WhatsApp <span style="font-weight:400; color:var(--muted);">(opcional)</span></label>
                 <input type="tel" id="user-phone" placeholder="Ej: 381 555-1234">
               </div>
+              <!-- Honeypot: invisible para personas, irresistible para bots.
+                   Si viene con algo, la función descarta la solicitud. -->
+              <div class="hp-field" aria-hidden="true">
+                <label for="website">No completar</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+              </div>
               <div class="step-error-msg">Completá tu nombre y email.</div>
               <div class="action-buttons">
                 <button id="send-request-btn" class="generate-button"><i class="fas fa-spinner"></i><span class="btn-text">Enviar Solicitud</span></button>
@@ -505,7 +515,10 @@
     // === NUEVA LÓGICA CON IMGBB Y FORMSPREE ==========================================
     // =================================================================================
     const IMGBB_API_KEY = '25145b52d7beb3e3e0ee0f0bd8ca55bf'; // Clave de API pública de ImgBB
-    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdkwjqgp'; // Endpoint de Formspree
+    // La solicitud va a nuestra Cloud Function y queda en Firestore, para
+    // atenderla desde el panel admin. Antes iba a Formspree, que con el plan
+    // gratis descartaba en silencio todo lo que pasara el cupo mensual.
+    const SOLICITUD_ENDPOINT = 'https://us-central1-backend-panel-vendedores.cloudfunctions.net/solicitudVisualizador';
 
     /* ── Catálogo: los revestimientos salen del catálogo real ──────────────
        Antes esta lista estaba escrita a mano acá y quedó obsoleta: apuntaba
@@ -831,29 +844,31 @@
         }
         const imageUrl = imgbbResult.data.url;
 
-        // 2) Preparar y enviar datos a Formspree
+        // 2) Registrar la solicitud en nuestra base (vía Cloud Function)
         const selectedProduct = productos.find(p => p.sku === selectedProductId);
         if (!selectedProduct) throw new Error('El revestimiento elegido ya no está en el catálogo. Elegí otro.');
-        const formData = new FormData();
-        formData.append('Nombre', userName);
-        formData.append('Email', userEmail);
-        if (userPhone) formData.append('WhatsApp', userPhone);
-        formData.append('Superficie a renovar', selectedSurface === 'floor' ? 'Piso' : 'Pared');
-        formData.append('Producto Elegido', `${selectedProduct.nombre} (SKU: ${selectedProduct.sku})`);
-        formData.append('Link del Producto', selectedProduct.url);
-        formData.append('Imagen del Ambiente', imageUrl);
-        formData.append('_subject', `Nueva Solicitud de Visualizador IA - ${userName}`);
 
-        const formspreeResponse = await fetch(FORMSPREE_ENDPOINT, {
+        const respuesta = await fetch(SOLICITUD_ENDPOINT, {
           method: 'POST',
-          body: formData,
-          headers: {
-            'Accept': 'application/json'
-          }
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre: userName,
+            email: userEmail,
+            telefono: userPhone,
+            superficie: selectedSurface,               // 'floor' | 'wall'
+            productoNombre: selectedProduct.nombre,
+            productoSku: selectedProduct.sku,
+            productoUrl: selectedProduct.url,
+            imagenUrl: imageUrl,
+            website: document.getElementById('website')?.value || ''   // honeypot
+          })
         });
 
-        if (!formspreeResponse.ok) {
-          throw new Error('Error al enviar el formulario a Formspree.');
+        const datos = await respuesta.json().catch(() => ({}));
+        if (!respuesta.ok || !datos.ok) {
+          // La función explica el motivo real (rate limit, email inválido…);
+          // mostrarlo es más útil que un "algo salió mal" genérico.
+          throw new Error(datos.error || 'No pudimos registrar tu solicitud.');
         }
 
         // 3) Mostrar la tarjeta de confirmación (en lugar de alert + reload)

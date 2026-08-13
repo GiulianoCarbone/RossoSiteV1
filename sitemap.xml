@@ -14,6 +14,12 @@
       <changefreq>weekly</changefreq>
       <priority>0.9</priority>
    </url>
+   <url>
+      <loc>https://www.rossomateriales.site/salta.html</loc>
+      <lastmod>2026-08-13</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.9</priority>
+   </url>
    <!-- Catálogo y Búsqueda -->
    <url>
       <loc>https://www.rossomateriales.site/catalogo.html</loc>

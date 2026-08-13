@@ -61,6 +61,17 @@ service cloud.firestore {
     // Lectura abierta para poder armar el ranking; escritura del propio legajo.
     match /academia_progreso/{doc} { allow read, write: if true; }
 
+    // ── SOLICITUDES DEL VISUALIZADOR IA ────────────────────────────
+    // Las crea la Cloud Function `solicitudVisualizador` con el Admin SDK,
+    // que se saltea estas reglas: por eso el cliente NO puede escribir acá.
+    // Si abriéramos el create, cualquiera podría llenar la colección de
+    // basura salteándose la validación y el rate-limit de la función.
+    // Contienen datos de contacto de clientes, así que sólo el admin lee.
+    match /solicitudes_visualizador/{doc} {
+      allow read, update, delete: if isAdmin();
+      allow create: if false;
+    }
+
     // ── Todo lo no contemplado: DENEGADO por defecto ───────────────
     match /{document=**} { allow read, write: if false; }
   }

@@ -567,3 +567,105 @@ exports.chatInterno = onRequest(
     }
   }
 );
+
+/* ═════════════════════════════════════════════════════════════════════════
+   SOLICITUDES DEL VISUALIZADOR IA (`solicitudVisualizador`)
+   Reemplaza a Formspree. Antes el formulario del visualizador se mandaba a
+   un servicio externo que nos avisaba por mail: con el plan gratis, pasado
+   el cupo mensual las solicitudes se perdían en silencio.
+   Ahora caen en Firestore (`solicitudes_visualizador`) y se atienden desde
+   el panel admin, que además lleva el estado de cada una.
+
+   Endpoint público (lo llama un visitante anónimo), así que la protección
+   es la misma receta que el bot del catálogo: rate-limit por IP con su
+   propio namespace + honeypot + validación estricta de cada campo.
+   La foto del ambiente se sigue subiendo a ImgBB desde el navegador; acá
+   sólo guardamos la URL que devuelve.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+const SOLICITUD_MAX = {
+  nombre: 80,
+  email: 120,
+  telefono: 30,
+  producto: 160,
+  sku: 40,
+  url: 500,
+};
+
+// Namespace propio para no consumir la cuota del chatbot: quien pide un
+// diseño no debería quedarse sin chat, ni al revés.
+async function checkRateLimitSolicitud(ip) {
+  const ipKey = 'vis_' + (String(ip).replace(/[^a-zA-Z0-9]/g, '_').slice(0, 56) || 'desconocido');
+  const ref = admin.firestore().collection('chatlimits').doc(ipKey);
+  const now = Date.now();
+  return admin.firestore().runTransaction(async (tx) => {
+    const doc = await tx.get(ref);
+    const d = doc.exists ? doc.data() : {};
+    let { minStart = 0, minCount = 0, dayStart = 0, dayCount = 0 } = d;
+    if (now - minStart > 60000) { minStart = now; minCount = 0; }
+    if (now - dayStart > 86400000) { dayStart = now; dayCount = 0; }
+    minCount++; dayCount++;
+    tx.set(ref, { minStart, minCount, dayStart, dayCount }, { merge: true });
+    // Una solicitud lleva sacar una foto y llenar el formulario: 3 por minuto
+    // y 10 por día es holgado para una persona real y molesto para un bot.
+    if (minCount > 3) return { ok: false, msg: 'Esperá unos segundos antes de enviar otra solicitud.' };
+    if (dayCount > 10) return { ok: false, msg: 'Ya enviaste varias solicitudes hoy. Escribinos por WhatsApp y te ayudamos.' };
+    return { ok: true };
+  });
+}
+
+const limpiar = (v, max) => String(v == null ? '' : v).trim().replace(/\s+/g, ' ').slice(0, max);
+
+exports.solicitudVisualizador = onRequest(
+  { cors: true, region: 'us-central1' },
+  async (req, res) => {
+    try {
+      if (req.method !== 'POST') return res.status(405).json({ error: 'Método no permitido' });
+
+      const b = req.body || {};
+
+      // Honeypot: campo oculto que un humano nunca completa. Respondemos OK
+      // para que el bot crea que funcionó y no reintente por otra vía.
+      if (String(b.website || '').trim()) return res.json({ ok: true });
+
+      const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.ip || 'desconocido';
+      const gate = await checkRateLimitSolicitud(ip);
+      if (!gate.ok) return res.status(429).json({ error: gate.msg });
+
+      const nombre    = limpiar(b.nombre, SOLICITUD_MAX.nombre);
+      const email     = limpiar(b.email, SOLICITUD_MAX.email);
+      const telefono  = limpiar(b.telefono, SOLICITUD_MAX.telefono);
+      const superficie = b.superficie === 'wall' ? 'Pared' : b.superficie === 'floor' ? 'Piso' : '';
+      const productoNombre = limpiar(b.productoNombre, SOLICITUD_MAX.producto);
+      const productoSku    = limpiar(b.productoSku, SOLICITUD_MAX.sku);
+      const productoUrl    = limpiar(b.productoUrl, SOLICITUD_MAX.url);
+      const imagenUrl      = limpiar(b.imagenUrl, SOLICITUD_MAX.url);
+
+      if (!nombre)  return res.status(400).json({ error: 'Falta el nombre.' });
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return res.status(400).json({ error: 'El email no parece válido.' });
+      if (!superficie)      return res.status(400).json({ error: 'Falta la superficie a renovar.' });
+      if (!productoNombre)  return res.status(400).json({ error: 'Falta el revestimiento elegido.' });
+
+      // La foto es el insumo del diseño: sin una URL de imagen válida la
+      // solicitud no sirve para nada, así que no la damos por buena.
+      if (!/^https:\/\/[^\s]+$/i.test(imagenUrl)) {
+        return res.status(400).json({ error: 'No pudimos registrar la foto del ambiente. Probá de nuevo.' });
+      }
+
+      const doc = {
+        nombre, email, telefono, superficie,
+        productoNombre, productoSku, productoUrl,
+        imagenUrl,
+        estado: 'nueva',            // nueva | en_proceso | enviada
+        fecha: admin.firestore.FieldValue.serverTimestamp(),
+        ip,
+      };
+
+      const ref = await admin.firestore().collection('solicitudes_visualizador').add(doc);
+      return res.json({ ok: true, id: ref.id });
+    } catch (e) {
+      console.error('solicitudVisualizador error:', e);
+      return res.status(500).json({ error: 'Error interno' });
+    }
+  }
+);
