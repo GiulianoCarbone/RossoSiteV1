@@ -1,4 +1,17 @@
 User-agent: *
 Allow: /
 
+# Bloqueo de paneles administrativos y herramientas internas privadas
+Disallow: /admin/
+Disallow: /panel-admin.html
+Disallow: /panel-corporativo.html
+Disallow: /carga-masiva.html
+Disallow: /mantenimiento.html
+Disallow: /academia.html
+Disallow: /argumentarios.html
+Disallow: /invitacion.html
+Disallow: /recordatorio.html
+Disallow: /pdf/
+
+# Sitemap oficial
 Sitemap: https://www.rossomateriales.site/sitemap.xml

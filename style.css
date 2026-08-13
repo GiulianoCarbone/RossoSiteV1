@@ -621,9 +621,19 @@ main {
   }
 }
 
-/* Ocultar título principal en mobile */
+/* Título principal H1 SEO (visible y responsivo en mobile y desktop) */
+.main-h1-title,
 .desktop-only-title {
-  display: none;
+  display: block;
+  font-size: clamp(1.4rem, 3.5vw, 2.25rem);
+  font-weight: 800;
+  color: var(--brand);
+  text-align: center;
+  margin: 32px auto 16px;
+  padding: 0 16px;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  max-width: 960px;
 }
 
 /* === ESTILOS PARA LA NAVEGACIÓN EN DESKTOP === */
@@ -639,10 +649,6 @@ main {
 
   .nav-links {
     display: flex;
-  }
-
-  .desktop-only-title {
-    display: block;
   }
 }
 
