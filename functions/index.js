@@ -327,6 +327,17 @@ async function pedirJson(messages, key, maxTokens) {
   return null;
 }
 
+/* ── Vencimiento de los contadores de rate-limit ─────────────────────────
+   `chatlimits` guarda un doc por IP. Sin esto crecía para siempre: cada
+   visitante que escribía una vez dejaba un documento eterno.
+   La ventana más larga que mira un contador es la diaria (24 h), así que a
+   las 48 h sin actividad el doc ya no sirve para nada. La TTL policy de
+   Firestore lo borra sola al llegar a `expiresAt` (igual que `session_logs`
+   y `usage_daily`). Como el campo se reescribe en cada request, un doc
+   activo se renueva y nunca se borra en caliente.                         */
+const LIMITES_RETENCION_MS = 2 * 24 * 60 * 60 * 1000;   // 48 h
+const vencimiento = (now) => new Date(now + LIMITES_RETENCION_MS);
+
 // Rate-limit por IP en Firestore: 10/min y 120/día
 async function checkRateLimit(ip) {
   const ipKey = String(ip).replace(/[^a-zA-Z0-9]/g, '_').slice(0, 60) || 'desconocido';
@@ -339,7 +350,7 @@ async function checkRateLimit(ip) {
     if (now - minStart > 60000) { minStart = now; minCount = 0; }
     if (now - dayStart > 86400000) { dayStart = now; dayCount = 0; }
     minCount++; dayCount++;
-    tx.set(ref, { minStart, minCount, dayStart, dayCount }, { merge: true });
+    tx.set(ref, { minStart, minCount, dayStart, dayCount, expiresAt: vencimiento(now) }, { merge: true });
     if (minCount > 10) return { ok: false, msg: 'Estás enviando mensajes muy rápido. Esperá un momento, por favor.' };
     if (dayCount > 120) return { ok: false, msg: 'Llegaste al límite de mensajes por hoy. Si necesitás seguir, escribinos por WhatsApp.' };
     return { ok: true };
@@ -358,7 +369,7 @@ async function checkGlobalLimit() {
     let { dayStart = 0, dayCount = 0 } = d;
     if (now - dayStart > 86400000) { dayStart = now; dayCount = 0; }
     dayCount++;
-    tx.set(ref, { dayStart, dayCount }, { merge: true });
+    tx.set(ref, { dayStart, dayCount, expiresAt: vencimiento(now) }, { merge: true });
     return { ok: dayCount <= GLOBAL_DAILY_CAP };
   });
 }
@@ -481,7 +492,7 @@ async function checkRateLimitInterno(ip) {
     if (now - minStart > 60000) { minStart = now; minCount = 0; }
     if (now - dayStart > 86400000) { dayStart = now; dayCount = 0; }
     minCount++; dayCount++;
-    tx.set(ref, { minStart, minCount, dayStart, dayCount }, { merge: true });
+    tx.set(ref, { minStart, minCount, dayStart, dayCount, expiresAt: vencimiento(now) }, { merge: true });
     if (minCount > 20) return { ok: false, msg: 'Estás enviando mensajes muy rápido. Esperá unos segundos.' };
     if (dayCount > 400) return { ok: false, msg: 'Llegaste al límite de consultas por hoy.' };
     return { ok: true };
@@ -499,7 +510,7 @@ async function checkGlobalInterno() {
     let { dayStart = 0, dayCount = 0 } = d;
     if (now - dayStart > 86400000) { dayStart = now; dayCount = 0; }
     dayCount++;
-    tx.set(ref, { dayStart, dayCount }, { merge: true });
+    tx.set(ref, { dayStart, dayCount, expiresAt: vencimiento(now) }, { merge: true });
     return { ok: dayCount <= GLOBAL_INTERNO_CAP };
   });
 }
@@ -605,7 +616,7 @@ async function checkRateLimitSolicitud(ip) {
     if (now - minStart > 60000) { minStart = now; minCount = 0; }
     if (now - dayStart > 86400000) { dayStart = now; dayCount = 0; }
     minCount++; dayCount++;
-    tx.set(ref, { minStart, minCount, dayStart, dayCount }, { merge: true });
+    tx.set(ref, { minStart, minCount, dayStart, dayCount, expiresAt: vencimiento(now) }, { merge: true });
     // Una solicitud lleva sacar una foto y llenar el formulario: 3 por minuto
     // y 10 por día es holgado para una persona real y molesto para un bot.
     if (minCount > 3) return { ok: false, msg: 'Esperá unos segundos antes de enviar otra solicitud.' };
