@@ -1623,6 +1623,112 @@
       font-size: 0.9rem;
     }
 
+    /* Tira "lo que viene": los próximos días con actividad, salteando los vacíos.
+       Va sin marco ni fondo a propósito: informa de reojo, sin robarle
+       protagonismo al calendario, que es lo que se vino a mirar. */
+    .agenda-next {
+      list-style: none;
+      margin: 0 0 1rem;
+      padding: 0;
+    }
+
+    .agenda-next-item {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      width: 100%;
+      padding: 3px 6px;
+      border: none;
+      border-radius: 6px;
+      background: none;
+      text-align: left;
+      font: inherit;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .agenda-next-item:hover {
+      background-color: #f1f5f9;
+    }
+
+    .agenda-next-icon {
+      font-size: 0.85rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .agenda-next-when {
+      flex-shrink: 0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--agenda-color, var(--accent));
+    }
+
+    /* Un día con varios cumpleaños da un texto largo: se permiten 2 líneas */
+    .agenda-next-what {
+      min-width: 0;
+      color: var(--brand);
+      font-weight: 500;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .agenda-next-empty {
+      padding: 3px 6px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* Adelanto del próximo evento en el encabezado, para la tarjeta plegada en celular */
+    .agenda-hint {
+      flex: 1;
+      min-width: 0;
+      text-align: right;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    @media (min-width: 769px) {
+
+      /* En desktop la tarjeta está siempre abierta: el adelanto sobra */
+      .agenda-hint {
+        display: none;
+      }
+    }
+
+    .agenda-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .agenda-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .agenda-legend i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
     .calendar-header {
       display: flex;
       justify-content: space-between;
@@ -1636,11 +1742,21 @@
       color: var(--brand);
     }
 
-    .calendar-nav button {
+    /* Las flechas nunca tuvieron un contenedor .calendar-nav, así que quedaban con el
+       estilo por defecto del navegador */
+    .calendar-header button {
       background: none;
       border: none;
+      color: var(--brand);
+      font-size: 1rem;
       cursor: pointer;
-      padding: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      transition: background-color 0.15s ease;
+    }
+
+    .calendar-header button:hover {
+      background-color: #f1f5f9;
     }
 
     .calendar-grid {
@@ -1651,14 +1767,22 @@
     }
 
     .calendar-day {
-      padding: 0.5rem 0;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding-top: 2px;
+      min-height: 42px;
+    }
+
+    .calendar-day-num {
+      width: 30px;
+      height: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: auto;
+      border-radius: 50%;
+      line-height: 1;
     }
 
     .day-name {
@@ -1667,15 +1791,53 @@
       padding-bottom: 0.5rem;
     }
 
-    .is-today {
+    /* Día en que la persona entró al panel. Se llena solo, con el dato de la racha */
+    .day-visited .calendar-day-num {
+      background-color: #dcfce7;
+      color: #166534;
+      font-weight: 600;
+    }
+
+    .is-today .calendar-day-num {
       background-color: #fee2e2;
+      color: var(--brand);
+      font-weight: 800;
+      box-shadow: 0 0 0 2px var(--accent);
     }
 
     .has-event {
-      background-color: var(--accent);
-      color: white;
-      font-weight: 700;
       cursor: pointer;
+    }
+
+    /* Un punto por tipo de evento, debajo del número */
+    .calendar-dots {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 6px;
+    }
+
+    .calendar-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--agenda-color, var(--accent));
+    }
+
+    .day-flash .calendar-day-num {
+      animation: day-flash 1.2s ease-out;
+    }
+
+    @keyframes day-flash {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      30% {
+        transform: scale(1.25);
+      }
     }
 
     .empty-day {
@@ -2674,7 +2836,7 @@
         <li class="hamburger-menu-item">
           <a href="#capacitaciones">
             <i class="fa-solid fa-calendar-days"></i>
-            <span>Eventos</span>
+            <span>Agenda</span>
           </a>
         </li>
         <li class="hamburger-menu-item">
@@ -3058,16 +3220,21 @@
             </div>
           </div>
         </div>
-        <!-- SECCIÓN CALENDARIO DE EVENTOS -->
+        <!-- SECCIÓN AGENDA (CALENDARIO DE EVENTOS) -->
         <details class="panel-card collapsible-mobile" id="capacitaciones">
           <summary class="panel-card-header">
             <div class="panel-card-icon-title">
               <span class="panel-card-icon"><i class="fa-solid fa-calendar-days"></i></span>
-              <h3>Calendario de Eventos</h3>
+              <h3>Agenda</h3>
             </div>
+            <!-- Resumen para cuando la tarjeta está plegada en celular -->
+            <span class="agenda-hint" id="agenda-hint" hidden></span>
             <span class="summary-arrow"></span>
           </summary>
           <div class="panel-card-body calendar-container">
+            <!-- Lo que viene: sale al encuentro sin tener que buscar el día pintado -->
+            <ul class="agenda-next" id="agenda-next"></ul>
+
             <div class="calendar-header">
               <button id="prev-month-btn" aria-label="Mes anterior">
                 <i class="fa-solid fa-chevron-left"></i>
@@ -3080,7 +3247,13 @@
             <div class="calendar-grid" id="calendar-days-header"></div>
             <div class="calendar-grid" id="calendar-grid"></div>
             <div id="event-details">
-              <p>Seleccioná una fecha destacada para ver el evento.</p>
+              <p>Tocá un día marcado para ver el detalle.</p>
+            </div>
+            <div class="agenda-legend">
+              <span><i style="background:#db2777"></i> Cumpleaños</span>
+              <span><i style="background:#2563eb"></i> Feriado</span>
+              <span><i style="background:#ec6434"></i> Evento</span>
+              <span><i style="background:#86efac"></i> Entraste al panel</span>
             </div>
           </div>
         </details>
@@ -3639,12 +3812,28 @@
           .trim();
       }
 
+      // cumpleanos.json lo piden el saludo, las novedades y la agenda: se baja una
+      // sola vez por carga y los tres comparten el resultado.
+      let cumpleanosPromise = null;
+      function getCumpleanos() {
+        if (!cumpleanosPromise) {
+          cumpleanosPromise = fetch("cumpleanos.json")
+            .then((response) => {
+              if (!response.ok) throw new Error("No se pudo cargar el archivo de cumpleaños.");
+              return response.json();
+            })
+            .catch((error) => {
+              cumpleanosPromise = null;   // que un fallo puntual no deje al panel sin cumpleaños
+              throw error;
+            });
+        }
+        return cumpleanosPromise;
+      }
+
       // --- ¿HOY CUMPLE AÑOS EL USUARIO LOGUEADO? ---
       async function esCumpleDelUsuario(nombreCompleto) {
         try {
-          const response = await fetch("cumpleanos.json");
-          if (!response.ok) return false;
-          const lista = await response.json();
+          const lista = await getCumpleanos();
 
           const hoy = new Date();
           const fechaHoy = `${String(hoy.getMonth() + 1).padStart(2, "0")}-${String(hoy.getDate()).padStart(2, "0")}`;
@@ -3677,12 +3866,98 @@
       // pero tampoco la corta. 0 = domingo (getDay).
       const DIAS_NO_LABORABLES = [0];
 
-      // Feriados que tampoco deben cortar la racha, en formato "YYYY-MM-DD".
-      // Se cargan a mano: ej. ["2026-08-17", "2026-10-12"].
-      const FERIADOS = [];
+      // --- FERIADOS NACIONALES (ARGENTINA) ---
+      // Se calculan solos para cualquier año, así que no hay que cargarlos nunca más:
+      // los fijos por fecha, los de Carnaval y Semana Santa a partir del Domingo de
+      // Pascua, y los trasladables con la regla de la Ley 27.399 (si caen martes o
+      // miércoles se pasan al lunes anterior; si caen jueves o viernes, al lunes
+      // siguiente). Los usan la racha (para no cortarla) y la agenda (para pintarlos).
+      const FERIADOS_FIJOS = [
+        ["01-01", "Año Nuevo"],
+        ["03-24", "Día de la Memoria"],
+        ["04-02", "Día del Veterano y de los Caídos en Malvinas"],
+        ["05-01", "Día del Trabajador"],
+        ["05-25", "Día de la Revolución de Mayo"],
+        ["06-20", "Paso a la Inmortalidad del Gral. Belgrano"],
+        ["07-09", "Día de la Independencia"],
+        ["12-08", "Inmaculada Concepción de María"],
+        ["12-25", "Navidad"],
+      ];
+
+      // [mes, día, nombre] antes de aplicarles el traslado al lunes
+      const FERIADOS_TRASLADABLES = [
+        [6, 17, "Paso a la Inmortalidad del Gral. Güemes"],
+        [8, 17, "Paso a la Inmortalidad del Gral. San Martín"],
+        [10, 12, "Día del Respeto a la Diversidad Cultural"],
+        [11, 20, "Día de la Soberanía Nacional"],
+      ];
+
+      // Los "puentes" (días no laborables con fines turísticos) NO siguen ninguna regla:
+      // los fija el Gobierno por decreto año a año. Es lo único que hay que cargar a mano.
+      // Formato: { 2027: [["05-24", "Puente turístico"]] }
+      const PUENTES_TURISTICOS = {};
+
+      // Domingo de Pascua por el algoritmo de Gauss/Meeus (de ahí salen Carnaval y Semana Santa)
+      function domingoDePascua(anio) {
+        const a = anio % 19;
+        const b = Math.floor(anio / 100);
+        const c = anio % 100;
+        const d = Math.floor(b / 4);
+        const e = b % 4;
+        const f = Math.floor((b + 8) / 25);
+        const g = Math.floor((b - f + 1) / 3);
+        const h = (19 * a + b - d - g + 15) % 30;
+        const i = Math.floor(c / 4);
+        const k = c % 4;
+        const l = (32 + 2 * e + 2 * i - h - k) % 7;
+        const m = Math.floor((a + 11 * h + 22 * l) / 451);
+        const mes = Math.floor((h + l - 7 * m + 114) / 31);
+        const dia = ((h + l - 7 * m + 114) % 31) + 1;
+        return new Date(anio, mes - 1, dia);
+      }
+
+      function sumarDias(fecha, dias) {
+        const copia = new Date(fecha.getTime());
+        copia.setDate(copia.getDate() + dias);
+        return copia;
+      }
+
+      // Caché por año: laborablesPerdidos() puede consultar decenas de fechas seguidas
+      const feriadosPorAnio = {};
+
+      function feriadosDelAnio(anio) {
+        if (feriadosPorAnio[anio]) return feriadosPorAnio[anio];
+
+        const mapa = {};
+        FERIADOS_FIJOS.forEach((item) => { mapa[`${anio}-${item[0]}`] = item[1]; });
+
+        FERIADOS_TRASLADABLES.forEach((item) => {
+          const fecha = new Date(anio, item[0] - 1, item[1]);
+          const diaSemana = fecha.getDay();
+          if (diaSemana === 2 || diaSemana === 3) fecha.setDate(fecha.getDate() - (diaSemana - 1));
+          else if (diaSemana === 4 || diaSemana === 5) fecha.setDate(fecha.getDate() + (8 - diaSemana));
+          mapa[toDateKey(fecha)] = item[2];
+        });
+
+        const pascua = domingoDePascua(anio);
+        mapa[toDateKey(sumarDias(pascua, -48))] = "Carnaval";
+        mapa[toDateKey(sumarDias(pascua, -47))] = "Carnaval";
+        mapa[toDateKey(sumarDias(pascua, -2))] = "Viernes Santo";
+
+        (PUENTES_TURISTICOS[anio] || []).forEach((item) => {
+          mapa[`${anio}-${item[0]}`] = item[1];
+        });
+
+        feriadosPorAnio[anio] = mapa;
+        return mapa;
+      }
+
+      function nombreDeFeriado(fechaISO) {
+        return feriadosDelAnio(Number(fechaISO.slice(0, 4)))[fechaISO] || null;
+      }
 
       function esDiaLaboral(fechaISO) {
-        if (FERIADOS.includes(fechaISO)) return false;
+        if (nombreDeFeriado(fechaISO)) return false;
         const dia = new Date(`${fechaISO}T00:00:00`).getDay();
         return !DIAS_NO_LABORABLES.includes(dia);
       }
@@ -3935,14 +4210,37 @@
         });
       })();
 
+      // Historial de días visitados. Viaja dentro del MISMO doc de la racha, que ya se
+      // lee y se escribe una vez por día: pintar la asistencia en la agenda no cuesta
+      // ni una operación extra de Firestore. Se recorta para que el doc no crezca solo.
+      const DIAS_DE_VISITAS_GUARDADAS = 120;
+
+      function fusionarVisitas() {
+        const hoy = toDateKey(new Date());
+        const limite = toDateKey(sumarDias(new Date(), -DIAS_DE_VISITAS_GUARDADAS));
+        const dias = new Set([hoy]);
+
+        Array.prototype.forEach.call(arguments, (lista) => {
+          if (!Array.isArray(lista)) return;
+          lista.forEach((fecha) => {
+            // Se descartan fechas futuras (relojes mal puestos) y las ya vencidas
+            if (typeof fecha === "string" && fecha >= limite && fecha <= hoy) dias.add(fecha);
+          });
+        });
+
+        return Array.from(dias).sort();
+      }
+
       async function actualizarRacha(nombreUsuario) {
         const clave = claveRacha(nombreUsuario);
         const local = leerRachaLocal(clave);
 
         // 1) Pintamos ya mismo con lo que hay en el navegador: la insignia no espera a la red
         const provisorio = aplicarVisitaDeHoy(local);
+        provisorio.estado.visitas = fusionarVisitas(local && local.visitas);
         guardarRachaLocal(clave, provisorio.estado);
         renderRacha(provisorio.estado);
+        setVisitasAgenda(provisorio.estado.visitas);
 
         // 2) Reconciliamos con la nube (1 lectura por ingreso, 1 escritura por día)
         let estadoFinal = provisorio.estado;
@@ -3956,14 +4254,20 @@
           estadoFinal = definitivo.estado;
           sumoDia = definitivo.sumoDia;
 
+          // fusionarRachas() se queda con UNA de las dos versiones; las visitas, en
+          // cambio, se suman: cada dispositivo conoce solo los días en que se usó.
+          estadoFinal.visitas = fusionarVisitas(local && local.visitas, remoto && remoto.visitas);
+
           guardarRachaLocal(clave, estadoFinal);
           renderRacha(estadoFinal);
+          setVisitasAgenda(estadoFinal.visitas);
 
           await rachaDocRef(nombreUsuario).set({
             nombre: nombreUsuario,
             ultimo: estadoFinal.ultimo,
             dias: estadoFinal.dias,
             mejor: estadoFinal.mejor,
+            visitas: estadoFinal.visitas,
             actualizado: firebase.firestore.FieldValue.serverTimestamp()
           }, { merge: true });
         } catch (error) {
@@ -4362,11 +4666,7 @@
         birthdayList.innerHTML = "";
 
         try {
-          const response = await fetch("cumpleanos.json");
-          if (!response.ok) {
-            throw new Error("No se pudo cargar el archivo de cumpleaños.");
-          }
-          const employeeBirthdays = await response.json();
+          const employeeBirthdays = await getCumpleanos();
 
           const today = new Date();
           const month = String(today.getMonth() + 1).padStart(2, "0");
@@ -5217,18 +5517,203 @@
 
 
 
-      // --- LÓGICA DEL CALENDARIO ---
-      let currentDate = new Date();
-      let trainingEvents = {};
+      // --- LÓGICA DE LA AGENDA ---
+      // El calendario se llena solo con tres capas —cumpleaños (cumpleanos.json),
+      // feriados (calculados) y los días en que la persona entró al panel (racha)— y
+      // encima suma los eventos que se cargan a mano desde el panel admin. La idea es
+      // que nunca quede vacío aunque nadie cargue nada.
+      const CAPAS_AGENDA = {
+        cumple: { icono: "🎂", color: "#db2777" },
+        feriado: { icono: "🇦🇷", color: "#2563eb" },
+        evento: { icono: "📌", color: "#ec6434" },
+      };
 
-      function initializeCalendar() {
-        db.collection("trainings").onSnapshot((snapshot) => {
-          trainingEvents = {};
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            trainingEvents[data.date] = data.title;
-          });
-          renderCalendar(currentDate);
+      const DIAS_A_MIRAR = 60;      // hasta dónde se busca el próximo evento
+      const MAX_PROXIMOS = 3;       // cuántos DÍAS se muestran en la tira
+
+      let currentDate = new Date();
+      let trainingEvents = {};        // "YYYY-MM-DD" -> [títulos cargados a mano]
+      let cumpleanosPorDia = {};      // "MM-DD" -> [nombres]
+      let visitasAgenda = new Set();  // "YYYY-MM-DD" de los días que entró al panel
+      let calendarioListo = false;
+
+      // Todo lo que pasa un día, venga de la capa que venga
+      function eventosDelDia(fechaISO) {
+        const eventos = [];
+
+        const feriado = nombreDeFeriado(fechaISO);
+        if (feriado) eventos.push({ tipo: "feriado", texto: feriado });
+
+        (cumpleanosPorDia[fechaISO.slice(5)] || []).forEach((nombre) => {
+          eventos.push({ tipo: "cumple", texto: `Cumple ${nombre}` });
+        });
+
+        (trainingEvents[fechaISO] || []).forEach((titulo) => {
+          eventos.push({ tipo: "evento", texto: titulo });
+        });
+
+        return eventos;
+      }
+
+      // "Hoy", "Mañana", "Jueves" para esta semana; "Lun 24 sept" para más adelante
+      function etiquetaDeFecha(fechaISO, hoyISO) {
+        const dif = diasDeDiferencia(hoyISO, fechaISO);
+        if (dif === 0) return "Hoy";
+        if (dif === 1) return "Mañana";
+
+        const formato = dif < 7
+          ? { weekday: "long" }
+          : { weekday: "short", day: "numeric", month: "short" };
+        return new Date(`${fechaISO}T00:00:00`)
+          .toLocaleDateString("es-AR", formato)
+          .replace(/^\w/, (c) => c.toUpperCase());
+      }
+
+      // Devuelve los próximos DÍAS con actividad, no los próximos eventos sueltos: si no,
+      // tres cumpleaños de la misma fecha se comen la tira entera y se ve una sola fecha.
+      function proximosEventos() {
+        const proximos = [];
+        const cursor = new Date();
+        cursor.setHours(0, 0, 0, 0);
+
+        for (let i = 0; i < DIAS_A_MIRAR && proximos.length < MAX_PROXIMOS; i++) {
+          const fechaISO = toDateKey(cursor);
+          const eventos = eventosDelDia(fechaISO);
+          if (eventos.length) proximos.push({ fechaISO: fechaISO, eventos: eventos });
+          cursor.setDate(cursor.getDate() + 1);
+        }
+        return proximos;
+      }
+
+      // Junta en una línea todo lo que pasa un día: "Cumplen Ana, Beto y Carlos"
+      function resumenDelDia(eventos) {
+        const partes = [];
+        const cumples = [];
+
+        eventos.forEach((evento) => {
+          if (evento.tipo === "cumple") cumples.push(evento.texto.replace(/^Cumple /, ""));
+          else partes.push(evento.texto);
+        });
+
+        if (cumples.length) {
+          const nombres = cumples.length === 1
+            ? cumples[0]
+            : `${cumples.slice(0, -1).join(", ")} y ${cumples[cumples.length - 1]}`;
+          partes.push(`${cumples.length === 1 ? "Cumple" : "Cumplen"} ${nombres}`);
+        }
+
+        return partes.join(" · ");
+      }
+
+      // Los iconos de los tipos presentes ese día, sin repetir
+      function iconosDelDia(eventos) {
+        return Array.from(new Set(eventos.map((e) => e.tipo)))
+          .map((tipo) => CAPAS_AGENDA[tipo].icono)
+          .join("");
+      }
+
+      function renderProximos() {
+        const lista = document.getElementById("agenda-next");
+        const hint = document.getElementById("agenda-hint");
+        if (!lista) return;
+
+        const proximos = proximosEventos();
+        const hoyISO = toDateKey(new Date());
+        lista.innerHTML = "";
+
+        if (!proximos.length) {
+          const vacio = document.createElement("li");
+          vacio.className = "agenda-next-empty";
+          vacio.textContent = `Sin eventos en los próximos ${DIAS_A_MIRAR} días.`;
+          lista.appendChild(vacio);
+          if (hint) hint.hidden = true;
+          return;
+        }
+
+        proximos.forEach((dia) => {
+          const boton = document.createElement("button");
+          boton.type = "button";
+          boton.className = "agenda-next-item";
+          // El color de la barrita lo pone el primer evento del día (el feriado manda)
+          boton.style.setProperty("--agenda-color", CAPAS_AGENDA[dia.eventos[0].tipo].color);
+          boton.innerHTML = `
+            <span class="agenda-next-icon"></span>
+            <span class="agenda-next-when"></span>
+            <span class="agenda-next-what"></span>`;
+
+          // Nombres y títulos los escriben personas: van por textContent, nunca por innerHTML
+          boton.querySelector(".agenda-next-icon").textContent = iconosDelDia(dia.eventos);
+          boton.querySelector(".agenda-next-when").textContent = etiquetaDeFecha(dia.fechaISO, hoyISO);
+          boton.querySelector(".agenda-next-what").textContent = resumenDelDia(dia.eventos);
+          boton.onclick = () => irAFecha(dia.fechaISO);
+
+          const li = document.createElement("li");
+          li.appendChild(boton);
+          lista.appendChild(li);
+        });
+
+        if (hint) {
+          const primero = proximos[0];
+          hint.textContent = `${iconosDelDia(primero.eventos)} ${etiquetaDeFecha(primero.fechaISO, hoyISO)}: ${resumenDelDia(primero.eventos)}`;
+          hint.hidden = false;
+        }
+      }
+
+      function mostrarDetalle(fechaISO) {
+        const detalle = document.getElementById("event-details");
+        if (!detalle) return;
+
+        detalle.innerHTML = "<h5></h5>";
+        detalle.querySelector("h5").textContent = new Date(`${fechaISO}T00:00:00`)
+          .toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" })
+          .replace(/^\w/, (c) => c.toUpperCase());
+
+        const eventos = eventosDelDia(fechaISO);
+        const lineas = eventos.map((e) => `${CAPAS_AGENDA[e.tipo].icono} ${e.texto}`);
+        if (visitasAgenda.has(fechaISO)) lineas.push("🔥 Entraste al panel este día");
+        if (!lineas.length) lineas.push("Sin eventos.");
+
+        lineas.forEach((linea) => {
+          const p = document.createElement("p");
+          p.textContent = linea;
+          detalle.appendChild(p);
+        });
+      }
+
+      // Salta al mes de la fecha, la resalta y muestra su detalle
+      function irAFecha(fechaISO) {
+        const fecha = new Date(`${fechaISO}T00:00:00`);
+        currentDate = new Date(fecha.getFullYear(), fecha.getMonth(), 1);
+        renderCalendar(currentDate);
+        mostrarDetalle(fechaISO);
+
+        const dia = document.querySelector(`.calendar-day[data-fecha="${fechaISO}"]`);
+        if (dia) {
+          dia.classList.add("day-flash");
+          setTimeout(() => dia.classList.remove("day-flash"), 1200);
+        }
+      }
+
+      // Las visitas llegan desde la racha, que ya lee y escribe su doc una vez por día
+      function setVisitasAgenda(visitas) {
+        visitasAgenda = new Set(Array.isArray(visitas) ? visitas : []);
+        refrescarAgenda();
+      }
+
+      function refrescarAgenda() {
+        if (!calendarioListo) return;
+        renderCalendar(currentDate);
+        renderProximos();
+      }
+
+      async function initializeCalendar() {
+        const daysHeader = document.getElementById("calendar-days-header");
+        daysHeader.innerHTML = "";
+        ["D", "L", "M", "M", "J", "V", "S"].forEach((day) => {
+          const celda = document.createElement("div");
+          celda.className = "day-name";
+          celda.textContent = day;
+          daysHeader.appendChild(celda);
         });
 
         document.getElementById("prev-month-btn").onclick = () => {
@@ -5240,11 +5725,32 @@
           renderCalendar(currentDate);
         };
 
-        const daysHeader = document.getElementById("calendar-days-header");
-        daysHeader.innerHTML = "";
-        ["D", "L", "M", "M", "J", "V", "S"].forEach((day) => {
-          daysHeader.innerHTML += `<div class="day-name">${day}</div>`;
-        });
+        calendarioListo = true;
+        refrescarAgenda();   // feriados y visitas ya están: se pinta sin esperar la red
+
+        try {
+          const empleados = await getCumpleanos();
+          cumpleanosPorDia = {};
+          empleados.forEach((emp) => {
+            if (!emp || !emp.fecha) return;
+            if (!cumpleanosPorDia[emp.fecha]) cumpleanosPorDia[emp.fecha] = [];
+            cumpleanosPorDia[emp.fecha].push(emp.nombre);
+          });
+          refrescarAgenda();
+        } catch (error) {
+          console.warn("Agenda: no se pudieron cargar los cumpleaños.", error);
+        }
+
+        db.collection("trainings").onSnapshot((snapshot) => {
+          trainingEvents = {};
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            if (!data || !data.date) return;
+            if (!trainingEvents[data.date]) trainingEvents[data.date] = [];
+            trainingEvents[data.date].push(data.title);
+          });
+          refrescarAgenda();
+        }, (error) => console.warn("Agenda: no se pudieron leer los eventos.", error));
       }
 
       function renderCalendar(date) {
@@ -5258,48 +5764,48 @@
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const grid = document.getElementById("calendar-grid");
+        const hoyISO = toDateKey(new Date());
         grid.innerHTML = "";
 
         for (let i = 0; i < firstDay; i++) {
-          grid.innerHTML += `<div class="calendar-day empty-day"></div>`;
+          const hueco = document.createElement("div");
+          hueco.className = "calendar-day empty-day";
+          grid.appendChild(hueco);
         }
 
         for (let day = 1; day <= daysInMonth; day++) {
+          const fechaISO = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+          const eventos = eventosDelDia(fechaISO);
+
           const dayEl = document.createElement("div");
           dayEl.className = "calendar-day";
-          dayEl.textContent = day;
+          dayEl.dataset.fecha = fechaISO;
 
-          const today = new Date();
-          if (
-            day === today.getDate() &&
-            month === today.getMonth() &&
-            year === today.getFullYear()
-          ) {
-            dayEl.classList.add("is-today");
-          }
+          const num = document.createElement("span");
+          num.className = "calendar-day-num";
+          num.textContent = day;
+          dayEl.appendChild(num);
 
-          const dateString = `${year}-${String(month + 1).padStart(
-            2,
-            "0"
-          )}-${String(day).padStart(2, "0")}`;
-          if (trainingEvents[dateString]) {
+          // Un punto por TIPO: tres cumpleaños el mismo día no hacen tres puntos
+          const dots = document.createElement("span");
+          dots.className = "calendar-dots";
+          Array.from(new Set(eventos.map((e) => e.tipo))).forEach((tipo) => {
+            const dot = document.createElement("i");
+            dot.className = "calendar-dot";
+            dot.style.setProperty("--agenda-color", CAPAS_AGENDA[tipo].color);
+            dots.appendChild(dot);
+          });
+          dayEl.appendChild(dots);
+
+          const visitado = visitasAgenda.has(fechaISO);
+          if (visitado) dayEl.classList.add("day-visited");
+          if (fechaISO === hoyISO) dayEl.classList.add("is-today");
+
+          // Los días visitados también se pueden tocar, aunque no tengan eventos
+          if (eventos.length || visitado) {
             dayEl.classList.add("has-event");
-            dayEl.dataset.event = trainingEvents[dateString];
-            dayEl.dataset.date = new Date(
-              dateString + "T00:00:00"
-            ).toLocaleDateString("es-AR", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            });
-            dayEl.onclick = () => {
-              const details = document.getElementById("event-details");
-              details.innerHTML = `<h5>${dayEl.dataset.date.replace(
-                /^\w/,
-                (c) => c.toUpperCase()
-              )}</h5><p>${dayEl.dataset.event}</p>`;
-            };
+            dayEl.title = eventos.length ? eventos.map((e) => e.texto).join(" · ") : "Entraste al panel este día";
+            dayEl.onclick = () => mostrarDetalle(fechaISO);
           }
 
           grid.appendChild(dayEl);
