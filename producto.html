@@ -8,6 +8,12 @@
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.rossomateriales.site/producto.html" />
   <link href="assets/FAV.png" rel="icon" />
+  <script>
+    const _params = new URLSearchParams(window.location.search);
+    if (!_params.get('sku') && !_params.get('id')) {
+      window.location.replace('catalogo.html');
+    }
+  </script>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QBM51JZ19R"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-QBM51JZ19R');</script>
@@ -1144,8 +1150,7 @@
     const sku    = params.get('sku');
 
     if (!sku) {
-      document.getElementById('pdp-loading').style.display = 'none';
-      document.getElementById('pdp-error').style.display   = '';
+      window.location.replace('catalogo.html');
       return;
     }
 

@@ -601,6 +601,10 @@
         .btn-reset:hover { background-color: #4b5563; }
 
         /* ===== DASHBOARD MODERN COMPONENTS ===== */
+        #dashboard.content-section {
+            padding-top: 24px;
+        }
+
         .dash-greeting-bar {
             display: flex;
             justify-content: space-between;
@@ -1845,6 +1849,11 @@
                                 </select>
                             </div>
                             <span id="seg-range-label" class="seg-range-label"></span>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <button type="button" id="seg-toggle-all" class="seg-period-btn" style="background:#f1f5f9; color:var(--ink); padding:8px 14px;">
+                                    <i class="fa-solid fa-expand"></i> <span id="seg-toggle-all-text">Expandir todo</span>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="seg-kpi-grid">
@@ -1884,33 +1893,48 @@
                         <p id="seg-scope-note" class="seg-hint" style="margin:12px 0 0;"></p>
                     </div>
 
-                    <div class="card" style="margin-bottom: 20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div class="card seg-collapsible-card collapsed" id="seg-card-sucursales" style="margin-bottom: 20px;">
+                        <div class="seg-collapsible-header" onclick="toggleSegSection('sucursales', event)">
                             <h3 style="margin:0;"><i class="fa-solid fa-store" style="color:var(--brand); margin-right:8px;"></i> Resumen por Sucursal</h3>
+                            <button type="button" class="seg-collapse-toggle-btn" aria-label="Colapsar / Expandir sección">
+                                <i class="fa-solid fa-chevron-down seg-chevron"></i>
+                            </button>
                         </div>
-                        <p class="seg-hint">Cobertura de adopción y tiempo acumulado de uso por cada sucursal en el período.</p>
-                        <div id="seg-by-sucursal-wrap">
-                            <p class="seg-empty">Cargando…</p>
+                        <div class="seg-collapsible-body">
+                            <p class="seg-hint">Cobertura de adopción y tiempo acumulado de uso por cada sucursal en el período.</p>
+                            <div id="seg-by-sucursal-wrap">
+                                <p class="seg-empty">Cargando…</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card" style="margin-bottom: 20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div class="card seg-collapsible-card collapsed" id="seg-card-ranking" style="margin-bottom: 20px;">
+                        <div class="seg-collapsible-header" onclick="toggleSegSection('ranking', event)">
                             <h3 style="margin:0;"><i class="fa-solid fa-ranking-star" style="color:#eab308; margin-right:8px;"></i> Ranking de Uso de Vendedores</h3>
+                            <button type="button" class="seg-collapse-toggle-btn" aria-label="Colapsar / Expandir sección">
+                                <i class="fa-solid fa-chevron-down seg-chevron"></i>
+                            </button>
                         </div>
-                        <p class="seg-hint">Ordenado por minutos estimados en la app (latido cada 3 min con actividad en pantalla).</p>
-                        <div id="seg-ranking-wrap">
-                            <p class="seg-empty">Cargando…</p>
+                        <div class="seg-collapsible-body">
+                            <p class="seg-hint">Ordenado por minutos estimados en la app (latido cada 3 min con actividad en pantalla).</p>
+                            <div id="seg-ranking-wrap">
+                                <p class="seg-empty">Cargando…</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div class="card seg-collapsible-card collapsed" id="seg-card-inactivos">
+                        <div class="seg-collapsible-header" onclick="toggleSegSection('inactivos', event)">
                             <h3 style="margin:0;"><i class="fa-solid fa-user-clock" style="color:#ef4444; margin-right:8px;"></i> Personal Inactivo</h3>
+                            <button type="button" class="seg-collapse-toggle-btn" aria-label="Colapsar / Expandir sección">
+                                <i class="fa-solid fa-chevron-down seg-chevron"></i>
+                            </button>
                         </div>
-                        <p class="seg-hint">Del padrón trackeado (<span id="seg-total-vendedores">–</span> personas: ventas, caja, encargados y gerencia), quiénes no registraron actividad en el período.</p>
-                        <div id="seg-inactive-wrap">
-                            <p class="seg-empty">Cargando…</p>
+                        <div class="seg-collapsible-body">
+                            <p class="seg-hint">Del padrón trackeado (<span id="seg-total-vendedores">–</span> personas: ventas, caja, encargados y gerencia), quiénes no registraron actividad en el período.</p>
+                            <div id="seg-inactive-wrap">
+                                <p class="seg-empty">Cargando…</p>
+                            </div>
                         </div>
                     </div>
 
@@ -1937,9 +1961,14 @@
                                     <input type="search" id="aca-search" placeholder="Buscar por vendedor…" style="cursor:text;" />
                                 </div>
                             </div>
-                            <button type="button" id="aca-refresh" class="seg-period-btn" style="background:#f1f5f9; color:var(--ink); padding:8px 16px;">
-                                <i class="fa-solid fa-rotate"></i> Actualizar
-                            </button>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <button type="button" id="aca-toggle-all" class="seg-period-btn" style="background:#f1f5f9; color:var(--ink); padding:8px 14px;">
+                                    <i class="fa-solid fa-expand"></i> <span id="aca-toggle-all-text">Expandir todo</span>
+                                </button>
+                                <button type="button" id="aca-refresh" class="seg-period-btn" style="background:#f1f5f9; color:var(--ink); padding:8px 16px;">
+                                    <i class="fa-solid fa-rotate"></i> Actualizar
+                                </button>
+                            </div>
                         </div>
 
                         <div class="seg-kpi-grid">
@@ -1979,20 +2008,25 @@
                         <p id="aca-scope-note" class="seg-hint" style="margin:12px 0 0;">Cargando…</p>
                     </div>
 
-                    <div class="card" style="margin-bottom: 20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div class="card aca-collapsible-card collapsed" id="aca-card-sucursales" style="margin-bottom: 20px;">
+                        <div class="aca-collapsible-header" onclick="toggleAcaSection('sucursales', event)">
                             <h3 style="margin:0;"><i class="fa-solid fa-store" style="color:var(--brand); margin-right:8px;"></i> Rendimiento por Sucursal</h3>
+                            <button type="button" class="aca-collapse-toggle-btn" aria-label="Colapsar / Expandir sección">
+                                <i class="fa-solid fa-chevron-down aca-chevron"></i>
+                            </button>
                         </div>
-                        <p class="seg-hint">Participación y avance promedio de cada sucursal sobre la Academia.</p>
-                        <div id="aca-by-sucursal-wrap">
-                            <p class="seg-empty">Cargando…</p>
+                        <div class="aca-collapsible-body">
+                            <p class="seg-hint">Participación y avance promedio de cada sucursal sobre la Academia.</p>
+                            <div id="aca-by-sucursal-wrap">
+                                <p class="seg-empty">Cargando…</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card" style="margin-bottom: 20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:8px;">
+                    <div class="card aca-collapsible-card collapsed" id="aca-card-vendedores" style="margin-bottom: 20px;">
+                        <div class="aca-collapsible-header" onclick="toggleAcaSection('vendedores', event)">
                             <h3 style="margin:0;"><i class="fa-solid fa-user-graduate" style="color:#7c3aed; margin-right:8px;"></i> Estado Individual de Vendedores</h3>
-                            <div style="display:flex; align-items:center; gap:8px;">
+                            <div style="display:flex; align-items:center; gap:8px;" onclick="event.stopPropagation()">
                                 <span class="seg-muted" style="font-size:0.82rem; font-weight:700;">Ordenar por:</span>
                                 <select id="aca-sort" class="seg-select" style="padding:6px 12px; font-size:0.84rem;">
                                     <option value="avance">Mayor Avance</option>
@@ -2000,31 +2034,46 @@
                                     <option value="reciente">Última actividad</option>
                                     <option value="nombre">Nombre (A-Z)</option>
                                 </select>
+                                <button type="button" class="aca-collapse-toggle-btn" onclick="toggleAcaSection('vendedores')" aria-label="Colapsar / Expandir sección">
+                                    <i class="fa-solid fa-chevron-down aca-chevron"></i>
+                                </button>
                             </div>
                         </div>
-                        <p class="seg-hint">Hacé clic en cualquier vendedor para abrir su legajo detallado módulo por módulo.</p>
-                        <div id="aca-vendedores-wrap">
-                            <p class="seg-empty">Cargando…</p>
+                        <div class="aca-collapsible-body">
+                            <p class="seg-hint">Hacé clic en cualquier vendedor para abrir su legajo detallado módulo por módulo.</p>
+                            <div id="aca-vendedores-wrap">
+                                <p class="seg-empty">Cargando…</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card" style="margin-bottom: 20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div class="card aca-collapsible-card collapsed" id="aca-card-modulos" style="margin-bottom: 20px;">
+                        <div class="aca-collapsible-header" onclick="toggleAcaSection('modulos', event)">
                             <h3 style="margin:0;"><i class="fa-solid fa-layer-group" style="color:var(--accent); margin-right:8px;"></i> Dificultad y Rendimiento por Módulo</h3>
+                            <button type="button" class="aca-collapse-toggle-btn" aria-label="Colapsar / Expandir sección">
+                                <i class="fa-solid fa-chevron-down aca-chevron"></i>
+                            </button>
                         </div>
-                        <p class="seg-hint">Módulos ordenados por menor tasa de certificación para detectar conceptos a reforzar.</p>
-                        <div id="aca-modulos-wrap">
-                            <p class="seg-empty">Cargando…</p>
+                        <div class="aca-collapsible-body">
+                            <p class="seg-hint">Módulos ordenados por menor tasa de certificación para detectar conceptos a reforzar.</p>
+                            <div id="aca-modulos-wrap">
+                                <p class="seg-empty">Cargando…</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <div class="card aca-collapsible-card collapsed" id="aca-card-sinempezar">
+                        <div class="aca-collapsible-header" onclick="toggleAcaSection('sinempezar', event)">
                             <h3 style="margin:0;"><i class="fa-solid fa-user-clock" style="color:#ef4444; margin-right:8px;"></i> Sin Comenzar la Academia</h3>
+                            <button type="button" class="aca-collapse-toggle-btn" aria-label="Colapsar / Expandir sección">
+                                <i class="fa-solid fa-chevron-down aca-chevron"></i>
+                            </button>
                         </div>
-                        <p class="seg-hint">Del padrón trackeado (<span id="aca-total-vendedores">–</span> personas), quiénes no registraron ningún intento todavía.</p>
-                        <div id="aca-sinempezar-wrap">
-                            <p class="seg-empty">Cargando…</p>
+                        <div class="aca-collapsible-body">
+                            <p class="seg-hint">Del padrón trackeado (<span id="aca-total-vendedores">–</span> personas), quiénes no registraron ningún intento todavía.</p>
+                            <div id="aca-sinempezar-wrap">
+                                <p class="seg-empty">Cargando…</p>
+                            </div>
                         </div>
                     </div>
 
@@ -2263,6 +2312,81 @@
                     .aca-bar-fill.low { background: #cbd5e1; }
                     .aca-pct { font-variant-numeric: tabular-nums; font-weight: 700; color: #374151; font-size: 0.85rem; }
                     .aca-warn { color: #b45309; font-weight: 700; }
+
+                    /* --- Secciones colapsables en Seguimiento (Uso y Academia) --- */
+                    .seg-collapsible-card,
+                    .aca-collapsible-card {
+                        transition: all .2s var(--ease);
+                    }
+                    .seg-collapsible-card.collapsed,
+                    .aca-collapsible-card.collapsed {
+                        margin-bottom: 12px !important;
+                        padding-bottom: 16px;
+                        background: #fbfcfe;
+                        border-color: #e2e8f0;
+                    }
+                    .seg-collapsible-header,
+                    .aca-collapsible-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        cursor: pointer;
+                        user-select: none;
+                        padding: 2px 0;
+                        transition: color .15s ease;
+                    }
+                    .seg-collapsible-header h3,
+                    .aca-collapsible-header h3 {
+                        cursor: pointer;
+                        user-select: none;
+                        transition: color .15s ease;
+                    }
+                    .seg-collapsible-header:hover h3,
+                    .aca-collapsible-header:hover h3 {
+                        color: var(--brand);
+                    }
+                    .seg-collapse-toggle-btn,
+                    .aca-collapse-toggle-btn {
+                        width: 32px !important;
+                        height: 32px !important;
+                        padding: 0 !important;
+                        border-radius: 8px !important;
+                        background: #f8fafc !important;
+                        color: var(--muted) !important;
+                        display: inline-flex !important;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px solid var(--line) !important;
+                        cursor: pointer;
+                        box-shadow: none !important;
+                        transition: all .18s var(--ease) !important;
+                        flex-shrink: 0;
+                    }
+                    .seg-collapsible-header:hover .seg-collapse-toggle-btn,
+                    .seg-collapse-toggle-btn:hover,
+                    .aca-collapsible-header:hover .aca-collapse-toggle-btn,
+                    .aca-collapse-toggle-btn:hover {
+                        background: #eef2f6 !important;
+                        color: var(--brand) !important;
+                        border-color: #cbd5e1 !important;
+                    }
+                    .seg-chevron,
+                    .aca-chevron {
+                        transition: transform .22s var(--ease);
+                        font-size: 0.82rem;
+                    }
+                    .seg-collapsible-card.collapsed .seg-chevron,
+                    .aca-collapsible-card.collapsed .aca-chevron {
+                        transform: rotate(-90deg);
+                    }
+                    .seg-collapsible-body,
+                    .aca-collapsible-body {
+                        margin-top: 4px;
+                    }
+                    .seg-collapsible-card.collapsed .seg-collapsible-body,
+                    .aca-collapsible-card.collapsed .aca-collapsible-body {
+                        display: none;
+                    }
                     
                     /* Detalle del vendedor (modal) */
                     .aca-detail-head {
@@ -3201,11 +3325,103 @@ PREMIO: 1 kit disco enlozado.</textarea>
         // Casa Central SÍ cuenta en KPIs/inactivos, pero se oculta del "Resumen por sucursal".
         const SUCURSAL_OCULTAS_RESUMEN = ['Casa Central'];
 
+        // --- Gestión de secciones colapsables en Seguimiento Uso de la App ---
+        const SEG_SECTION_KEYS = ['sucursales', 'ranking', 'inactivos'];
+
+        function getSegCollapsedState() {
+            try {
+                const saved = localStorage.getItem('rosso_seg_collapsed_sections');
+                return saved ? JSON.parse(saved) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveSegCollapseState(state) {
+            try {
+                localStorage.setItem('rosso_seg_collapsed_sections', JSON.stringify(state));
+            } catch (e) {}
+        }
+
+        function updateSegToggleAllBtn() {
+            const btn = document.getElementById('seg-toggle-all');
+            const textSpan = document.getElementById('seg-toggle-all-text');
+            if (!btn) return;
+            const collapsedCount = SEG_SECTION_KEYS.filter(k => {
+                const card = document.getElementById('seg-card-' + k);
+                return card && card.classList.contains('collapsed');
+            }).length;
+
+            if (collapsedCount === SEG_SECTION_KEYS.length) {
+                if (textSpan) textSpan.textContent = 'Expandir todo';
+                btn.innerHTML = '<i class="fa-solid fa-expand"></i> <span id="seg-toggle-all-text">Expandir todo</span>';
+            } else {
+                if (textSpan) textSpan.textContent = 'Colapsar todo';
+                btn.innerHTML = '<i class="fa-solid fa-compress"></i> <span id="seg-toggle-all-text">Colapsar todo</span>';
+            }
+        }
+
+        function toggleSegSection(key, evt) {
+            if (evt && (evt.target.closest('select') || evt.target.closest('input'))) {
+                return;
+            }
+            const card = document.getElementById('seg-card-' + key);
+            if (!card) return;
+
+            card.classList.toggle('collapsed');
+            const state = getSegCollapsedState();
+            state[key] = card.classList.contains('collapsed');
+            saveSegCollapseState(state);
+            updateSegToggleAllBtn();
+        }
+        window.toggleSegSection = toggleSegSection;
+
+        function toggleAllSegSections() {
+            const anyExpanded = SEG_SECTION_KEYS.some(k => {
+                const card = document.getElementById('seg-card-' + k);
+                return card && !card.classList.contains('collapsed');
+            });
+
+            const shouldCollapseAll = anyExpanded;
+            const stateObj = {};
+
+            SEG_SECTION_KEYS.forEach(k => {
+                const card = document.getElementById('seg-card-' + k);
+                if (card) {
+                    if (shouldCollapseAll) {
+                        card.classList.add('collapsed');
+                    } else {
+                        card.classList.remove('collapsed');
+                    }
+                }
+                stateObj[k] = shouldCollapseAll;
+            });
+
+            saveSegCollapseState(stateObj);
+            updateSegToggleAllBtn();
+        }
+        window.toggleAllSegSections = toggleAllSegSections;
+
+        function applyInitialSegCollapseState() {
+            const state = getSegCollapsedState();
+            SEG_SECTION_KEYS.forEach(k => {
+                const card = document.getElementById('seg-card-' + k);
+                if (!card) return;
+                const isCollapsed = (state[k] !== undefined) ? (state[k] === true) : true;
+                if (isCollapsed) {
+                    card.classList.add('collapsed');
+                } else {
+                    card.classList.remove('collapsed');
+                }
+            });
+            updateSegToggleAllBtn();
+        }
+
         function initSeguimiento() {
-            document.querySelectorAll('.seg-period-btn').forEach(btn => {
+            document.querySelectorAll('.seg-period-toggle .seg-period-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     if (btn.dataset.period === segPeriod) return;
-                    document.querySelectorAll('.seg-period-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.seg-period-toggle .seg-period-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     segPeriod = btn.dataset.period;
                     loadSeguimiento();
@@ -3220,6 +3436,9 @@ PREMIO: 1 kit disco enlozado.</textarea>
             document.querySelectorAll('.seg-view-btn').forEach(btn => {
                 btn.addEventListener('click', () => switchSegView(btn.dataset.view));
             });
+            const toggleAllBtn = document.getElementById('seg-toggle-all');
+            if (toggleAllBtn) toggleAllBtn.addEventListener('click', toggleAllSegSections);
+            applyInitialSegCollapseState();
             initAcademiaSeguimiento();
         }
 
@@ -3609,11 +3828,106 @@ PREMIO: 1 kit disco enlozado.</textarea>
             return acaQuizPromise;
         }
 
+        // --- Gestión de secciones colapsables en Seguimiento Academia ---
+        const ACA_SECTION_KEYS = ['sucursales', 'vendedores', 'modulos', 'sinempezar'];
+
+        function getAcaCollapsedState() {
+            try {
+                const saved = localStorage.getItem('rosso_aca_collapsed_sections');
+                return saved ? JSON.parse(saved) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveAcaCollapseState(state) {
+            try {
+                localStorage.setItem('rosso_aca_collapsed_sections', JSON.stringify(state));
+            } catch (e) {}
+        }
+
+        function updateAcaToggleAllBtn() {
+            const btn = document.getElementById('aca-toggle-all');
+            const textSpan = document.getElementById('aca-toggle-all-text');
+            if (!btn) return;
+            const collapsedCount = ACA_SECTION_KEYS.filter(k => {
+                const card = document.getElementById('aca-card-' + k);
+                return card && card.classList.contains('collapsed');
+            }).length;
+
+            if (collapsedCount === ACA_SECTION_KEYS.length) {
+                if (textSpan) textSpan.textContent = 'Expandir todo';
+                btn.innerHTML = '<i class="fa-solid fa-expand"></i> <span id="aca-toggle-all-text">Expandir todo</span>';
+            } else {
+                if (textSpan) textSpan.textContent = 'Colapsar todo';
+                btn.innerHTML = '<i class="fa-solid fa-compress"></i> <span id="aca-toggle-all-text">Colapsar todo</span>';
+            }
+        }
+
+        function toggleAcaSection(key, evt) {
+            if (evt && (evt.target.closest('select') || evt.target.closest('input') || evt.target.closest('#aca-sort'))) {
+                return;
+            }
+            const card = document.getElementById('aca-card-' + key);
+            if (!card) return;
+
+            card.classList.toggle('collapsed');
+            const state = getAcaCollapsedState();
+            state[key] = card.classList.contains('collapsed');
+            saveAcaCollapseState(state);
+            updateAcaToggleAllBtn();
+        }
+        window.toggleAcaSection = toggleAcaSection;
+
+        function toggleAllAcaSections() {
+            const anyExpanded = ACA_SECTION_KEYS.some(k => {
+                const card = document.getElementById('aca-card-' + k);
+                return card && !card.classList.contains('collapsed');
+            });
+
+            const shouldCollapseAll = anyExpanded;
+            const stateObj = {};
+
+            ACA_SECTION_KEYS.forEach(k => {
+                const card = document.getElementById('aca-card-' + k);
+                if (card) {
+                    if (shouldCollapseAll) {
+                        card.classList.add('collapsed');
+                    } else {
+                        card.classList.remove('collapsed');
+                    }
+                }
+                stateObj[k] = shouldCollapseAll;
+            });
+
+            saveAcaCollapseState(stateObj);
+            updateAcaToggleAllBtn();
+        }
+        window.toggleAllAcaSections = toggleAllAcaSections;
+
+        function applyInitialAcaCollapseState() {
+            const state = getAcaCollapsedState();
+            ACA_SECTION_KEYS.forEach(k => {
+                const card = document.getElementById('aca-card-' + k);
+                if (!card) return;
+                const isCollapsed = (state[k] !== undefined) ? (state[k] === true) : true;
+                if (isCollapsed) {
+                    card.classList.add('collapsed');
+                } else {
+                    card.classList.remove('collapsed');
+                }
+            });
+            updateAcaToggleAllBtn();
+        }
+
         function initAcademiaSeguimiento() {
             ['aca-filter-sucursal', 'aca-filter-estado', 'aca-sort'].forEach(id =>
                 document.getElementById(id).addEventListener('change', applyAcaFilters));
             document.getElementById('aca-search').addEventListener('input', applyAcaFilters);
             document.getElementById('aca-refresh').addEventListener('click', () => loadAcademia(true));
+            const toggleAllBtn = document.getElementById('aca-toggle-all');
+            if (toggleAllBtn) toggleAllBtn.addEventListener('click', toggleAllAcaSections);
+            applyInitialAcaCollapseState();
         }
 
         async function loadAcademia(forzar) {
