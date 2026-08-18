@@ -1624,12 +1624,35 @@
     }
 
     /* Tira "lo que viene": los próximos días con actividad, salteando los vacíos.
-       Va sin marco ni fondo a propósito: informa de reojo, sin robarle
-       protagonismo al calendario, que es lo que se vino a mirar. */
+       Va sin marco ni fondo y de a un renglón por vez a propósito: informa de reojo,
+       sin robarle protagonismo al calendario, que es lo que se vino a mirar. */
     .agenda-next {
-      list-style: none;
       margin: 0 0 1rem;
+    }
+
+    .agenda-next-viewport {
+      overflow: hidden;
+    }
+
+    .agenda-next-track {
+      list-style: none;
+      margin: 0;
       padding: 0;
+      display: flex;
+      touch-action: pan-y;
+      transition: transform 0.45s cubic-bezier(.22, .61, .36, 1);
+      will-change: transform;
+    }
+
+    .agenda-next-track.is-dragging {
+      transition: none;
+      user-select: none;
+    }
+
+    .agenda-next-slide {
+      box-sizing: border-box;
+      flex: 0 0 100%;
+      min-width: 100%;
     }
 
     .agenda-next-item {
@@ -3232,8 +3255,12 @@
             <span class="summary-arrow"></span>
           </summary>
           <div class="panel-card-body calendar-container">
-            <!-- Lo que viene: sale al encuentro sin tener que buscar el día pintado -->
-            <ul class="agenda-next" id="agenda-next"></ul>
+            <!-- Lo que viene: un renglón por vez, rotando, para no robarle lugar al calendario -->
+            <div class="agenda-next" id="agenda-next">
+              <div class="agenda-next-viewport">
+                <ul class="agenda-next-track" id="agenda-next-track"></ul>
+              </div>
+            </div>
 
             <div class="calendar-header">
               <button id="prev-month-btn" aria-label="Mes anterior">
@@ -5612,20 +5639,40 @@
           .join("");
       }
 
+      // --- Estado del slider de "lo que viene" ---
+      // El track se reconstruye entero en cada refresco (llegan los cumpleaños, los
+      // eventos, las visitas), así que el timer es de módulo y se limpia antes de armar
+      // uno nuevo. Los listeners viven en el track y se van con él.
+      const AGENDA_DELAY = 5000;   // más rápido que el hero (7s): acá se lee un renglón
+      let agendaTimer = null;
+      let agendaIndex = 0;
+      let agendaReiniciar = null;
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) clearTimeout(agendaTimer);
+        else if (agendaReiniciar) agendaReiniciar();
+      });
+
       function renderProximos() {
-        const lista = document.getElementById("agenda-next");
+        const track = document.getElementById("agenda-next-track");
         const hint = document.getElementById("agenda-hint");
-        if (!lista) return;
+        if (!track) return;
+
+        clearTimeout(agendaTimer);
+        agendaReiniciar = null;
+        agendaIndex = 0;
 
         const proximos = proximosEventos();
         const hoyISO = toDateKey(new Date());
-        lista.innerHTML = "";
+        track.innerHTML = "";
+        track.style.transition = "none";
+        track.style.transform = "translateX(0)";
 
         if (!proximos.length) {
           const vacio = document.createElement("li");
-          vacio.className = "agenda-next-empty";
+          vacio.className = "agenda-next-slide agenda-next-empty";
           vacio.textContent = `Sin eventos en los próximos ${DIAS_A_MIRAR} días.`;
-          lista.appendChild(vacio);
+          track.appendChild(vacio);
           if (hint) hint.hidden = true;
           return;
         }
@@ -5634,7 +5681,7 @@
           const boton = document.createElement("button");
           boton.type = "button";
           boton.className = "agenda-next-item";
-          // El color de la barrita lo pone el primer evento del día (el feriado manda)
+          // El color de la fecha lo pone el primer evento del día (el feriado manda)
           boton.style.setProperty("--agenda-color", CAPAS_AGENDA[dia.eventos[0].tipo].color);
           boton.innerHTML = `
             <span class="agenda-next-icon"></span>
@@ -5648,8 +5695,9 @@
           boton.onclick = () => irAFecha(dia.fechaISO);
 
           const li = document.createElement("li");
+          li.className = "agenda-next-slide";
           li.appendChild(boton);
-          lista.appendChild(li);
+          track.appendChild(li);
         });
 
         if (hint) {
@@ -5657,6 +5705,101 @@
           hint.textContent = `${iconosDelDia(primero.eventos)} ${etiquetaDeFecha(primero.fechaISO, hoyISO)}: ${resumenDelDia(primero.eventos)}`;
           hint.hidden = false;
         }
+
+        montarSliderAgenda(track, proximos.length);
+      }
+
+      // Mismo patrón que el carrusel hero: autoplay con pausa por hover/foco/pestaña
+      // oculta y swipe sin pointer capture. Sin flechas ni dots, para que siga siendo
+      // un renglón discreto y no una segunda tarjeta.
+      function montarSliderAgenda(track, cantidad) {
+        const slides = Array.from(track.children);
+
+        function irASlide(i, instantaneo) {
+          agendaIndex = (i + cantidad) % cantidad;
+          if (instantaneo) track.style.transition = "none";
+          track.style.transform = `translateX(${-agendaIndex * 100}%)`;
+          if (instantaneo) requestAnimationFrame(() => { track.style.transition = ""; });
+
+          slides.forEach((slide, n) => {
+            const oculto = n !== agendaIndex;
+            slide.setAttribute("aria-hidden", oculto ? "true" : "false");
+            // Los renglones ocultos no deben ser alcanzables con Tab
+            slide.querySelectorAll("button").forEach((el) => {
+              if (oculto) el.setAttribute("tabindex", "-1");
+              else el.removeAttribute("tabindex");
+            });
+          });
+        }
+
+        irASlide(0, true);
+        if (cantidad < 2) return;   // con un solo día no hay nada que rotar
+
+        let pausado = false;
+
+        function reiniciarTimer() {
+          clearTimeout(agendaTimer);
+          if (pausado || document.hidden) return;
+          agendaTimer = setTimeout(() => { irASlide(agendaIndex + 1); reiniciarTimer(); }, AGENDA_DELAY);
+        }
+
+        function pausar() { pausado = true; clearTimeout(agendaTimer); }
+        function reanudar() { if (!pausado) return; pausado = false; reiniciarTimer(); }
+
+        agendaReiniciar = reiniciarTimer;
+
+        track.addEventListener("mouseenter", pausar);
+        track.addEventListener("mouseleave", reanudar);
+        track.addEventListener("focusin", pausar);
+        track.addEventListener("focusout", reanudar);
+
+        // --- Swipe / drag ---
+        let startX = 0, startY = 0, deltaX = 0, arrastrando = false, movido = false;
+
+        function alMover(e) {
+          if (!arrastrando) return;
+          deltaX = e.clientX - startX;
+          const deltaY = e.clientY - startY;
+          // Si el gesto es claramente vertical, se deja scrollear la página
+          if (!movido && Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 12) { terminarDrag(); return; }
+          if (Math.abs(deltaX) > 8) movido = true;
+          if (movido) {
+            track.classList.add("is-dragging");
+            const pct = (deltaX / track.offsetWidth) * 100;
+            track.style.transform = `translateX(${-agendaIndex * 100 + pct}%)`;
+          }
+        }
+
+        function terminarDrag() {
+          if (!arrastrando) return;
+          arrastrando = false;
+          window.removeEventListener("pointermove", alMover);
+          window.removeEventListener("pointerup", terminarDrag);
+          window.removeEventListener("pointercancel", terminarDrag);
+          track.classList.remove("is-dragging");
+
+          const umbral = Math.max(40, track.offsetWidth * 0.15);
+          if (deltaX > umbral) irASlide(agendaIndex - 1);
+          else if (deltaX < -umbral) irASlide(agendaIndex + 1);
+          else irASlide(agendaIndex);
+          reanudar();
+        }
+
+        track.addEventListener("pointerdown", (e) => {
+          if (e.pointerType === "mouse" && e.button !== 0) return;
+          arrastrando = true; movido = false; startX = e.clientX; startY = e.clientY; deltaX = 0;
+          pausar();
+          window.addEventListener("pointermove", alMover);
+          window.addEventListener("pointerup", terminarDrag);
+          window.addEventListener("pointercancel", terminarDrag);
+        });
+
+        // Un swipe no debe disparar el salto a la fecha
+        track.addEventListener("click", (e) => {
+          if (movido) { e.preventDefault(); e.stopPropagation(); movido = false; }
+        }, true);
+
+        reiniciarTimer();
       }
 
       function mostrarDetalle(fechaISO) {
