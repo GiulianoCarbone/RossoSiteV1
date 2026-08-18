@@ -693,351 +693,980 @@
       </div>
     </section>
 
-    <!-- ══ SECCIÓN AUTORIDAD: LÍDERES EN TERMINACIONES Y RED NOA ══ -->
-    <section class="authority-section" style="padding: 60px 0; background: var(--surface, #f9fafb);">
+    <!-- ══ SECCIÓN AUTORIDAD: LÍDERES EN TERMINACIONES Y RED NOA (REDISEÑO BENTO ELEVADO) ══ -->
+    <section class="authority-section" id="por-que-rosso">
       <style>
+        .authority-section {
+          padding: 85px 0 90px;
+          background: linear-gradient(180deg, #f8fafd 0%, #ffffff 100%);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .authority-section::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 800px;
+          height: 350px;
+          background: radial-gradient(circle, rgba(236, 100, 52, 0.05) 0%, rgba(39, 46, 104, 0.02) 50%, transparent 70%);
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .authority-header {
+          text-align: center;
+          max-width: 820px;
+          margin: 0 auto 50px;
+          position: relative;
+          z-index: 1;
+        }
+
+        .authority-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(236, 100, 52, 0.09);
+          border: 1px solid rgba(236, 100, 52, 0.22);
+          color: var(--accent, #ec6434);
+          padding: 7px 18px;
+          border-radius: 50px;
+          font-size: 0.82rem;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          margin-bottom: 16px;
+          box-shadow: 0 2px 10px rgba(236, 100, 52, 0.06);
+        }
+
+        .authority-title {
+          font-size: 2.25rem;
+          font-weight: 800;
+          color: var(--brand, #272e68);
+          line-height: 1.25;
+          letter-spacing: -0.02em;
+          margin-bottom: 16px;
+        }
+
+        .authority-title span {
+          color: var(--accent, #ec6434);
+        }
+
+        .authority-desc {
+          font-size: 1.05rem;
+          color: var(--muted, #4b5567);
+          line-height: 1.65;
+          margin: 0 auto;
+          max-width: 720px;
+        }
+
         .authority-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+          grid-template-columns: repeat(4, 1fr);
           gap: 24px;
-          margin-top: 36px;
+          position: relative;
+          z-index: 1;
         }
 
         .authority-card {
           background: #ffffff;
-          border-radius: 16px;
-          padding: 28px 24px;
-          border: 1px solid rgba(0, 0, 0, 0.06);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-          transition: transform 0.3s ease, border-color 0.3s ease;
+          border-radius: 20px;
+          padding: 30px 24px 24px;
+          border: 1px solid rgba(39, 46, 104, 0.09);
+          box-shadow: 0 10px 30px rgba(39, 46, 104, 0.035), 0 1px 3px rgba(0, 0, 0, 0.02);
+          transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
           display: flex;
           flex-direction: column;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .authority-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, transparent, rgba(236, 100, 52, 0.8), transparent);
+          opacity: 0;
+          transition: opacity 0.35s ease;
         }
 
         .authority-card:hover {
-          transform: translateY(-4px);
-          border-color: var(--accent, #ec6434);
+          transform: translateY(-8px);
+          border-color: rgba(236, 100, 52, 0.35);
+          box-shadow: 0 20px 40px rgba(39, 46, 104, 0.09), 0 4px 12px rgba(236, 100, 52, 0.08);
         }
 
-        .authority-icon {
+        .authority-card:hover::before {
+          opacity: 1;
+        }
+
+        .authority-card-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+
+        .authority-icon-box {
           width: 52px;
           height: 52px;
-          border-radius: 12px;
-          background: rgba(236, 100, 52, 0.1);
+          border-radius: 14px;
+          background: linear-gradient(135deg, rgba(236, 100, 52, 0.12) 0%, rgba(39, 46, 104, 0.06) 100%);
           color: var(--accent, #ec6434);
           display: grid;
           place-items: center;
-          font-size: 1.5rem;
-          margin-bottom: 18px;
+          font-size: 1.4rem;
+          box-shadow: 0 4px 14px rgba(236, 100, 52, 0.12);
+          transition: all 0.35s ease;
+        }
+
+        .authority-card:hover .authority-icon-box {
+          background: var(--accent, #ec6434);
+          color: #ffffff;
+          transform: scale(1.08) rotate(3deg);
+          box-shadow: 0 8px 20px rgba(236, 100, 52, 0.35);
+        }
+
+        .card-pill-tag {
+          font-size: 0.72rem;
+          font-weight: 700;
+          color: var(--brand, #272e68);
+          background: #f0f3fa;
+          padding: 5px 10px;
+          border-radius: 20px;
+          letter-spacing: 0.02em;
+          border: 1px solid rgba(39, 46, 104, 0.08);
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+        }
+
+        .card-pill-tag i {
+          color: var(--accent, #ec6434);
+          font-size: 0.7rem;
         }
 
         .authority-card h3 {
-          font-size: 1.15rem;
-          font-weight: 700;
+          font-size: 1.18rem;
+          font-weight: 750;
           color: var(--brand, #272e68);
-          margin-bottom: 10px;
+          line-height: 1.35;
+          margin-bottom: 12px;
+          letter-spacing: -0.01em;
         }
 
         .authority-card p {
           font-size: 0.92rem;
-          color: var(--muted, #6b7280);
-          line-height: 1.6;
-          margin: 0;
+          color: #596375;
+          line-height: 1.65;
+          margin: 0 0 18px;
+          flex-grow: 1;
         }
 
         .authority-card strong {
-          color: #1f2937;
+          color: #1e2640;
+          font-weight: 600;
+        }
+
+        .card-brand-chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-top: auto;
+          padding-top: 14px;
+          border-top: 1px dashed rgba(39, 46, 104, 0.1);
+        }
+
+        .brand-chip {
+          font-size: 0.74rem;
+          font-weight: 600;
+          color: var(--brand, #272e68);
+          background: #f4f6fb;
+          padding: 4px 9px;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+        }
+
+        .authority-card:hover .brand-chip {
+          background: #eef2fb;
+          color: var(--accent, #ec6434);
+        }
+
+        @media (max-width: 1100px) {
+          .authority-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .authority-section {
+            padding: 55px 0 60px;
+          }
+          .authority-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .authority-title {
+            font-size: 1.7rem;
+          }
+          .authority-card {
+            padding: 24px 20px;
+          }
         }
       </style>
       <div class="container container-wide">
-        <h2 class="section-title" style="text-align: center; margin-bottom: 12px;">
-          Líderes en Terminaciones, Diseño y Materiales para la Construcción
-        </h2>
-        <p class="section-subtitle"
-          style="text-align: center; margin-bottom: 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
-          Variedad, stock permanente y asesoramiento profesional para particulares, arquitectos y constructoras en
-          Tucumán y Salta.
-        </p>
+        <div class="authority-header">
+          <div class="authority-badge"><i class="fa-solid fa-shield-halved"></i> Respaldo y Experiencia Rosso</div>
+          <h2 class="authority-title">
+            Líderes en Terminaciones, <span>Diseño y Materiales</span>
+          </h2>
+          <p class="authority-desc">
+            Variedad, stock permanente y asesoramiento profesional especializado para particulares, arquitectos y constructoras en Tucumán y Salta.
+          </p>
+        </div>
 
         <div class="authority-grid">
+          <!-- Tarjeta 1 -->
           <div class="authority-card">
-            <div class="authority-icon"><i class="fa-solid fa-gem"></i></div>
+            <div class="authority-card-header">
+              <div class="authority-icon-box"><i class="fa-solid fa-gem"></i></div>
+              <span class="card-pill-tag"><i class="fa-solid fa-sparkles"></i> Stock Inmediato</span>
+            </div>
             <h3>Showroom de Pisos y Porcelanatos</h3>
-            <p>Distribuidores directos de <strong>ILVA, Cortines, Marcos Paz y Cañuelas</strong>. Diseños para interior,
-              exterior, símil madera y grandes formatos con stock inmediato.</p>
+            <p>Distribuidores directos de primeras marcas. Amplia variedad para interior, exterior, símil madera y grandes formatos listos para retirar.</p>
+            <div class="card-brand-chips">
+              <span class="brand-chip">ILVA</span>
+              <span class="brand-chip">Cortines</span>
+              <span class="brand-chip">Marcos Paz</span>
+              <span class="brand-chip">Cañuelas</span>
+            </div>
           </div>
 
+          <!-- Tarjeta 2 -->
           <div class="authority-card">
-            <div class="authority-icon"><i class="fa-solid fa-bath"></i></div>
+            <div class="authority-card-header">
+              <div class="authority-icon-box"><i class="fa-solid fa-bath"></i></div>
+              <span class="card-pill-tag"><i class="fa-solid fa-award"></i> Garantía Oficial</span>
+            </div>
             <h3>Sanitarios, Griferías y Diseño</h3>
-            <p>Juegos de baño <strong>Ferrum y Roca</strong>, griferías de diseño <strong>FV y Vasser</strong>,
-              amoblamientos y bachas <strong>Johnson Acero</strong> con garantía de fábrica.</p>
+            <p>Juegos de baño, griferías monocomando y embutidas, amoblamientos de vanguardia y bachas con garantía y respaldo de fábrica.</p>
+            <div class="card-brand-chips">
+              <span class="brand-chip">Ferrum</span>
+              <span class="brand-chip">Roca</span>
+              <span class="brand-chip">FV</span>
+              <span class="brand-chip">Johnson Acero</span>
+            </div>
           </div>
 
+          <!-- Tarjeta 3 -->
           <div class="authority-card">
-            <div class="authority-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div class="authority-card-header">
+              <div class="authority-icon-box"><i class="fa-solid fa-map-location-dot"></i></div>
+              <span class="card-pill-tag"><i class="fa-solid fa-store"></i> Red Regional</span>
+            </div>
             <h3>Red de 8 Sucursales en el NOA</h3>
-            <p><strong>6 sucursales en Tucumán</strong> (San Miguel de Tucumán, Monteros, Concepción, Aguilares, Famaillá, Tafí
-              del Valle) y <strong>2 sucursales en Salta</strong> (Salta Capital y Metán).</p>
+            <p>Atención personalizada en <strong>6 sucursales en Tucumán</strong> (Capital, Monteros, Concepción, Aguilares, Famaillá, Tafí del Valle) y <strong>2 en Salta</strong> (Capital y Metán).</p>
+            <div class="card-brand-chips">
+              <span class="brand-chip">6 en Tucumán</span>
+              <span class="brand-chip">2 en Salta</span>
+            </div>
           </div>
 
+          <!-- Tarjeta 4 -->
           <div class="authority-card">
-            <div class="authority-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
+            <div class="authority-card-header">
+              <div class="authority-icon-box"><i class="fa-solid fa-truck-ramp-box"></i></div>
+              <span class="card-pill-tag"><i class="fa-solid fa-truck-fast"></i> Flota Propia</span>
+            </div>
             <h3>Acopio y Entrega a Pie de Obra</h3>
-            <p>Congelá precio con nuestro <strong>servicio de acopio</strong> y recibí tus materiales con flota propia
-              en San Miguel de Tucumán, Yerba Buena, interior y Salta.</p>
+            <p>Congelá el precio de tus materiales hoy mismo con nuestro <strong>servicio de acopio</strong> y programá las entregas directas en tu obra.</p>
+            <div class="card-brand-chips">
+              <span class="brand-chip">Precio Congelado</span>
+              <span class="brand-chip">Entrega en Obra</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ══ PREGUNTAS FRECUENTES INSTITUCIONALES (FAQ ACCORDION) ══ -->
-    <section class="home-faq-section" style="padding: 60px 0; background: #ffffff;">
+    <!-- ══ PREGUNTAS FRECUENTES (LAYOUT 2-COLUMNAS ASIMÉTRICO & SOPORTE DIRECTO) ══ -->
+    <section class="home-faq-section" id="faq-section">
       <style>
-        .home-faq-container {
-          max-width: 880px;
-          margin: 0 auto;
+        .home-faq-section {
+          padding: 85px 0;
+          background: #f8fafc;
+          border-top: 1px solid rgba(39, 46, 104, 0.06);
+          border-bottom: 1px solid rgba(39, 46, 104, 0.06);
+          position: relative;
         }
 
-        .home-faq-item {
-          border: 1px solid rgba(0, 0, 0, 0.08);
-          border-radius: 12px;
-          margin-bottom: 14px;
-          overflow: hidden;
-          transition: all 0.3s ease;
+        .faq-layout-grid {
+          display: grid;
+          grid-template-columns: 360px 1fr;
+          gap: 48px;
+          align-items: start;
         }
 
-        .home-faq-item.active {
-          border-color: var(--accent, #ec6434);
-          box-shadow: 0 4px 18px rgba(236, 100, 52, 0.08);
+        .faq-sidebar {
+          position: sticky;
+          top: 140px;
         }
 
-        .home-faq-question {
-          padding: 18px 24px;
-          background: #ffffff;
-          cursor: pointer;
-          font-weight: 700;
-          font-size: 1.05rem;
-          color: var(--brand, #272e68);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          user-select: none;
-        }
-
-        .home-faq-question i {
-          color: var(--accent, #ec6434);
-          transition: transform 0.3s ease;
-        }
-
-        .home-faq-item.active .home-faq-question i {
-          transform: rotate(180deg);
-        }
-
-        .home-faq-answer {
-          padding: 0 24px 20px;
-          color: #4b5563;
-          font-size: 0.95rem;
-          line-height: 1.7;
-          display: none;
-        }
-
-        .home-faq-item.active .home-faq-answer {
-          display: block;
-          animation: homeFaqFadeIn 0.3s ease;
-        }
-
-        @keyframes homeFaqFadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-4px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      </style>
-      <div class="container home-faq-container">
-        <h2 class="section-title" style="text-align: center; margin-bottom: 12px;">
-          Preguntas Frecuentes
-        </h2>
-        <p class="section-subtitle" style="text-align: center; margin-bottom: 36px;">
-          Respuestas rápidas sobre compras, sucursales, medios de pago y entregas en Tucumán y Salta.
-        </p>
-
-        <div class="home-faq-item active">
-          <div class="home-faq-question" onclick="this.parentElement.classList.toggle('active')">
-            <span>¿Cuáles son las sucursales de Rosso Materiales en Tucumán y Salta?</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </div>
-          <div class="home-faq-answer">
-            Rosso Materiales cuenta con <strong>8 sucursales físicas</strong>: en Tucumán nos encontramos en <strong>San Miguel de Tucumán, Monteros, Concepción, Aguilares, Famaillá y Tafí del Valle</strong>; y en Salta
-            en <strong>Salta Capital (Av. Chile 1474) y San José de Metán</strong>.
-          </div>
-        </div>
-
-        <div class="home-faq-item">
-          <div class="home-faq-question" onclick="this.parentElement.classList.toggle('active')">
-            <span>¿Qué marcas de terminaciones, pisos y griferías comercializan?</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </div>
-          <div class="home-faq-answer">
-            Somos distribuidores oficiales de <strong>ILVA, Cortines, Marcos Paz, Cañuelas</strong> en porcelanatos;
-            <strong>Ferrum y Roca</strong> en sanitarios; <strong>FV y Vasser</strong> en griferías; <strong>Johnson
-              Acero</strong> en bachas; <strong>Oblak</strong> en aberturas; <strong>Tensolite</strong> en viguetas;
-            <strong>Holcim</strong> en cemento; <strong>Weber</strong> en adhesivos y <strong>Durlock</strong> en
-            construcción en seco.
-          </div>
-        </div>
-
-        <div class="home-faq-item">
-          <div class="home-faq-question" onclick="this.parentElement.classList.toggle('active')">
-            <span>¿Cómo funciona el servicio de acopio de materiales?</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </div>
-          <div class="home-faq-answer">
-            El servicio de acopio te permite comprar hoy los materiales para tu obra o remodelación y <strong>congelar
-              el precio al instante</strong>. Nosotros los guardamos en nuestros depósitos y te los entregamos a medida
-            que tu obra lo requiera.
-          </div>
-        </div>
-
-        <div class="home-faq-item">
-          <div class="home-faq-question" onclick="this.parentElement.classList.toggle('active')">
-            <span>¿Realizan envíos a pie de obra en Tucumán y Salta?</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </div>
-          <div class="home-faq-answer">
-            Sí, disponemos de camiones propios para realizar entregas en obra en San Miguel de Tucumán, Yerba Buena,
-            Tafí Viejo, todo el interior tucumano, Salta Capital y el Valle de Lerma.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== SECCIÓN TRABAJÁ CON NOSOTROS (MINIMALISTA PREMIUM) ===== -->
-    <section class="join-team-section" style="padding: 40px 0 60px;">
-      <style>
-        .join-team-section {
-          background: transparent;
-        }
-
-        .join-team-container {
-          background: linear-gradient(135deg, #ffffff 0%, #fbfbfc 100%);
-          border: 1px solid rgba(39, 46, 104, 0.08);
-          border-left: 4px solid var(--accent, #ec6434);
-          border-radius: 16px;
-          padding: 36px 44px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 28px;
-          box-shadow: 0 4px 20px rgba(39, 46, 104, 0.02);
-          transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .join-team-container:hover {
-          border-color: rgba(39, 46, 104, 0.15);
-          border-left-color: #d4552a;
-          transform: translateY(-3px);
-          box-shadow: 0 16px 36px rgba(39, 46, 104, 0.06);
-        }
-
-        .join-team-info {
-          max-width: 780px;
-        }
-
-        .join-team-info h2 {
-          font-size: 1.45rem;
-          font-weight: 800;
-          color: var(--brand, #272e68);
-          margin-bottom: 8px;
-          letter-spacing: -0.015em;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .join-team-info h2 i {
-          font-size: 1.25rem;
-          color: var(--accent, #ec6434);
-        }
-
-        .join-team-info p {
-          font-size: 0.95rem;
-          color: var(--muted, #6b7280);
-          line-height: 1.6;
-        }
-
-        .btn-join-team-min {
+        .faq-badge {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          background: var(--brand, #272e68);
-          color: #ffffff;
-          padding: 12px 24px;
-          border-radius: 10px;
+          gap: 7px;
+          background: rgba(39, 46, 104, 0.07);
+          border: 1px solid rgba(39, 46, 104, 0.15);
+          color: var(--brand, #272e68);
+          padding: 6px 14px;
+          border-radius: 50px;
+          font-size: 0.8rem;
           font-weight: 700;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          margin-bottom: 14px;
+        }
+
+        .faq-title {
+          font-size: 2rem;
+          font-weight: 800;
+          color: var(--brand, #272e68);
+          line-height: 1.25;
+          letter-spacing: -0.02em;
+          margin-bottom: 14px;
+        }
+
+        .faq-title span {
+          color: var(--accent, #ec6434);
+        }
+
+        .faq-subtitle {
+          font-size: 0.95rem;
+          color: var(--muted, #4b5567);
+          line-height: 1.65;
+          margin-bottom: 24px;
+        }
+
+        .faq-contact-card {
+          background: #ffffff;
+          border-radius: 18px;
+          padding: 24px;
+          border: 1px solid rgba(39, 46, 104, 0.1);
+          box-shadow: 0 8px 24px rgba(39, 46, 104, 0.04);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .faq-contact-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: var(--accent, #ec6434);
+        }
+
+        .faq-contact-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+
+        .faq-advisor-avatar {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: #f0f3fa;
+          display: grid;
+          place-items: center;
+          color: var(--brand, #272e68);
+          font-size: 1.2rem;
+          position: relative;
+        }
+
+        .faq-online-dot {
+          position: absolute;
+          bottom: 1px;
+          right: 1px;
+          width: 11px;
+          height: 11px;
+          background: #10b981;
+          border: 2px solid #ffffff;
+          border-radius: 50%;
+          box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+        }
+
+        .faq-contact-title {
+          font-size: 0.98rem;
+          font-weight: 750;
+          color: var(--brand, #272e68);
+          margin: 0;
+        }
+
+        .faq-contact-sub {
+          font-size: 0.78rem;
+          color: #6b7280;
+          margin: 2px 0 0;
+        }
+
+        .faq-contact-text {
           font-size: 0.88rem;
+          color: #555f72;
+          line-height: 1.55;
+          margin-bottom: 18px;
+        }
+
+        .faq-chat-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          width: 100%;
+          background: var(--accent, #ec6434);
+          color: #ffffff;
+          padding: 12px 18px;
+          border-radius: 12px;
+          font-size: 0.88rem;
+          font-weight: 700;
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 14px rgba(236, 100, 52, 0.28);
+          transition: all 0.25s ease;
           text-decoration: none;
-          white-space: nowrap;
-          box-shadow: 0 4px 14px rgba(39, 46, 104, 0.15);
+        }
+
+        .faq-chat-btn:hover {
+          background: #d65324;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 18px rgba(236, 100, 52, 0.4);
+          color: #ffffff;
+        }
+
+        .faq-sucursales-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          width: 100%;
+          background: #f4f6fa;
+          color: var(--brand, #272e68);
+          padding: 10px 18px;
+          border-radius: 12px;
+          font-size: 0.84rem;
+          font-weight: 650;
+          border: 1px solid rgba(39, 46, 104, 0.08);
+          margin-top: 8px;
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+
+        .faq-sucursales-btn:hover {
+          background: #eaeffa;
+          color: var(--accent, #ec6434);
+        }
+
+        /* Acordeón */
+        .faq-accordion-list {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+
+        .modern-faq-item {
+          background: #ffffff;
+          border: 1px solid rgba(39, 46, 104, 0.09);
+          border-radius: 16px;
+          box-shadow: 0 3px 12px rgba(39, 46, 104, 0.025);
+          overflow: hidden;
           transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        .btn-join-team-min:hover {
-          background: #ec6434;
+        .modern-faq-item:hover {
+          border-color: rgba(39, 46, 104, 0.18);
+          box-shadow: 0 8px 24px rgba(39, 46, 104, 0.05);
+        }
+
+        .modern-faq-item.active {
+          border-color: rgba(236, 100, 52, 0.45);
+          box-shadow: 0 12px 28px rgba(236, 100, 52, 0.08);
+        }
+
+        .modern-faq-trigger {
+          width: 100%;
+          text-align: left;
+          padding: 20px 24px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          user-select: none;
+          font-family: inherit;
+        }
+
+        .modern-faq-question {
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: var(--brand, #272e68);
+          line-height: 1.45;
+          letter-spacing: -0.01em;
+          transition: color 0.2s ease;
+        }
+
+        .modern-faq-item.active .modern-faq-question {
+          color: var(--accent, #ec6434);
+        }
+
+        .modern-faq-toggle-icon {
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          background: #f4f6fb;
+          color: var(--brand, #272e68);
+          display: grid;
+          place-items: center;
+          font-size: 0.85rem;
+          flex-shrink: 0;
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modern-faq-item:hover .modern-faq-toggle-icon {
+          background: rgba(236, 100, 52, 0.1);
+          color: var(--accent, #ec6434);
+        }
+
+        .modern-faq-item.active .modern-faq-toggle-icon {
+          background: var(--accent, #ec6434);
           color: #ffffff;
-          transform: translateY(-1px);
-          box-shadow: 0 6px 20px rgba(236, 100, 52, 0.3);
+          transform: rotate(180deg);
         }
 
-        .btn-join-team-min i {
-          font-size: 0.82rem;
-          transition: transform 0.2s ease;
+        .modern-faq-content {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.3s ease, padding 0.35s ease;
+          opacity: 0;
+          padding: 0 24px;
         }
 
-        .btn-join-team-min:hover i {
-          transform: translateX(3px);
+        .modern-faq-item.active .modern-faq-content {
+          max-height: 500px;
+          opacity: 1;
+          padding: 0 24px 22px;
         }
 
-        @media (max-width: 768px) {
-          .join-team-container {
-            flex-direction: column;
-            text-align: center;
-            padding: 32px 24px;
-            gap: 24px;
-            border-left: none;
-            border-top: 4px solid var(--accent, #ec6434);
-          }
+        .modern-faq-body {
+          color: #4b5567;
+          font-size: 0.95rem;
+          line-height: 1.75;
+          border-top: 1px solid rgba(39, 46, 104, 0.06);
+          padding-top: 16px;
+        }
 
-          .join-team-info h2 {
-            font-size: 1.35rem;
-            justify-content: center;
-          }
+        .modern-faq-body strong {
+          color: #1f2937;
+          font-weight: 650;
+        }
 
-          .join-team-info p {
-            font-size: 0.9rem;
-          }
+        .faq-tags-group {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-top: 12px;
+        }
 
-          .btn-join-team-min {
-            width: 100%;
-            justify-content: center;
+        .faq-tag {
+          font-size: 0.76rem;
+          background: #f0f3fa;
+          color: var(--brand, #272e68);
+          padding: 3px 8px;
+          border-radius: 6px;
+          font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+          .faq-layout-grid {
+            grid-template-columns: 1fr;
+            gap: 36px;
+          }
+          .faq-sidebar {
+            position: static;
+          }
+          .faq-title {
+            font-size: 1.75rem;
           }
         }
       </style>
       <div class="container container-wide">
-        <div class="join-team-container">
-          <div class="join-team-info">
-            <h2><i class="fa-solid fa-briefcase"></i> ¿Te gustaría ser parte de Rosso Materiales?</h2>
-            <p>Buscamos personas apasionadas y con ganas de crecer. Ofrecemos oportunidades de desarrollo y capacitación
-              constante para sumarse a nuestro equipo en Tucumán y Salta.</p>
+        <div class="faq-layout-grid">
+          <!-- Columna Lateral Izquierda -->
+          <div class="faq-sidebar">
+            <div class="faq-badge"><i class="fa-regular fa-circle-question"></i> Centro de Ayuda</div>
+            <h2 class="faq-title">Resolvemos tus dudas <span>antes de comprar</span></h2>
+            <p class="faq-subtitle">
+              Encontrá respuestas rápidas sobre stock, envíos, métodos de pago y servicios de acopio en Tucumán y Salta.
+            </p>
+
+            <div class="faq-contact-card">
+              <div class="faq-contact-header">
+                <div class="faq-advisor-avatar">
+                  <i class="fa-solid fa-headset"></i>
+                  <span class="faq-online-dot"></span>
+                </div>
+                <div>
+                  <h4 class="faq-contact-title">¿Consulta específica?</h4>
+                  <p class="faq-contact-sub">Asesoramiento en tiempo real</p>
+                </div>
+              </div>
+              <p class="faq-contact-text">
+                Nuestros especialistas en obra te cotizan y asesoran al instante por nuestro chat online o sucursal más cercana.
+              </p>
+              <button onclick="document.getElementById('chat-fab').click()" class="faq-chat-btn" type="button">
+                <i class="fa-solid fa-comments"></i> Iniciar Chat en Vivo
+              </button>
+              <a href="sucursales.html" class="faq-sucursales-btn">
+                <i class="fa-solid fa-location-dot"></i> Ver Sucursales y Teléfonos
+              </a>
+            </div>
           </div>
-          <a href="trabaja-con-nosotros.html" class="btn-join-team-min">
-            Ver oportunidades <i class="fa-solid fa-arrow-right"></i>
-          </a>
+
+          <!-- Columna Derecha (Acordeón) -->
+          <div class="faq-accordion-list" id="faqAccordion">
+            <!-- Item 1 -->
+            <div class="modern-faq-item active">
+              <button class="modern-faq-trigger" aria-expanded="true" onclick="toggleFaqItem(this)">
+                <span class="modern-faq-question">¿Cuáles son las sucursales de Rosso Materiales en Tucumán y Salta?</span>
+                <span class="modern-faq-toggle-icon"><i class="fa-solid fa-chevron-down"></i></span>
+              </button>
+              <div class="modern-faq-content">
+                <div class="modern-faq-body">
+                  Rosso Materiales cuenta con <strong>8 sucursales físicas estratégicamente ubicadas</strong>:<br>
+                  • <strong>Tucumán (6 sucursales):</strong> San Miguel de Tucumán, Monteros, Concepción, Aguilares, Famaillá y Tafí del Valle.<br>
+                  • <strong>Salta (2 sucursales):</strong> Salta Capital (Av. Chile 1474) y San José de Metán.
+                  <div class="faq-tags-group">
+                    <span class="faq-tag">Tucumán Capital</span>
+                    <span class="faq-tag">Monteros</span>
+                    <span class="faq-tag">Concepción</span>
+                    <span class="faq-tag">Aguilares</span>
+                    <span class="faq-tag">Salta Capital</span>
+                    <span class="faq-tag">Metán</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="modern-faq-item">
+              <button class="modern-faq-trigger" aria-expanded="false" onclick="toggleFaqItem(this)">
+                <span class="modern-faq-question">¿Qué marcas de pisos, terminaciones y sanitarios comercializan?</span>
+                <span class="modern-faq-toggle-icon"><i class="fa-solid fa-chevron-down"></i></span>
+              </button>
+              <div class="modern-faq-content">
+                <div class="modern-faq-body">
+                  Somos distribuidores oficiales directos de fábrica de las firmas más prestigiosas del mercado:<br>
+                  • <strong>Porcelanatos y Pisos:</strong> ILVA, Cortines, Cerámica Marcos Paz, Cañuelas.<br>
+                  • <strong>Sanitarios y Griferías:</strong> Ferrum, Roca, FV, Vasser, Johnson Acero.<br>
+                  • <strong>Materiales de Obra y Estructura:</strong> Tensolite (viguetas), Holcim (cemento), Weber Saint-Gobain (adhesivos), Durlock (construcción en seco) y Oblak (aberturas).
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="modern-faq-item">
+              <button class="modern-faq-trigger" aria-expanded="false" onclick="toggleFaqItem(this)">
+                <span class="modern-faq-question">¿Cómo funciona el servicio de acopio de materiales?</span>
+                <span class="modern-faq-toggle-icon"><i class="fa-solid fa-chevron-down"></i></span>
+              </button>
+              <div class="modern-faq-content">
+                <div class="modern-faq-body">
+                  El <strong>servicio de acopio</strong> te permite comprar hoy los materiales para tu obra o remodelación y <strong>congelar el precio de manera definitiva</strong>.<br>
+                  Custodiamos tu stock en nuestros centros logísticos y coordinamos las entregas parciales o totales a medida que tu arquitecto o contratista lo solicite.
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="modern-faq-item">
+              <button class="modern-faq-trigger" aria-expanded="false" onclick="toggleFaqItem(this)">
+                <span class="modern-faq-question">¿Realizan envíos a pie de obra en Tucumán y Salta?</span>
+                <span class="modern-faq-toggle-icon"><i class="fa-solid fa-chevron-down"></i></span>
+              </button>
+              <div class="modern-faq-content">
+                <div class="modern-faq-body">
+                  <strong>Sí, contamos con flota propia de camiones y grúas</strong> para entregas directas en obra en San Miguel de Tucumán, Yerba Buena, Tafí Viejo, todo el interior tucumano, Salta Capital, San José de Metán y localidades aledañas.
+                </div>
+              </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="modern-faq-item">
+              <button class="modern-faq-trigger" aria-expanded="false" onclick="toggleFaqItem(this)">
+                <span class="modern-faq-question">¿Cuáles son los medios de pago disponibles?</span>
+                <span class="modern-faq-toggle-icon"><i class="fa-solid fa-chevron-down"></i></span>
+              </button>
+              <div class="modern-faq-content">
+                <div class="modern-faq-body">
+                  Aceptamos <strong>transferencias bancarias, tarjetas de débito y crédito</strong> con planes de cuotas, cheques y promociones especiales vigentes según convenios bancarios. Consultá con nuestros asesores por cotizaciones a medida y descuentos por volumen.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      function toggleFaqItem(triggerBtn) {
+        const item = triggerBtn.closest('.modern-faq-item');
+        const isActive = item.classList.contains('active');
+        
+        // Cierra los otros items para una experiencia acordeón fluida (o descomentar si se prefiere independiente)
+        document.querySelectorAll('.modern-faq-item').forEach(el => {
+          if (el !== item) {
+            el.classList.remove('active');
+            const btn = el.querySelector('.modern-faq-trigger');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        item.classList.toggle('active', !isActive);
+        triggerBtn.setAttribute('aria-expanded', String(!isActive));
+      }
+    </script>
+
+    <!-- ===== SECCIÓN TRABAJÁ CON NOSOTROS (HERO DARK CARD & TALENTO NOA) ===== -->
+    <section class="join-team-section" id="trabaja-con-nosotros">
+      <style>
+        .join-team-section {
+          padding: 40px 0 80px;
+          background: transparent;
+        }
+
+        .join-team-card {
+          background: linear-gradient(135deg, #131738 0%, #1f2554 50%, #101432 100%);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 24px;
+          padding: 48px 52px;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 24px 60px rgba(19, 23, 56, 0.35), 0 4px 16px rgba(0, 0, 0, 0.2);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 40px;
+          transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .join-team-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 30px 70px rgba(19, 23, 56, 0.45);
+        }
+
+        /* Destellos de iluminación ambiental */
+        .join-team-card::before {
+          content: '';
+          position: absolute;
+          top: -60px;
+          right: -60px;
+          width: 320px;
+          height: 320px;
+          background: radial-gradient(circle, rgba(236, 100, 52, 0.22) 0%, transparent 70%);
+          border-radius: 50%;
+          pointer-events: none;
+        }
+
+        .join-team-card::after {
+          content: '';
+          position: absolute;
+          bottom: -70px;
+          left: 10%;
+          width: 280px;
+          height: 280px;
+          background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+          border-radius: 50%;
+          pointer-events: none;
+        }
+
+        .join-team-main-content {
+          position: relative;
+          z-index: 1;
+          max-width: 740px;
+        }
+
+        .team-pill-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(236, 100, 52, 0.18);
+          border: 1px solid rgba(236, 100, 52, 0.35);
+          color: #ff9166;
+          padding: 6px 14px;
+          border-radius: 50px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          margin-bottom: 14px;
+        }
+
+        .join-team-card h2 {
+          font-size: 1.85rem;
+          font-weight: 800;
+          color: #ffffff;
+          line-height: 1.28;
+          letter-spacing: -0.02em;
+          margin-bottom: 12px;
+        }
+
+        .join-team-card h2 span {
+          color: #ff8552;
+        }
+
+        .join-team-card p {
+          font-size: 1rem;
+          color: rgba(255, 255, 255, 0.8);
+          line-height: 1.65;
+          margin-bottom: 22px;
+        }
+
+        .team-perks-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .team-perk-item {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          color: #ffffff;
+          padding: 6px 14px;
+          border-radius: 50px;
+          font-size: 0.84rem;
+          font-weight: 600;
+        }
+
+        .team-perk-item i {
+          color: #ff8552;
+          font-size: 0.8rem;
+        }
+
+        .join-team-action {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+        }
+
+        .btn-join-team-cta {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          background: linear-gradient(135deg, #ec6434 0%, #d84f1f 100%);
+          color: #ffffff;
+          padding: 16px 32px;
+          border-radius: 14px;
+          font-weight: 750;
+          font-size: 0.96rem;
+          text-decoration: none;
+          white-space: nowrap;
+          box-shadow: 0 8px 24px rgba(236, 100, 52, 0.35);
+          transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-join-team-cta:hover {
+          background: linear-gradient(135deg, #f57447 0%, #e25827 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 12px 30px rgba(236, 100, 52, 0.5);
+          color: #ffffff;
+        }
+
+        .btn-join-team-cta i {
+          font-size: 0.88rem;
+          transition: transform 0.25s ease;
+        }
+
+        .btn-join-team-cta:hover i {
+          transform: translateX(4px);
+        }
+
+        .team-location-note {
+          font-size: 0.78rem;
+          color: rgba(255, 255, 255, 0.65);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .team-location-note i {
+          color: #ff8552;
+        }
+
+        @media (max-width: 900px) {
+          .join-team-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 38px 26px;
+            gap: 28px;
+          }
+
+          .join-team-card h2 {
+            font-size: 1.55rem;
+          }
+
+          .team-perks-list {
+            justify-content: center;
+          }
+
+          .join-team-action {
+            width: 100%;
+          }
+
+          .btn-join-team-cta {
+            width: 100%;
+          }
+        }
+      </style>
+      <div class="container container-wide">
+        <div class="join-team-card">
+          <div class="join-team-main-content">
+            <div class="team-pill-badge"><i class="fa-solid fa-briefcase"></i> Talento Rosso • Sumate al Equipo</div>
+            <h2>¿Te gustaría ser parte de <span>Rosso Materiales?</span></h2>
+            <p>
+              Buscamos personas apasionadas y con ganas de crecer. Ofrecemos oportunidades reales de desarrollo, capacitación constante y un ambiente de trabajo dinámico y colaborativo en Tucumán y Salta.
+            </p>
+            <div class="team-perks-list">
+              <span class="team-perk-item"><i class="fa-solid fa-chart-line"></i> Plan de Carrera</span>
+              <span class="team-perk-item"><i class="fa-solid fa-graduation-cap"></i> Capacitación Continua</span>
+              <span class="team-perk-item"><i class="fa-solid fa-people-group"></i> Excelente Clima Laboral</span>
+            </div>
+          </div>
+          <div class="join-team-action">
+            <a href="trabaja-con-nosotros.html" class="btn-join-team-cta">
+              <span>Ver Oportunidades</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <span class="team-location-note"><i class="fa-solid fa-location-dot"></i> Búsquedas en Tucumán y Salta</span>
+          </div>
         </div>
       </div>
     </section>
