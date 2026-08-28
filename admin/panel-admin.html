@@ -1048,6 +1048,132 @@
             white-space: nowrap;
         }
 
+        /* ===== Anuncios del carrusel ===== */
+        .anuncios-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media (max-width: 1100px) {
+            .anuncios-layout { grid-template-columns: 1fr; }
+        }
+
+        .anuncio-row {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 14px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            background: #fff;
+            margin-bottom: 12px;
+        }
+
+        .anuncio-row.is-editing {
+            border-color: var(--brand);
+            box-shadow: 0 0 0 3px rgba(39, 46, 104, .12);
+        }
+
+        .anuncio-row-thumb {
+            width: 54px;
+            height: 54px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--brand-soft);
+        }
+
+        .anuncio-row-icon {
+            width: 54px;
+            height: 54px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--brand-soft);
+            color: var(--brand);
+            font-size: 1.2rem;
+        }
+
+        .anuncio-row-info { flex: 1; min-width: 0; }
+
+        .anuncio-row-title {
+            font-weight: 700;
+            font-size: .95rem;
+            color: var(--ink);
+            margin: 0 0 3px;
+        }
+
+        .anuncio-row-text {
+            font-size: .84rem;
+            color: var(--muted);
+            margin: 0 0 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .anuncio-row-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-size: .78rem;
+            color: var(--muted);
+        }
+
+        .anuncio-estado {
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: .72rem;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+
+        .anuncio-estado.vigente { background: #dcfce7; color: #15803d; }
+        .anuncio-estado.programado { background: #dbeafe; color: #1d4ed8; }
+        .anuncio-estado.vencido { background: #f3f4f6; color: #6b7280; }
+        .anuncio-estado.pausado { background: #fef3c7; color: #b45309; }
+
+        .anuncio-row-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .anuncio-row-actions button {
+            width: auto;
+            padding: 6px 12px;
+            font-size: .78rem;
+        }
+
+        .anuncios-empty {
+            text-align: center;
+            padding: 34px 16px;
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        .anuncios-empty i {
+            display: block;
+            font-size: 1.9rem;
+            margin-bottom: 10px;
+            opacity: .45;
+        }
+
+        .anuncio-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
         .modern-news-list {
             display: flex;
             flex-direction: column;
@@ -2074,6 +2200,9 @@
                 <a class="nav-item" data-section="vendedor-config">
                     <i class="fa-solid fa-crown"></i> Compañero Destacado
                 </a>
+                <a class="nav-item" data-section="anuncios-config">
+                    <i class="fa-solid fa-bullhorn"></i> Anuncios del Carrusel
+                </a>
                 <a class="nav-item" data-section="contest-config">
                     <i class="fa-solid fa-trophy"></i> Configurar Concurso
                 </a>
@@ -3084,6 +3213,104 @@
                 </div>
             </section>
 
+            <!-- ANUNCIOS DEL CARRUSEL SECTION -->
+            <section id="anuncios-config" class="content-section">
+                <div class="section-header">
+                    <div>
+                        <h1>Anuncios del Carrusel</h1>
+                        <p style="color:var(--muted); font-size:0.85rem; margin:4px 0 0;">
+                            Avisos puntuales que aparecen primero en el carrusel del panel corporativo:
+                            el ingreso de un compañero, un aviso urgente, una felicitación.
+                            Se apagan solos al pasar la fecha de fin.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="anuncios-layout">
+                    <!-- Formulario -->
+                    <div class="panel-card" style="padding:20px;">
+                        <h3 id="anuncio-form-title" style="font-size:1rem; margin:0 0 16px; color:var(--ink);">
+                            <i class="fa-solid fa-plus" style="color:var(--accent);"></i> Nuevo anuncio
+                        </h3>
+                        <form id="anuncio-form">
+                            <input type="hidden" id="anuncio-id">
+
+                            <div class="input-group">
+                                <label>Tipo</label>
+                                <select id="anuncio-tipo">
+                                    <option value="ingreso">Nuevo ingreso</option>
+                                    <option value="aviso">Aviso importante</option>
+                                    <option value="felicitacion">Felicitación</option>
+                                    <option value="capacitacion">Capacitación</option>
+                                </select>
+                                <small>Define el color y el ícono de la tarjeta.</small>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Título</label>
+                                <input type="text" id="anuncio-titulo" maxlength="80"
+                                    placeholder="Ej: ¡Bienvenido, Juan Pérez!" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Texto</label>
+                                <textarea id="anuncio-texto" rows="3" maxlength="280"
+                                    placeholder="Ej: Se suma al equipo de Sucursal Salta como vendedor de salón."
+                                    required></textarea>
+                                <small>Hasta 280 caracteres.</small>
+                            </div>
+
+                            <div class="input-group">
+                                <label>URL de la imagen <span style="color:var(--muted); font-weight:400;">(opcional)</span></label>
+                                <input type="url" id="anuncio-imagen" placeholder="https://...">
+                                <small>Foto del compañero o imagen del aviso. Se muestra redonda.</small>
+                            </div>
+
+                            <div class="anuncio-form-row">
+                                <div class="input-group">
+                                    <label>Desde</label>
+                                    <input type="date" id="anuncio-desde" required>
+                                </div>
+                                <div class="input-group">
+                                    <label>Hasta</label>
+                                    <input type="date" id="anuncio-hasta" required>
+                                </div>
+                            </div>
+
+                            <div class="anuncio-form-row">
+                                <div class="input-group">
+                                    <label>Texto del botón <span style="color:var(--muted); font-weight:400;">(opcional)</span></label>
+                                    <input type="text" id="anuncio-cta-texto" maxlength="30" placeholder="Ej: Ver más">
+                                </div>
+                                <div class="input-group">
+                                    <label>Link del botón <span style="color:var(--muted); font-weight:400;">(opcional)</span></label>
+                                    <input type="url" id="anuncio-cta-url" placeholder="https://...">
+                                </div>
+                            </div>
+
+                            <div id="anuncio-preview" style="display:none; margin-bottom:16px; text-align:center; border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px;">
+                                <p style="font-size:.78rem; color:var(--muted); margin:0 0 8px;">Vista previa de la imagen:</p>
+                                <img id="anuncio-img-preview" src="" alt=""
+                                    style="width:90px; height:90px; border-radius:50%; object-fit:cover; border:3px solid var(--accent);">
+                            </div>
+
+                            <button type="submit" id="anuncio-submit-btn">Publicar anuncio</button>
+                            <button type="button" id="anuncio-cancel-btn" class="btn-neutral"
+                                style="display:none; margin-top:8px;">Cancelar edición</button>
+                        </form>
+                    </div>
+
+                    <!-- Lista -->
+                    <div class="panel-card" style="padding:20px;">
+                        <h3 style="font-size:1rem; margin:0 0 16px; color:var(--ink);">
+                            <i class="fa-solid fa-list" style="color:var(--brand);"></i> Anuncios cargados
+                            <span id="anuncios-count" class="filter-count-chip" style="margin-left:6px;">0</span>
+                        </h3>
+                        <div id="anuncios-list"></div>
+                    </div>
+                </div>
+            </section>
+
             <!-- CONTEST CONFIG SECTION -->
             <section id="contest-config" class="content-section">
                 <!-- Top Sticky/Header with live status and global save -->
@@ -3883,6 +4110,7 @@
             initSocialConfig();
             initReviewConfig();
             initVendedorConfig();
+            initAnunciosConfig();
             initContestConfig();
             initInvitations();
             initSeguimiento();
@@ -3921,6 +4149,7 @@
             if (sectionId === 'social-config') loadSocialConfig();
             if (sectionId === 'review-config') loadReviewConfig();
             if (sectionId === 'vendedor-config') loadVendedorConfig();
+            if (sectionId === 'anuncios-config') loadAnunciosConfig();
             if (sectionId === 'contest-config') loadContestConfig();
             if (sectionId === 'invitations') loadInvitations();
             if (sectionId === 'seguimiento') loadSegActiveView();
@@ -6343,6 +6572,276 @@
                 console.error("Error cargando vendedor destacado:", error);
             }
         }
+
+        // --- ANUNCIOS DEL CARRUSEL ---
+        // Todos los anuncios viven en un unico doc (config/hero_anuncios) con un
+        // array `items`. Asi el panel corporativo los trae con 1 sola lectura y
+        // no hacen falta indices ni reglas nuevas.
+        const ANUNCIO_META = {
+            ingreso: { etiqueta: 'Nuevo ingreso', icono: 'fa-user-plus' },
+            aviso: { etiqueta: 'Aviso importante', icono: 'fa-bullhorn' },
+            felicitacion: { etiqueta: 'Felicitación', icono: 'fa-champagne-glasses' },
+            capacitacion: { etiqueta: 'Capacitación', icono: 'fa-graduation-cap' },
+        };
+
+        let anunciosCache = [];
+
+        // Fecha local en YYYY-MM-DD (toISOString correria el dia en UTC-3)
+        function anuncioHoy(offsetDias) {
+            const d = new Date();
+            if (offsetDias) d.setDate(d.getDate() + offsetDias);
+            const mes = String(d.getMonth() + 1).padStart(2, '0');
+            const dia = String(d.getDate()).padStart(2, '0');
+            return d.getFullYear() + '-' + mes + '-' + dia;
+        }
+
+        function anuncioEstado(a) {
+            const hoy = anuncioHoy();
+            if (a.activo === false) return 'pausado';
+            if (a.hasta && a.hasta < hoy) return 'vencido';
+            if (a.desde && a.desde > hoy) return 'programado';
+            return 'vigente';
+        }
+
+        function anuncioDiasRestantes(a) {
+            if (!a.hasta) return null;
+            const fin = new Date(a.hasta + 'T00:00:00');
+            const hoy = new Date(anuncioHoy() + 'T00:00:00');
+            return Math.round((fin - hoy) / 86400000);
+        }
+
+        // "2026-09-01" -> "01/09". Se parte el string en vez de usar Date para
+        // no arrastrar el corrimiento de zona horaria.
+        function anuncioFechaCorta(iso) {
+            if (!iso) return '';
+            const p = iso.split('-');
+            return p.length === 3 ? p[2] + '/' + p[1] : iso;
+        }
+
+        function escaparHtml(txt) {
+            const d = document.createElement('div');
+            d.textContent = txt == null ? '' : String(txt);
+            return d.innerHTML;
+        }
+
+        function initAnunciosConfig() {
+            const form = document.getElementById('anuncio-form');
+            if (!form) return;
+
+            const imgInput = document.getElementById('anuncio-imagen');
+            imgInput.addEventListener('input', () => {
+                const url = imgInput.value.trim();
+                document.getElementById('anuncio-preview').style.display = url ? 'block' : 'none';
+                if (url) document.getElementById('anuncio-img-preview').src = url;
+            });
+
+            document.getElementById('anuncio-cancel-btn').addEventListener('click', resetAnuncioForm);
+
+            form.onsubmit = async (e) => {
+                e.preventDefault();
+
+                const desde = document.getElementById('anuncio-desde').value;
+                const hasta = document.getElementById('anuncio-hasta').value;
+                if (hasta < desde) {
+                    toast('La fecha de fin no puede ser anterior a la de inicio.', 'error');
+                    return;
+                }
+
+                const id = document.getElementById('anuncio-id').value;
+                const existente = anunciosCache.find(a => a.id === id);
+
+                const item = {
+                    id: id || ('anuncio_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7)),
+                    tipo: document.getElementById('anuncio-tipo').value,
+                    titulo: document.getElementById('anuncio-titulo').value.trim(),
+                    texto: document.getElementById('anuncio-texto').value.trim(),
+                    imagenUrl: document.getElementById('anuncio-imagen').value.trim(),
+                    ctaTexto: document.getElementById('anuncio-cta-texto').value.trim(),
+                    ctaUrl: document.getElementById('anuncio-cta-url').value.trim(),
+                    desde: desde,
+                    hasta: hasta,
+                    // Al reeditar uno pausado no se lo reactiva sin querer
+                    activo: existente ? existente.activo !== false : true,
+                    creadoEn: existente ? existente.creadoEn : Date.now(),
+                };
+
+                const items = existente
+                    ? anunciosCache.map(a => (a.id === item.id ? item : a))
+                    : anunciosCache.concat([item]);
+
+                const btn = document.getElementById('anuncio-submit-btn');
+                btn.disabled = true;
+                try {
+                    await guardarAnuncios(items);
+                    toast(existente ? 'Anuncio actualizado.' : 'Anuncio publicado. Ya se ve en el panel corporativo.', 'success');
+                    resetAnuncioForm();
+                } catch (error) {
+                    console.error('Error guardando anuncio:', error);
+                    toast('No se pudo guardar: ' + error.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                }
+            };
+
+            resetAnuncioForm();
+        }
+
+        async function guardarAnuncios(items) {
+            await db.collection('config').doc('hero_anuncios').set({ items: items });
+            anunciosCache = items;
+            renderAnunciosList();
+        }
+
+        function resetAnuncioForm() {
+            const form = document.getElementById('anuncio-form');
+            if (!form) return;
+            form.reset();
+            document.getElementById('anuncio-id').value = '';
+            document.getElementById('anuncio-desde').value = anuncioHoy();
+            document.getElementById('anuncio-hasta').value = anuncioHoy(14);
+            document.getElementById('anuncio-preview').style.display = 'none';
+            document.getElementById('anuncio-form-title').innerHTML =
+                '<i class="fa-solid fa-plus" style="color:var(--accent);"></i> Nuevo anuncio';
+            document.getElementById('anuncio-submit-btn').textContent = 'Publicar anuncio';
+            document.getElementById('anuncio-cancel-btn').style.display = 'none';
+            document.querySelectorAll('.anuncio-row.is-editing').forEach(el => el.classList.remove('is-editing'));
+        }
+
+        async function loadAnunciosConfig() {
+            try {
+                const doc = await db.collection('config').doc('hero_anuncios').get();
+                const data = doc.exists ? doc.data() : null;
+                anunciosCache = (data && Array.isArray(data.items)) ? data.items : [];
+            } catch (error) {
+                console.error('Error cargando anuncios:', error);
+                anunciosCache = [];
+                toast('No se pudieron cargar los anuncios.', 'error');
+            }
+            renderAnunciosList();
+        }
+
+        function renderAnunciosList() {
+            const cont = document.getElementById('anuncios-list');
+            if (!cont) return;
+
+            const badge = document.getElementById('anuncios-count');
+            if (badge) badge.textContent = anunciosCache.length;
+
+            if (!anunciosCache.length) {
+                cont.innerHTML = '<div class="anuncios-empty">' +
+                    '<i class="fa-regular fa-bell"></i>' +
+                    'Todavía no hay anuncios. El carrusel del panel muestra solo el concurso, ' +
+                    'el compañero destacado y la reseña.' +
+                    '</div>';
+                return;
+            }
+
+            // Primero lo que se esta viendo ahora, al final lo que ya paso
+            const orden = { vigente: 0, programado: 1, pausado: 2, vencido: 3 };
+            const lista = anunciosCache.slice().sort((a, b) => {
+                const d = orden[anuncioEstado(a)] - orden[anuncioEstado(b)];
+                return d !== 0 ? d : (b.creadoEn || 0) - (a.creadoEn || 0);
+            });
+
+            cont.innerHTML = lista.map(a => {
+                const meta = ANUNCIO_META[a.tipo] || ANUNCIO_META.aviso;
+                const estado = anuncioEstado(a);
+                const dias = anuncioDiasRestantes(a);
+
+                let vigencia;
+                if (estado === 'vencido') vigencia = 'Venció el ' + anuncioFechaCorta(a.hasta);
+                else if (estado === 'programado') vigencia = 'Arranca el ' + anuncioFechaCorta(a.desde) + ' y dura hasta el ' + anuncioFechaCorta(a.hasta);
+                else if (estado === 'pausado') vigencia = 'En pausa, vence el ' + anuncioFechaCorta(a.hasta);
+                else if (dias === 0) vigencia = 'Último día al aire';
+                else if (dias !== null) vigencia = 'Quedan ' + dias + (dias === 1 ? ' día' : ' días');
+                else vigencia = 'Sin fecha de fin';
+
+                const thumb = a.imagenUrl
+                    ? '<img class="anuncio-row-thumb" src="' + escaparHtml(a.imagenUrl) + '" alt="">'
+                    : '<div class="anuncio-row-icon"><i class="fa-solid ' + meta.icono + '"></i></div>';
+
+                return '<div class="anuncio-row" data-anuncio-row="' + escaparHtml(a.id) + '">' +
+                    thumb +
+                    '<div class="anuncio-row-info">' +
+                        '<p class="anuncio-row-title">' + escaparHtml(a.titulo) + '</p>' +
+                        '<p class="anuncio-row-text">' + escaparHtml(a.texto) + '</p>' +
+                        '<div class="anuncio-row-meta">' +
+                            '<span class="anuncio-estado ' + estado + '">' + estado + '</span>' +
+                            '<span>' + meta.etiqueta + '</span>' +
+                            '<span>&middot;</span>' +
+                            '<span>' + vigencia + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="anuncio-row-actions">' +
+                        '<button type="button" class="btn-brand" onclick="editarAnuncio(\'' + a.id + '\')">' +
+                            '<i class="fa-solid fa-pen"></i> Editar</button>' +
+                        '<button type="button" class="btn-neutral" onclick="toggleAnuncio(\'' + a.id + '\')">' +
+                            (a.activo === false ? '<i class="fa-solid fa-play"></i> Reactivar' : '<i class="fa-solid fa-pause"></i> Pausar') +
+                        '</button>' +
+                        '<button type="button" class="btn-danger" onclick="eliminarAnuncio(\'' + a.id + '\')">' +
+                            '<i class="fa-solid fa-trash"></i> Borrar</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        window.editarAnuncio = (id) => {
+            const a = anunciosCache.find(x => x.id === id);
+            if (!a) return;
+
+            document.getElementById('anuncio-id').value = a.id;
+            document.getElementById('anuncio-tipo').value = a.tipo || 'aviso';
+            document.getElementById('anuncio-titulo').value = a.titulo || '';
+            document.getElementById('anuncio-texto').value = a.texto || '';
+            document.getElementById('anuncio-imagen').value = a.imagenUrl || '';
+            document.getElementById('anuncio-cta-texto').value = a.ctaTexto || '';
+            document.getElementById('anuncio-cta-url').value = a.ctaUrl || '';
+            document.getElementById('anuncio-desde').value = a.desde || anuncioHoy();
+            document.getElementById('anuncio-hasta').value = a.hasta || anuncioHoy(14);
+
+            const preview = document.getElementById('anuncio-preview');
+            preview.style.display = a.imagenUrl ? 'block' : 'none';
+            if (a.imagenUrl) document.getElementById('anuncio-img-preview').src = a.imagenUrl;
+
+            document.getElementById('anuncio-form-title').innerHTML =
+                '<i class="fa-solid fa-pen" style="color:var(--brand);"></i> Editando anuncio';
+            document.getElementById('anuncio-submit-btn').textContent = 'Guardar cambios';
+            document.getElementById('anuncio-cancel-btn').style.display = '';
+
+            document.querySelectorAll('.anuncio-row.is-editing').forEach(el => el.classList.remove('is-editing'));
+            const row = document.querySelector('[data-anuncio-row="' + id + '"]');
+            if (row) row.classList.add('is-editing');
+            document.getElementById('anuncio-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
+        window.toggleAnuncio = async (id) => {
+            const a = anunciosCache.find(x => x.id === id);
+            if (!a) return;
+            const pausar = a.activo !== false;
+            try {
+                await guardarAnuncios(anunciosCache.map(x =>
+                    x.id === id ? Object.assign({}, x, { activo: !pausar }) : x));
+                toast(pausar ? 'Anuncio pausado.' : 'Anuncio reactivado.', 'success');
+            } catch (error) {
+                toast('No se pudo actualizar: ' + error.message, 'error');
+            }
+        };
+
+        window.eliminarAnuncio = (id) => {
+            const a = anunciosCache.find(x => x.id === id);
+            if (!a) return;
+            showConfirmModal({
+                title: '¿Eliminar este anuncio?',
+                message: '"' + (a.titulo || '') + '" se borrará del carrusel de forma permanente.',
+                confirmText: 'Sí, eliminar',
+                confirmClass: 'btn-danger',
+                onConfirm: async () => {
+                    await guardarAnuncios(anunciosCache.filter(x => x.id !== id));
+                    if (document.getElementById('anuncio-id').value === id) resetAnuncioForm();
+                    toast('Anuncio eliminado.', 'success');
+                }
+            });
+        };
 
         // --- CONTEST CONFIG LOGIC ---
         let currentRankCategory = 'A';

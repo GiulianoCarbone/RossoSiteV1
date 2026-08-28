@@ -2419,6 +2419,86 @@
       background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
     }
 
+    /* --- Slide de anuncio eventual (ingresos, avisos, felicitaciones) ---
+       Se inyecta por JS desde config/hero_anuncios y desaparece solo cuando
+       vence, así que no hay markup fijo para él en el HTML. */
+    .hero-anuncio-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: white;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+    }
+
+    .hero-anuncio-card .panel-card-header {
+      border-bottom: 1px solid rgba(255, 255, 255, .18);
+    }
+
+    .hero-anuncio-card .panel-card-header h3,
+    .hero-anuncio-card .panel-card-icon {
+      color: white;
+    }
+
+    /* Cada tipo tiene su propio color para que se distinga de un vistazo */
+    .hero-anuncio-card[data-tipo="aviso"] {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    }
+
+    .hero-anuncio-card[data-tipo="felicitacion"] {
+      background: linear-gradient(135deg, #9d174d 0%, #ec4899 100%);
+    }
+
+    .hero-anuncio-card[data-tipo="capacitacion"] {
+      background: linear-gradient(135deg, #5b21b6 0%, #8b5cf6 100%);
+    }
+
+    .hero-anuncio-photo {
+      width: clamp(150px, 40vw, 210px);
+      height: clamp(150px, 40vw, 210px);
+      flex-shrink: 0;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, .85);
+      object-fit: cover;
+      background: rgba(255, 255, 255, .12);
+    }
+
+    /* Pill "NUEVO": se apaga en cuanto la persona ve el slide (localStorage) */
+    .hero-anuncio-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 10px;
+      padding: 4px 12px;
+      border-radius: 50px;
+      background: var(--accent);
+      color: white;
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      vertical-align: middle;
+      animation: hero-anuncio-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes hero-anuncio-pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(236, 100, 52, .55);
+      }
+
+      50% {
+        box-shadow: 0 0 0 7px rgba(236, 100, 52, 0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-anuncio-badge {
+        animation: none;
+      }
+    }
+
     .hero-slide-goto {
       width: 38px;
       height: 38px;
@@ -2964,7 +3044,7 @@
             <div class="hero-carousel-track" id="hero-carousel-track">
 
               <!-- SLIDE 1: CONCURSO -->
-              <div class="hero-slide" role="group" aria-roledescription="diapositiva" aria-label="1 de 3: Concurso">
+              <div class="hero-slide" role="group" aria-roledescription="diapositiva" data-hero-name="Concurso">
                 <div class="panel-card contest-card contest-card-neon" id="contest-section"
                   style="background: white; position: relative; overflow: hidden; transition: transform 0.3s ease;">
 
@@ -3024,7 +3104,7 @@
 
               <!-- SLIDE 2: COMPAÑERO DESTACADO -->
               <div class="hero-slide" role="group" aria-roledescription="diapositiva"
-                aria-label="2 de 3: Compañero destacado">
+                data-hero-name="Compañero destacado">
                 <a class="panel-card hero-link-card hero-vendedor-slide" href="#vendedor-destacado"
                   data-hero-target="vendedor-destacado">
                   <div class="panel-card-header">
@@ -3050,7 +3130,7 @@
 
               <!-- SLIDE 3: RESEÑA DESTACADA -->
               <div class="hero-slide" role="group" aria-roledescription="diapositiva"
-                aria-label="3 de 3: Reseña destacada">
+                data-hero-name="Reseña destacada">
                 <a class="panel-card hero-link-card hero-review-slide" href="#resena-destacada"
                   data-hero-target="resena-destacada">
                   <div class="panel-card-header">
@@ -4361,6 +4441,7 @@
           populateSocialNetworks();
           populateFeaturedReview();
           populateFeaturedVendedor();
+          populateHeroAnuncios();
           populateUsefulLinks();
           initializeCalendar();
           loadContestConfig();
@@ -5431,6 +5512,207 @@
           console.error("Error escuchando vendedor destacado:", error);
           revealDyn('.employee-body');
           revealDyn('#hero-vendedor-body');
+        });
+      }
+
+      // --- LOGICA DE ANUNCIOS EVENTUALES DEL CARRUSEL ---
+      // Un unico documento (config/hero_anuncios) con un array `items`: cuesta
+      // 1 lectura, no necesita indices y admite varios anuncios a la vez.
+      // Cada item se apaga solo cuando pasa su fecha `hasta`, asi nadie tiene
+      // que acordarse de bajar el cartel de bienvenida dos semanas despues.
+      const ANUNCIO_TIPOS = {
+        ingreso: { etiqueta: "Nuevo ingreso", icono: "fa-user-plus" },
+        aviso: { etiqueta: "Aviso importante", icono: "fa-bullhorn" },
+        felicitacion: { etiqueta: "¡Felicitaciones!", icono: "fa-champagne-glasses" },
+        capacitacion: { etiqueta: "Capacitación", icono: "fa-graduation-cap" },
+      };
+
+      const ANUNCIOS_VISTOS_KEY = "heroAnunciosVistos";
+
+      // Clave YYYY-MM-DD en hora local: comparar asi evita el corrimiento de dia
+      // que introduce toISOString() en UTC-3.
+      function anuncioDateKey(date) {
+        const mes = String(date.getMonth() + 1).padStart(2, "0");
+        const dia = String(date.getDate()).padStart(2, "0");
+        return `${date.getFullYear()}-${mes}-${dia}`;
+      }
+
+      // `hasta` es inclusivo: el anuncio se ve durante todo ese dia.
+      function anuncioVigente(a, hoy) {
+        if (!a || a.activo === false) return false;
+        if (a.desde && a.desde > hoy) return false;
+        if (a.hasta && a.hasta < hoy) return false;
+        return true;
+      }
+
+      function anunciosVistos() {
+        try {
+          const raw = JSON.parse(localStorage.getItem(ANUNCIOS_VISTOS_KEY));
+          return Array.isArray(raw) ? raw : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function marcarAnunciosVistos(ids) {
+        try {
+          // Se guardan solo los ids todavia en pantalla: la lista no crece sin fin.
+          localStorage.setItem(ANUNCIOS_VISTOS_KEY, JSON.stringify(ids));
+        } catch (e) { /* modo privado: el badge se vuelve a mostrar, nada mas */ }
+      }
+
+      // Solo http(s): impide que un href/src termine siendo javascript: o data:
+      function urlSeguraAnuncio(valor) {
+        if (!valor) return "";
+        try {
+          const u = new URL(valor, window.location.origin);
+          return (u.protocol === "http:" || u.protocol === "https:") ? u.href : "";
+        } catch (e) {
+          return "";
+        }
+      }
+
+      function construirSlideAnuncio(a, esNuevo) {
+        const meta = ANUNCIO_TIPOS[a.tipo] || ANUNCIO_TIPOS.aviso;
+        const ctaUrl = urlSeguraAnuncio(a.ctaUrl);
+        const imagenUrl = urlSeguraAnuncio(a.imagenUrl);
+
+        const slide = document.createElement("div");
+        slide.className = "hero-slide";
+        slide.setAttribute("role", "group");
+        slide.setAttribute("aria-roledescription", "diapositiva");
+        slide.dataset.heroName = a.titulo || meta.etiqueta;
+        slide.dataset.heroAnuncioId = a.id;
+        if (esNuevo) slide.dataset.heroNuevo = "1";
+
+        const card = document.createElement(ctaUrl ? "a" : "div");
+        card.className = "panel-card hero-anuncio-card" + (ctaUrl ? " hero-link-card" : "");
+        card.dataset.tipo = ANUNCIO_TIPOS[a.tipo] ? a.tipo : "aviso";
+        if (ctaUrl) {
+          card.href = ctaUrl;
+          if (ctaUrl.indexOf(window.location.origin) !== 0) {
+            card.target = "_blank";
+            card.rel = "noopener";
+          }
+        }
+
+        const header = document.createElement("div");
+        header.className = "panel-card-header";
+        const iconTitle = document.createElement("div");
+        iconTitle.className = "panel-card-icon-title";
+        const iconSpan = document.createElement("span");
+        iconSpan.className = "panel-card-icon";
+        const icon = document.createElement("i");
+        icon.className = "fa-solid " + meta.icono;
+        iconSpan.appendChild(icon);
+        const h3 = document.createElement("h3");
+        h3.textContent = a.encabezado || meta.etiqueta;
+        if (esNuevo) {
+          const badge = document.createElement("span");
+          badge.className = "hero-anuncio-badge";
+          badge.textContent = "Nuevo";
+          h3.appendChild(badge);
+        }
+        iconTitle.append(iconSpan, h3);
+        header.appendChild(iconTitle);
+        if (ctaUrl) {
+          const goto = document.createElement("span");
+          goto.className = "hero-slide-goto";
+          goto.setAttribute("aria-hidden", "true");
+          goto.innerHTML = '<i class="fa-solid fa-arrow-right"></i>';
+          header.appendChild(goto);
+        }
+
+        const body = document.createElement("div");
+        body.className = "panel-card-body hero-slide-body";
+        if (imagenUrl) {
+          const img = document.createElement("img");
+          img.className = "hero-anuncio-photo";
+          img.src = imagenUrl;
+          img.alt = a.titulo || meta.etiqueta;
+          // Si la URL esta rota, el slide se muestra sin foto en vez de un icono roto
+          img.addEventListener("error", () => img.remove());
+          body.appendChild(img);
+        }
+        const texto = document.createElement("div");
+        texto.className = "hero-slide-text";
+        const h4 = document.createElement("h4");
+        h4.className = "hero-slide-name";
+        h4.textContent = a.titulo || meta.etiqueta;
+        texto.appendChild(h4);
+        if (a.texto) {
+          const p = document.createElement("p");
+          p.className = "hero-slide-desc";
+          p.textContent = a.texto;
+          texto.appendChild(p);
+        }
+        if (ctaUrl) {
+          const cta = document.createElement("span");
+          cta.className = "hero-slide-cta";
+          cta.textContent = a.ctaTexto || "Ver mas";
+          const chevron = document.createElement("i");
+          chevron.className = "fa-solid fa-chevron-right";
+          cta.appendChild(chevron);
+          texto.appendChild(cta);
+        }
+        body.appendChild(texto);
+
+        card.append(header, body);
+        slide.appendChild(card);
+        return slide;
+      }
+
+      function renderHeroAnuncios(items) {
+        const track = document.getElementById("hero-carousel-track");
+        if (!track) return;
+
+        // Se rehace la tanda completa en cada snapshot: es la forma simple de que
+        // un anuncio editado o dado de baja desaparezca sin recargar la pagina.
+        track.querySelectorAll("[data-hero-anuncio-id]").forEach(el => el.remove());
+
+        const hoy = anuncioDateKey(new Date());
+        const vigentes = items.filter(a => a && a.id && anuncioVigente(a, hoy));
+        if (!vigentes.length) {
+          marcarAnunciosVistos([]);
+          if (window.heroCarousel) window.heroCarousel.refresh();
+          return;
+        }
+
+        const vistos = anunciosVistos();
+        const idsVigentes = vigentes.map(a => a.id);
+        const primero = track.firstElementChild;
+        let hayNuevos = false;
+
+        vigentes.forEach(a => {
+          const esNuevo = vistos.indexOf(a.id) === -1;
+          if (esNuevo) hayNuevos = true;
+          track.insertBefore(construirSlideAnuncio(a, esNuevo), primero);
+        });
+
+        if (window.heroCarousel) window.heroCarousel.refresh({ focusNuevo: true });
+
+        if (hayNuevos) {
+          // Cinco segundos en pantalla (el autoplay tarda siete en pasar de slide)
+          // alcanzan para darlo por visto y apagar el pill.
+          setTimeout(() => {
+            marcarAnunciosVistos(idsVigentes);
+            track.querySelectorAll("[data-hero-nuevo]").forEach(el => {
+              delete el.dataset.heroNuevo;
+              const badge = el.querySelector(".hero-anuncio-badge");
+              if (badge) badge.remove();
+            });
+          }, 5000);
+        } else {
+          marcarAnunciosVistos(idsVigentes);
+        }
+      }
+
+      function populateHeroAnuncios() {
+        db.collection("config").doc("hero_anuncios").onSnapshot(doc => {
+          const data = doc.exists ? doc.data() : null;
+          renderHeroAnuncios(data && Array.isArray(data.items) ? data.items : []);
+        }, error => {
+          console.error("Error escuchando anuncios del carrusel:", error);
         });
       }
 
@@ -6550,13 +6832,24 @@
       const nextBtn = document.getElementById('hero-next');
       if (!root || !track) return;
 
-      const slides = Array.from(track.querySelectorAll('.hero-slide'));
-      if (slides.length < 2) return;
+      // Mutable: los anuncios eventuales se inyectan al principio del track
+      // después de que Firestore responde, así que la lista se recalcula.
+      let slides = [];
 
       const DELAY = 7000;               // ms por slide
       let index = 0;
       let timer = null;
       let paused = false;
+
+      // Relee el track y reescribe las etiquetas "N de M". Sin esto, agregar un
+      // slide dejaría el carrusel anunciando una cantidad que ya no es cierta.
+      function syncSlides() {
+        slides = Array.from(track.querySelectorAll('.hero-slide'));
+        slides.forEach((s, n) => {
+          const nombre = s.dataset.heroName || 'Destacado';
+          s.setAttribute('aria-label', (n + 1) + ' de ' + slides.length + ': ' + nombre);
+        });
+      }
 
       function goTo(i, instant) {
         index = (i + slides.length) % slides.length;
@@ -6676,7 +6969,31 @@
         });
       }, 8000);
 
-      goTo(0, true);
+      // Índice del primer slide marcado como no visto por esta persona.
+      function indiceSlideNuevo() {
+        return slides.findIndex(s => s.dataset.heroNuevo === "1");
+      }
+
+      // Punto de entrada para el contenido dinámico: vuelve a leer el track y,
+      // si hay un anuncio sin ver, arranca ahí en vez de en el slide 0.
+      window.heroCarousel = {
+        refresh(opts) {
+          const o = opts || {};
+          syncSlides();
+          let destino = Number.isInteger(o.goToIndex) ? o.goToIndex : Math.min(index, slides.length - 1);
+          if (o.focusNuevo) {
+            const nuevo = indiceSlideNuevo();
+            if (nuevo !== -1) destino = nuevo;
+          }
+          goTo(destino, o.instant !== false);
+          restartTimer();
+        }
+      };
+
+      syncSlides();
+      // Si Firestore contestó desde cache antes de que corriera este bloque, el
+      // anuncio ya está en el DOM: se respeta igual y el carrusel abre ahí.
+      goTo(Math.max(indiceSlideNuevo(), 0), true);
       restartTimer();
     })();
 
