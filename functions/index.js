@@ -680,3 +680,146 @@ exports.solicitudVisualizador = onRequest(
     }
   }
 );
+
+
+/* ═════════════════════════════════════════════════════════════════════════
+   MEJORAR ANUNCIO DEL CARRUSEL (`mejorarAnuncio`)
+   Pule el título o el texto de un anuncio del panel corporativo. Reescribe
+   el borrador del admin: NO inventa hechos (nombres, fechas, sucursales).
+   Solo admin autenticado, igual que `sugerir`. Sin modo JSON a propósito:
+   la salida es una sola línea de texto y así no hereda el problema de las
+   respuestas vacías que sí aparece con response_format json_object.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+// Dos formatos distintos comparten el endpoint: el anuncio del carrusel (corto,
+// se lee de reojo mientras rota) y la noticia del panel (se lee entera). Cada
+// uno trae sus límites y su vocabulario de tipos.
+const IA_CONTEXTOS = {
+  anuncio: {
+    limites: { titulo: 80, texto: 280 },
+    forma: 'una o dos frases',
+    generico: 'un anuncio interno',
+    tipos: {
+      ingreso: 'alguien que se suma al equipo',
+      aviso: 'un aviso operativo o urgente para el personal del corralón, no para clientes',
+      felicitacion: 'una felicitación a una persona o a un equipo',
+      capacitacion: 'una capacitación o curso interno',
+    },
+  },
+  noticia: {
+    limites: { titulo: 120, texto: 600 },
+    forma: 'dos a cuatro frases, en un solo párrafo',
+    generico: 'una noticia interna',
+    tipos: {
+      comerciales: 'algo comercial que el equipo de ventas necesita conocer para trabajar: una promoción vigente, un producto nuevo, un cambio de precios o una campaña. Escribilo para el vendedor que va a tener que ofrecerlo, NUNCA como aviso al cliente',
+      rrhh: 'un tema de Recursos Humanos que afecta al personal: políticas, beneficios, licencias o administración',
+      general: 'un comunicado general para todo el equipo',
+    },
+  },
+};
+
+const ANUNCIO_SYSTEM = `Sos quien redacta las comunicaciones internas de Rosso Materiales, un corralón de materiales de construcción de Tucumán y Salta, Argentina.
+
+QUIÉN LO LEE: los empleados del corralón —vendedores de salón, cajeros, gente de depósito— en el panel interno de la empresa. NUNCA lo lee un cliente. Esto NO es publicidad, ni un cartel de vidriera, ni un posteo de redes: es información para que el equipo se entere de algo y sepa qué hacer.
+
+Por eso está PROHIBIDO escribirle al cliente. Nada de "acercate a nuestro local", "no te lo pierdas", "aprovechá esta oferta", "consultanos", "te esperamos". Si la novedad es una promoción, al vendedor le sirve saber qué incluye, desde cuándo y hasta cuándo, y qué tiene que hacer él: ofrecerla, cargarla de cierta forma, avisarle a sus clientes.
+
+Ejemplo de lo que NO va, porque le habla al cliente:
+"¡Último día para aprovechar la promo del 5%! Acercate hoy al corralón y no te quedes afuera."
+Ejemplo de lo que SÍ va, porque le habla al vendedor:
+"Hoy es el último día de la promo del 5%. Si tenés presupuestos pendientes, avisales a esos clientes para que cierren la compra hoy."
+
+Tono: español rioplatense con voseo, cálido y directo, de compañero a compañero. Nada de lenguaje corporativo acartonado ni de signos de exclamación de más.
+
+REGLA PRINCIPAL: reescribís el borrador, no lo inventás. Está PROHIBIDO agregar hechos que no estén en el borrador: nombres, apellidos, puestos, sucursales, fechas, horarios, cifras, condiciones o motivos. Si el borrador es escueto, mejorá cómo está dicho y dejálo corto. Nunca inventes datos para rellenar.
+
+Devolvé SOLO el texto final, en una sola línea, sin comillas, sin markdown, sin prefijos ni explicaciones.`;
+
+function limpiarSalidaAnuncio(txt, limite) {
+  let out = String(txt || '')
+    .replace(/^\s*(título|titulo|texto)\s*:\s*/i, '')   // por si igual antepone la etiqueta
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^["\u201c\u2018']+|["\u201d\u2019']+$/g, '')
+    .trim();
+  if (out.length > limite) {
+    // Recorte en el último corte limpio, para no partir una palabra al medio
+    const cortado = out.slice(0, limite);
+    const corte = Math.max(cortado.lastIndexOf('. '), cortado.lastIndexOf(', '), cortado.lastIndexOf(' '));
+    out = (corte > limite * 0.6 ? cortado.slice(0, corte) : cortado).trim().replace(/[,;:]$/, '');
+  }
+  return out;
+}
+
+exports.mejorarAnuncio = onRequest(
+  { secrets: [DEEPSEEK_API_KEY], cors: true, region: 'us-central1' },
+  async (req, res) => {
+    try {
+      if (req.method !== 'POST') return res.status(405).json({ error: 'Método no permitido' });
+
+      // Mismo control que `sugerir`: solo el admin autenticado
+      const authz = req.headers.authorization || '';
+      const token = authz.startsWith('Bearer ') ? authz.slice(7) : '';
+      if (!token) return res.status(401).json({ error: 'Falta autenticación' });
+      let decoded;
+      try { decoded = await admin.auth().verifyIdToken(token); }
+      catch (e) { return res.status(401).json({ error: 'Token inválido' }); }
+      if (!ADMIN_EMAILS.includes(decoded.email)) {
+        return res.status(403).json({ error: 'Solo el admin puede usar esta función' });
+      }
+
+      const campo = String((req.body || {}).campo || '').trim();
+      if (campo !== 'titulo' && campo !== 'texto') {
+        return res.status(400).json({ error: 'Campo inválido' });
+      }
+
+      // Sin `contexto` se asume el carrusel: así el panel de anuncios, que ya
+      // llamaba a este endpoint antes de que existiera la variante de noticias,
+      // sigue funcionando sin cambios.
+      const ctxNombre = String((req.body || {}).contexto || 'anuncio').trim();
+      const ctx = IA_CONTEXTOS[ctxNombre];
+      if (!ctx) return res.status(400).json({ error: 'Contexto inválido' });
+
+      const tipo = String((req.body || {}).tipo || '').trim();
+      const titulo = String((req.body || {}).titulo || '').trim().slice(0, 600);
+      const texto = String((req.body || {}).texto || '').trim().slice(0, 2000);
+
+      const borrador = campo === 'titulo' ? titulo : texto;
+      if (!borrador) {
+        return res.status(400).json({ error: 'Escribí algo primero y después lo mejoramos.' });
+      }
+
+      const limite = ctx.limites[campo];
+      const sobre = ctx.tipos[tipo] || ctx.generico;
+
+      // El otro campo entra como contexto para que ambos suenen coherentes,
+      // pero se le aclara que no lo reescriba: se devuelve uno solo.
+      const otro = campo === 'titulo'
+        ? (texto ? `\n\nCuerpo del anuncio (solo como contexto, NO lo reescribas): ${texto}` : '')
+        : (titulo ? `\n\nTítulo del anuncio (solo como contexto, NO lo reescribas): ${titulo}` : '');
+
+      const instruccion = campo === 'titulo'
+        ? `Mejorá este TÍTULO de ${ctx.generico} sobre ${sobre}. Tenés ${limite} caracteres como máximo. Que se lea de un vistazo y dé ganas de leer el resto.`
+        : `Mejorá este TEXTO de ${ctx.generico} sobre ${sobre}. Tenés ${limite} caracteres como máximo, ${ctx.forma}.`;
+
+      const raw = await deepseekChat(
+        [
+          { role: 'system', content: ANUNCIO_SYSTEM },
+          { role: 'user', content: `${instruccion}\n\nBorrador: ${borrador}${otro}` },
+        ],
+        DEEPSEEK_API_KEY.value(),
+        false,
+        campo === 'titulo' ? 150 : Math.max(220, Math.ceil(limite / 2)),
+        0.6
+      );
+
+      const resultado = limpiarSalidaAnuncio(raw, limite);
+      if (!resultado) return res.status(502).json({ error: 'La IA no devolvió nada. Probá de nuevo.' });
+
+      return res.json({ ok: true, resultado, original: borrador });
+    } catch (e) {
+      console.error('mejorarAnuncio error:', e);
+      return res.status(500).json({ error: 'Error interno: ' + (e.message || String(e)) });
+    }
+  }
+);

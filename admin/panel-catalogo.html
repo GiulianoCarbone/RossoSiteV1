@@ -1795,6 +1795,70 @@
       display: flex;
       flex-direction: column;
       min-width: 100px;
+      position: relative;
+    }
+
+    /* Ojo para esconder un KPI. Discreto hasta que se pasa por encima, pero
+       siempre visible en touch, donde no hay hover que lo revele. */
+    .kpi-ocultar {
+      position: absolute;
+      top: -6px;
+      right: -12px;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.7rem;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity .15s ease, background .15s ease, color .15s ease;
+    }
+
+    .stat-group:hover .kpi-ocultar,
+    .kpi-ocultar:focus-visible {
+      opacity: 1;
+    }
+
+    .kpi-ocultar:hover {
+      background: #f3f4f6;
+      color: var(--text);
+    }
+
+    @media (hover: none) {
+      .kpi-ocultar { opacity: .55; }
+    }
+
+    /* Chip para traer de vuelta lo que se escondió */
+    .kpi-restaurar {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      align-self: center;
+      padding: 5px 12px;
+      border: 1px dashed var(--border);
+      border-radius: 20px;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color .15s ease, border-color .15s ease;
+    }
+
+    .kpi-restaurar:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .kpi-restaurar.visible {
+      display: inline-flex;
     }
 
     .stat-value-row {
@@ -2050,12 +2114,91 @@
       font-weight: 700;
     }
 
+    /* Es un boton: abre la lista completa detras del numero */
     .top-conteo {
       font-size: 0.78rem;
       color: var(--muted);
       font-weight: 600;
       padding-left: 10px;
       border-left: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border-top: none;
+      border-right: none;
+      border-bottom: none;
+      font-family: inherit;
+      cursor: pointer;
+      transition: color .15s ease;
+    }
+
+    .top-conteo:hover,
+    .top-conteo:focus-visible {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .top-conteo i {
+      font-size: 0.7rem;
+      opacity: .75;
+    }
+
+    /* --- Modal con el listado completo --- */
+    .top-detalle-buscador {
+      position: relative;
+      margin-bottom: 4px;
+    }
+
+    .top-detalle-buscador i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    .top-detalle-buscador input {
+      width: 100%;
+      padding: 10px 12px 10px 34px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+
+    .top-detalle-buscador input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(236, 100, 52, .12);
+    }
+
+    /* La lista scrollea sola: con 70+ productos el modal no puede crecer sin fin */
+    .top-detalle-lista {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 55vh;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-top: 16px;
+    }
+
+    .top-detalle-vacio {
+      text-align: center;
+      padding: 26px 10px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .top-detalle-resumen {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
     }
 
     .top-tabs {
@@ -2706,8 +2849,12 @@
                 </div>
               </div>
 
-              <!-- KPI 3: Tasa de Conversión -->
-              <div class="stat-group">
+              <!-- KPI 3: Tasa de Conversión (se puede esconder) -->
+              <div class="stat-group" id="kpi-conversion">
+                <button type="button" class="kpi-ocultar" onclick="ocultarKpi('conversion')"
+                  title="Ocultar esta métrica" aria-label="Ocultar la métrica de conversión">
+                  <i class="fa-solid fa-eye-slash"></i>
+                </button>
                 <div class="stat-value-row">
                   <div class="stat-dot dot-conversion"></div>
                   <span class="stat-value" id="stats-conversion-rate">0%</span>
@@ -2722,6 +2869,11 @@
                   <span class="stat-rate-sub">Contactos / Visitas</span>
                 </div>
               </div>
+
+              <button type="button" class="kpi-restaurar" id="kpi-restaurar-conversion"
+                onclick="mostrarKpi('conversion')">
+                <i class="fa-solid fa-eye"></i> Mostrar conversión
+              </button>
             </div>
 
             <!-- Gráfico de Visitas y Contactos -->
@@ -2765,7 +2917,8 @@
 
             <div class="top-meta">
               <span class="stats-subtitle" id="stats-top-desde" style="margin-bottom:0">Acumulado</span>
-              <span class="top-conteo" id="top-conteo" style="display:none"></span>
+              <button type="button" class="top-conteo" id="top-conteo" style="display:none"
+                onclick="abrirTopDetalle()" title="Ver el listado completo"></button>
               <span class="nuevo-mes-badge" id="nuevo-mes-badge" style="display:none">
                 <i class="fa-solid fa-circle-exclamation"></i> Ya empezó un mes nuevo — cerrá el anterior
               </span>
@@ -2815,6 +2968,27 @@
   </nav>
 
   <!-- MODAL: CAMBIAR SKU -->
+  <!-- LISTADO COMPLETO DETRAS DEL CONTEO DEL RANKING -->
+  <div class="modal-overlay" id="modal-top-detalle" style="z-index:1100">
+    <div class="modal" style="max-width:560px">
+      <div class="modal-header">
+        <div>
+          <h3 id="top-detalle-titulo" style="margin:0">Productos con consultas</h3>
+          <p id="top-detalle-periodo" class="stats-subtitle" style="margin:4px 0 0"></p>
+        </div>
+        <button class="modal-close" onclick="cerrarTopDetalle()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="top-detalle-buscador">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="top-detalle-buscar" placeholder="Buscar por nombre o SKU..." autocomplete="off">
+        </div>
+        <div class="top-detalle-lista" id="top-detalle-lista"></div>
+        <div class="top-detalle-resumen" id="top-detalle-resumen"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="modal-sku" style="z-index:1100">
     <div class="modal" style="max-width:420px">
       <div class="modal-header">
@@ -4741,6 +4915,51 @@
       return s.charAt(0).toUpperCase() + s.slice(1);
     };
 
+    /* ── KPIs que se pueden esconder ──────────────────────────────────────
+       Es una preferencia de quien mira el panel, no un dato del negocio: vive
+       en localStorage y no cuesta lecturas ni afecta a los demás usuarios.
+       El array admite más KPIs si mañana se quiere esconder otro.        */
+    const KPIS_OCULTOS_KEY = 'catalogoKpisOcultos';
+
+    function kpisOcultos() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(KPIS_OCULTOS_KEY));
+        return Array.isArray(raw) ? raw : [];
+      } catch (e) {
+        return [];   // modo privado o storage bloqueado: se ven todos
+      }
+    }
+
+    function guardarKpisOcultos(lista) {
+      try { localStorage.setItem(KPIS_OCULTOS_KEY, JSON.stringify(lista)); } catch (e) { }
+    }
+
+    // Pinta el estado: el KPI se va o vuelve, y el chip de restaurar hace lo inverso
+    function aplicarKpisOcultos() {
+      const ocultos = kpisOcultos();
+      ['conversion'].forEach(id => {
+        const kpi = document.getElementById('kpi-' + id);
+        const chip = document.getElementById('kpi-restaurar-' + id);
+        const escondido = ocultos.includes(id);
+        if (kpi) kpi.style.display = escondido ? 'none' : '';
+        if (chip) chip.classList.toggle('visible', escondido);
+      });
+    }
+
+    function ocultarKpi(id) {
+      const ocultos = kpisOcultos();
+      if (!ocultos.includes(id)) guardarKpisOcultos(ocultos.concat([id]));
+      aplicarKpisOcultos();
+    }
+
+    function mostrarKpi(id) {
+      guardarKpisOcultos(kpisOcultos().filter(x => x !== id));
+      aplicarKpisOcultos();
+    }
+
+    // Se aplica apenas se puede, para que el KPI escondido no llegue a verse
+    document.addEventListener('DOMContentLoaded', aplicarKpisOcultos);
+
     // Métrica activa del ranking: 'visits' (más vistos) | 'consultas' (más consultados por WhatsApp)
     let topMetric = 'visits';
     const _unidad = m => m === 'consultas' ? 'consultas' : 'visitas';
@@ -4766,7 +4985,8 @@
       const el = document.getElementById('top-conteo');
       if (!el) return;
       if (n > 0) {
-        el.textContent = `${n} producto${n !== 1 ? 's' : ''} con ${_unidad(metric)}`;
+        el.innerHTML = `${n} producto${n !== 1 ? 's' : ''} con ${_unidad(metric)}`
+          + ' <i class="fa-solid fa-chevron-right"></i>';
         el.style.display = 'inline-flex';
       } else {
         el.textContent = '';
@@ -4774,20 +4994,88 @@
       }
     }
 
+    // Lo que hay detrás del conteo: la lista ENTERA ya ordenada. Se guarda acá
+    // para que el modal no tenga que volver a leer Firestore ni reordenar.
+    let topDetalle = { items: [], metric: 'visits' };
+
     // Ordena una lista de productos por la métrica dada, pinta el top-5 y el conteo
     function pintarTop(arr, metric) {
       const listEl = document.getElementById('top-products-list');
       if (!listEl) return;
-      const conValor = arr.filter(p => (p[metric] || 0) > 0);
+      const conValor = [...arr.filter(p => (p[metric] || 0) > 0)]
+        .sort((a, b) => (b[metric] || 0) - (a[metric] || 0));
+      topDetalle = { items: conValor, metric };
       setConteo(conValor.length, metric);
       if (!conValor.length) {
         listEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:0.85rem">Sin datos para esta métrica todavía.</div>';
         return;
       }
-      const top = [...conValor].sort((a, b) => (b[metric] || 0) - (a[metric] || 0)).slice(0, 5);
       const unidad = _unidad(metric);
-      listEl.innerHTML = top.map((p, i) => topItemHTML(i, p.imagen, p.nombre || p.sku, p[metric] || 0, unidad)).join('');
+      listEl.innerHTML = conValor.slice(0, 5)
+        .map((p, i) => topItemHTML(i, p.imagen, p.nombre || p.sku, p[metric] || 0, unidad)).join('');
     }
+
+    /* ── Modal: todos los productos detrás del conteo ────────────────────── */
+    function renderTopDetalle(filtro) {
+      const listEl = document.getElementById('top-detalle-lista');
+      const resEl = document.getElementById('top-detalle-resumen');
+      if (!listEl) return;
+
+      const q = (filtro || '').trim().toLowerCase();
+      const metric = topDetalle.metric;
+      const unidad = _unidad(metric);
+
+      // El puesto es el del ranking completo, así que se conserva aunque se filtre
+      const conPuesto = topDetalle.items.map((p, i) => ({ p, puesto: i }));
+      const visibles = q
+        ? conPuesto.filter(({ p }) =>
+            String(p.nombre || '').toLowerCase().includes(q) || String(p.sku || '').toLowerCase().includes(q))
+        : conPuesto;
+
+      if (!visibles.length) {
+        listEl.innerHTML = '<div class="top-detalle-vacio">Ningún producto coincide con la búsqueda.</div>';
+      } else {
+        listEl.innerHTML = visibles
+          .map(({ p, puesto }) => topItemHTML(puesto, p.imagen, p.nombre || p.sku, p[metric] || 0, unidad)).join('');
+      }
+
+      const total = topDetalle.items.reduce((a, p) => a + (p[metric] || 0), 0);
+      if (resEl) {
+        resEl.textContent = q
+          ? `${visibles.length} de ${topDetalle.items.length} productos`
+          : `${topDetalle.items.length} productos · ${total} ${unidad} en total`;
+      }
+    }
+
+    function abrirTopDetalle() {
+      if (!topDetalle.items.length) return;
+      const tituloEl = document.getElementById('top-detalle-titulo');
+      const periodoEl = document.getElementById('top-detalle-periodo');
+      const buscarEl = document.getElementById('top-detalle-buscar');
+      const desdeEl = document.getElementById('stats-top-desde');
+
+      if (tituloEl) tituloEl.textContent = 'Productos con ' + _unidad(topDetalle.metric);
+      // Se copia el mismo período que muestra el panel: mes actual o mes archivado
+      if (periodoEl && desdeEl) periodoEl.textContent = desdeEl.textContent;
+      if (buscarEl) buscarEl.value = '';
+
+      renderTopDetalle('');
+      document.getElementById('modal-top-detalle').classList.add('open');
+      if (buscarEl && window.innerWidth > 768) buscarEl.focus();
+    }
+
+    function cerrarTopDetalle() {
+      document.getElementById('modal-top-detalle').classList.remove('open');
+    }
+
+    (function initTopDetalle() {
+      const buscarEl = document.getElementById('top-detalle-buscar');
+      if (buscarEl) buscarEl.addEventListener('input', e => renderTopDetalle(e.target.value));
+
+      // Clic en el fondo oscuro (no en la tarjeta) cierra
+      const overlay = document.getElementById('modal-top-detalle');
+      if (overlay) overlay.addEventListener('click', e => { if (e.target === overlay) cerrarTopDetalle(); });
+    })();
 
     // Cambiar entre "Más vistos" y "Más consultados"
     function setTopMetric(m) {
@@ -5561,7 +5849,7 @@
 
     // Teclado global
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { cerrarModal(); cerrarConfirm(); }
+      if (e.key === 'Escape') { cerrarModal(); cerrarConfirm(); cerrarTopDetalle(); }
       if (e.key === 'n' && !e.ctrlKey && !e.metaKey && !e.target.matches('input,textarea,select')) {
         abrirModalNuevo();
       }

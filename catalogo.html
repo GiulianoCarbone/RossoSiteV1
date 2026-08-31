@@ -4950,9 +4950,20 @@
     /* ══════════════════════════════════════════════════════════
        ANALYTICS TRACKER
     ══════════════════════════════════════════════════════════ */
+    // Clave YYYY-MM-DD en HORA LOCAL. Con toISOString() la fecha sale en UTC y,
+    // estando en UTC-3, todo lo posterior a las 21:00 se anotaba en el día
+    // siguiente: el gráfico diario del panel (que arma el rango en hora local)
+    // quedaba corrido tres horas. Mismo criterio que _toISODateString() del
+    // panel de catálogo y toDateKey() del panel corporativo.
+    function claveDiaLocal(d = new Date()) {
+      const mes = String(d.getMonth() + 1).padStart(2, '0');
+      const dia = String(d.getDate()).padStart(2, '0');
+      return `${d.getFullYear()}-${mes}-${dia}`;
+    }
+
     async function trackEvent(type, metadata = {}) {
       try {
-        const today = new Date().toISOString().split('T')[0];
+        const today = claveDiaLocal();
         const batch = db.batch();
         batch.set(db.collection('analytics').doc('global'), { [type]: firebase.firestore.FieldValue.increment(1) }, { merge: true });
         batch.set(db.collection('analytics_daily').doc(today), { [type]: firebase.firestore.FieldValue.increment(1) }, { merge: true });

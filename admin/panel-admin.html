@@ -1174,6 +1174,59 @@
             gap: 12px;
         }
 
+        /* Label + boton de IA en la misma linea */
+        .anuncio-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 7px;
+        }
+
+        .anuncio-label-row label { margin-bottom: 0; }
+
+        .btn-ia {
+            width: auto;
+            padding: 4px 10px;
+            font-size: .74rem;
+            font-weight: 700;
+            background: var(--brand-soft);
+            color: var(--brand);
+            border: 1px solid transparent;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-ia:hover:not(:disabled) {
+            background: var(--brand);
+            color: #fff;
+        }
+
+        .btn-ia:disabled { opacity: .6; }
+
+        .anuncio-deshacer {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 6px;
+            font-size: .78rem;
+            color: var(--muted);
+        }
+
+        .anuncio-deshacer button {
+            width: auto;
+            padding: 0;
+            background: none;
+            color: var(--brand);
+            font-size: .78rem;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .anuncio-deshacer button:hover { background: none; color: var(--accent); }
+
         .modern-news-list {
             display: flex;
             flex-direction: column;
@@ -3247,17 +3300,39 @@
                             </div>
 
                             <div class="input-group">
-                                <label>Título</label>
+                                <div class="anuncio-label-row">
+                                    <label>Título</label>
+                                    <button type="button" class="btn-ia" data-ia-campo="titulo"
+                                        data-ia-contexto="anuncio" data-ia-input="anuncio-titulo"
+                                        data-ia-otro="anuncio-texto" data-ia-tipo="anuncio-tipo">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i> Mejorar con IA
+                                    </button>
+                                </div>
                                 <input type="text" id="anuncio-titulo" maxlength="80"
                                     placeholder="Ej: ¡Bienvenido, Juan Pérez!" required>
+                                <div class="anuncio-deshacer" data-ia-aviso="anuncio-titulo" style="display:none;">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Mejorado con IA
+                                    <button type="button" data-ia-restaurar="anuncio-titulo">deshacer</button>
+                                </div>
                             </div>
 
                             <div class="input-group">
-                                <label>Texto</label>
+                                <div class="anuncio-label-row">
+                                    <label>Texto</label>
+                                    <button type="button" class="btn-ia" data-ia-campo="texto"
+                                        data-ia-contexto="anuncio" data-ia-input="anuncio-texto"
+                                        data-ia-otro="anuncio-titulo" data-ia-tipo="anuncio-tipo">
+                                        <i class="fa-solid fa-wand-magic-sparkles"></i> Mejorar con IA
+                                    </button>
+                                </div>
                                 <textarea id="anuncio-texto" rows="3" maxlength="280"
                                     placeholder="Ej: Se suma al equipo de Sucursal Salta como vendedor de salón."
                                     required></textarea>
                                 <small>Hasta 280 caracteres.</small>
+                                <div class="anuncio-deshacer" data-ia-aviso="anuncio-texto" style="display:none;">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Mejorado con IA
+                                    <button type="button" data-ia-restaurar="anuncio-texto">deshacer</button>
+                                </div>
                             </div>
 
                             <div class="input-group">
@@ -3802,12 +3877,34 @@
             <form id="news-form">
                 <input type="hidden" id="news-id-field" />
                 <div class="input-group">
-                    <label>Título</label>
+                    <div class="anuncio-label-row">
+                        <label>Título</label>
+                        <button type="button" class="btn-ia" data-ia-campo="titulo"
+                            data-ia-contexto="noticia" data-ia-input="news-title-field"
+                            data-ia-otro="news-description-field" data-ia-tipo="news-category-field">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Mejorar con IA
+                        </button>
+                    </div>
                     <input type="text" id="news-title-field" required />
+                    <div class="anuncio-deshacer" data-ia-aviso="news-title-field" style="display:none;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Mejorado con IA
+                        <button type="button" data-ia-restaurar="news-title-field">deshacer</button>
+                    </div>
                 </div>
                 <div class="input-group">
-                    <label>Descripción</label>
+                    <div class="anuncio-label-row">
+                        <label>Descripción</label>
+                        <button type="button" class="btn-ia" data-ia-campo="texto"
+                            data-ia-contexto="noticia" data-ia-input="news-description-field"
+                            data-ia-otro="news-title-field" data-ia-tipo="news-category-field">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Mejorar con IA
+                        </button>
+                    </div>
                     <textarea id="news-description-field" rows="4" required></textarea>
+                    <div class="anuncio-deshacer" data-ia-aviso="news-description-field" style="display:none;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Mejorado con IA
+                        <button type="button" data-ia-restaurar="news-description-field">deshacer</button>
+                    </div>
                 </div>
                 <div class="input-group">
                     <label>Link / Enlace (Opcional)</label>
@@ -4111,6 +4208,7 @@
             initReviewConfig();
             initVendedorConfig();
             initAnunciosConfig();
+            initMejorarIA();
             initContestConfig();
             initInvitations();
             initSeguimiento();
@@ -6166,6 +6264,7 @@
             const doc = await db.collection("news").doc(id).get();
             const data = doc.data();
             document.getElementById("news-id-field").value = id;
+            limpiarAvisosIA(['news-title-field', 'news-description-field']);
             document.getElementById("news-title-field").value = data.title;
             document.getElementById("news-description-field").value = data.description;
             document.getElementById("news-category-field").value = data.category;
@@ -6624,9 +6723,117 @@
             return d.innerHTML;
         }
 
+        /* ══════════════════════════════════════════════════════════════
+           MEJORAR CON IA
+           Un solo motor para los dos formularios que lo usan (anuncios del
+           carrusel y noticias). Cada botón se describe a sí mismo con sus
+           data-attributes, así sumar un tercer formulario no toca este código:
+
+             data-ia-campo     titulo | texto
+             data-ia-contexto  anuncio | noticia   (define límites y tono)
+             data-ia-input     id del campo a mejorar
+             data-ia-otro      id del otro campo, va como contexto
+             data-ia-tipo      id del select que dice de qué se trata
+
+           La API key vive como secret en la Cloud Function: el navegador solo
+           manda su ID token de admin.
+        ═══════════════════════════════════════════════════════════════ */
+        const MEJORAR_IA_URL = 'https://us-central1-backend-panel-vendedores.cloudfunctions.net/mejorarAnuncio';
+
+        // Borrador previo a la mejora, indexado por el id del input
+        const iaTextoPrevio = {};
+
+        function avisoIA(idInput) {
+            return document.querySelector('[data-ia-aviso="' + idInput + '"]');
+        }
+
+        function mostrarDeshacerIA(idInput, visible) {
+            const el = avisoIA(idInput);
+            if (el) el.style.display = visible ? '' : 'none';
+        }
+
+        function deshacerMejoraIA(idInput) {
+            if (iaTextoPrevio[idInput] === undefined || iaTextoPrevio[idInput] === null) return;
+            document.getElementById(idInput).value = iaTextoPrevio[idInput];
+            iaTextoPrevio[idInput] = null;
+            mostrarDeshacerIA(idInput, false);
+        }
+
+        // Deja el formulario limpio de avisos colgados de una mejora anterior
+        function limpiarAvisosIA(idsInput) {
+            idsInput.forEach(id => { iaTextoPrevio[id] = null; mostrarDeshacerIA(id, false); });
+        }
+
+        async function mejorarCampoIA(btn) {
+            const d = btn.dataset;
+            const input = document.getElementById(d.iaInput);
+            if (!input) return;
+
+            const borrador = input.value.trim();
+            if (!borrador) {
+                toast('Escribí algo primero y después lo mejoramos.', 'warning');
+                input.focus();
+                return;
+            }
+            if (!auth.currentUser) {
+                toast('Se cerró la sesión. Volvé a entrar para usar la IA.', 'error');
+                return;
+            }
+
+            const otroEl = d.iaOtro ? document.getElementById(d.iaOtro) : null;
+            const tipoEl = d.iaTipo ? document.getElementById(d.iaTipo) : null;
+            const otro = otroEl ? otroEl.value.trim() : '';
+
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mejorando…';
+            try {
+                const idToken = await auth.currentUser.getIdToken();
+                const resp = await fetch(MEJORAR_IA_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
+                    body: JSON.stringify({
+                        campo: d.iaCampo,
+                        contexto: d.iaContexto || 'anuncio',
+                        tipo: tipoEl ? tipoEl.value : '',
+                        titulo: d.iaCampo === 'titulo' ? borrador : otro,
+                        texto: d.iaCampo === 'texto' ? borrador : otro,
+                    }),
+                });
+                const data = await resp.json();
+                if (!resp.ok || !data.ok) throw new Error(data.error || ('Error ' + resp.status));
+
+                if (data.resultado === borrador) {
+                    toast('La IA lo dejó igual: ya estaba bien redactado.', 'info');
+                    return;
+                }
+                iaTextoPrevio[d.iaInput] = borrador;
+                input.value = data.resultado;
+                mostrarDeshacerIA(d.iaInput, true);
+                toast('Listo. Revisalo antes de publicar.', 'success');
+            } catch (e) {
+                console.error('mejorarCampoIA:', e);
+                toast('No se pudo mejorar: ' + e.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = original;
+            }
+        }
+
+        // Un solo enganche para todos los botones del panel, sin importar el form
+        function initMejorarIA() {
+            document.querySelectorAll('.btn-ia[data-ia-input]').forEach(btn => {
+                btn.addEventListener('click', () => mejorarCampoIA(btn));
+            });
+            document.querySelectorAll('[data-ia-restaurar]').forEach(btn => {
+                btn.addEventListener('click', () => deshacerMejoraIA(btn.dataset.iaRestaurar));
+            });
+        }
+
         function initAnunciosConfig() {
             const form = document.getElementById('anuncio-form');
             if (!form) return;
+
 
             const imgInput = document.getElementById('anuncio-imagen');
             imgInput.addEventListener('input', () => {
@@ -6705,6 +6912,7 @@
             document.getElementById('anuncio-submit-btn').textContent = 'Publicar anuncio';
             document.getElementById('anuncio-cancel-btn').style.display = 'none';
             document.querySelectorAll('.anuncio-row.is-editing').forEach(el => el.classList.remove('is-editing'));
+            limpiarAvisosIA(['anuncio-titulo', 'anuncio-texto']);
         }
 
         async function loadAnunciosConfig() {
@@ -6788,6 +6996,8 @@
         window.editarAnuncio = (id) => {
             const a = anunciosCache.find(x => x.id === id);
             if (!a) return;
+
+            limpiarAvisosIA(['anuncio-titulo', 'anuncio-texto']);
 
             document.getElementById('anuncio-id').value = a.id;
             document.getElementById('anuncio-tipo').value = a.tipo || 'aviso';
@@ -7632,6 +7842,7 @@
         // Modal helpers
         function openNewsForm() {
             document.getElementById("news-form").reset();
+            limpiarAvisosIA(['news-title-field', 'news-description-field']);
             document.getElementById("news-id-field").value = "";
             document.getElementById("news-form-title").textContent = "Crear Noticia";
             document.getElementById("news-push-toggle").style.display = "flex";
