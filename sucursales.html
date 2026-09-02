@@ -338,6 +338,11 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+    <!-- Capa base vectorial gratuita (OpenFreeMap) renderizada con MapLibre dentro de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+    <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+    <script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -1016,12 +1021,45 @@
             html += '</ul>';
             return html;
         };
+        // --- CAPA BASE DEL MAPA ---
+        // OpenFreeMap: vectorial, gratuito y sin API key. Si el equipo no soporta WebGL
+        // o no cargó MapLibre, cae automáticamente a los tiles raster de OpenStreetMap.
+        const ATRIBUCION_MAPA =
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a>';
+
+        const soportaWebGL = () => {
+            try {
+                const canvas = document.createElement("canvas");
+                return !!(
+                    window.WebGLRenderingContext &&
+                    (canvas.getContext("webgl") ||
+                        canvas.getContext("experimental-webgl"))
+                );
+            } catch (e) {
+                return false;
+            }
+        };
+
+        const agregarCapaBase = (mapa) => {
+            if (window.maplibregl && typeof L.maplibreGL === "function" && soportaWebGL()) {
+                try {
+                    return L.maplibreGL({
+                        style: "https://tiles.openfreemap.org/styles/bright",
+                        attribution: ATRIBUCION_MAPA,
+                    }).addTo(mapa);
+                } catch (e) {
+                    console.warn("MapLibre no disponible, se usan tiles raster:", e);
+                }
+            }
+            return L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: ATRIBUCION_MAPA,
+            }).addTo(mapa);
+        };
+
         // --- INICIALIZACIÓN Y ELEMENTOS DEL DOM ---
         const map = L.map("map").setView([-26.5, -65.3], 8);
-        L.tileLayer(
-            "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
-            { maxZoom: 19, attribution: "© OpenStreetMap © CARTO" }
-        ).addTo(map);
+        agregarCapaBase(map);
 
         const storeListPanel = document.getElementById("store-list-panel");
         const storeListContainer = document.getElementById(
@@ -1154,9 +1192,7 @@
                         doubleClickZoom: false,
                         touchZoom: false,
                     });
-                    L.tileLayer(
-                        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-                    ).addTo(miniMap);
+                    agregarCapaBase(miniMap);
                     L.marker([store.lat, store.lng]).addTo(miniMap);
                 }, 300);
             }
