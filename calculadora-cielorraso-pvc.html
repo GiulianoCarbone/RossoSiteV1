@@ -142,10 +142,16 @@
         /* ─── FORM ─── */
         .pvc-layout {
             display: grid;
-            grid-template-columns: 380px 1fr;
+            grid-template-columns: 390px 1fr;
             gap: 30px;
             align-items: start;
             margin-top: 30px;
+        }
+
+        .form-col {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
         .form-card {
@@ -154,8 +160,252 @@
             padding: 28px;
             box-shadow: var(--shadow);
             border-top: 4px solid var(--accent);
-            position: sticky;
-            top: 120px;
+        }
+
+        /* Diagram Card */
+        .diagram-container {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .diagram-container:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .diagram-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px;
+        }
+
+        .diagram-badge {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--brand);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .diagram-badge i {
+            color: var(--accent);
+        }
+
+        .diagram-zoom-hint {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(236, 100, 52, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .diagram-zoom-hint:hover {
+            background: rgba(236, 100, 52, 0.16);
+        }
+
+        .diagram-img-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f8f9fa;
+            cursor: pointer;
+            border: 1px solid #edf2f7;
+        }
+
+        .diagram-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .diagram-img-wrapper:hover .diagram-img {
+            transform: scale(1.02);
+        }
+
+        .diagram-overlay-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(39, 46, 104, 0.88);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
+            opacity: 0.92;
+        }
+
+        .diagram-img-wrapper:hover .diagram-overlay-badge {
+            background: var(--accent);
+            opacity: 1;
+        }
+
+        .diagram-footer {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .dim-chip {
+            flex: 1;
+            min-width: 110px;
+            font-size: 0.75rem;
+            padding: 6px 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            line-height: 1.3;
+        }
+
+        .dim-chip i {
+            font-size: 0.82rem;
+        }
+
+        .dim-chip.mayor {
+            background: #fff3ed;
+            color: #c2410c;
+            border: 1px solid #fed7aa;
+        }
+
+        .dim-chip.menor {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .dim-chip.modulacion {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            width: 100%;
+            flex-basis: 100%;
+        }
+
+        /* Modal Diagram */
+        .diagram-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: modalFadeIn 0.2s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .diagram-modal-dialog {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+            max-width: 960px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(20px) scale(0.96); }
+            to { transform: translateY(0) scale(1); }
+        }
+
+        .diagram-modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.65);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, transform 0.2s ease;
+            z-index: 10;
+        }
+
+        .diagram-modal-close:hover {
+            background: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .diagram-modal-body {
+            padding: 20px;
+        }
+
+        .diagram-modal-img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+        }
+
+        .diagram-modal-caption {
+            margin-top: 16px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .diagram-modal-caption h3 {
+            font-size: 1rem;
+            color: var(--brand);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .diagram-modal-caption p {
+            font-size: 0.88rem;
+            color: #475569;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .diagram-modal-caption p:last-child {
+            margin-bottom: 0;
         }
 
         .form-card h2 {
@@ -628,56 +878,88 @@
 
             <div class="pvc-layout">
 
-                <!-- ── FORMULARIO ── -->
-                <div class="form-card">
-                    <h2><i class="fa-solid fa-ruler-combined" style="color:var(--accent)"></i> Datos del Ambiente</h2>
+                <!-- ── COLUMNA FORMULARIO + DIAGRAMA ── -->
+                <div class="form-col">
+                    <div class="form-card">
+                        <h2><i class="fa-solid fa-ruler-combined" style="color:var(--accent)"></i> Datos del Ambiente</h2>
 
-                    <div class="input-row">
-                        <div class="input-box">
-                            <label>Lado menor (m)</label>
-                            <input type="number" id="lado-menor" placeholder="Ej: 3" min="0.5" step="0.1"
-                                oninput="calcular()" />
+                        <div class="input-row">
+                            <div class="input-box">
+                                <label><i class="fa-solid fa-arrows-left-right" style="color:var(--accent);margin-right:3px;"></i> Lado menor (m)</label>
+                                <input type="number" id="lado-menor" placeholder="Ej: 3" min="0.5" step="0.1"
+                                    oninput="calcular()" />
+                            </div>
+                            <div class="input-box">
+                                <label><i class="fa-solid fa-arrows-up-down" style="color:var(--brand);margin-right:3px;"></i> Lado mayor (m)</label>
+                                <input type="number" id="lado-mayor" placeholder="Ej: 4" min="0.5" step="0.1"
+                                    oninput="calcular()" />
+                            </div>
                         </div>
+
                         <div class="input-box">
-                            <label>Lado mayor (m)</label>
-                            <input type="number" id="lado-mayor" placeholder="Ej: 4" min="0.5" step="0.1"
+                            <label><i class="fa-solid fa-arrow-down-up-across-line" style="color:var(--muted);margin-right:3px;"></i> Altura de velas (m)</label>
+                            <input type="number" id="altura-velas" placeholder="Ej: 1" value="1" min="0.1" step="0.1"
                                 oninput="calcular()" />
+                            <p class="hint">Distancia entre la losa y el cielorraso terminado.</p>
+                        </div>
+
+                        <div class="input-box">
+                            <label>Modulación (m)</label>
+                            <select id="modulacion" onchange="calcular()">
+                                <option value="0.50">0.50 m (Estándar)</option>
+                            </select>
+                            <p class="hint">Separación recomendada entre perfiles montantes.</p>
+                        </div>
+
+                        <div class="input-box">
+                            <label>Largo de tablas PVC (m)</label>
+                            <select id="largo-pvc" onchange="calcular()">
+                                <option value="4">4 metros</option>
+                                <option value="6">6 metros</option>
+                            </select>
+                        </div>
+
+                        <div class="input-box">
+                            <label>Desperdicio (%)</label>
+                            <input type="number" id="desperdicio" value="5" min="0" max="30" step="1"
+                                oninput="calcular()" />
+                            <p class="hint">Se recomienda un 5% a 10% adicional.</p>
+                        </div>
+
+                        <button class="calc-btn" onclick="calcular()">
+                            <i class="fa-solid fa-calculator"></i> Calcular materiales
+                        </button>
+                    </div>
+
+                    <!-- Diagrama Ilustrativo y Técnico de Cielorraso PVC -->
+                    <div class="diagram-wrapper">
+                        <div class="diagram-container">
+                            <div class="diagram-header">
+                                <span class="diagram-badge"><i class="fa-solid fa-layer-group"></i> Esquema de Cielorraso PVC</span>
+                                <span class="diagram-zoom-hint" onclick="openDiagramModal()"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Ampliar</span>
+                            </div>
+                            <div class="diagram-img-wrapper" onclick="openDiagramModal()" title="Clic para ampliar el esquema">
+                                <img src="assets/esquema-cielorraso-pvc.jpg" alt="Esquema técnico e ilustrativo de armado de cielorraso de PVC Perfilplas con perfiles montantes, soleras y velas" class="diagram-img" id="pvc-diagram-img" loading="lazy">
+                                <div class="diagram-overlay-badge">
+                                    <i class="fa-solid fa-magnifying-glass-plus"></i> Clic para ver en detalle
+                                </div>
+                            </div>
+                            <div class="diagram-footer">
+                                <div class="dim-chip mayor">
+                                    <i class="fa-solid fa-arrows-left-right"></i>
+                                    <span><strong>Lado Mayor:</strong> Sentido largo</span>
+                                </div>
+                                <div class="dim-chip menor">
+                                    <i class="fa-solid fa-arrows-up-down"></i>
+                                    <span><strong>Lado Menor:</strong> Sentido ancho</span>
+                                </div>
+                                <div class="dim-chip modulacion">
+                                    <i class="fa-solid fa-bars"></i>
+                                    <span><strong>Modulación:</strong> Montantes cada 50 cm</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="input-box">
-                        <label>Altura de velas (m)</label>
-                        <input type="number" id="altura-velas" placeholder="Ej: 1" value="1" min="0.1" step="0.1"
-                            oninput="calcular()" />
-                        <p class="hint">Distancia entre la losa y el cielorraso terminado.</p>
-                    </div>
-
-                    <div class="input-box">
-                        <label>Modulación (m)</label>
-                        <select id="modulacion" onchange="calcular()">
-                            <option value="0.50">0.50 m</option>
-                        </select>
-                        <p class="hint">Separación entre estructuras portantes.</p>
-                    </div>
-
-                    <div class="input-box">
-                        <label>Largo de tablas PVC (m)</label>
-                        <select id="largo-pvc" onchange="calcular()">
-                            <option value="4">4 m</option>
-                            <option value="6">6 m</option>
-                        </select>
-                    </div>
-
-                    <div class="input-box">
-                        <label>Desperdicio (%)</label>
-                        <input type="number" id="desperdicio" value="5" min="0" max="30" step="1"
-                            oninput="calcular()" />
-                        <p class="hint">Se recomienda un 5% adicional.</p>
-                    </div>
-
-                    <button class="calc-btn" onclick="calcular()">
-                        <i class="fa-solid fa-calculator"></i> Calcular materiales
-                    </button>
                 </div>
 
                 <!-- ── RESULTADOS ── -->
@@ -1340,9 +1622,48 @@
         window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(texto)}`, '_blank');
     }
 
+    function openDiagramModal() {
+        const modal = document.getElementById('diagram-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeDiagramModal(event) {
+        if (!event || event.target.id === 'diagram-modal' || event.target.classList.contains('diagram-modal-close')) {
+            const modal = document.getElementById('diagram-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeDiagramModal();
+    });
+
     // Calcular al cargar si hay valores por defecto
     calcular();
     </script>
 
+    <!-- Modal para ver el esquema de cielorraso PVC en alta resolución -->
+    <div id="diagram-modal" class="diagram-modal-overlay" onclick="closeDiagramModal(event)">
+        <div class="diagram-modal-dialog">
+            <button class="diagram-modal-close" onclick="closeDiagramModal()" aria-label="Cerrar vista previa">&times;</button>
+            <div class="diagram-modal-body">
+                <img src="assets/esquema-cielorraso-pvc.jpg" alt="Esquema estructural y componentes de cielorraso de PVC Perfilplas" class="diagram-modal-img">
+                <div class="diagram-modal-caption">
+                    <h3><i class="fa-solid fa-circle-info"></i> Componentes del Sistema de Cielorraso PVC</h3>
+                    <p>• <strong>Estructura Portante:</strong> Perfiles montantes de 35 mm colocados a una modulación de 50 cm fijados a soleras perimetrales y suspendidos con velas rígidas.</p>
+                    <p>• <strong>Tablas de PVC Perfilplas:</strong> Machihembradas de 20 cm de ancho útil (en 4m o 6m de largo), fijadas a los montantes con tornillos T1 aguja.</p>
+                    <p>• <strong>Molduras Perimetrales:</strong> Perfil moldura F perimetral y uniones H para remates y encuentros estéticos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
