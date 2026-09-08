@@ -482,10 +482,17 @@
     }
 
     /* ── FILTER BAR ──────────────────────────────────────────── */
+    /* ── FILTER BAR ───────────────────────────────────────────── */
     .filter-bar {
       background: white;
       border-bottom: 1px solid var(--border);
       padding: 10px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .filter-row {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -495,6 +502,99 @@
     .filter-bar .filter-select {
       padding: 7px 10px;
       font-size: 0.8rem;
+      max-width: 210px;
+    }
+
+    .filter-bar .filter-select:disabled {
+      background: #f9fafb;
+      color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    /* El orden no acota el universo: lo separamos de los filtros. */
+    .filter-sort-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .filter-sort-wrap i {
+      font-size: 0.75rem;
+    }
+
+    .filter-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ── CHIPS DE ESTADO Y REVISIÓN ───────────────────────────── */
+    .chip-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .fchip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .fchip i {
+      font-size: 0.72rem;
+    }
+
+    .fchip b {
+      font-weight: 700;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .fchip:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    .fchip.active {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+    }
+
+    .fchip.active b {
+      color: #fff;
+    }
+
+    /* Los chips de revisión son acumulables: se marcan en ámbar para
+       distinguirlos del estado, que es excluyente. */
+    .fchip.flag.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .fchip.flag.active b {
+      color: #fff;
+    }
+
+    /* Un contador en cero avisa que no hay nada para revisar por ahí. */
+    .fchip.vacio {
+      opacity: 0.45;
     }
 
     .btn-clear-filters {
@@ -523,52 +623,6 @@
       color: var(--muted);
       white-space: nowrap;
       font-weight: 500;
-    }
-
-    /* ── STATS BAR ────────────────────────────────────────────── */
-    .stats-bar {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 10px 24px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .stat-pill {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      background: #f9fafb;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 0.8rem;
-    }
-
-    .stat-pill i {
-      font-size: 0.75rem;
-    }
-
-    .stat-pill span {
-      color: var(--muted);
-    }
-
-    .stat-pill strong {
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    .stat-pill.total i {
-      color: var(--brand);
-    }
-
-    .stat-pill.active i {
-      color: var(--success);
-    }
-
-    .stat-pill.featured i {
-      color: var(--warning);
     }
 
     /* ── PRODUCT GRID ─────────────────────────────────────────── */
@@ -1546,10 +1600,39 @@
 
       .filter-bar {
         padding: 8px 14px;
+        gap: 8px;
       }
 
-      .stats-bar {
-        padding: 8px 14px;
+      /* En celular las filas no se parten en varios renglones: se
+         deslizan de costado, así el grid arranca más arriba. */
+      .filter-row {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .filter-row::-webkit-scrollbar {
+        display: none;
+      }
+
+      .filter-bar .filter-select {
+        flex: 0 0 auto;
+        max-width: 45vw;
+      }
+
+      .chip-group {
+        flex-wrap: nowrap;
+      }
+
+      .fchip {
+        flex: 0 0 auto;
+      }
+
+      /* Con scroll horizontal, "margin-left:auto" deja el contador fuera
+         de vista; lo pegamos al último select. */
+      .filter-count {
+        margin-left: 4px;
       }
 
       .grid-area {
@@ -2425,17 +2508,12 @@
 
         <div class="search-wrap">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" class="search-input" id="search-input" placeholder="Buscar por nombre, SKU, marca..."
-            oninput="debouncedFiltrar()" />
+          <input type="text" class="search-input" id="search-input"
+            placeholder="Buscar por nombre, SKU, marca..." oninput="debouncedFiltrar()" />
           <button class="search-clear" onclick="clearSearch()" title="Limpiar búsqueda">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-
-        <select class="filter-select" id="filter-cat-top" onchange="syncCatFilters(); onCatChange()"
-          style="max-width:180px">
-          <option value="">Todas las categorías</option>
-        </select>
 
         <div class="topbar-right">
           <div class="view-toggle">
@@ -2454,43 +2532,68 @@
 
       <!-- FILTER BAR -->
       <div class="filter-bar">
-        <select class="filter-select" id="filter-subcat" onchange="filtrarProductos()" disabled>
-          <option value="">Todas las subcategorías</option>
-        </select>
-        <select class="filter-select" id="filter-estado" onchange="filtrarProductos()">
-          <option value="">Todos</option>
-          <option value="activos">Solo activos</option>
-          <option value="inactivos">Solo inactivos</option>
-          <option value="destacados">Solo destacados</option>
-        </select>
-        <select class="filter-select" id="filter-sort" onchange="filtrarProductos()">
-          <option value="nombre-az">Nombre A→Z</option>
-          <option value="nombre-za">Nombre Z→A</option>
-          <option value="sku">SKU</option>
-          <option value="categoria">Categoría</option>
-        </select>
-        <button class="btn-clear-filters" id="btn-clear" onclick="limpiarFiltros()" style="display:none">
-          <i class="fa-solid fa-xmark"></i> Limpiar filtros
-        </button>
-        <span class="filter-count" id="filter-count"></span>
-      </div>
+        <!-- Fila 1: acotar el universo -->
+        <div class="filter-row">
+          <select class="filter-select" id="filter-cat" onchange="onCatChange()" title="Categoría">
+            <option value="">Todas las categorías</option>
+          </select>
+          <select class="filter-select" id="filter-subcat" onchange="filtrarProductos()" title="Subcategoría">
+            <option value="">Todas las subcategorías</option>
+          </select>
+          <select class="filter-select" id="filter-marca" onchange="filtrarProductos()" title="Marca">
+            <option value="">Todas las marcas</option>
+          </select>
 
-      <!-- STATS BAR -->
-      <div class="stats-bar">
-        <div class="stat-pill total">
-          <i class="fa-solid fa-box"></i>
-          <span>Total:</span>
-          <strong id="stat-total">—</strong>
+          <span class="filter-divider"></span>
+
+          <label class="filter-sort-wrap">
+            <i class="fa-solid fa-arrow-down-short-wide"></i>
+            <select class="filter-select" id="filter-sort" onchange="filtrarProductos()" title="Ordenar por">
+              <option value="nombre-az">Nombre A&rarr;Z</option>
+              <option value="nombre-za">Nombre Z&rarr;A</option>
+              <option value="sku">SKU</option>
+              <option value="categoria">Categoría</option>
+              <option value="marca">Marca</option>
+              <option value="recientes">Editados recientemente</option>
+            </select>
+          </label>
+
+          <span class="filter-count" id="filter-count"></span>
+          <button class="btn-clear-filters" id="btn-clear" onclick="limpiarFiltros()" style="display:none">
+            <i class="fa-solid fa-xmark"></i> Limpiar filtros
+          </button>
         </div>
-        <div class="stat-pill active">
-          <i class="fa-solid fa-circle-check"></i>
-          <span>Activos:</span>
-          <strong id="stat-visible">—</strong>
-        </div>
-        <div class="stat-pill featured">
-          <i class="fa-solid fa-star"></i>
-          <span>Destacados:</span>
-          <strong id="stat-destacados">—</strong>
+
+        <!-- Fila 2: estado (excluyente) + revisión de datos (acumulable) -->
+        <div class="filter-row chips-row">
+          <div class="chip-group" id="chips-estado" role="group" aria-label="Estado">
+            <button class="fchip active" data-estado="" onclick="setEstado('')">
+              <i class="fa-solid fa-box"></i> Todos <b id="cnt-total">—</b>
+            </button>
+            <button class="fchip" data-estado="activos" onclick="setEstado('activos')">
+              <i class="fa-solid fa-circle-check"></i> Activos <b id="cnt-activos">—</b>
+            </button>
+            <button class="fchip" data-estado="inactivos" onclick="setEstado('inactivos')">
+              <i class="fa-solid fa-circle-xmark"></i> Inactivos <b id="cnt-inactivos">—</b>
+            </button>
+          </div>
+
+          <span class="filter-divider"></span>
+
+          <div class="chip-group" id="chips-flags" role="group" aria-label="Revisión de datos">
+            <button class="fchip flag" data-flag="destacado" onclick="toggleFlag('destacado')">
+              <i class="fa-solid fa-star"></i> Destacados <b id="cnt-destacado">—</b>
+            </button>
+            <button class="fchip flag" data-flag="sin-imagen" onclick="toggleFlag('sin-imagen')">
+              <i class="fa-solid fa-image"></i> Sin imagen <b id="cnt-sin-imagen">—</b>
+            </button>
+            <button class="fchip flag" data-flag="sin-descripcion" onclick="toggleFlag('sin-descripcion')">
+              <i class="fa-solid fa-align-left"></i> Sin descripción <b id="cnt-sin-descripcion">—</b>
+            </button>
+            <button class="fchip flag" data-flag="sin-marca" onclick="toggleFlag('sin-marca')">
+              <i class="fa-solid fa-tag"></i> Sin marca <b id="cnt-sin-marca">—</b>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -2502,7 +2605,11 @@
         <div id="empty-state">
           <div class="empty-icon"><i class="fa-solid fa-box-open"></i></div>
           <h3>No se encontraron productos</h3>
-          <p>Probá con otros filtros o agregá un nuevo producto.</p>
+          <p id="empty-detalle">Probá con otros filtros o agregá un nuevo producto.</p>
+          <button class="btn-clear-filters" id="empty-clear" onclick="limpiarFiltros()"
+            style="display:none;margin:14px auto 0">
+            <i class="fa-solid fa-xmark"></i> Limpiar filtros
+          </button>
         </div>
         <div id="product-grid"></div>
       </div>
@@ -3350,7 +3457,11 @@
         const snap = await db.collection('catalogo').orderBy('nombre').get();
         todosLosProductos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         actualizarStats();
-        filtrarProductos();
+        // Los selects dependen de los datos, así que se llenan recién acá.
+        poblarSelectCategoria();
+        poblarFiltroMarcas();
+        productosListos = true;
+        sincronizarFiltros();
         if (document.getElementById('view-config').style.display !== 'none') {
           renderConfigDestacados();
         }
@@ -3578,10 +3689,155 @@
         <span style="color:var(--muted)"> — ${cuantos} productos${peso}. Última actualización: ${cuando}.</span>`;
     }
 
+    /* ══════════════════════════════════════════════════════════════
+       FILTROS
+       ─────────────────────────────────────────────────────────────
+       El estado (todos / activos / inactivos) es excluyente y vive en
+       `filtroEstado`. Los de revisión (sin imagen, sin descripción…) se
+       acumulan entre sí y viven en `filtrosFlags`: sirven para encontrar
+       lo que falta cargar, que es el grueso del trabajo en este panel.
+
+       Todo se guarda en localStorage salvo la búsqueda, que arranca
+       siempre limpia: volver al panel con un texto viejo pegado y cero
+       resultados es la forma más rápida de creer que se borró el catálogo.
+    ═══════════════════════════════════════════════════════════════ */
+    const FILTROS_KEY = 'catalogo_filtros_v1';
+
+    let filtroEstado = '';
+    let filtrosRestaurados = false;
+    let categoriasListas = false;
+    let productosListos = false;
+
+    /* Las dos cargas iniciales son paralelas: la primera en llegar deja su
+       flag y la segunda dispara la restauración, que necesita a las dos. */
+    function sincronizarFiltros() {
+      if (!categoriasListas || !productosListos) return;
+      if (!filtrosRestaurados) {
+        restaurarFiltros();          // ya repuebla subcategorías y pinta los chips
+        filtrosRestaurados = true;
+      } else {
+        onCatChange({ silencioso: true });
+      }
+      filtrarProductos();
+    }
+    let filtrosFlags = new Set();
+
+    // "Cerámico" y "ceramico" tienen que ser la misma palabra: nadie escribe
+    // los acentos en un buscador interno.
+    function normalizarTexto(v) {
+      return (v || '').toString().toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    const sinImagen      = p => !(p.imagenes && p.imagenes.length) && !p.imagenLegacy;
+    const sinDescripcion = p => !(p.descripcion || '').trim();
+    const sinMarca       = p => !(p.marca || '').trim();
+
+    const TEST_FLAGS = {
+      'destacado':       p => p.destacado === true,
+      'sin-imagen':      sinImagen,
+      'sin-descripcion': sinDescripcion,
+      'sin-marca':       sinMarca
+    };
+
+    function guardarFiltros() {
+      try {
+        localStorage.setItem(FILTROS_KEY, JSON.stringify({
+          cat:    document.getElementById('filter-cat').value,
+          subcat: document.getElementById('filter-subcat').value,
+          marca:  document.getElementById('filter-marca').value,
+          sort:   document.getElementById('filter-sort').value,
+          estado: filtroEstado,
+          flags:  [...filtrosFlags]
+        }));
+      } catch (e) { /* incógnito o storage lleno: no es motivo para romper el panel */ }
+    }
+
+    function restaurarFiltros() {
+      let f;
+      try { f = JSON.parse(localStorage.getItem(FILTROS_KEY) || '{}'); } catch (e) { return; }
+      if (!f || typeof f !== 'object') return;
+
+      // La categoría o la marca guardadas pueden haber dejado de existir.
+      const setSi = (id, val) => {
+        if (!val) return;
+        const sel = document.getElementById(id);
+        if ([...sel.options].some(o => o.value === val)) sel.value = val;
+      };
+
+      setSi('filter-cat', f.cat);
+      onCatChange({ silencioso: true });
+      setSi('filter-subcat', f.subcat);
+      setSi('filter-marca', f.marca);
+      setSi('filter-sort', f.sort);
+
+      filtroEstado = ['activos', 'inactivos'].includes(f.estado) ? f.estado : '';
+      filtrosFlags = new Set((Array.isArray(f.flags) ? f.flags : []).filter(x => x in TEST_FLAGS));
+      pintarChips();
+    }
+
+    /* Los contadores se calculan sobre el catálogo entero, no sobre lo
+       filtrado: son el mapa de lo que falta cargar, y un mapa que se
+       redibuja cada vez que tocás un filtro no sirve de mapa. */
     function actualizarStats() {
-      document.getElementById('stat-total').textContent = todosLosProductos.length;
-      document.getElementById('stat-visible').textContent = todosLosProductos.filter(p => p.disponible !== false).length;
-      document.getElementById('stat-destacados').textContent = todosLosProductos.filter(p => p.destacado).length;
+      const T = todosLosProductos;
+      const set = (id, n) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = n;
+        const chip = el.closest('.fchip');
+        if (chip && chip.classList.contains('flag')) chip.classList.toggle('vacio', n === 0);
+      };
+      set('cnt-total',           T.length);
+      set('cnt-activos',         T.filter(p => p.disponible !== false).length);
+      set('cnt-inactivos',       T.filter(p => p.disponible === false).length);
+      set('cnt-destacado',       T.filter(TEST_FLAGS['destacado']).length);
+      set('cnt-sin-imagen',      T.filter(sinImagen).length);
+      set('cnt-sin-descripcion', T.filter(sinDescripcion).length);
+      set('cnt-sin-marca',       T.filter(sinMarca).length);
+    }
+
+    function poblarFiltroMarcas() {
+      const sel = document.getElementById('filter-marca');
+      if (!sel) return;
+      const previo = sel.value;
+
+      const cuenta = new Map();
+      todosLosProductos.forEach(p => {
+        const m = (p.marca || '').trim();
+        if (m) cuenta.set(m, (cuenta.get(m) || 0) + 1);
+      });
+
+      sel.innerHTML = '<option value="">Todas las marcas</option>';
+      [...cuenta.keys()].sort((a, b) => a.localeCompare(b, 'es')).forEach(m => {
+        const o = document.createElement('option');
+        o.value = m;
+        o.textContent = m + ' (' + cuenta.get(m) + ')';
+        sel.appendChild(o);
+      });
+      if ([...sel.options].some(o => o.value === previo)) sel.value = previo;
+      sel.disabled = cuenta.size === 0;
+    }
+
+    function pintarChips() {
+      document.querySelectorAll('#chips-estado .fchip').forEach(c => {
+        c.classList.toggle('active', c.dataset.estado === filtroEstado);
+      });
+      document.querySelectorAll('#chips-flags .fchip').forEach(c => {
+        c.classList.toggle('active', filtrosFlags.has(c.dataset.flag));
+      });
+    }
+
+    function setEstado(v) {
+      filtroEstado = v;
+      pintarChips();
+      filtrarProductos();
+    }
+
+    function toggleFlag(f) {
+      if (filtrosFlags.has(f)) filtrosFlags.delete(f); else filtrosFlags.add(f);
+      pintarChips();
+      filtrarProductos();
     }
 
     let debounceTimer;
@@ -3595,82 +3851,152 @@
       filtrarProductos();
     }
 
-    // Sync the topbar category select with the filter bar hidden one
-    function syncCatFilters() {
-      const val = document.getElementById('filter-cat-top').value;
-      // filter-cat is now only in topbar, no hidden duplicate
-    }
+    /* Sin categoría elegida, el select de subcategorías lista las de todo
+       el catálogo en vez de quedar deshabilitado: "Griferías" se busca
+       igual de seguido que "Baño › Griferías". */
+    function onCatChange(opts) {
+      opts = opts || {};
+      const cat = document.getElementById('filter-cat').value;
+      const sel = document.getElementById('filter-subcat');
+      const previo = sel.value;
 
-    function onCatChange() {
-      const cat = document.getElementById('filter-cat-top').value;
-      const subSel = document.getElementById('filter-subcat');
-      subSel.innerHTML = '<option value="">Todas las subcategorías</option>';
-
+      let subs;
       if (cat && cat !== '__sin_categoria__') {
         const catObj = categorias.find(c => c.nombre === cat);
-        if (catObj && catObj.subcategorias.length > 0) {
-          catObj.subcategorias.forEach(s => {
-            const o = document.createElement('option');
-            o.value = s; o.textContent = s;
-            subSel.appendChild(o);
-          });
-          subSel.disabled = false;
-        } else {
-          subSel.disabled = true;
-        }
+        subs = catObj ? catObj.subcategorias.slice() : [];
       } else {
-        subSel.disabled = true;
+        subs = [...new Set(todosLosProductos.map(p => (p.subcategoria || '').trim()).filter(Boolean))];
       }
-      filtrarProductos();
+      subs.sort((a, b) => a.localeCompare(b, 'es'));
+
+      sel.innerHTML = '<option value="">Todas las subcategorías</option>';
+      subs.forEach(nombreSub => {
+        const o = document.createElement('option');
+        o.value = nombreSub;
+        o.textContent = nombreSub;
+        sel.appendChild(o);
+      });
+      sel.disabled = subs.length === 0;
+      if ([...sel.options].some(o => o.value === previo)) sel.value = previo;
+
+      if (!opts.silencioso) filtrarProductos();
     }
 
     function limpiarFiltros() {
       document.getElementById('search-input').value = '';
-      document.getElementById('filter-cat-top').value = '';
-      document.getElementById('filter-subcat').innerHTML = '<option value="">Todas las subcategorías</option>';
-      document.getElementById('filter-subcat').disabled = true;
-      document.getElementById('filter-estado').value = '';
+      document.getElementById('filter-cat').value = '';
+      document.getElementById('filter-marca').value = '';
       document.getElementById('filter-sort').value = 'nombre-az';
+      filtroEstado = '';
+      filtrosFlags.clear();
+      pintarChips();
+      onCatChange({ silencioso: true });
+      document.getElementById('filter-subcat').value = '';
       filtrarProductos();
     }
 
-    function filtrarProductos() {
-      const q = document.getElementById('search-input').value.toLowerCase().trim();
-      const cat = document.getElementById('filter-cat-top').value;
+    /* Cuando no queda nada, decir POR QUÉ: con cinco filtros combinables,
+       "no se encontraron productos" solo no alcanza para saber cuál sacar. */
+    const ETIQUETA_FLAG = {
+      'destacado': 'destacados',
+      'sin-imagen': 'sin imagen',
+      'sin-descripcion': 'sin descripción',
+      'sin-marca': 'sin marca'
+    };
+
+    function describirVacio() {
+      const partes = [];
+      const q = document.getElementById('search-input').value.trim();
+      const cat = document.getElementById('filter-cat').value;
       const subcat = document.getElementById('filter-subcat').value;
-      const estado = document.getElementById('filter-estado').value;
-      const sort = document.getElementById('filter-sort').value;
+      const marca = document.getElementById('filter-marca').value;
+
+      if (q) partes.push('la búsqueda "' + q + '"');
+      if (cat) partes.push('categoría ' + (cat === '__sin_categoria__' ? '“sin categoría”' : '“' + cat + '”'));
+      if (subcat) partes.push('subcategoría “' + subcat + '”');
+      if (marca) partes.push('marca “' + marca + '”');
+      if (filtroEstado) partes.push('solo ' + filtroEstado);
+      filtrosFlags.forEach(f => partes.push(ETIQUETA_FLAG[f] || f));
+
+      const det = document.getElementById('empty-detalle');
+      const btn = document.getElementById('empty-clear');
+      if (!partes.length) {
+        det.textContent = 'Todavía no hay productos cargados. Agregá el primero con “Nuevo producto”.';
+        if (btn) btn.style.display = 'none';
+        return;
+      }
+      const lista = partes.length === 1
+        ? partes[0]
+        : partes.slice(0, -1).join(', ') + ' y ' + partes[partes.length - 1];
+      det.textContent = 'Ningún producto cumple con ' + lista + ' al mismo tiempo.';
+      if (btn) btn.style.display = 'inline-flex';
+    }
+
+    function filtrarProductos() {
+      const qRaw   = document.getElementById('search-input').value.trim();
+      const cat    = document.getElementById('filter-cat').value;
+      const subcat = document.getElementById('filter-subcat').value;
+      const marca  = document.getElementById('filter-marca').value;
+      const sort   = document.getElementById('filter-sort').value;
+
+      // "piso 60" tiene que encontrar "Piso Cerámico 60x60": cada palabra se
+      // busca por separado y todas tienen que aparecer en algún campo.
+      const terminos = normalizarTexto(qRaw).split(/\s+/).filter(Boolean);
+      const flags = [...filtrosFlags];
 
       productosFiltrados = todosLosProductos.filter(p => {
-        const matchQ = !q || [p.nombre, p.sku, p.marca, p.descripcion, p.subcategoria]
-          .some(campo => campo?.toLowerCase().includes(q));
-        const matchCat = !cat
-          || (cat === '__sin_categoria__' ? (!p.categoria || p.categoria === 'Sin categoría') : p.categoria === cat);
-        const matchSubcat = !subcat || p.subcategoria === subcat;
-        const matchEstado = !estado
-          || (estado === 'activos' && p.disponible !== false)
-          || (estado === 'inactivos' && p.disponible === false)
-          || (estado === 'destacados' && p.destacado === true);
-        return matchQ && matchCat && matchSubcat && matchEstado;
+        if (terminos.length) {
+          const heno = normalizarTexto(
+            [p.nombre, p.sku, p.marca, p.descripcion, p.categoria, p.subcategoria].join(' ')
+          );
+          if (!terminos.every(t => heno.includes(t))) return false;
+        }
+        if (cat) {
+          const noTieneCat = !p.categoria || p.categoria === 'Sin categoría';
+          if (cat === '__sin_categoria__' ? !noTieneCat : p.categoria !== cat) return false;
+        }
+        if (subcat && p.subcategoria !== subcat) return false;
+        if (marca && (p.marca || '').trim() !== marca) return false;
+        if (filtroEstado === 'activos'   && p.disponible === false) return false;
+        if (filtroEstado === 'inactivos' && p.disponible !== false) return false;
+        // Los de revisión se suman: pedir "sin imagen" + "sin marca" trae los
+        // que arrastran las dos faltas, no la unión de las dos listas.
+        if (flags.length && !flags.every(f => TEST_FLAGS[f](p))) return false;
+        return true;
       });
+
+      const fechaDe = p => {
+        const v = p.actualizadoEn;
+        if (!v) return 0;
+        if (typeof v.toDate === 'function') return v.toDate().getTime();
+        const t = new Date(v).getTime();
+        return isNaN(t) ? 0 : t;
+      };
 
       productosFiltrados.sort((a, b) => {
         switch (sort) {
           case 'nombre-za': return (b.nombre || '').localeCompare(a.nombre || '', 'es');
-          case 'sku': return (a.sku || '').localeCompare(b.sku || '', 'es', { numeric: true });
-          case 'categoria': return (a.categoria || '').localeCompare(b.categoria || '', 'es');
-          default: return (a.nombre || '').localeCompare(b.nombre || '', 'es');
+          case 'sku':       return (a.sku || '').localeCompare(b.sku || '', 'es', { numeric: true });
+          case 'categoria': return (a.categoria || '').localeCompare(b.categoria || '', 'es')
+                                || (a.nombre || '').localeCompare(b.nombre || '', 'es');
+          case 'marca':     return (a.marca || '\uffff').localeCompare(b.marca || '\uffff', 'es')
+                                || (a.nombre || '').localeCompare(b.nombre || '', 'es');
+          case 'recientes': return fechaDe(b) - fechaDe(a);
+          default:          return (a.nombre || '').localeCompare(b.nombre || '', 'es');
         }
       });
 
-      const hayFiltros = q || cat || subcat || estado || sort !== 'nombre-az';
+      // El orden no achica la lista, así que no cuenta como filtro activo:
+      // antes el botón "Limpiar filtros" aparecía sólo por reordenar.
+      const hayFiltros = qRaw || cat || subcat || marca || filtroEstado || flags.length;
       document.getElementById('btn-clear').style.display = hayFiltros ? 'inline-flex' : 'none';
 
       const countEl = document.getElementById('filter-count');
       countEl.textContent = productosFiltrados.length !== todosLosProductos.length
-        ? `${productosFiltrados.length} de ${todosLosProductos.length} productos`
-        : '';
+        ? productosFiltrados.length + ' de ' + todosLosProductos.length + ' productos'
+        : todosLosProductos.length + ' productos';
 
+      guardarFiltros();
       renderGrid();
     }
 
@@ -3683,6 +4009,7 @@
 
       if (productosFiltrados.length === 0) {
         grid.innerHTML = '';
+        describirVacio();
         empty.style.display = 'block';
         return;
       }
@@ -4079,6 +4406,8 @@
       }
       poblarSelectCategoria();
       renderCatList();
+      categoriasListas = true;
+      sincronizarFiltros();
     }
 
     function poblarSelectCategoria() {
@@ -4094,19 +4423,32 @@
       sel.value = valorActual;
       if (valorActual) actualizarSubcategorias(valorActual);
 
-      // Topbar filter
-      const filterSel = document.getElementById('filter-cat-top');
+      // Filtro de la barra: lleva el conteo al lado para ver de una dónde
+      // está el volumen y qué categorías quedaron vacías.
+      const filterSel = document.getElementById('filter-cat');
       const filterVal = filterSel.value;
+      const porCat = new Map();
+      todosLosProductos.forEach(prod => {
+        const k = prod.categoria || 'Sin categoría';
+        porCat.set(k, (porCat.get(k) || 0) + 1);
+      });
+
       filterSel.innerHTML = '<option value="">Todas las categorías</option>';
       categorias.forEach(c => {
+        const n = porCat.get(c.nombre) || 0;
         const o = document.createElement('option');
-        o.value = c.nombre; o.textContent = c.nombre;
+        o.value = c.nombre;
+        o.textContent = todosLosProductos.length ? c.nombre + ' (' + n + ')' : c.nombre;
         filterSel.appendChild(o);
       });
+
+      const nSin = porCat.get('Sin categoría') || 0;
       const oSin = document.createElement('option');
-      oSin.value = '__sin_categoria__'; oSin.textContent = '— Sin categoría —';
+      oSin.value = '__sin_categoria__';
+      oSin.textContent = todosLosProductos.length ? '— Sin categoría — (' + nSin + ')' : '— Sin categoría —';
       filterSel.appendChild(oSin);
-      filterSel.value = filterVal;
+
+      if ([...filterSel.options].some(o => o.value === filterVal)) filterSel.value = filterVal;
     }
 
     function actualizarSubcategorias(catNombre) {
@@ -4370,38 +4712,29 @@
 
       const topbarEl = document.querySelector('.topbar-title');
       const filterBar = document.querySelector('.filter-bar');
-      const statsBar = document.querySelector('.stats-bar');
 
       if (v === 'productos') {
         topbarEl.innerHTML = `<div class="icon-wrap"><i class="fa-solid fa-box"></i></div><h1>Productos</h1>`;
         document.querySelector('.search-wrap').style.visibility = 'visible';
-        document.getElementById('filter-cat-top').style.visibility = 'visible';
         document.querySelector('.topbar-right').style.visibility = 'visible';
         if (filterBar) filterBar.style.display = 'flex';
-        if (statsBar) statsBar.style.display = 'flex';
       } else if (v === 'categorias') {
         topbarEl.innerHTML = `<div class="icon-wrap" style="background:rgba(236,100,52,0.1);color:var(--accent)"><i class="fa-solid fa-tags"></i></div><h1>Categorías</h1>`;
         document.querySelector('.search-wrap').style.visibility = 'hidden';
-        document.getElementById('filter-cat-top').style.visibility = 'hidden';
         document.querySelector('.topbar-right').style.visibility = 'hidden';
         if (filterBar) filterBar.style.display = 'none';
-        if (statsBar) statsBar.style.display = 'none';
       } else if (v === 'stats') {
         topbarEl.innerHTML = `<div class="icon-wrap" style="background:rgba(236,100,52,0.1);color:var(--accent)"><i class="fa-solid fa-chart-line"></i></div><h1>Estadísticas</h1>`;
         document.querySelector('.search-wrap').style.visibility = 'hidden';
-        document.getElementById('filter-cat-top').style.visibility = 'hidden';
         document.querySelector('.topbar-right').style.visibility = 'hidden';
         if (filterBar) filterBar.style.display = 'none';
-        if (statsBar) statsBar.style.display = 'none';
         cargarResetMeta();
         initStatsCharts();
       } else if (v === 'config') {
         topbarEl.innerHTML = `<div class="icon-wrap" style="background:rgba(236,100,52,0.1);color:var(--accent)"><i class="fa-solid fa-gear"></i></div><h1>Configuración</h1>`;
         document.querySelector('.search-wrap').style.visibility = 'hidden';
-        document.getElementById('filter-cat-top').style.visibility = 'hidden';
         document.querySelector('.topbar-right').style.visibility = 'hidden';
         if (filterBar) filterBar.style.display = 'none';
-        if (statsBar) statsBar.style.display = 'none';
         cargarConfigOfertas();
         cargarConfigSlider();
         cargarConfigDestacados();
@@ -4409,10 +4742,8 @@
       } else if (v === 'importar') {
         topbarEl.innerHTML = `<div class="icon-wrap" style="background:rgba(236,100,52,0.1);color:var(--accent)"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h1>Descripciones IA</h1>`;
         document.querySelector('.search-wrap').style.visibility = 'hidden';
-        document.getElementById('filter-cat-top').style.visibility = 'hidden';
         document.querySelector('.topbar-right').style.visibility = 'hidden';
         if (filterBar) filterBar.style.display = 'none';
-        if (statsBar) statsBar.style.display = 'none';
       }
     }
 
