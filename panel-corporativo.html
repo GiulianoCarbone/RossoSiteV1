@@ -1119,6 +1119,119 @@
       color: var(--muted);
     }
 
+    /* Solicitud de Desbloqueo */
+    .unlock-intro {
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 18px;
+    }
+
+    .unlock-block {
+      background: #f8f9fa;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    .unlock-block h5 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .unlock-block p {
+      margin: 0;
+      color: #444;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .unlock-block ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #444;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .unlock-block li+li {
+      margin-top: 4px;
+    }
+
+    .unlock-example {
+      display: inline-block;
+      margin-top: 8px;
+      background: #fff;
+      border: 1px dashed var(--border-color);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: var(--brand);
+    }
+
+    .unlock-mails {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .unlock-mail {
+      background: #fff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: monospace;
+      font-size: 0.88rem;
+      color: var(--brand);
+      word-break: break-all;
+    }
+
+    .unlock-warning {
+      background: #fff4ed;
+      border: 1px solid #f6c9ae;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      color: #8a3b12;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .unlock-warning p {
+      margin: 0;
+    }
+
+    .unlock-warning p+p {
+      margin-top: 10px;
+    }
+
+    .unlock-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: fit-content;
+      margin: 6px auto 0;
+      background: var(--brand);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s ease;
+    }
+
+    .unlock-cta:hover {
+      background: var(--accent);
+    }
+
     /* Links Útiles */
     .link-item {
       display: flex;
@@ -3245,6 +3358,10 @@
                 <i class="fa-solid fa-chart-line"></i>
                 <span>La venta paso a paso</span>
               </a>
+              <div id="open-unlock-modal-btn" class="tool-link" style="cursor: pointer;">
+                <i class="fa-solid fa-unlock-keyhole"></i>
+                <span>Solicitud de Desbloqueo</span>
+              </div>
 
             </div>
           </div>
@@ -3595,6 +3712,79 @@
     </div>
   </div>
   <!-- FIN: Modal de Fotos de Productos -->
+
+  <!-- INICIO: Modal de Solicitud de Desbloqueo -->
+  <div id="unlock-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Solicitud de Desbloqueo</h4>
+        <button id="close-unlock-modal-btn" class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="unlock-intro">
+          Nueva pauta para la solicitud de desbloqueos. A partir de ahora, para agilizar la gestión, deberán seguir
+          las siguientes indicaciones en la redacción de los correos.
+        </p>
+
+        <div class="unlock-block">
+          <h5><i class="fa-solid fa-at"></i> Destinatarios del correo</h5>
+          <p>El pedido debe enviarse a las dos casillas:</p>
+          <div class="unlock-mails">
+            <span class="unlock-mail">jgarcia@rossomateriales.com.ar</span>
+            <span class="unlock-mail">mdelpero@rossomateriales.com.ar</span>
+          </div>
+        </div>
+
+        <div class="unlock-block">
+          <h5><i class="fa-solid fa-envelope"></i> Asunto del correo</h5>
+          <p>Incluir la palabra <strong>DESBLOQUEO</strong> seguida del nombre del cliente.</p>
+          <span class="unlock-example">DESBLOQUEO &ndash; Cliente XYZ</span>
+        </div>
+
+        <div class="unlock-block">
+          <h5><i class="fa-solid fa-list-check"></i> Detalle en el cuerpo del correo</h5>
+          <ul>
+            <li>Nombre del cliente</li>
+            <li>Número de Nota de Pedido</li>
+            <li>Número de Remito correspondiente a la acción</li>
+            <li>Fecha del Remito</li>
+          </ul>
+        </div>
+
+        <div class="unlock-block">
+          <h5><i class="fa-solid fa-paperclip"></i> Documentación obligatoria (adjuntar)</h5>
+          <ul>
+            <li>Copia del comprobante</li>
+            <li>Copia del documento de identidad del titular de la operación</li>
+          </ul>
+        </div>
+
+        <div class="unlock-warning">
+          <p>
+            Por favor, asegúrense de cumplir con estas pautas para evitar demoras en el procesamiento.
+            <strong>No se contestarán reenvíos de correos</strong>: una vez enviado deberán esperar respuesta de la
+            solicitud.
+          </p>
+          <p>
+            Las habilitaciones de comprobantes desbloqueados deberán cumplir con la pauta de realizar la entrega de la
+            totalidad de la mercadería habilitada. En el caso de que al comprobante solicitado se le realice una
+            segunda depuración, el cliente deberá abonar el importe calculado en concepto de almacenamiento tal como
+            dice la factura para así habilitar la entrega.
+          </p>
+        </div>
+
+        <a class="unlock-cta"
+          href="mailto:jgarcia@rossomateriales.com.ar,mdelpero@rossomateriales.com.ar?subject=DESBLOQUEO%20%E2%80%93%20Cliente&amp;body=Nombre%20del%20cliente%3A%0AN%C3%BAmero%20de%20Nota%20de%20Pedido%3A%0AN%C3%BAmero%20de%20Remito%3A%0AFecha%20del%20Remito%3A%0A%0AAdjunto%3A%20copia%20del%20comprobante%20y%20copia%20del%20documento%20de%20identidad%20del%20titular%20de%20la%20operaci%C3%B3n.">
+          <i class="fa-solid fa-paper-plane"></i> Redactar correo
+        </a>
+
+        <p class="unlock-intro" style="margin: 16px 0 0; text-align: center;">
+          Ante cualquier consulta, quedamos a disposición.
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- FIN: Modal de Solicitud de Desbloqueo -->
 
 
 
@@ -4485,6 +4675,21 @@
         // Cierra el modal si se hace clic fuera del contenido
         photosModal.addEventListener('click', (e) => {
           if (e.target === photosModal) photosModal.style.display = 'none';
+        });
+      }
+
+      // --- LÓGICA DEL MODAL DE SOLICITUD DE DESBLOQUEO ---
+      const unlockModal = document.getElementById("unlock-modal");
+      if (unlockModal) {
+        document.getElementById("open-unlock-modal-btn")?.addEventListener("click", () => {
+          unlockModal.style.display = "flex";
+        });
+        document.getElementById("close-unlock-modal-btn")?.addEventListener("click", () => {
+          unlockModal.style.display = "none";
+        });
+        // Cierra el modal si se hace clic fuera del contenido
+        unlockModal.addEventListener('click', (e) => {
+          if (e.target === unlockModal) unlockModal.style.display = 'none';
         });
       }
 
