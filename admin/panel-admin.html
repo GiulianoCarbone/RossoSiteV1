@@ -2154,6 +2154,265 @@
         .winner-card-c h5 { color: #166534; margin: 0; font-size: 0.88rem; font-weight: 800; }
 
         /* Actions Footer Bar */
+        /* --- Meta para activar el premio (barra de progreso del modal de ranking) --- */
+        .goal-admin-preview {
+            margin-top: 4px;
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border: 1px solid #fed7aa;
+            border-radius: 14px;
+            padding: 16px 18px;
+        }
+
+        .goal-admin-preview .gp-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .goal-admin-preview .gp-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            color: #272e68;
+            font-size: 0.9rem;
+        }
+
+        .goal-admin-preview .gp-title i {
+            color: #ec6434;
+        }
+
+        .goal-admin-preview .gp-pct {
+            font-weight: 900;
+            color: #ec6434;
+            font-size: 1.02rem;
+        }
+
+        .goal-admin-preview .gp-track {
+            height: 12px;
+            border-radius: 99px;
+            background: #f1f5f9;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .08);
+        }
+
+        .goal-admin-preview .gp-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #f59e0b, #ec6434);
+            transition: width .4s ease;
+        }
+
+        .goal-admin-preview .gp-numbers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        .goal-admin-preview .gp-numbers strong {
+            color: #1f2937;
+            font-weight: 800;
+        }
+
+        .goal-admin-preview .gp-remaining {
+            margin-top: 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #1f2937;
+        }
+
+        .goal-admin-preview .gp-remaining strong {
+            color: #ec6434;
+        }
+
+        .goal-admin-preview .gp-note {
+            margin: 8px 0 0;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #64748b;
+            line-height: 1.45;
+        }
+
+        .goal-admin-preview.gp-done {
+            border-color: #bbf7d0;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+        }
+
+        .goal-admin-preview.gp-done .gp-fill {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+        }
+
+        .goal-admin-preview.gp-done .gp-pct,
+        .goal-admin-preview.gp-done .gp-remaining strong {
+            color: #16a34a;
+        }
+
+        .goal-off {
+            opacity: 0.55;
+        }
+
+        /* --- Editor de bases: barra de formato + vista previa --- */
+        .bases-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .bases-toolbar button {
+            width: auto !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--ink-soft);
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s var(--ease);
+        }
+
+        .bases-toolbar button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: #fff7ed;
+        }
+
+        .bases-toolbar-hint {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        /* El editor ya muestra el texto como se va a ver: no hay marcas ni codigo a la vista */
+        .bases-editor {
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            background: #ffffff;
+            padding: 18px 20px;
+            min-height: 320px;
+            max-height: 560px;
+            overflow-y: auto;
+            color: #374151;
+            line-height: 1.6;
+            font-size: 0.92rem;
+            outline: none;
+            transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+        }
+
+        .bases-editor:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(236, 100, 52, 0.12);
+        }
+
+        .bases-editor:empty::before {
+            content: attr(data-placeholder);
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        .bases-editor h5 {
+            margin: 18px 0 7px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--brand);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .bases-editor h5:first-child {
+            margin-top: 0;
+        }
+
+        .bases-editor p {
+            margin: 0 0 10px;
+        }
+
+        .bases-editor ul {
+            margin: 0 0 12px;
+            padding-left: 22px;
+        }
+
+        .bases-editor li {
+            margin-bottom: 5px;
+        }
+
+        .bases-editor strong {
+            color: #1f2937;
+        }
+
+        .bases-html-warning {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin: 12px 0 0;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            font-size: 0.83rem;
+            line-height: 1.5;
+        }
+
+        /* --- Reorganizacion por etapa del concurso --- */
+        .contest-step-hint {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 16px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            color: #1d4ed8;
+            font-size: 0.83rem;
+            font-weight: 600;
+        }
+
+        .contest-inactive-note {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            background: #f8fafc;
+            border: 1px dashed var(--line);
+            color: var(--muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .contest-dirty-flag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #b45309;
+        }
+
+        .contest-dirty-flag i {
+            font-size: 0.5rem;
+        }
+
+        .contest-field-help code {
+            background: #f1f5f9;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 0.92em;
+        }
+
         .contest-card-actions-bar {
             display: flex;
             justify-content: space-between;
@@ -3388,100 +3647,92 @@
 
             <!-- CONTEST CONFIG SECTION -->
             <section id="contest-config" class="content-section">
-                <!-- Top Sticky/Header with live status and global save -->
+                <!-- Encabezado: estado real del concurso + guardado único -->
                 <div class="section-header">
                     <div>
-                        <h1 style="display: flex; align-items: center; gap: 12px;">
+                        <h1 style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                             Configurar Concurso
                             <span id="contest-header-status-pill" class="contest-status-pill status-visible">
                                 <i class="fa-solid fa-circle" style="font-size: 0.55rem;"></i>
-                                <span id="contest-header-status-text">Visible</span>
+                                <span id="contest-header-status-text">En curso</span>
                             </span>
                         </h1>
                         <p style="margin: 4px 0 0; color: var(--muted); font-size: 0.85rem;">
-                            Gestioná el desafío vigente, bases, imagen del premio, leaderboard de vendedores y podio de ganadores.
+                            El concurso entero se administra desde acá, en el orden en que pasan las cosas:
+                            se arma, se actualiza cada semana y se cierra con el ganador.
                         </p>
                     </div>
                     <div class="contest-header-actions">
-                        <button type="button" id="open-contest-preview-btn" class="admin-btn btn-neutral" style="border-radius: 20px; padding: 8px 16px; font-size: 0.85rem;" title="Ver cómo lo ven los empleados">
+                        <span id="contest-dirty-flag" class="contest-dirty-flag" style="display: none;">
+                            <i class="fa-solid fa-circle"></i> Cambios sin guardar
+                        </span>
+                        <button type="button" id="open-contest-preview-btn" class="admin-btn btn-neutral" style="border-radius: 20px; padding: 8px 16px; font-size: 0.85rem;" title="Ver cómo lo ve el equipo en la intranet">
                             <i class="fa-solid fa-eye"></i> Vista Previa
                         </button>
                         <button type="button" id="contest-global-save-btn" class="admin-btn btn-brand" style="border-radius: 20px; padding: 8px 20px; font-size: 0.85rem;">
-                            <i class="fa-solid fa-floppy-disk"></i> Guardar Todo
+                            <i class="fa-solid fa-floppy-disk"></i> Guardar cambios
                         </button>
                     </div>
                 </div>
 
-                <!-- Navigation Tabs Bar -->
+                <!-- Las tres etapas del concurso -->
                 <div class="contest-tabs-nav">
-                    <button type="button" class="contest-tab-btn active" data-contest-tab="general">
-                        <i class="fa-solid fa-trophy"></i> 1. Desafío y Premio
+                    <button type="button" class="contest-tab-btn active" data-contest-tab="setup">
+                        <i class="fa-solid fa-pen-ruler"></i> 1 · Armar el concurso
                     </button>
-                    <button type="button" class="contest-tab-btn" data-contest-tab="rankings">
-                        <i class="fa-solid fa-ranking-star"></i> 2. Leaderboard / Rankings
+                    <button type="button" class="contest-tab-btn" data-contest-tab="live">
+                        <i class="fa-solid fa-chart-line"></i> 2 · Mientras corre
                     </button>
-                    <button type="button" class="contest-tab-btn" data-contest-tab="winners">
-                        <i class="fa-solid fa-medal"></i> 3. Botones y Ganadores
+                    <button type="button" class="contest-tab-btn" data-contest-tab="close">
+                        <i class="fa-solid fa-medal"></i> 3 · Cerrar y premiar
                     </button>
                 </div>
 
-                <!-- TAB 1: DESAFÍO & PREMIO -->
-                <div id="contest-pane-general" class="contest-tab-pane active">
+                <!-- ═══════════ ETAPA 1: ARMAR ═══════════ -->
+                <div id="contest-pane-setup" class="contest-tab-pane active">
+                    <p class="contest-step-hint">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Se completa una sola vez, cuando arranca el concurso del mes.
+                    </p>
+
                     <div class="contest-grid-2col">
-                        <!-- Left Column: Details & Visibility -->
+                        <!-- Identidad del desafío -->
                         <div class="panel-card" style="margin-bottom: 0;">
-                            <h3><i class="fa-solid fa-bullhorn"></i> Información Principal</h3>
-                            
+                            <h3><i class="fa-solid fa-bullhorn"></i> Identidad del desafío</h3>
+
                             <div class="input-group" style="margin-top: 14px;">
-                                <label for="contest-terms-title">Título del Desafío</label>
-                                <input type="text" id="contest-terms-title" placeholder="Ej: Desafío ABERTURAS-D 🏆" required>
-                                <small>Título destacado que verán los usuarios en la intranet.</small>
+                                <label for="contest-name">Nombre del concurso</label>
+                                <input type="text" id="contest-name" placeholder="Ej: GRIFERÍAS">
+                                <small>Con este solo nombre la intranet arma los cinco títulos: la tarjeta
+                                    (“Desafío GRIFERÍAS 🏆”), las bases, el ranking y el modal de ganadores.</small>
                             </div>
 
                             <div class="input-group">
-                                <label for="contest-countdown-date">Fecha y Hora de Cierre (Countdown)</label>
-                                <input type="datetime-local" id="contest-countdown-date" required>
-                                <small id="contest-countdown-preview-text" style="color: var(--accent); font-weight: 600; margin-top: 4px;">
-                                    Calculando tiempo restante...
-                                </small>
+                                <label for="contest-description">Descripción corta</label>
+                                <textarea id="contest-description" rows="4" style="font-family: inherit; line-height: 1.6;" placeholder="Ej: El vendedor con mayor cantidad de **unidades vendidas de la lista selección de griferías** gana una **cava de vinos para 12 botellas**."></textarea>
+                                <small class="contest-field-help">Es el texto que se lee debajo del premio en la tarjeta de la intranet.
+                                    Podés usar <code>**negrita**</code>.</small>
                             </div>
 
-                            <!-- Visibility Selector -->
-                            <div style="margin-top: 18px;">
-                                <label style="display: block; margin-bottom: 7px; font-weight: 600; font-size: .88rem; color: var(--ink-soft);">
-                                    Visibilidad del Ranking en Intranet
-                                </label>
-                                <div class="contest-status-cards">
-                                    <label id="rstatus-label-hidden" class="contest-status-card">
-                                        <input type="radio" name="ranking-status" value="hidden" id="rstatus-hidden">
-                                        <div class="status-title"><i class="fa-solid fa-eye-slash" style="color: #64748b;"></i> Oculto</div>
-                                        <div class="status-desc">No se muestra</div>
-                                    </label>
-                                    <label id="rstatus-label-coming_soon" class="contest-status-card">
-                                        <input type="radio" name="ranking-status" value="coming_soon" id="rstatus-coming_soon">
-                                        <div class="status-title"><i class="fa-solid fa-clock" style="color: #d97706;"></i> Próximamente</div>
-                                        <div class="status-desc">Cartel de aviso</div>
-                                    </label>
-                                    <label id="rstatus-label-visible" class="contest-status-card selected">
-                                        <input type="radio" name="ranking-status" value="visible" id="rstatus-visible">
-                                        <div class="status-title"><i class="fa-solid fa-trophy" style="color: #16a34a;"></i> Visible</div>
-                                        <div class="status-desc">Muestra el Top 5</div>
-                                    </label>
-                                </div>
+                            <div class="input-group" style="margin-bottom: 0;">
+                                <label for="contest-countdown-date">Cierra el</label>
+                                <input type="datetime-local" id="contest-countdown-date">
+                                <small id="contest-countdown-preview-text" style="color: var(--accent); font-weight: 600; margin-top: 4px;">
+                                    Seleccioná fecha y hora de cierre
+                                </small>
                             </div>
                         </div>
 
-                        <!-- Right Column: Prize Image & Live Preview -->
+                        <!-- Premio -->
                         <div class="panel-card" style="margin-bottom: 0;">
-                            <h3><i class="fa-solid fa-gift"></i> Imagen del Premio</h3>
-                            
+                            <h3><i class="fa-solid fa-gift"></i> Premio</h3>
+
                             <div class="input-group" style="margin-top: 14px;">
-                                <label for="contest-prize-image-url">URL de la Imagen</label>
-                                <input type="url" id="contest-prize-image-url" placeholder="https://i.ibb.co/..." required>
-                                <small>Link directo a la imagen del premio en formato PNG/JPG (fondo transparente recomendado).</small>
+                                <label for="contest-prize-image-url">URL de la imagen</label>
+                                <input type="url" id="contest-prize-image-url" placeholder="https://i.ibb.co/...">
+                                <small>Link directo en PNG/JPG. Con fondo transparente queda mejor sobre la tarjeta.</small>
                             </div>
 
-                            <!-- Interactive Prize Box Preview -->
                             <div class="contest-prize-preview-box">
                                 <span class="contest-prize-badge"><i class="fa-solid fa-award"></i> Premio</span>
                                 <div id="contest-prize-preview" style="display: none; width: 100%; text-align: center;">
@@ -3495,164 +3746,56 @@
                         </div>
                     </div>
 
-                    <!-- Bases y Condiciones Form -->
+                    <!-- Bases y condiciones -->
                     <div class="panel-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <h3 style="margin: 0;"><i class="fa-solid fa-file-contract"></i> Bases y Condiciones del Concurso</h3>
-                            <small style="color: var(--muted);">Visible en el modal "Conocé más"</small>
-                        </div>
-                        <div class="input-group">
-                            <label for="contest-terms-content">Contenido de las Reglas</label>
-                            <textarea id="contest-terms-content" rows="7" style="font-family: inherit; line-height: 1.6;" placeholder="Mecánica del concurso, mínimos de venta, productos que participan, criterios de desempate, etc." required></textarea>
-                            <small>Podés detallar dinámica, fechas, restricciones y premios secundarios.</small>
+                        <h3 style="margin: 0;"><i class="fa-solid fa-file-contract"></i> Bases y condiciones</h3>
+                        <p style="margin: 4px 0 12px; color: var(--muted); font-size: 0.84rem;">
+                            Es lo que ve el equipo cuando toca “Conocé más” en la intranet.
+                        </p>
+                        <div class="bases-html-warning" id="bases-html-warning" style="display: none;">
+                            <i class="fa-solid fa-wand-magic-sparkles" style="margin-top: 2px;"></i>
+                            <span>Las bases estaban guardadas en HTML viejo. Las pasamos al formato nuevo:
+                                revisá que haya quedado bien y tocá <strong>Guardar cambios</strong>.</span>
                         </div>
 
-                        <div class="contest-card-actions-bar">
-                            <button type="button" id="save-contest-general-btn" class="admin-btn btn-brand" style="padding: 10px 24px;">
-                                <i class="fa-solid fa-check"></i> Guardar Desafío y Bases
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 2: RANKINGS / LEADERBOARD -->
-                <div id="contest-pane-rankings" class="contest-tab-pane">
-                    <div class="panel-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
-                            <div>
-                                <h3 style="margin: 0;"><i class="fa-solid fa-ranking-star"></i> Tablas de Posiciones (Ranking)</h3>
-                                <p style="margin: 4px 0 0; color: var(--muted); font-size: 0.84rem;">
-                                    Actualizá las posiciones, sucursales y unidades de los mejores vendedores.
-                                </p>
-                            </div>
-                            <div style="display: flex; gap: 8px;">
-                                <button type="button" id="ranking-add-person-btn" class="admin-btn btn-neutral" style="padding: 8px 16px; font-size: 0.85rem; border-radius: 8px;">
-                                    <i class="fa-solid fa-plus"></i> Agregar Vendedor
+                        <div style="margin-top: 14px;">
+                            <div class="bases-toolbar">
+                                <button type="button" data-bases-fmt="heading" title="Convierte la línea del cursor en subtítulo">
+                                    <i class="fa-solid fa-heading"></i> Subtítulo
                                 </button>
+                                <button type="button" data-bases-fmt="bullet" title="Convierte la línea del cursor en viñeta">
+                                    <i class="fa-solid fa-list-ul"></i> Viñeta
+                                </button>
+                                <button type="button" data-bases-fmt="bold" title="Resaltá un texto y tocá acá">
+                                    <i class="fa-solid fa-bold"></i> Negrita
+                                </button>
+                                <span class="bases-toolbar-hint">Se escribe como en Word: lo que ves acá es lo que ve el equipo.</span>
                             </div>
-                        </div>
 
-                        <!-- Category Selector Sub-tabs -->
-                        <div class="contest-cat-subtabs">
-                            <button type="button" class="contest-cat-pill active-cat-a" data-rank-cat="A">
-                                <i class="fa-solid fa-crown" style="color: #d95324;"></i> Categoría A (General)
-                            </button>
-                            <button type="button" class="contest-cat-pill" data-rank-cat="B" id="cat-pill-b">
-                                <i class="fa-solid fa-users" style="color: #4f46e5;"></i> Categoría B
-                                <span id="cat-b-status-badge" style="font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; background: #e2e8f0; color: #64748b;">Inactiva</span>
-                            </button>
-                            <button type="button" class="contest-cat-pill" data-rank-cat="C">
-                                <i class="fa-solid fa-store" style="color: #16a34a;"></i> Categoría C (Sucursales)
-                            </button>
-                        </div>
+                            <div id="contest-terms-editor" class="bases-editor" contenteditable="true" role="textbox"
+                                aria-multiline="true" aria-label="Texto de las bases"
+                                data-placeholder="Escribí acá las bases del concurso. Usá los botones de arriba para los subtítulos y las viñetas."></div>
 
-                        <!-- Table Headers -->
-                        <div class="ranking-table-header">
-                            <span>Pos.</span>
-                            <span>Nombre del Vendedor</span>
-                            <span>Sucursal</span>
-                            <span>Unidades</span>
-                            <span style="text-align: center;">Acción</span>
-                        </div>
-
-                        <!-- Ranking Category A Form Container -->
-                        <div id="ranking-category-a-section" class="ranking-cat-view">
-                            <form id="contest-ranking-a-form">
-                                <div id="ranking-a-container" style="display: flex; flex-direction: column;">
-                                    <!-- Dynamic rows for Category A -->
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- Ranking Category B Form Container -->
-                        <div id="ranking-category-b-section" class="ranking-cat-view" style="display: none;">
-                            <div id="cat-b-inactive-banner" style="display: none; background: #fffbeb; border: 1px solid #fef3c7; color: #b45309; padding: 12px 16px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 12px;">
-                                <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i>
-                                La Categoría B está deshabilitada en la configuración de botones. Podés activarla en la pestaña <strong>"3. Botones y Ganadores"</strong>.
-                            </div>
-                            <form id="contest-ranking-b-form">
-                                <div id="ranking-b-container" style="display: flex; flex-direction: column;">
-                                    <!-- Dynamic rows for Category B -->
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- Ranking Category C Form Container -->
-                        <div id="ranking-category-c-section" class="ranking-cat-view" style="display: none;">
-                            <form id="contest-ranking-c-form">
-                                <div id="ranking-c-container" style="display: flex; flex-direction: column;">
-                                    <!-- Dynamic rows for Category C -->
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="contest-card-actions-bar">
-                            <div style="color: var(--muted); font-size: 0.82rem;">
-                                <i class="fa-solid fa-circle-info" style="color: var(--brand);"></i> Los 3 primeros puestos reciben medalla dorada, plateada y de bronce.
-                            </div>
-                            <button type="button" id="save-all-rankings-btn" class="admin-btn btn-brand" style="padding: 10px 24px;">
-                                <i class="fa-solid fa-floppy-disk"></i> Guardar Todos los Rankings
-                            </button>
+                            <small class="contest-field-help" style="display: block; margin-top: 8px;">
+                                Si lo dejás vacío, la intranet sigue mostrando las bases escritas a mano en el código.
+                                Lo que pegues desde Word o desde un mail se acomoda solo a este formato.
+                            </small>
                         </div>
                     </div>
-                </div>
 
-                <!-- TAB 3: BOTONES Y GANADORES -->
-                <div id="contest-pane-winners" class="contest-tab-pane">
-                    <!-- Toggles Card -->
+                    <!-- Categorías que corren -->
                     <div class="panel-card">
-                        <h3><i class="fa-solid fa-toggle-on"></i> Visibilidad de Botones e Interruptores</h3>
+                        <h3><i class="fa-solid fa-layer-group"></i> Categorías que corren</h3>
                         <p style="margin: 4px 0 16px; color: var(--muted); font-size: 0.84rem;">
-                            Elegí qué botones y categorías estarán visibles para el equipo en la intranet.
+                            Definen qué tablas vas a cargar en <strong>2 · Mientras corre</strong> y qué ganadores vas a publicar
+                            en <strong>3 · Cerrar y premiar</strong>. Las que apagues desaparecen de las dos etapas.
                         </p>
 
-                        <!-- Main Buttons Toggles -->
                         <div class="contest-switches-grid">
-                            <!-- Toggle Ver Ranking -->
-                            <div class="contest-switch-card">
-                                <label for="show-ranking-btn" class="contest-switch-label">
-                                    <div class="contest-switch-icon" style="background: #fff7ed; color: #ea580c;">
-                                        <i class="fa-solid fa-ranking-star"></i>
-                                    </div>
-                                    <div class="contest-switch-text">
-                                        <strong>Botón "Ver Ranking"</strong>
-                                        <small>Muestra el botón para abrir el modal del Top 5</small>
-                                    </div>
-                                </label>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="show-ranking-btn" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-
-                            <!-- Toggle Ver Ganadores -->
-                            <div class="contest-switch-card">
-                                <label for="show-winners-btn" class="contest-switch-label">
-                                    <div class="contest-switch-icon" style="background: #f0fdf4; color: #16a34a;">
-                                        <i class="fa-solid fa-trophy"></i>
-                                    </div>
-                                    <div class="contest-switch-text">
-                                        <strong>Botón "Ver Ganadores"</strong>
-                                        <small>Habilita el botón del podio final al cerrar el concurso</small>
-                                    </div>
-                                </label>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="show-winners-btn">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Category Toggles -->
-                        <label style="display: block; margin: 16px 0 10px; font-weight: 700; font-size: 0.85rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em;">
-                            Categorías Activas en el Concurso
-                        </label>
-                        <div class="contest-switches-grid">
-                            <!-- Cat A -->
                             <div class="contest-switch-card" style="border-left: 4px solid #ea580c;">
                                 <label for="show-ranking-a" class="contest-switch-label">
                                     <div class="contest-switch-text">
-                                        <strong style="color: #ea580c;">Categoría A (General)</strong>
+                                        <strong style="color: #ea580c;">Ranking General</strong>
                                         <small>Salones, cajas rápidas y e-commerce</small>
                                     </div>
                                 </label>
@@ -3662,12 +3805,11 @@
                                 </label>
                             </div>
 
-                            <!-- Cat B -->
                             <div class="contest-switch-card" style="border-left: 4px solid #4f46e5;">
                                 <label for="show-ranking-b" class="contest-switch-label">
                                     <div class="contest-switch-text">
                                         <strong style="color: #4f46e5;">Categoría B</strong>
-                                        <small>Activar solo para concursos segmentados</small>
+                                        <small>Tabla extra, sólo para concursos segmentados</small>
                                     </div>
                                 </label>
                                 <label class="toggle-switch">
@@ -3676,12 +3818,11 @@
                                 </label>
                             </div>
 
-                            <!-- Cat C -->
                             <div class="contest-switch-card" style="border-left: 4px solid #16a34a;">
                                 <label for="show-ranking-c" class="contest-switch-label">
                                     <div class="contest-switch-text">
-                                        <strong style="color: #16a34a;">Categoría C (Sucursales)</strong>
-                                        <small>Ranking general de todas las sucursales</small>
+                                        <strong style="color: #16a34a;">Todas las Sucursales</strong>
+                                        <small>Ranking por sucursal, no por vendedor</small>
                                     </div>
                                 </label>
                                 <label class="toggle-switch">
@@ -3692,25 +3833,221 @@
                         </div>
                     </div>
 
-                    <!-- Podio de Ganadores Card -->
+                    <!-- Meta para activar el premio -->
                     <div class="panel-card">
-                        <h3><i class="fa-solid fa-crown"></i> Podio de Ganadores (Modal de Ganadores)</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 240px;">
+                                <h3 style="margin: 0;"><i class="fa-solid fa-bullseye"></i> Meta para activar el premio</h3>
+                                <p style="margin: 4px 0 0; color: var(--muted); font-size: 0.84rem;">
+                                    Algunos concursos exigen un mínimo de venta del equipo para que el premio se entregue.
+                                    Si prendés esto, el modal del ranking muestra cuánto falta. El acumulado se actualiza
+                                    en <strong>2 · Mientras corre</strong>.
+                                </p>
+                            </div>
+                            <label class="toggle-switch" style="margin-top: 6px;" title="Mostrar u ocultar la leyenda en la intranet">
+                                <input type="checkbox" id="show-goal-progress">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div id="contest-goal-setup-fields" class="goal-off" style="margin-top: 18px;">
+                            <div class="contest-grid-2col" style="margin-bottom: 0;">
+                                <div class="input-group" style="margin-bottom: 0;">
+                                    <label for="contest-goal-target">Meta total ($)</label>
+                                    <input type="number" id="contest-goal-target" min="0" step="1" placeholder="Ej: 25000">
+                                    <small>Monto que hay que alcanzar entre todos para activar el premio.</small>
+                                </div>
+                                <div class="input-group" style="margin-bottom: 0;">
+                                    <label for="contest-goal-title">Título de la leyenda</label>
+                                    <input type="text" id="contest-goal-title" placeholder="Ej: Mínimo de clasificación del equipo">
+                                    <small>Si lo dejás vacío se muestra “Meta para activar el premio”.</small>
+                                </div>
+                            </div>
+
+                            <div class="input-group" style="margin: 14px 0 0;">
+                                <label for="contest-goal-note">Aclaración (opcional)</label>
+                                <input type="text" id="contest-goal-note" placeholder="Ej: Entre todo el equipo (aprox. 30% de las ventas del negocio).">
+                                <small>Texto chico debajo de la barra de progreso.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════ ETAPA 2: MIENTRAS CORRE ═══════════ -->
+                <div id="contest-pane-live" class="contest-tab-pane">
+                    <p class="contest-step-hint">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Lo que se toca cada semana mientras el concurso está en marcha.
+                    </p>
+
+                    <!-- Visibilidad: un solo control -->
+                    <div class="panel-card">
+                        <h3><i class="fa-solid fa-eye"></i> ¿Qué ve el equipo?</h3>
+                        <p style="margin: 4px 0 14px; color: var(--muted); font-size: 0.84rem;">
+                            Es el único control que decide si el botón “Ver Ranking” aparece en la intranet.
+                        </p>
+                        <div class="contest-status-cards">
+                            <label id="rstatus-label-hidden" class="contest-status-card">
+                                <input type="radio" name="ranking-status" value="hidden" id="rstatus-hidden">
+                                <div class="status-title"><i class="fa-solid fa-eye-slash" style="color: #64748b;"></i> Oculto</div>
+                                <div class="status-desc">El botón no aparece</div>
+                            </label>
+                            <label id="rstatus-label-coming_soon" class="contest-status-card">
+                                <input type="radio" name="ranking-status" value="coming_soon" id="rstatus-coming_soon">
+                                <div class="status-title"><i class="fa-solid fa-clock" style="color: #d97706;"></i> Próximamente</div>
+                                <div class="status-desc">Botón gris, sin abrir</div>
+                            </label>
+                            <label id="rstatus-label-visible" class="contest-status-card selected">
+                                <input type="radio" name="ranking-status" value="visible" id="rstatus-visible">
+                                <div class="status-title"><i class="fa-solid fa-trophy" style="color: #16a34a;"></i> Visible</div>
+                                <div class="status-desc">Se abre el ranking</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Posiciones -->
+                    <div class="panel-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+                            <div>
+                                <h3 style="margin: 0;"><i class="fa-solid fa-ranking-star"></i> Posiciones</h3>
+                                <p style="margin: 4px 0 0; color: var(--muted); font-size: 0.84rem;">
+                                    Cargá los puestos de cada categoría activa. Los tres primeros reciben oro, plata y bronce.
+                                    Las filas que dejes sin nombre no se publican.
+                                </p>
+                            </div>
+                            <button type="button" id="ranking-add-person-btn" class="admin-btn btn-neutral" style="padding: 8px 16px; font-size: 0.85rem; border-radius: 8px;">
+                                <i class="fa-solid fa-plus"></i> Agregar fila
+                            </button>
+                        </div>
+
+                        <div id="ranking-body">
+                            <div class="contest-cat-subtabs">
+                                <button type="button" class="contest-cat-pill active-cat-a" data-rank-cat="A">
+                                    <i class="fa-solid fa-crown" style="color: #d95324;"></i> Ranking General
+                                </button>
+                                <button type="button" class="contest-cat-pill" data-rank-cat="B">
+                                    <i class="fa-solid fa-users" style="color: #4f46e5;"></i> Categoría B
+                                </button>
+                                <button type="button" class="contest-cat-pill" data-rank-cat="C">
+                                    <i class="fa-solid fa-store" style="color: #16a34a;"></i> Todas las Sucursales
+                                </button>
+                            </div>
+
+                            <div class="ranking-table-header">
+                                <span>Pos.</span>
+                                <span>Nombre del Vendedor</span>
+                                <span>Sucursal</span>
+                                <span>Unidades</span>
+                                <span style="text-align: center;">Acción</span>
+                            </div>
+
+                            <div id="ranking-category-a-section" class="ranking-cat-view">
+                                <div id="ranking-a-container" style="display: flex; flex-direction: column;"></div>
+                            </div>
+                            <div id="ranking-category-b-section" class="ranking-cat-view" style="display: none;">
+                                <div id="ranking-b-container" style="display: flex; flex-direction: column;"></div>
+                            </div>
+                            <div id="ranking-category-c-section" class="ranking-cat-view" style="display: none;">
+                                <div id="ranking-c-container" style="display: flex; flex-direction: column;"></div>
+                            </div>
+                        </div>
+
+                        <div class="contest-inactive-note" id="ranking-no-cat-note" style="display: none;">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            No hay ninguna categoría activa. Prendé al menos una en <strong>1 · Armar el concurso</strong>.
+                        </div>
+                    </div>
+
+                    <!-- Avance de la meta -->
+                    <div class="panel-card">
+                        <h3><i class="fa-solid fa-bullseye"></i> Avance de la meta</h3>
+
+                        <div id="goal-live-on" style="display: none;">
+                            <div class="input-group" style="max-width: 320px; margin: 14px 0 18px;">
+                                <label for="contest-goal-current">Acumulado hasta ahora ($)</label>
+                                <input type="number" id="contest-goal-current" min="0" step="1" placeholder="Ej: 9930">
+                                <small>Actualizalo junto con las posiciones.</small>
+                            </div>
+
+                            <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.8rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em;">
+                                Así lo ve el equipo
+                            </label>
+                            <div class="goal-admin-preview" id="goal-admin-preview">
+                                <div class="gp-top">
+                                    <div class="gp-title">
+                                        <i class="fa-solid fa-bullseye"></i>
+                                        <span id="gp-title-text">Meta para activar el premio</span>
+                                    </div>
+                                    <span class="gp-pct" id="gp-pct">0%</span>
+                                </div>
+                                <div class="gp-track">
+                                    <div class="gp-fill" id="gp-fill"></div>
+                                </div>
+                                <div class="gp-numbers">
+                                    <span>Acumulado: <strong id="gp-current">$0</strong></span>
+                                    <span>Meta: <strong id="gp-target">$0</strong></span>
+                                </div>
+                                <div class="gp-remaining" id="gp-remaining"></div>
+                                <p class="gp-note" id="gp-note" style="display: none;"></p>
+                            </div>
+                        </div>
+
+                        <div class="contest-inactive-note" id="goal-live-off" style="margin-top: 14px;">
+                            <i class="fa-solid fa-circle-minus"></i>
+                            Este concurso no usa meta. Se prende en <strong>1 · Armar el concurso</strong>.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════ ETAPA 3: CERRAR Y PREMIAR ═══════════ -->
+                <div id="contest-pane-close" class="contest-tab-pane">
+                    <p class="contest-step-hint">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Cuando el concurso termina: se carga el podio y recién ahí se publica.
+                    </p>
+
+                    <div class="panel-card">
+                        <h3><i class="fa-solid fa-trophy"></i> Publicar ganadores</h3>
+                        <p style="margin: 4px 0 16px; color: var(--muted); font-size: 0.84rem;">
+                            Mientras esté apagado, el botón “Ver Ganadores” no existe para el equipo.
+                            Prendelo cuando el podio de abajo esté completo.
+                        </p>
+                        <div class="contest-switches-grid">
+                            <div class="contest-switch-card">
+                                <label for="show-winners-btn" class="contest-switch-label">
+                                    <div class="contest-switch-icon" style="background: #f0fdf4; color: #16a34a;">
+                                        <i class="fa-solid fa-trophy"></i>
+                                    </div>
+                                    <div class="contest-switch-text">
+                                        <strong>Botón “Ver Ganadores”</strong>
+                                        <small>Abre el podio con lluvia de confeti</small>
+                                    </div>
+                                </label>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="show-winners-btn">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-card">
+                        <h3><i class="fa-solid fa-crown"></i> Podio</h3>
                         <p style="margin: 4px 0 12px; color: var(--muted); font-size: 0.84rem;">
-                            Datos que se mostrarán con lluvia de confeti cuando los usuarios hagan clic en "Ver Ganadores".
+                            Sólo aparecen las categorías que activaste en <strong>1 · Armar el concurso</strong>.
                         </p>
 
                         <div class="contest-winner-grid">
-                            <!-- Winner A -->
                             <div class="contest-winner-card winner-card-a" id="winner-card-a-box">
                                 <div class="contest-winner-header">
                                     <div class="winner-trophy-icon"><i class="fa-solid fa-trophy"></i></div>
                                     <div>
-                                        <h5>GANADOR CATEGORÍA A</h5>
-                                        <small style="color: #3b82f6;">Ganador General</small>
+                                        <h5>RANKING GENERAL</h5>
+                                        <small style="color: #3b82f6;">Salones, cajas y e-commerce</small>
                                     </div>
                                 </div>
                                 <div class="input-group" style="margin-bottom: 10px;">
-                                    <label for="winner-a-name" style="font-size: 0.82rem;">Nombre del Ganador</label>
+                                    <label for="winner-a-name" style="font-size: 0.82rem;">Nombre del ganador</label>
                                     <input type="text" id="winner-a-name" placeholder="Ej: Juan Pérez">
                                 </div>
                                 <div class="input-group" style="margin-bottom: 10px;">
@@ -3723,45 +4060,43 @@
                                 </div>
                             </div>
 
-                            <!-- Winner B (dynamically adapts when Cat B is active) -->
                             <div class="contest-winner-card winner-card-b" id="winner-card-b-box">
                                 <div class="contest-winner-header">
                                     <div class="winner-trophy-icon"><i class="fa-solid fa-medal"></i></div>
                                     <div>
-                                        <h5>GANADOR CATEGORÍA B</h5>
-                                        <small id="winner-b-badge-text" style="color: #db2777;">Inactivo / No utilizado</small>
+                                        <h5>CATEGORÍA B</h5>
+                                        <small style="color: #4f46e5;">Tabla segmentada</small>
                                     </div>
                                 </div>
                                 <div class="input-group" style="margin-bottom: 10px;">
-                                    <label for="winner-b-name" style="font-size: 0.82rem;">Nombre del Ganador</label>
-                                    <input type="text" id="winner-b-name" placeholder="Ej: María López" value="-">
+                                    <label for="winner-b-name" style="font-size: 0.82rem;">Nombre del ganador</label>
+                                    <input type="text" id="winner-b-name" placeholder="Ej: María López">
                                 </div>
                                 <div class="input-group" style="margin-bottom: 10px;">
                                     <label for="winner-b-branch" style="font-size: 0.82rem;">Sucursal</label>
-                                    <input type="text" id="winner-b-branch" placeholder="Ej: Famailla" value="-">
+                                    <input type="text" id="winner-b-branch" placeholder="Ej: Famaillá">
                                 </div>
                                 <div class="input-group" style="margin-bottom: 0;">
                                     <label for="winner-b-score" style="font-size: 0.82rem;">Unidades / Puntos</label>
-                                    <input type="number" id="winner-b-score" placeholder="Ej: 198" value="0">
+                                    <input type="number" id="winner-b-score" placeholder="Ej: 198">
                                 </div>
                             </div>
 
-                            <!-- Winner C -->
                             <div class="contest-winner-card winner-card-c" id="winner-card-c-box">
                                 <div class="contest-winner-header">
                                     <div class="winner-trophy-icon"><i class="fa-solid fa-award"></i></div>
                                     <div>
-                                        <h5>GANADOR CATEGORÍA C</h5>
-                                        <small style="color: #16a34a;">Todas las Sucursales</small>
+                                        <h5>TODAS LAS SUCURSALES</h5>
+                                        <small style="color: #16a34a;">Sucursal ganadora</small>
                                     </div>
                                 </div>
                                 <div class="input-group" style="margin-bottom: 10px;">
-                                    <label for="winner-c-name" style="font-size: 0.82rem;">Nombre del Ganador</label>
-                                    <input type="text" id="winner-c-name" placeholder="Ej: Carlos Gómez">
+                                    <label for="winner-c-name" style="font-size: 0.82rem;">Nombre de la sucursal</label>
+                                    <input type="text" id="winner-c-name" placeholder="Ej: Yerba Buena">
                                 </div>
                                 <div class="input-group" style="margin-bottom: 10px;">
-                                    <label for="winner-c-branch" style="font-size: 0.82rem;">Sucursal</label>
-                                    <input type="text" id="winner-c-branch" placeholder="Ej: Yerba Buena">
+                                    <label for="winner-c-branch" style="font-size: 0.82rem;">Detalle</label>
+                                    <input type="text" id="winner-c-branch" placeholder="Ej: Zona Norte">
                                 </div>
                                 <div class="input-group" style="margin-bottom: 0;">
                                     <label for="winner-c-score" style="font-size: 0.82rem;">Unidades / Puntos</label>
@@ -3770,15 +4105,14 @@
                             </div>
                         </div>
 
-                        <div class="contest-card-actions-bar">
-                            <button id="save-buttons-config-btn" class="admin-btn btn-brand" style="padding: 10px 24px;">
-                                <i class="fa-solid fa-check"></i> Guardar Botones y Ganadores
-                            </button>
+                        <div class="contest-inactive-note" id="winners-no-cat-note" style="display: none;">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            No hay ninguna categoría activa. Prendé al menos una en <strong>1 · Armar el concurso</strong>.
                         </div>
                     </div>
                 </div>
 
-                <!-- LIVE PREVIEW MODAL -->
+                <!-- VISTA PREVIA DE LA TARJETA DE INTRANET -->
                 <div id="contest-preview-modal" class="modal-overlay">
                     <div class="modal-content" style="max-width: 680px; padding: 0; overflow: hidden; border-radius: 18px;">
                         <div class="modal-header" style="padding: 16px 22px; margin: 0; background: #fafbfd;">
@@ -3788,8 +4122,7 @@
                             </div>
                             <button class="close-modal" onclick="closeModal('contest-preview-modal')">&times;</button>
                         </div>
-                        
-                        <!-- Simulated Intranet Slide Preview -->
+
                         <div style="padding: 30px 24px; background: #ffffff; text-align: center;">
                             <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 18px; min-height: 140px;">
                                 <img id="preview-modal-prize-img" src="" alt="Premio" style="max-height: 140px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.12));">
@@ -7053,212 +7386,629 @@
             });
         };
 
-        // --- CONTEST CONFIG LOGIC ---
+        /* ══════════════════════════════════════════════════════════════════
+           CONFIGURAR CONCURSO
+           La sección sigue el ciclo real del concurso: 1 armar, 2 mientras
+           corre, 3 cerrar y premiar. Un solo botón guarda todo el documento
+           `config/contest_config`, así nadie tiene que adivinar qué botón
+           corresponde a qué pestaña.
+           ══════════════════════════════════════════════════════════════════ */
         let currentRankCategory = 'A';
 
+        const goalMoneyFmt = new Intl.NumberFormat('es-AR', {
+            style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 0
+        });
+
+        // --- Helpers de lectura del formulario ---
+        function contestVal(id) {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        }
+
+        function contestNum(id) {
+            const el = document.getElementById(id);
+            return el ? (parseFloat(el.value) || 0) : 0;
+        }
+
+        function contestChecked(id) {
+            const el = document.getElementById(id);
+            return el ? el.checked : false;
+        }
+
+        function contestCatEnabled(cat) {
+            return contestChecked('show-ranking-' + cat.toLowerCase());
+        }
+
+        function contestRankingStatus() {
+            const radio = document.querySelector('input[name="ranking-status"]:checked');
+            return radio ? radio.value : 'visible';
+        }
+
+        // --- Aviso de cambios sin guardar ---
+        function markContestDirty() {
+            const flag = document.getElementById('contest-dirty-flag');
+            if (flag) flag.style.display = '';
+        }
+
+        function clearContestDirty() {
+            const flag = document.getElementById('contest-dirty-flag');
+            if (flag) flag.style.display = 'none';
+        }
+
+        function contestHasUnsavedChanges() {
+            const flag = document.getElementById('contest-dirty-flag');
+            return !!flag && flag.style.display !== 'none';
+        }
+
+        // --- Píldora de estado: refleja el concurso completo, no un solo campo ---
+        function updateContestStatusPill() {
+            const pill = document.getElementById('contest-header-status-pill');
+            const text = document.getElementById('contest-header-status-text');
+            if (!pill || !text) return;
+
+            const dateEl = document.getElementById('contest-countdown-date');
+            const ended = dateEl && dateEl.value && new Date(dateEl.value).getTime() <= Date.now();
+            const status = contestRankingStatus();
+
+            let cls = 'status-visible';
+            let label = 'En curso · ranking visible';
+
+            if (contestChecked('show-winners-btn')) {
+                cls = 'status-visible';
+                label = 'Cerrado · ganadores publicados';
+            } else if (ended) {
+                cls = 'status-coming_soon';
+                label = 'Finalizado · falta publicar ganadores';
+            } else if (status === 'hidden') {
+                cls = 'status-hidden';
+                label = 'En curso · ranking oculto';
+            } else if (status === 'coming_soon') {
+                cls = 'status-coming_soon';
+                label = 'En curso · ranking próximamente';
+            }
+
+            pill.className = 'contest-status-pill ' + cls;
+            text.textContent = label;
+        }
+
+        function updateRankingStatusCards() {
+            const val = contestRankingStatus();
+            ['hidden', 'coming_soon', 'visible'].forEach(v => {
+                const lbl = document.getElementById('rstatus-label-' + v);
+                if (lbl) lbl.classList.toggle('selected', v === val);
+            });
+            updateContestStatusPill();
+        }
+
+        // --- Subpestañas de categorías (sólo las activas) ---
+        function switchRankCategory(cat) {
+            currentRankCategory = cat;
+            document.querySelectorAll('.contest-cat-pill[data-rank-cat]').forEach(pill => {
+                pill.classList.remove('active-cat-a', 'active-cat-b', 'active-cat-c');
+                if (pill.dataset.rankCat === cat) pill.classList.add('active-cat-' + cat.toLowerCase());
+            });
+            ['A', 'B', 'C'].forEach(c => {
+                const view = document.getElementById('ranking-category-' + c.toLowerCase() + '-section');
+                if (view) view.style.display = (c === cat) ? 'block' : 'none';
+            });
+        }
+
+        function updateActiveCategoriesUI() {
+            let firstActive = null;
+
+            ['A', 'B', 'C'].forEach(cat => {
+                const on = contestCatEnabled(cat);
+                if (on && !firstActive) firstActive = cat;
+
+                const pill = document.querySelector('.contest-cat-pill[data-rank-cat="' + cat + '"]');
+                if (pill) pill.style.display = on ? '' : 'none';
+
+                const winnerCard = document.getElementById('winner-card-' + cat.toLowerCase() + '-box');
+                if (winnerCard) winnerCard.style.display = on ? '' : 'none';
+            });
+
+            const body = document.getElementById('ranking-body');
+            if (body) body.style.display = firstActive ? '' : 'none';
+
+            const rankNote = document.getElementById('ranking-no-cat-note');
+            if (rankNote) rankNote.style.display = firstActive ? 'none' : '';
+
+            const winnersNote = document.getElementById('winners-no-cat-note');
+            if (winnersNote) winnersNote.style.display = firstActive ? 'none' : '';
+
+            if (firstActive) {
+                switchRankCategory(contestCatEnabled(currentRankCategory) ? currentRankCategory : firstActive);
+            }
+        }
+
+        // --- Meta para activar el premio ---
+        function updateGoalPreview() {
+            const box = document.getElementById('goal-admin-preview');
+            if (!box) return;
+
+            const target = contestNum('contest-goal-target');
+            const current = contestNum('contest-goal-current');
+            const pct = target > 0 ? Math.max(0, Math.min(100, (current / target) * 100)) : 0;
+            const remaining = Math.max(0, target - current);
+            const done = target > 0 && remaining <= 0;
+
+            box.classList.toggle('gp-done', done);
+            document.getElementById('gp-title-text').textContent = contestVal('contest-goal-title') || 'Meta para activar el premio';
+            document.getElementById('gp-pct').textContent = pct.toLocaleString('es-AR', { maximumFractionDigits: 1 }) + '%';
+            document.getElementById('gp-fill').style.width = pct + '%';
+            document.getElementById('gp-current').textContent = goalMoneyFmt.format(current);
+            document.getElementById('gp-target').textContent = goalMoneyFmt.format(target);
+
+            const rem = document.getElementById('gp-remaining');
+            if (target <= 0) {
+                rem.innerHTML = '<span style="color: #b45309;">Cargá la meta total en <strong>1 · Armar el concurso</strong>.</span>';
+            } else if (done) {
+                rem.innerHTML = '¡Meta alcanzada! El premio ya está activado 🎉';
+            } else {
+                rem.innerHTML = 'Faltan <strong>' + goalMoneyFmt.format(remaining) + '</strong> para activar el premio';
+            }
+
+            const note = document.getElementById('gp-note');
+            const noteTxt = contestVal('contest-goal-note');
+            if (noteTxt) {
+                note.textContent = noteTxt;
+                note.style.display = '';
+            } else {
+                note.style.display = 'none';
+            }
+        }
+
+        function updateGoalUI() {
+            const enabled = contestChecked('show-goal-progress');
+
+            const setupFields = document.getElementById('contest-goal-setup-fields');
+            if (setupFields) setupFields.classList.toggle('goal-off', !enabled);
+
+            const liveOn = document.getElementById('goal-live-on');
+            const liveOff = document.getElementById('goal-live-off');
+            if (liveOn) liveOn.style.display = enabled ? '' : 'none';
+            if (liveOff) liveOff.style.display = enabled ? 'none' : '';
+
+            updateGoalPreview();
+        }
+
+        /* --- Bases y condiciones: barra de formato, vista previa y rescate del HTML viejo ---
+           `basesFormatText` es la copia admin de `formatBasesText` de panel-corporativo.html.
+           Si tocás una, tocá la otra: son las dos mitades del mismo formato. */
+        function basesEscapeHtml(t) {
+            return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function basesFormatText(txt) {
+            const inline = (t) => basesEscapeHtml(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            const lines = String(txt).replace(/\r\n/g, '\n').split('\n');
+            let html = '';
+            let items = [];
+
+            const flush = () => {
+                if (items.length) {
+                    html += '<ul>' + items.join('') + '</ul>';
+                    items = [];
+                }
+            };
+
+            lines.forEach((raw) => {
+                const line = raw.trim();
+                if (!line) { flush(); return; }
+                if (/^#{1,6}\s+/.test(line)) {
+                    flush();
+                    html += '<h5>' + inline(line.replace(/^#{1,6}\s+/, '')) + '</h5>';
+                } else if (/^[-•*]\s+/.test(line)) {
+                    items.push('<li>' + inline(line.replace(/^[-•*]\s+/, '')) + '</li>');
+                } else {
+                    flush();
+                    html += '<p>' + inline(line) + '</p>';
+                }
+            });
+
+            flush();
+            return html;
+        }
+
+        // El editor guarda HTML mientras se escribe, pero a Firestore siempre va el
+        // texto plano: cualquier cosa rara que meta el navegador o un pegado de Word
+        // se normaliza acá y nunca sale del panel.
+        function getBasesText() {
+            const editor = document.getElementById('contest-terms-editor');
+            return editor ? basesHtmlToText(editor.innerHTML) : '';
+        }
+
+        function setBasesEditorContent(plainText) {
+            const editor = document.getElementById('contest-terms-editor');
+            if (!editor) return;
+            const txt = String(plainText || '').trim();
+            editor.innerHTML = txt ? basesFormatText(txt) : '';
+        }
+
+        // Devuelve el bloque (subtítulo, párrafo o viñeta) donde está el cursor.
+        function currentBasesBlock() {
+            const editor = document.getElementById('contest-terms-editor');
+            const sel = window.getSelection ? window.getSelection() : null;
+            if (!editor || !sel || sel.rangeCount === 0) return null;
+
+            let node = sel.getRangeAt(0).startContainer;
+            if (node && node.nodeType === 3) node = node.parentNode;
+            while (node && node !== editor && !/^(h[1-6]|p|div|li)$/i.test(node.tagName || '')) {
+                node = node.parentNode;
+            }
+            return (!node || node === editor) ? null : node;
+        }
+
+        function applyBasesFormat(kind) {
+            const editor = document.getElementById('contest-terms-editor');
+            if (!editor) return;
+            editor.focus();
+
+            if (kind === 'bold') {
+                document.execCommand('bold');
+            } else if (kind === 'bullet') {
+                document.execCommand('insertUnorderedList');
+            } else if (kind === 'heading') {
+                // Si la línea ya es subtítulo, el mismo botón la devuelve a texto normal.
+                const block = currentBasesBlock();
+                const isHeading = !!block && /^h[1-6]$/i.test(block.tagName);
+                document.execCommand('formatBlock', false, isHeading ? '<p>' : '<h5>');
+            }
+
+            markContestDirty();
+        }
+
+        // Todo lo que se pega entra por el mismo embudo: texto, HTML de Word o las
+        // bases del mes pasado terminan con el mismo formato que el resto.
+        function handleBasesPaste(e) {
+            const cb = e.clipboardData || window.clipboardData;
+            if (!cb) return;
+            e.preventDefault();
+
+            const asHtml = cb.getData('text/html');
+            const asText = cb.getData('text/plain') || '';
+            const normalized = asHtml ? basesHtmlToText(asHtml) : asText;
+
+            document.execCommand('insertHTML', false, basesFormatText(normalized));
+            markContestDirty();
+        }
+
+        function basesLooksLikeHtml(txt) {
+            return /<\/?(h[1-6]|p|ul|ol|li|strong|b|em|br|div|span)\b[^>]*>/i.test(String(txt));
+        }
+
+        // Rescata las bases que quedaron guardadas como HTML crudo y las devuelve
+        // en el formato de texto que entiende el editor.
+        function basesHtmlToText(html) {
+            const squash = (t) => t.replace(/\s+/g, ' ').trim();
+
+            const inlineToPlain = (node) => {
+                let out = '';
+                node.childNodes.forEach(n => {
+                    if (n.nodeType === 3) {
+                        out += n.textContent;
+                        return;
+                    }
+                    if (n.nodeType !== 1) return;
+
+                    const tag = n.tagName.toLowerCase();
+                    if (tag === 'br') {
+                        out += '\n';
+                        return;
+                    }
+
+                    const inner = inlineToPlain(n);
+                    if (tag === 'strong' || tag === 'b') {
+                        // Los espacios de los costados quedan fuera de los asteriscos:
+                        // si no, "**1 mes**." termina siendo "**1 mes** .".
+                        const m = inner.match(/^(\s*)([\s\S]*?)(\s*)$/);
+                        out += m[2] ? m[1] + '**' + m[2] + '**' + m[3] : inner;
+                    } else {
+                        out += inner;
+                    }
+                });
+                return out;
+            };
+
+            const hasBlockChild = (el) => Array.from(el.children)
+                .some(c => /^(h[1-6]|p|div|ul|ol|li|section|blockquote|table|tr)$/.test(c.tagName.toLowerCase()));
+
+            const root = new DOMParser()
+                .parseFromString('<div id="bases-root">' + html + '</div>', 'text/html')
+                .getElementById('bases-root');
+
+            const BLOCK = /^(h[1-6]|p|div|ul|ol|li|section|blockquote|table|tr)$/;
+            const out = [];
+            let buffer = '';
+
+            const pushText = (raw) => {
+                String(raw).split('\n').forEach(part => {
+                    const t = squash(part);
+                    if (t) out.push(t);
+                });
+            };
+
+            const flush = () => {
+                pushText(buffer);
+                buffer = '';
+            };
+
+            const walk = (el) => {
+                el.childNodes.forEach(node => {
+                    if (node.nodeType === 3) {
+                        buffer += node.textContent;
+                        return;
+                    }
+                    if (node.nodeType !== 1) return;
+
+                    const tag = node.tagName.toLowerCase();
+
+                    // Lo que no es bloque se acumula: así "texto <strong>negrita</strong> más"
+                    // sigue siendo una sola línea y no tres.
+                    if (!BLOCK.test(tag)) {
+                        buffer += inlineToPlain(node);
+                        return;
+                    }
+
+                    flush();
+                    if (/^h[1-6]$/.test(tag)) {
+                        out.push('');
+                        out.push('## ' + squash(inlineToPlain(node)));
+                    } else if (tag === 'li') {
+                        out.push('- ' + squash(inlineToPlain(node)));
+                    } else if (hasBlockChild(node)) {
+                        walk(node);
+                    } else {
+                        pushText(inlineToPlain(node));
+                    }
+                });
+                flush();
+            };
+            walk(root);
+
+            return out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+        }
+
+        // --- Countdown ---
+        function updateCountdownPreviewText() {
+            const input = document.getElementById('contest-countdown-date');
+            const out = document.getElementById('contest-countdown-preview-text');
+            if (!input || !out) return;
+
+            if (!input.value) {
+                out.textContent = 'Seleccioná fecha y hora de cierre';
+                return;
+            }
+
+            const diff = new Date(input.value).getTime() - Date.now();
+            if (diff <= 0) {
+                out.innerHTML = '<span style="color: #dc2626;"><i class="fa-solid fa-flag-checkered"></i> El concurso ya finalizó.</span>';
+            } else {
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                out.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> Faltan <strong>' + d + ' días, ' + h + ' hs y ' + m + ' min</strong>';
+            }
+            updateContestStatusPill();
+        }
+
+        // --- Imagen del premio ---
+        function updatePrizeImagePreview() {
+            const url = contestVal('contest-prize-image-url');
+            const wrap = document.getElementById('contest-prize-preview');
+            const img = document.getElementById('contest-prize-img-preview');
+            const placeholder = document.getElementById('contest-prize-placeholder');
+            if (!wrap || !img) return;
+
+            if (!url) {
+                wrap.style.display = 'none';
+                if (placeholder) placeholder.style.display = 'block';
+                return;
+            }
+
+            img.onload = () => {
+                wrap.style.display = 'block';
+                if (placeholder) placeholder.style.display = 'none';
+            };
+            img.onerror = () => {
+                wrap.style.display = 'none';
+                if (placeholder) placeholder.style.display = 'block';
+            };
+            img.src = url;
+        }
+
+        // --- Lectura de las filas del ranking ---
+        function getDynamicRanking(categoryId) {
+            const container = document.getElementById('ranking-' + categoryId.toLowerCase() + '-container');
+            if (!container) return [];
+            const ranking = [];
+            container.querySelectorAll('.contest-rank-row').forEach(row => {
+                const name = row.querySelector('.rank-name') ? row.querySelector('.rank-name').value.trim() : '';
+                const branch = row.querySelector('.rank-branch') ? row.querySelector('.rank-branch').value.trim() : '';
+                const units = row.querySelector('.rank-units') ? (parseInt(row.querySelector('.rank-units').value) || 0) : 0;
+                // Las filas en blanco no se publican: antes viajaban a Firestore y
+                // la intranet las dibujaba como puestos con guion y 0 unidades.
+                if (!name) return;
+                ranking.push({ name, branch, units });
+            });
+            return ranking;
+        }
+
+        // --- Documento completo: un solo guardado para toda la sección ---
+        function buildContestPayload() {
+            const status = contestRankingStatus();
+            return {
+                // 1 · Armar
+                contestName: contestVal('contest-name'),
+                contestDescription: contestVal('contest-description'),
+                termsContent: getBasesText(),
+                prizeImageUrl: contestVal('contest-prize-image-url'),
+                countdownDate: contestVal('contest-countdown-date'),
+                showRankingA: contestChecked('show-ranking-a'),
+                showRankingB: contestChecked('show-ranking-b'),
+                showRankingC: contestChecked('show-ranking-c'),
+                showGoalProgress: contestChecked('show-goal-progress'),
+                goalTitle: contestVal('contest-goal-title'),
+                goalNote: contestVal('contest-goal-note'),
+                goalTarget: contestNum('contest-goal-target'),
+
+                // 2 · Mientras corre
+                rankingStatus: status,
+                // La intranet mira este campo además del estado: lo derivamos para
+                // que no puedan contradecirse como pasaba con el toggle separado.
+                showRankingButton: status !== 'hidden',
+                rankingA: getDynamicRanking('A'),
+                rankingB: getDynamicRanking('B'),
+                rankingC: getDynamicRanking('C'),
+                goalCurrent: contestNum('contest-goal-current'),
+
+                // 3 · Cerrar y premiar
+                showWinnersButton: contestChecked('show-winners-btn'),
+                winnerAName: contestVal('winner-a-name'),
+                winnerABranch: contestVal('winner-a-branch'),
+                winnerAScore: contestVal('winner-a-score'),
+                winnerBName: contestVal('winner-b-name'),
+                winnerBBranch: contestVal('winner-b-branch'),
+                winnerBScore: contestVal('winner-b-score'),
+                winnerCName: contestVal('winner-c-name'),
+                winnerCBranch: contestVal('winner-c-branch'),
+                winnerCScore: contestVal('winner-c-score')
+            };
+        }
+
+        async function saveContestConfig(btn) {
+            const payload = buildContestPayload();
+
+            if (!payload.showRankingA && !payload.showRankingB && !payload.showRankingC) {
+                toast('Activá al menos una categoría en "1 · Armar el concurso".', 'error');
+                return;
+            }
+            if (payload.showGoalProgress && payload.goalTarget <= 0) {
+                toast('Cargá la meta total en pesos o apagá la meta en "1 · Armar el concurso".', 'error');
+                return;
+            }
+
+            const original = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+            try {
+                await db.collection('config').doc('contest_config').set(payload, { merge: true });
+                clearContestDirty();
+                toast('Concurso guardado. Así lo ve el equipo en la intranet.', 'success');
+            } catch (err) {
+                console.error(err);
+                toast('Error al guardar el concurso.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = original;
+            }
+        }
+
         function initContestConfig() {
-            // 1. Navigation Tabs
+            // Etapas
             const tabButtons = document.querySelectorAll('.contest-tab-btn[data-contest-tab]');
             const tabPanes = document.querySelectorAll('.contest-tab-pane');
-
             tabButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const target = btn.dataset.contestTab;
                     tabButtons.forEach(b => b.classList.remove('active'));
                     tabPanes.forEach(p => p.classList.remove('active'));
-
                     btn.classList.add('active');
-                    const activePane = document.getElementById(`contest-pane-${target}`);
-                    if (activePane) activePane.classList.add('active');
+                    const pane = document.getElementById('contest-pane-' + btn.dataset.contestTab);
+                    if (pane) pane.classList.add('active');
                 });
             });
 
-            // 2. Rankings Category Sub-tabs
-            const catPills = document.querySelectorAll('.contest-cat-pill[data-rank-cat]');
-            const catViews = {
-                'A': document.getElementById('ranking-category-a-section'),
-                'B': document.getElementById('ranking-category-b-section'),
-                'C': document.getElementById('ranking-category-c-section')
-            };
-
-            function switchRankCategory(cat) {
-                currentRankCategory = cat;
-                catPills.forEach(pill => {
-                    pill.classList.remove('active-cat-a', 'active-cat-b', 'active-cat-c');
-                    if (pill.dataset.rankCat === cat) {
-                        pill.classList.add(`active-cat-${cat.toLowerCase()}`);
-                    }
-                });
-
-                Object.keys(catViews).forEach(c => {
-                    if (catViews[c]) catViews[c].style.display = (c === cat) ? 'block' : 'none';
-                });
-            }
-
-            catPills.forEach(pill => {
+            // Subpestañas de categorías
+            document.querySelectorAll('.contest-cat-pill[data-rank-cat]').forEach(pill => {
                 pill.addEventListener('click', () => switchRankCategory(pill.dataset.rankCat));
             });
 
-            // Add Person Button
+            // Agregar fila al ranking abierto
             const addPersonBtn = document.getElementById('ranking-add-person-btn');
             if (addPersonBtn) {
                 addPersonBtn.addEventListener('click', () => {
                     window.addRankingRow(currentRankCategory);
+                    markContestDirty();
                 });
             }
 
-            // 3. Prize Image Preview & Fallback
+            // Vistas previas en vivo
             const prizeUrlInput = document.getElementById('contest-prize-image-url');
-            const previewDiv = document.getElementById('contest-prize-preview');
-            const previewImg = document.getElementById('contest-prize-img-preview');
-            const previewPlaceholder = document.getElementById('contest-prize-placeholder');
+            if (prizeUrlInput) prizeUrlInput.addEventListener('input', updatePrizeImagePreview);
 
-            function updatePrizeImagePreview(url) {
-                if (url) {
-                    previewImg.onload = () => {
-                        previewDiv.style.display = 'block';
-                        if (previewPlaceholder) previewPlaceholder.style.display = 'none';
-                    };
-                    previewImg.onerror = () => {
-                        previewDiv.style.display = 'none';
-                        if (previewPlaceholder) previewPlaceholder.style.display = 'block';
-                    };
-                    previewImg.src = url;
-                } else {
-                    previewDiv.style.display = 'none';
-                    if (previewPlaceholder) previewPlaceholder.style.display = 'block';
-                }
+            const countdownInput = document.getElementById('contest-countdown-date');
+            if (countdownInput) {
+                countdownInput.addEventListener('input', updateCountdownPreviewText);
+                countdownInput.addEventListener('change', updateCountdownPreviewText);
             }
 
-            if (prizeUrlInput) {
-                prizeUrlInput.addEventListener('input', () => updatePrizeImagePreview(prizeUrlInput.value.trim()));
-            }
-
-            // 4. Real-time Countdown preview
-            const countdownDateInput = document.getElementById('contest-countdown-date');
-            const countdownPreviewText = document.getElementById('contest-countdown-preview-text');
-
-            function updateCountdownPreviewText() {
-                if (!countdownDateInput || !countdownPreviewText) return;
-                const val = countdownDateInput.value;
-                if (!val) {
-                    countdownPreviewText.textContent = 'Seleccioná fecha y hora de cierre';
-                    return;
-                }
-                const target = new Date(val).getTime();
-                const now = Date.now();
-                const diff = target - now;
-                if (diff <= 0) {
-                    countdownPreviewText.innerHTML = '<span style="color: #dc2626;"><i class="fa-solid fa-flag-checkered"></i> El concurso ya finalizó o finaliza ahora.</span>';
-                } else {
-                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    countdownPreviewText.innerHTML = `<i class="fa-solid fa-hourglass-half"></i> Tiempo restante aproximado: <strong>${days} días, ${hours} hs y ${mins} min</strong>`;
-                }
-            }
-
-            if (countdownDateInput) {
-                countdownDateInput.addEventListener('input', updateCountdownPreviewText);
-                countdownDateInput.addEventListener('change', updateCountdownPreviewText);
-            }
-
-            // 5. Ranking Visibility Radio Cards
-            const rankingStatusRadios = document.querySelectorAll('input[name="ranking-status"]');
-            function updateRankingStatusUI(val) {
-                ['hidden', 'coming_soon', 'visible'].forEach(v => {
-                    const lbl = document.getElementById(`rstatus-label-${v}`);
-                    if (lbl) {
-                        if (v === val) {
-                            lbl.classList.add('selected');
-                        } else {
-                            lbl.classList.remove('selected');
-                        }
-                    }
-                });
-
-                // Update Header Status Pill
-                const pill = document.getElementById('contest-header-status-pill');
-                const text = document.getElementById('contest-header-status-text');
-                if (pill && text) {
-                    pill.className = `contest-status-pill status-${val}`;
-                    if (val === 'visible') text.textContent = 'Visible (Top 5)';
-                    else if (val === 'coming_soon') text.textContent = 'Próximamente';
-                    else text.textContent = 'Oculto';
-                }
-            }
-
-            rankingStatusRadios.forEach(radio => {
-                radio.addEventListener('change', () => updateRankingStatusUI(radio.value));
+            document.querySelectorAll('input[name="ranking-status"]').forEach(radio => {
+                radio.addEventListener('change', updateRankingStatusCards);
             });
 
-            // 6. Dynamic Category B Toggle Effects
-            const showCatBCheckbox = document.getElementById('show-ranking-b');
-            function updateCatBUIState() {
-                if (!showCatBCheckbox) return;
-                const isEnabled = showCatBCheckbox.checked;
-                const badge = document.getElementById('cat-b-status-badge');
-                const banner = document.getElementById('cat-b-inactive-banner');
-                const winnerCardB = document.getElementById('winner-card-b-box');
-                const winnerBBadge = document.getElementById('winner-b-badge-text');
+            ['show-ranking-a', 'show-ranking-b', 'show-ranking-c'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('change', updateActiveCategoriesUI);
+            });
 
-                if (badge) {
-                    badge.textContent = isEnabled ? 'Activa' : 'Inactiva';
-                    badge.style.background = isEnabled ? '#dcfce7' : '#e2e8f0';
-                    badge.style.color = isEnabled ? '#15803d' : '#64748b';
-                }
+            const goalToggle = document.getElementById('show-goal-progress');
+            if (goalToggle) goalToggle.addEventListener('change', updateGoalUI);
 
-                if (banner) {
-                    banner.style.display = isEnabled ? 'none' : 'block';
-                }
+            ['contest-goal-title', 'contest-goal-note', 'contest-goal-target', 'contest-goal-current'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', updateGoalPreview);
+            });
 
-                if (winnerCardB) {
-                    winnerCardB.style.opacity = isEnabled ? '1' : '0.6';
-                }
+            document.querySelectorAll('.bases-toolbar button[data-bases-fmt]').forEach(btn => {
+                btn.addEventListener('click', () => applyBasesFormat(btn.dataset.basesFmt));
+            });
 
-                if (winnerBBadge) {
-                    winnerBBadge.textContent = isEnabled ? 'Concurso Segmentado' : 'Inactivo / No utilizado';
-                    winnerBBadge.style.color = isEnabled ? '#4f46e5' : '#9d174d';
-                }
+            const termsEditor = document.getElementById('contest-terms-editor');
+            if (termsEditor) termsEditor.addEventListener('paste', handleBasesPaste);
+
+            const winnersToggle = document.getElementById('show-winners-btn');
+            if (winnersToggle) winnersToggle.addEventListener('change', updateContestStatusPill);
+
+            // Cualquier edición enciende el aviso de "cambios sin guardar"
+            const section = document.getElementById('contest-config');
+            if (section) {
+                section.addEventListener('input', markContestDirty);
+                section.addEventListener('change', markContestDirty);
             }
 
-            if (showCatBCheckbox) {
-                showCatBCheckbox.addEventListener('change', updateCatBUIState);
-            }
+            // Guardado único
+            const saveBtn = document.getElementById('contest-global-save-btn');
+            if (saveBtn) saveBtn.addEventListener('click', () => saveContestConfig(saveBtn));
 
-            // 7. Live Preview Modal Trigger
+            // Vista previa de la tarjeta de intranet
             const openPreviewBtn = document.getElementById('open-contest-preview-btn');
             if (openPreviewBtn) {
                 openPreviewBtn.addEventListener('click', () => {
-                    const title = document.getElementById('contest-terms-title').value || '¡DESAFÍO ACTIVO! 🏆';
-                    const imgUrl = document.getElementById('contest-prize-image-url').value;
-                    const dateVal = document.getElementById('contest-countdown-date').value;
-                    const showRanking = document.getElementById('show-ranking-btn').checked;
-                    const showWinners = document.getElementById('show-winners-btn').checked;
-                    const statusRadio = document.querySelector('input[name="ranking-status"]:checked');
-                    const status = statusRadio ? statusRadio.value : 'visible';
+                    const name = contestVal('contest-name');
+                    const desc = contestVal('contest-description');
+                    const status = contestRankingStatus();
 
-                    document.getElementById('preview-modal-title').textContent = title;
-                    
+                    document.getElementById('preview-modal-title').textContent =
+                        name ? 'Desafío ' + name + ' 🏆' : '¡DESAFÍO ACTIVO! 🏆';
+
+                    document.getElementById('preview-modal-desc').textContent =
+                        desc ? desc.replace(/\*\*/g, '') : 'El vendedor con mayor cantidad de unidades vendidas gana el premio destacado.';
+
                     const modalImg = document.getElementById('preview-modal-prize-img');
-                    if (imgUrl) {
-                        modalImg.src = imgUrl;
-                        modalImg.style.display = 'block';
-                    } else {
-                        modalImg.style.display = 'none';
-                    }
+                    const imgUrl = contestVal('contest-prize-image-url');
+                    modalImg.src = imgUrl || '';
+                    modalImg.style.display = imgUrl ? 'block' : 'none';
 
-                    // Countdown preview calculation in modal
                     const timeSpan = document.getElementById('preview-modal-time');
+                    const dateVal = contestVal('contest-countdown-date');
                     if (dateVal) {
-                        const target = new Date(dateVal).getTime();
-                        const diff = target - Date.now();
+                        const diff = new Date(dateVal).getTime() - Date.now();
                         if (diff > 0) {
                             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
                             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                            const s = Math.floor((diff % (1000 * 60)) / 1000);
-                            timeSpan.textContent = `${d}d ${h}h ${m}m ${s}s`;
+                            const sec = Math.floor((diff % (1000 * 60)) / 1000);
+                            timeSpan.textContent = d + 'd ' + h + 'h ' + m + 'm ' + sec + 's';
                         } else {
                             timeSpan.textContent = '¡El concurso ha finalizado!';
                         }
@@ -7266,9 +8016,8 @@
                         timeSpan.textContent = '--d --h --m --s';
                     }
 
-                    // Ranking Button in Preview Modal
                     const rankingBtn = document.getElementById('preview-modal-ranking-btn');
-                    if (!showRanking || status === 'hidden') {
+                    if (status === 'hidden') {
                         rankingBtn.style.display = 'none';
                     } else if (status === 'coming_soon') {
                         rankingBtn.style.display = '';
@@ -7280,354 +8029,137 @@
                         rankingBtn.style.opacity = '1';
                     }
 
-                    // Winners Button in Preview Modal
-                    const winnersBtn = document.getElementById('preview-modal-winners-btn');
-                    winnersBtn.style.display = showWinners ? 'inline-block' : 'none';
+                    document.getElementById('preview-modal-winners-btn').style.display =
+                        contestChecked('show-winners-btn') ? 'inline-block' : 'none';
 
                     document.getElementById('contest-preview-modal').style.display = 'flex';
                 });
             }
 
-            // 8. Helper to extract dynamic ranking data from container
-            function getDynamicRanking(categoryId) {
-                const container = document.getElementById(`ranking-${categoryId.toLowerCase()}-container`);
-                if (!container) return [];
-                const rows = container.querySelectorAll('.contest-rank-row');
-                const ranking = [];
-                rows.forEach(row => {
-                    const name = row.querySelector('.rank-name') ? row.querySelector('.rank-name').value.trim() : '';
-                    const branch = row.querySelector('.rank-branch') ? row.querySelector('.rank-branch').value.trim() : '';
-                    const units = row.querySelector('.rank-units') ? parseInt(row.querySelector('.rank-units').value) || 0 : 0;
-                    ranking.push({ name, branch, units });
-                });
-                return ranking;
-            }
-
-            // 9. Save Handlers (Modular & Global)
-            // Save Tab 1: General & Bases
-            const saveGeneralBtn = document.getElementById('save-contest-general-btn');
-            if (saveGeneralBtn) {
-                saveGeneralBtn.addEventListener('click', async () => {
-                    const statusRadio = document.querySelector('input[name="ranking-status"]:checked');
-                    const payload = {
-                        prizeImageUrl: document.getElementById('contest-prize-image-url').value.trim(),
-                        termsTitle: document.getElementById('contest-terms-title').value.trim(),
-                        termsContent: document.getElementById('contest-terms-content').value.trim(),
-                        countdownDate: document.getElementById('contest-countdown-date').value,
-                        rankingStatus: statusRadio ? statusRadio.value : 'visible'
-                    };
-                    saveGeneralBtn.disabled = true;
-                    saveGeneralBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
-                    try {
-                        await db.collection('config').doc('contest_config').set(payload, { merge: true });
-                        toast('Desafío, bases y visibilidad guardados correctamente.', 'success');
-                    } catch (err) {
-                        console.error(err);
-                        toast('Error al guardar la información general.', 'error');
-                    } finally {
-                        saveGeneralBtn.disabled = false;
-                        saveGeneralBtn.innerHTML = '<i class="fa-solid fa-check"></i> Guardar Desafío y Bases';
-                    }
-                });
-            }
-
-            // Save Tab 2: Rankings
-            const saveRankingsBtn = document.getElementById('save-all-rankings-btn');
-            if (saveRankingsBtn) {
-                saveRankingsBtn.addEventListener('click', async () => {
-                    const rankingA = getDynamicRanking('A');
-                    const rankingB = getDynamicRanking('B');
-                    const rankingC = getDynamicRanking('C');
-                    saveRankingsBtn.disabled = true;
-                    saveRankingsBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando Rankings...';
-                    try {
-                        await db.collection('config').doc('contest_config').set({ rankingA, rankingB, rankingC }, { merge: true });
-                        toast('Todos los rankings se guardaron con éxito.', 'success');
-                    } catch (err) {
-                        console.error(err);
-                        toast('Error al guardar rankings.', 'error');
-                    } finally {
-                        saveRankingsBtn.disabled = false;
-                        saveRankingsBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar Todos los Rankings';
-                    }
-                });
-            }
-
-            // Save Tab 3: Buttons & Winners
-            const saveButtonsBtn = document.getElementById('save-buttons-config-btn');
-            if (saveButtonsBtn) {
-                saveButtonsBtn.addEventListener('click', async () => {
-                    const payload = {
-                        showRankingButton: document.getElementById('show-ranking-btn').checked,
-                        showWinnersButton: document.getElementById('show-winners-btn').checked,
-                        showRankingA: document.getElementById('show-ranking-a').checked,
-                        showRankingB: document.getElementById('show-ranking-b').checked,
-                        showRankingC: document.getElementById('show-ranking-c').checked,
-                        winnerAName: document.getElementById('winner-a-name').value.trim(),
-                        winnerABranch: document.getElementById('winner-a-branch').value.trim(),
-                        winnerAScore: document.getElementById('winner-a-score').value.trim(),
-                        winnerBName: document.getElementById('winner-b-name').value.trim(),
-                        winnerBBranch: document.getElementById('winner-b-branch').value.trim(),
-                        winnerBScore: document.getElementById('winner-b-score').value.trim(),
-                        winnerCName: document.getElementById('winner-c-name').value.trim(),
-                        winnerCBranch: document.getElementById('winner-c-branch').value.trim(),
-                        winnerCScore: document.getElementById('winner-c-score').value.trim()
-                    };
-                    saveButtonsBtn.disabled = true;
-                    saveButtonsBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
-                    try {
-                        await db.collection('config').doc('contest_config').set(payload, { merge: true });
-                        toast('Configuración de botones y ganadores guardada.', 'success');
-                    } catch (err) {
-                        console.error(err);
-                        toast('Error al guardar botones y ganadores.', 'error');
-                    } finally {
-                        saveButtonsBtn.disabled = false;
-                        saveButtonsBtn.innerHTML = '<i class="fa-solid fa-check"></i> Guardar Botones y Ganadores';
-                    }
-                });
-            }
-
-            // GLOBAL SAVE BUTTON: Saves everything in one click
-            const globalSaveBtn = document.getElementById('contest-global-save-btn');
-            if (globalSaveBtn) {
-                globalSaveBtn.addEventListener('click', async () => {
-                    const statusRadio = document.querySelector('input[name="ranking-status"]:checked');
-                    const fullPayload = {
-                        prizeImageUrl: document.getElementById('contest-prize-image-url').value.trim(),
-                        termsTitle: document.getElementById('contest-terms-title').value.trim(),
-                        termsContent: document.getElementById('contest-terms-content').value.trim(),
-                        countdownDate: document.getElementById('contest-countdown-date').value,
-                        rankingStatus: statusRadio ? statusRadio.value : 'visible',
-                        rankingA: getDynamicRanking('A'),
-                        rankingB: getDynamicRanking('B'),
-                        rankingC: getDynamicRanking('C'),
-                        showRankingButton: document.getElementById('show-ranking-btn').checked,
-                        showWinnersButton: document.getElementById('show-winners-btn').checked,
-                        showRankingA: document.getElementById('show-ranking-a').checked,
-                        showRankingB: document.getElementById('show-ranking-b').checked,
-                        showRankingC: document.getElementById('show-ranking-c').checked,
-                        winnerAName: document.getElementById('winner-a-name').value.trim(),
-                        winnerABranch: document.getElementById('winner-a-branch').value.trim(),
-                        winnerAScore: document.getElementById('winner-a-score').value.trim(),
-                        winnerBName: document.getElementById('winner-b-name').value.trim(),
-                        winnerBBranch: document.getElementById('winner-b-branch').value.trim(),
-                        winnerBScore: document.getElementById('winner-b-score').value.trim(),
-                        winnerCName: document.getElementById('winner-c-name').value.trim(),
-                        winnerCBranch: document.getElementById('winner-c-branch').value.trim(),
-                        winnerCScore: document.getElementById('winner-c-score').value.trim()
-                    };
-
-                    globalSaveBtn.disabled = true;
-                    globalSaveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando Todo...';
-                    try {
-                        await db.collection('config').doc('contest_config').set(fullPayload, { merge: true });
-                        toast('¡Toda la configuración del concurso se guardó exitosamente!', 'success');
-                    } catch (err) {
-                        console.error(err);
-                        toast('Error al guardar la configuración completa.', 'error');
-                    } finally {
-                        globalSaveBtn.disabled = false;
-                        globalSaveBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Guardar Todo';
-                    }
-                });
-            }
-
-            // 10. Dynamic Ranking Row Builder with Medals
-            window.addRankingRow = function(category, data = null) {
-                const container = document.getElementById(`ranking-${category.toLowerCase()}-container`);
-                if (!container) return;
-                const currentIndex = container.querySelectorAll('.contest-rank-row').length + 1;
-
-                let medalBadge = '';
-                if (currentIndex === 1) {
-                    medalBadge = `<span class="rank-pos-badge rank-pos-1" title="1º Puesto - Oro">🥇 1º</span>`;
-                } else if (currentIndex === 2) {
-                    medalBadge = `<span class="rank-pos-badge rank-pos-2" title="2º Puesto - Plata">🥈 2º</span>`;
-                } else if (currentIndex === 3) {
-                    medalBadge = `<span class="rank-pos-badge rank-pos-3" title="3º Puesto - Bronce">🥉 3º</span>`;
-                } else {
-                    medalBadge = `<span class="rank-pos-badge rank-pos-other">${currentIndex}º</span>`;
-                }
-
-                const row = document.createElement('div');
-                row.className = 'contest-rank-row';
-                row.innerHTML = `
-                    <div class="rank-badge-wrap">${medalBadge}</div>
-                    <input type="text" class="rank-name" placeholder="Nombre del Vendedor" value="${data ? (data.name || '') : ''}">
-                    <input type="text" class="rank-branch" placeholder="Sucursal" value="${data ? (data.branch || '') : ''}">
-                    <input type="number" class="rank-units" placeholder="Cant." value="${data ? (data.units || 0) : 0}">
-                    <div style="text-align: center;">
-                        <button type="button" class="action-btn btn-delete" onclick="this.closest('.contest-rank-row').remove(); window.updateRankingIndices('${category}');" title="Eliminar fila" style="width: 32px; height: 32px; font-size: 0.8rem; margin: 0 auto;">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(row);
-            };
-
-            window.updateRankingIndices = function(category) {
-                const container = document.getElementById(`ranking-${category.toLowerCase()}-container`);
-                if (!container) return;
-                const rows = container.querySelectorAll('.contest-rank-row');
-                rows.forEach((row, idx) => {
-                    const pos = idx + 1;
-                    const badgeWrap = row.querySelector('.rank-badge-wrap');
-                    if (badgeWrap) {
-                        if (pos === 1) badgeWrap.innerHTML = `<span class="rank-pos-badge rank-pos-1" title="1º Puesto - Oro">🥇 1º</span>`;
-                        else if (pos === 2) badgeWrap.innerHTML = `<span class="rank-pos-badge rank-pos-2" title="2º Puesto - Plata">🥈 2º</span>`;
-                        else if (pos === 3) badgeWrap.innerHTML = `<span class="rank-pos-badge rank-pos-3" title="3º Puesto - Bronce">🥉 3º</span>`;
-                        else badgeWrap.innerHTML = `<span class="rank-pos-badge rank-pos-other">${pos}º</span>`;
-                    }
-                });
-            };
-
-            // Initial load from Firestore
-            loadContestConfig();
+            loadContestConfig(true);
         }
 
-        async function loadContestConfig() {
+        // --- Filas del ranking con medallas ---
+        window.addRankingRow = function(category, data = null) {
+            const container = document.getElementById('ranking-' + category.toLowerCase() + '-container');
+            if (!container) return;
+            const currentIndex = container.querySelectorAll('.contest-rank-row').length + 1;
+
+            let medalBadge;
+            if (currentIndex === 1) medalBadge = `<span class="rank-pos-badge rank-pos-1" title="1º Puesto - Oro">🥇 1º</span>`;
+            else if (currentIndex === 2) medalBadge = `<span class="rank-pos-badge rank-pos-2" title="2º Puesto - Plata">🥈 2º</span>`;
+            else if (currentIndex === 3) medalBadge = `<span class="rank-pos-badge rank-pos-3" title="3º Puesto - Bronce">🥉 3º</span>`;
+            else medalBadge = `<span class="rank-pos-badge rank-pos-other">${currentIndex}º</span>`;
+
+            const row = document.createElement('div');
+            row.className = 'contest-rank-row';
+            row.innerHTML = `
+                <div class="rank-badge-wrap">${medalBadge}</div>
+                <input type="text" class="rank-name" placeholder="Nombre del Vendedor" value="${data ? (data.name || '') : ''}">
+                <input type="text" class="rank-branch" placeholder="Sucursal" value="${data ? (data.branch || '') : ''}">
+                <input type="number" class="rank-units" placeholder="Cant." value="${data ? (data.units || 0) : 0}">
+                <div style="text-align: center;">
+                    <button type="button" class="action-btn btn-delete" onclick="this.closest('.contest-rank-row').remove(); window.updateRankingIndices('${category}');" title="Eliminar fila" style="width: 32px; height: 32px; font-size: 0.8rem; margin: 0 auto;">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(row);
+        };
+
+        window.updateRankingIndices = function(category) {
+            const container = document.getElementById('ranking-' + category.toLowerCase() + '-container');
+            if (!container) return;
+            container.querySelectorAll('.contest-rank-row').forEach((row, idx) => {
+                const pos = idx + 1;
+                const badgeWrap = row.querySelector('.rank-badge-wrap');
+                if (!badgeWrap) return;
+                if (pos === 1) badgeWrap.innerHTML = `<span class="rank-pos-badge rank-pos-1" title="1º Puesto - Oro">🥇 1º</span>`;
+                else if (pos === 2) badgeWrap.innerHTML = `<span class="rank-pos-badge rank-pos-2" title="2º Puesto - Plata">🥈 2º</span>`;
+                else if (pos === 3) badgeWrap.innerHTML = `<span class="rank-pos-badge rank-pos-3" title="3º Puesto - Bronce">🥉 3º</span>`;
+                else badgeWrap.innerHTML = `<span class="rank-pos-badge rank-pos-other">${pos}º</span>`;
+            });
+            markContestDirty();
+        };
+
+        // Se vuelve a llamar cada vez que se entra a la sección; si hay ediciones
+        // sin guardar no las pisamos con lo que hay en Firestore.
+        async function loadContestConfig(force = false) {
+            if (!force && contestHasUnsavedChanges()) return;
             try {
                 const doc = await db.collection('config').doc('contest_config').get();
-                if (doc.exists) {
-                    const data = doc.data();
+                const data = doc.exists ? doc.data() : {};
 
-                    // Prize image
-                    if (data.prizeImageUrl) {
-                        const urlInput = document.getElementById('contest-prize-image-url');
-                        if (urlInput) urlInput.value = data.prizeImageUrl;
-                        
-                        const previewDiv = document.getElementById('contest-prize-preview');
-                        const previewImg = document.getElementById('contest-prize-img-preview');
-                        const previewPlaceholder = document.getElementById('contest-prize-placeholder');
-                        if (previewImg && previewDiv) {
-                            previewImg.src = data.prizeImageUrl;
-                            previewDiv.style.display = 'block';
-                            if (previewPlaceholder) previewPlaceholder.style.display = 'none';
-                        }
+                const setVal = (id, value) => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = (value === undefined || value === null) ? '' : value;
+                };
+                const setChk = (id, value) => {
+                    const el = document.getElementById(id);
+                    if (el) el.checked = value;
+                };
+
+                // 1 · Armar
+                setVal('contest-name', data.contestName);
+                setVal('contest-description', data.contestDescription);
+                // Las bases viejas quedaron guardadas como HTML crudo: las traducimos
+                // al formato del editor para que no haya que limpiarlas a mano.
+                const rawTerms = data.termsContent || '';
+                const termsWasHtml = basesLooksLikeHtml(rawTerms);
+                setBasesEditorContent(termsWasHtml ? basesHtmlToText(rawTerms) : rawTerms);
+                const htmlWarning = document.getElementById('bases-html-warning');
+                if (htmlWarning) htmlWarning.style.display = termsWasHtml ? '' : 'none';
+                setVal('contest-prize-image-url', data.prizeImageUrl);
+                setVal('contest-countdown-date', data.countdownDate);
+
+                setChk('show-ranking-a', data.showRankingA !== false);
+                setChk('show-ranking-b', data.showRankingB === true);
+                setChk('show-ranking-c', data.showRankingC !== false);
+
+                setChk('show-goal-progress', data.showGoalProgress === true);
+                setVal('contest-goal-title', data.goalTitle);
+                setVal('contest-goal-note', data.goalNote);
+                setVal('contest-goal-target', data.goalTarget);
+
+                // 2 · Mientras corre
+                const status = data.rankingStatus || 'visible';
+                const radio = document.getElementById('rstatus-' + status);
+                if (radio) radio.checked = true;
+                setVal('contest-goal-current', data.goalCurrent);
+
+                ['A', 'B', 'C'].forEach(cat => {
+                    const container = document.getElementById('ranking-' + cat.toLowerCase() + '-container');
+                    if (!container) return;
+                    container.innerHTML = '';
+                    const rows = data['ranking' + cat];
+                    if (Array.isArray(rows) && rows.length > 0) {
+                        rows.forEach(item => window.addRankingRow(cat, item));
+                    } else {
+                        for (let i = 0; i < 5; i++) window.addRankingRow(cat);
                     }
+                });
 
-                    // Countdown date
-                    if (data.countdownDate) {
-                        const dateInput = document.getElementById('contest-countdown-date');
-                        if (dateInput) {
-                            dateInput.value = data.countdownDate;
-                            // Trigger countdown text calculation
-                            const countdownPreviewText = document.getElementById('contest-countdown-preview-text');
-                            if (countdownPreviewText) {
-                                const target = new Date(data.countdownDate).getTime();
-                                const diff = target - Date.now();
-                                if (diff <= 0) {
-                                    countdownPreviewText.innerHTML = '<span style="color: #dc2626;"><i class="fa-solid fa-flag-checkered"></i> El concurso ya finalizó o finaliza ahora.</span>';
-                                } else {
-                                    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-                                    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                                    countdownPreviewText.innerHTML = `<i class="fa-solid fa-hourglass-half"></i> Tiempo restante aproximado: <strong>${d} días, ${h} hs y ${m} min</strong>`;
-                                }
-                            }
-                        }
-                    }
+                // 3 · Cerrar y premiar
+                setChk('show-winners-btn', data.showWinnersButton === true);
+                ['a', 'b', 'c'].forEach(c => {
+                    const up = c.toUpperCase();
+                    setVal('winner-' + c + '-name', data['winner' + up + 'Name']);
+                    setVal('winner-' + c + '-branch', data['winner' + up + 'Branch']);
+                    setVal('winner-' + c + '-score', data['winner' + up + 'Score']);
+                });
 
-                    // Terms
-                    if (data.termsTitle && document.getElementById('contest-terms-title')) {
-                        document.getElementById('contest-terms-title').value = data.termsTitle;
-                    }
-                    if (data.termsContent && document.getElementById('contest-terms-content')) {
-                        document.getElementById('contest-terms-content').value = data.termsContent;
-                    }
-
-                    // Ranking status & radio cards
-                    if (data.rankingStatus) {
-                        const radio = document.getElementById(`rstatus-${data.rankingStatus}`);
-                        if (radio) radio.checked = true;
-
-                        ['hidden', 'coming_soon', 'visible'].forEach(v => {
-                            const lbl = document.getElementById(`rstatus-label-${v}`);
-                            if (lbl) {
-                                if (v === data.rankingStatus) lbl.classList.add('selected');
-                                else lbl.classList.remove('selected');
-                            }
-                        });
-
-                        const pill = document.getElementById('contest-header-status-pill');
-                        const text = document.getElementById('contest-header-status-text');
-                        if (pill && text) {
-                            pill.className = `contest-status-pill status-${data.rankingStatus}`;
-                            if (data.rankingStatus === 'visible') text.textContent = 'Visible (Top 5)';
-                            else if (data.rankingStatus === 'coming_soon') text.textContent = 'Próximamente';
-                            else text.textContent = 'Oculto';
-                        }
-                    }
-
-                    // Button visibility and switches
-                    if (data.showRankingButton !== undefined && document.getElementById('show-ranking-btn')) {
-                        document.getElementById('show-ranking-btn').checked = data.showRankingButton;
-                    }
-                    if (data.showWinnersButton !== undefined && document.getElementById('show-winners-btn')) {
-                        document.getElementById('show-winners-btn').checked = data.showWinnersButton;
-                    }
-                    
-                    if (data.showRankingA !== undefined && document.getElementById('show-ranking-a')) {
-                        document.getElementById('show-ranking-a').checked = data.showRankingA;
-                    }
-                    if (data.showRankingB !== undefined && document.getElementById('show-ranking-b')) {
-                        document.getElementById('show-ranking-b').checked = data.showRankingB;
-                    }
-                    if (data.showRankingC !== undefined && document.getElementById('show-ranking-c')) {
-                        document.getElementById('show-ranking-c').checked = data.showRankingC;
-                    }
-
-                    // Update Cat B UI elements (banner, badges, winner card)
-                    const showCatB = data.showRankingB === true;
-                    const catBBadge = document.getElementById('cat-b-status-badge');
-                    const catBBanner = document.getElementById('cat-b-inactive-banner');
-                    const winnerCardB = document.getElementById('winner-card-b-box');
-                    const winnerBBadge = document.getElementById('winner-b-badge-text');
-
-                    if (catBBadge) {
-                        catBBadge.textContent = showCatB ? 'Activa' : 'Inactiva';
-                        catBBadge.style.background = showCatB ? '#dcfce7' : '#e2e8f0';
-                        catBBadge.style.color = showCatB ? '#15803d' : '#64748b';
-                    }
-                    if (catBBanner) catBBanner.style.display = showCatB ? 'none' : 'block';
-                    if (winnerCardB) winnerCardB.style.opacity = showCatB ? '1' : '0.6';
-                    if (winnerBBadge) {
-                        winnerBBadge.textContent = showCatB ? 'Concurso Segmentado' : 'Inactivo / No utilizado';
-                        winnerBBadge.style.color = showCatB ? '#4f46e5' : '#9d174d';
-                    }
-
-                    // Winner A
-                    if (data.winnerAName && document.getElementById('winner-a-name')) document.getElementById('winner-a-name').value = data.winnerAName;
-                    if (data.winnerABranch && document.getElementById('winner-a-branch')) document.getElementById('winner-a-branch').value = data.winnerABranch;
-                    if (data.winnerAScore && document.getElementById('winner-a-score')) document.getElementById('winner-a-score').value = data.winnerAScore;
-
-                    // Winner B
-                    if (data.winnerBName && document.getElementById('winner-b-name')) document.getElementById('winner-b-name').value = data.winnerBName;
-                    if (data.winnerBBranch && document.getElementById('winner-b-branch')) document.getElementById('winner-b-branch').value = data.winnerBBranch;
-                    if (data.winnerBScore && document.getElementById('winner-b-score')) document.getElementById('winner-b-score').value = data.winnerBScore;
-
-                    // Winner C
-                    if (data.winnerCName && document.getElementById('winner-c-name')) document.getElementById('winner-c-name').value = data.winnerCName;
-                    if (data.winnerCBranch && document.getElementById('winner-c-branch')) document.getElementById('winner-c-branch').value = data.winnerCBranch;
-                    if (data.winnerCScore && document.getElementById('winner-c-score')) document.getElementById('winner-c-score').value = data.winnerCScore;
-
-                    // Populate dynamic rankings A, B, C
-                    ['A', 'B', 'C'].forEach(cat => {
-                        const container = document.getElementById(`ranking-${cat.toLowerCase()}-container`);
-                        if (container) {
-                            container.innerHTML = '';
-                            const rankData = data[`ranking${cat}`];
-                            if (rankData && Array.isArray(rankData) && rankData.length > 0) {
-                                rankData.forEach(item => window.addRankingRow(cat, item));
-                            } else {
-                                for (let i = 0; i < 5; i++) window.addRankingRow(cat);
-                            }
-                        }
-                    });
-                }
+                // Refrescar toda la UI derivada
+                updatePrizeImagePreview();
+                updateCountdownPreviewText();
+                updateRankingStatusCards();
+                updateActiveCategoriesUI();
+                updateGoalUI();
+                clearContestDirty();
+                // La conversión deja el formulario distinto de lo que hay en Firestore.
+                if (termsWasHtml) markContestDirty();
             } catch (err) {
                 console.error('Error cargando config concurso:', err);
+                toast('No se pudo cargar la configuración del concurso.', 'error');
             }
         }
 

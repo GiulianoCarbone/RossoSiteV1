@@ -2767,6 +2767,35 @@
       min-height: 80px;
     }
 
+    /* Casilla del newsletter dentro del pedido de presupuesto */
+    .em-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-top: 4px;
+      padding: 11px 12px;
+      background: #fff7ed;
+      border: 1.5px solid #fed7aa;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    .em-check input {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 1px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .em-check strong {
+      color: var(--accent);
+    }
+
     .em-actions {
       display: flex;
       gap: 10px;
@@ -3362,6 +3391,11 @@
         <label>Mensaje adicional (opcional)</label>
         <textarea id="em-msg" placeholder="Consultá por plazos de entrega, cantidades especiales, etc."></textarea>
       </div>
+      <label class="em-check" id="em-news-row">
+        <input type="checkbox" id="em-news" checked />
+        <span>🔥 Quiero enterarme <strong>antes que nadie</strong> de las promos, ingresos y descuentos por
+          email.</span>
+      </label>
       <div class="em-actions">
         <button class="em-btn-cancel" onclick="cerrarModalEmail()">Cancelar</button>
         <button class="em-btn-send" onclick="enviarEmail()">
@@ -4749,7 +4783,7 @@
         `Hola! Quiero consultar sobre los siguientes productos:\n\n${lineas}\n\n¿Cuál es la disponibilidad y precio de cada uno?\nMuchas gracias.`
       );
       sendBtn.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
-      sendBtn.onclick = () => trackEvent('contacts');
+      sendBtn.onclick = (e) => consultarWhatsApp(e, sendBtn.href);
       sendBtn.style.opacity = '1';
       sendBtn.style.pointerEvents = 'auto';
       document.getElementById('btn-email-send').disabled = false;
@@ -4768,10 +4802,46 @@
     }
 
     /* ══════════════════════════════════════════════════════════
+       NEWSLETTER: pedido de email antes de consultar
+       Se pide con la lista ya armada, que es el momento de mayor intención.
+       Nunca bloquea la consulta (el modal siempre deja seguir) y a quien ya
+       se suscribió —o ya dijo que no hace poco— no se le vuelve a preguntar.
+    ══════════════════════════════════════════════════════════ */
+    function consultarWhatsApp(e, url) {
+      if (!window.RossoLead || !RossoLead.debePreguntar()) {
+        trackEvent('contacts');
+        return;   // sin gate: sigue el href normal del enlace
+      }
+      e.preventDefault();
+      RossoLead.pedirEmail({
+        contexto: 'lista-whatsapp',
+        cta: 'Suscribirme y consultar',
+        onLead: () => trackEvent('leads'),
+        onDone: () => {
+          trackEvent('contacts');
+          // window.open dentro del gesto del click: si igual lo bloquean,
+          // navegamos en la misma pestaña.
+          const w = window.open(url, '_blank', 'noopener');
+          if (!w) window.location.href = url;
+        }
+      });
+    }
+
+    /* ══════════════════════════════════════════════════════════
        EMAIL MODAL
     ══════════════════════════════════════════════════════════ */
     function abrirModalEmail() {
       if (lista.length === 0) return;
+
+      // Si ya lo dejó antes, se lo completamos; y si ya está suscripto, no le
+      // volvemos a ofrecer el newsletter.
+      const guardado = window.RossoLead ? RossoLead.emailGuardado() : '';
+      const inputEmail = document.getElementById('em-email');
+      if (guardado && !inputEmail.value) inputEmail.value = guardado;
+
+      const filaNews = document.getElementById('em-news-row');
+      if (filaNews) filaNews.style.display = (window.RossoLead && RossoLead.yaSuscripto()) ? 'none' : 'flex';
+
       document.getElementById('email-modal-overlay').classList.add('open');
     }
 
@@ -4787,6 +4857,14 @@
 
       if (!nombre) { document.getElementById('em-nombre').focus(); return; }
       if (!email || !email.includes('@')) { document.getElementById('em-email').focus(); return; }
+
+      // Newsletter: si dejó tildada la casilla, lo damos de alta en Mailrelay
+      const quiereNews = document.getElementById('em-news');
+      if (quiereNews && quiereNews.checked && window.RossoLead && !RossoLead.yaSuscripto() && RossoLead.emailValido(email)) {
+        RossoLead.suscribir(email, { contexto: 'presupuesto-email' });
+        RossoLead.mostrarConfirmacion();
+        trackEvent('leads');
+      }
 
       const lineas = lista.map(i =>
         `- ${i.nombre} | SKU: ${i.sku} | Cantidad: ${i.cantidad}${i.unidad ? ' ' + i.unidad : ''}`
@@ -4983,6 +5061,8 @@
   </script>
   <!-- Asistente IA del catálogo -->
   <script src="chat-widget.js" defer></script>
+  <!-- Captación de suscriptores del newsletter -->
+  <script src="lead-gate.js" defer></script>
 </body>
 
 </html>

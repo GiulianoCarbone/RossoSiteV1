@@ -624,7 +624,8 @@
   <div class="qp-items" id="qp-items"></div>
   <div class="qp-footer">
     <div class="qp-count" id="qp-count"></div>
-    <a class="btn-wp-send" id="btn-wp-send" href="#" target="_blank" rel="noopener" onclick="trackEvent('contacts')">
+    <a class="btn-wp-send" id="btn-wp-send" href="#" target="_blank" rel="noopener"
+      onclick="consultarWhatsAppLista(event, this.href)">
       <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
     </a>
     <button class="btn-ir-catalogo" onclick="window.location.href='catalogo.html'">
@@ -1260,6 +1261,27 @@
     } catch (e) { console.warn('Analytics error:', e); }
   }
 
+  /* ── Newsletter: pedido de email antes de consultar la lista ──
+     Mismo criterio que en catalogo.html: se pide con la lista armada, nunca
+     bloquea la consulta y no se repite a quien ya se suscribió o ya dijo que no. */
+  function consultarWhatsAppLista(e, url) {
+    if (!window.RossoLead || !RossoLead.debePreguntar()) {
+      trackEvent('contacts');
+      return;   // sin gate: sigue el href normal del enlace
+    }
+    e.preventDefault();
+    RossoLead.pedirEmail({
+      contexto: 'lista-whatsapp',
+      cta: 'Suscribirme y consultar',
+      onLead: () => trackEvent('leads'),
+      onDone: () => {
+        trackEvent('contacts');
+        const w = window.open(url, '_blank', 'noopener');
+        if (!w) window.location.href = url;
+      }
+    });
+  }
+
   // Clic en "Consultar por WhatsApp" desde la ficha: suma contacto global + consulta al producto
   function trackConsultaProducto() {
     if (producto && producto.sku) {
@@ -1283,5 +1305,7 @@
 </script>
   <!-- Asistente IA del catálogo -->
   <script src="chat-widget.js" defer></script>
+  <!-- Captación de suscriptores del newsletter -->
+  <script src="lead-gate.js" defer></script>
 </body>
 </html>

@@ -3166,7 +3166,7 @@
                     <div class="panel-card-icon-title">
                       <span class="panel-card-icon"><i class="fa-solid fa-trophy"
                           style="animation: none; color: var(--accent);"></i></span>
-                      <h3
+                      <h3 id="contest-hero-title"
                         style="color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
                         Desafío GRIFERÍAS 🏆</h3>
                     </div>
@@ -3182,12 +3182,12 @@
                     </div>
                     <p class="contest-card-text"
                       style="font-size: 1.15rem; color: #374151; max-width: 600px; margin: 0 auto 15px; line-height: 1.6;">
-                      <span class="contest-prominent-title"
+                      <span class="contest-prominent-title" id="contest-hero-tagline"
                         style="display: block; font-size: 1.6rem; color: var(--accent); font-weight: 900; margin-bottom: 8px; text-transform: uppercase;">¡GRIFERÍAS!
                         🏆</span>
-                      El vendedor con mayor cantidad de <strong>unidades vendidas de la lista selección de
-                        griferías</strong> gana una
-                      <strong>cava de vinos para 12 botellas</strong>.
+                      <span id="contest-hero-desc">El vendedor con mayor cantidad de <strong>unidades vendidas de la
+                          lista selección de griferías</strong> gana una
+                        <strong>cava de vinos para 12 botellas</strong>.</span>
                     </p>
                     <!-- SUBTLE COUNTDOWN -->
                     <p id="countdown-timer"
@@ -6642,12 +6642,132 @@
   <div id="contest-ranking-modal" class="modal-overlay" style="z-index: 5000; display: none;">
     <div class="modal-content" style="max-width: 500px; width: 95%;">
       <div class="modal-header">
-        <h4 style="font-size: 1.3rem;">Ranking GRIFERÍAS 🏆</h4>
+        <h4 style="font-size: 1.3rem;" id="contest-ranking-modal-title">Ranking GRIFERÍAS 🏆</h4>
         <button class="close-modal" onclick="event.stopPropagation(); closeRankingModal()">&times;</button>
       </div>
       <div id="contest-ranking-list" style="padding: 10px 0;">
         <p style="text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 20px;">El Ranking se actualiza
           al finalizar cada semana</p>
+
+        <!-- META PARA ACTIVAR EL PREMIO (opcional: se prende/apaga desde el panel admin) -->
+        <style>
+          #contest-goal-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+            border: 1px solid #fed7aa;
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 22px;
+          }
+
+          #contest-goal-box .goal-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+          }
+
+          #contest-goal-box .goal-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 800;
+            color: #272e68;
+            font-size: 0.92rem;
+          }
+
+          #contest-goal-box .goal-label i {
+            color: var(--accent, #ec6434);
+          }
+
+          #contest-goal-box .goal-pct {
+            font-weight: 900;
+            font-size: 1.05rem;
+            color: var(--accent, #ec6434);
+          }
+
+          #contest-goal-box .goal-track {
+            height: 12px;
+            border-radius: 99px;
+            background: #f1f5f9;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .08);
+          }
+
+          #contest-goal-box .goal-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #f59e0b, #ec6434);
+            transition: width .8s ease;
+          }
+
+          #contest-goal-box .goal-numbers {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 8px;
+            font-size: 0.78rem;
+            color: #6b7280;
+          }
+
+          #contest-goal-box .goal-numbers strong {
+            color: #1f2937;
+            font-weight: 800;
+          }
+
+          #contest-goal-box .goal-remaining {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1f2937;
+          }
+
+          #contest-goal-box .goal-remaining strong {
+            color: var(--accent, #ec6434);
+          }
+
+          #contest-goal-box .goal-note {
+            margin: 8px 0 0;
+            text-align: center;
+            font-size: 0.74rem;
+            color: #6b7280;
+            line-height: 1.45;
+          }
+
+          #contest-goal-box.goal-done {
+            border-color: #bbf7d0;
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+          }
+
+          #contest-goal-box.goal-done .goal-fill {
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+          }
+
+          #contest-goal-box.goal-done .goal-pct,
+          #contest-goal-box.goal-done .goal-remaining strong {
+            color: #16a34a;
+          }
+        </style>
+        <div id="contest-goal-box" style="display: none;">
+          <div class="goal-top">
+            <div class="goal-label">
+              <i class="fa-solid fa-bullseye"></i>
+              <span id="contest-goal-title">Meta para activar el premio</span>
+            </div>
+            <span class="goal-pct" id="contest-goal-pct">0%</span>
+          </div>
+          <div class="goal-track">
+            <div class="goal-fill" id="contest-goal-fill"></div>
+          </div>
+          <div class="goal-numbers">
+            <span>Acumulado: <strong id="contest-goal-current">$0</strong></span>
+            <span>Meta: <strong id="contest-goal-target">$0</strong></span>
+          </div>
+          <div class="goal-remaining" id="contest-goal-remaining"></div>
+          <p class="goal-note" id="contest-goal-note" style="display: none;"></p>
+        </div>
 
         <div class="ranking-container-dual" style="display: grid; grid-template-columns: 1fr; gap: 20px;">
           <!-- CATEGORY A (GENERAL RANKING) -->
@@ -6703,7 +6823,8 @@
       <div class="modal-header" style="background: transparent; padding: 20px 25px 10px; border: none;">
         <h4
           style="font-size: 1.6rem; color: #064e3b; font-weight: 900; text-align: center; width: 100%; letter-spacing: -0.5px;">
-          ¡Ganador GRIFERÍAS! 🥳</h4>
+          <span id="contest-winners-modal-title">¡Ganador GRIFERÍAS! 🥳</span>
+        </h4>
         <button class="close-modal" onclick="closeWinnersModal()"
           style="color: #064e3b; font-size: 2rem;">&times;</button>
       </div>
@@ -6841,12 +6962,123 @@
       document.getElementById('contest-ranking-modal').style.display = 'none';
     }
 
+    // --- TEXTOS DEL CONCURSO (nombre, descripción y bases desde el panel admin) ---
+    function escapeBasesHtml(t) {
+      return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // Formato simple: "## " para subtítulos, "- " para viñetas y **negrita**
+    function formatBasesText(txt) {
+      const inline = (t) => escapeBasesHtml(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      const lines = String(txt).replace(/\r\n/g, '\n').split('\n');
+      let html = '';
+      let items = [];
+
+      const flush = () => {
+        if (items.length) {
+          html += '<ul>' + items.join('') + '</ul>';
+          items = [];
+        }
+      };
+
+      lines.forEach((raw) => {
+        const line = raw.trim();
+        if (!line) { flush(); return; }
+        if (/^#{1,6}\s+/.test(line)) {
+          flush();
+          html += '<h5>' + inline(line.replace(/^#{1,6}\s+/, '')) + '</h5>';
+        } else if (/^[-•*]\s+/.test(line)) {
+          items.push('<li>' + inline(line.replace(/^[-•*]\s+/, '')) + '</li>');
+        } else {
+          flush();
+          html += '<p>' + inline(line) + '</p>';
+        }
+      });
+
+      flush();
+      return html;
+    }
+
+    function renderContestTexts(data) {
+      const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el && value) el.textContent = value;
+      };
+
+      // Un solo nombre alimenta los cinco títulos del concurso
+      const name = (data.contestName || '').trim();
+      if (name) {
+        setText('contest-hero-title', 'Desafío ' + name + ' 🏆');
+        setText('contest-hero-tagline', '¡' + name + '! 🏆');
+        setText('contest-terms-title-text', 'Bases del Concurso: ' + name + ' 🏆');
+        setText('contest-ranking-modal-title', 'Ranking ' + name + ' 🏆');
+        setText('contest-winners-modal-title', '¡Ganador ' + name + '! 🥳');
+      }
+
+      // Descripción del hero
+      const desc = (data.contestDescription || '').trim();
+      const descEl = document.getElementById('contest-hero-desc');
+      if (descEl && desc) descEl.innerHTML = formatBasesText(desc);
+
+      // Bases y condiciones
+      const terms = (data.termsContent || '').trim();
+      const termsEl = document.getElementById('contest-terms-body');
+      if (termsEl && terms) termsEl.innerHTML = formatBasesText(terms);
+    }
+
+    // --- META PARA ACTIVAR EL PREMIO (barra de progreso del modal de ranking) ---
+    const goalMoneyFmt = new Intl.NumberFormat('es-AR', {
+      style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 0
+    });
+
+    function renderContestGoal(data) {
+      const box = document.getElementById('contest-goal-box');
+      if (!box) return;
+
+      const target = Number(data.goalTarget) || 0;
+      const current = Number(data.goalCurrent) || 0;
+
+      // Solo se muestra si está activada desde el panel admin y hay una meta cargada
+      if (data.showGoalProgress !== true || target <= 0) {
+        box.style.display = 'none';
+        return;
+      }
+
+      const pct = Math.max(0, Math.min(100, (current / target) * 100));
+      const remaining = Math.max(0, target - current);
+      const done = remaining <= 0;
+
+      box.classList.toggle('goal-done', done);
+      document.getElementById('contest-goal-title').textContent = data.goalTitle || 'Meta para activar el premio';
+      document.getElementById('contest-goal-pct').textContent =
+        pct.toLocaleString('es-AR', { maximumFractionDigits: 1 }) + '%';
+      document.getElementById('contest-goal-fill').style.width = pct + '%';
+      document.getElementById('contest-goal-current').textContent = goalMoneyFmt.format(current);
+      document.getElementById('contest-goal-target').textContent = goalMoneyFmt.format(target);
+      document.getElementById('contest-goal-remaining').innerHTML = done
+        ? '¡Meta alcanzada! El premio ya está activado 🎉'
+        : `Faltan <strong>${goalMoneyFmt.format(remaining)}</strong> para activar el premio`;
+
+      const note = document.getElementById('contest-goal-note');
+      if (data.goalNote) {
+        note.textContent = data.goalNote;
+        note.style.display = '';
+      } else {
+        note.style.display = 'none';
+      }
+
+      box.style.display = '';
+    }
+
     // --- LOAD CONTEST CONFIG FROM FIREBASE ---
     async function loadContestConfig() {
       try {
         const doc = await db.collection('config').doc('contest_config').get();
         if (!doc.exists) return;
         const data = doc.data();
+
+        // 0. Textos del concurso (nombre, descripción y bases)
+        renderContestTexts(data);
 
         // 1. Prize image
         if (data.prizeImageUrl) {
@@ -6858,6 +7090,9 @@
           }
         }
 
+
+        // 2. Meta para activar el premio (opcional)
+        renderContestGoal(data);
 
         // Helper function for dynamic ranking rendering
         function renderRanking(containerId, rankingData, category) {
