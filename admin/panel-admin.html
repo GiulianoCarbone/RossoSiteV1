@@ -2413,6 +2413,25 @@
             font-size: 0.92em;
         }
 
+        .contest-name-preview {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            color: #64748b;
+        }
+
+        .contest-name-preview strong {
+            color: #272e68;
+            font-weight: 800;
+        }
+
         .contest-card-actions-bar {
             display: flex;
             justify-content: space-between;
@@ -3703,8 +3722,14 @@
                             <div class="input-group" style="margin-top: 14px;">
                                 <label for="contest-name">Nombre del concurso</label>
                                 <input type="text" id="contest-name" placeholder="Ej: GRIFERÍAS">
-                                <small>Con este solo nombre la intranet arma los cinco títulos: la tarjeta
-                                    (“Desafío GRIFERÍAS 🏆”), las bases, el ranking y el modal de ganadores.</small>
+                                <small>Escribí <strong>sólo el nombre</strong>: la palabra “Desafío”, los
+                                    signos y el trofeo los agrega la intranet sola. Con ese nombre arma los cinco
+                                    títulos (tarjeta, bases, ranking y ganadores).</small>
+                                <div class="contest-name-preview" id="contest-name-preview" style="display: none;">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <span>En la intranet se va a leer</span>
+                                    <strong id="contest-name-preview-text"></strong>
+                                </div>
                             </div>
 
                             <div class="input-group">
@@ -7399,6 +7424,17 @@
             style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 0
         });
 
+        // El campo guarda solo el nombre: el "Desafío" y el trofeo los pone la
+        // intranet. Si el usuario pega el título entero, lo recortamos acá y en
+        // panel-corporativo.html (cleanContestName está duplicada en los dos).
+        function cleanContestName(raw) {
+            return String(raw || '')
+                .replace(/^[\s¡!]+/, '')
+                .replace(/^(desaf[ií]o|concurso|reto)\b\s*[:;\-–—]?\s*/i, '')
+                .replace(/[\s!¡:;.\-–—\u2190-\u2BFF\uFE0F\u{1F000}-\u{1FAFF}]+$/u, '')
+                .trim();
+        }
+
         // --- Helpers de lectura del formulario ---
         function contestVal(id) {
             const el = document.getElementById(id);
@@ -7793,6 +7829,19 @@
         }
 
         // --- Imagen del premio ---
+        function updateContestNamePreview() {
+            const box = document.getElementById('contest-name-preview');
+            if (!box) return;
+            const name = cleanContestName(contestVal('contest-name'));
+            if (!name) {
+                box.style.display = 'none';
+                return;
+            }
+            document.getElementById('contest-name-preview-text').textContent =
+                'Desafío ' + name + ' 🏆';
+            box.style.display = '';
+        }
+
         function updatePrizeImagePreview() {
             const url = contestVal('contest-prize-image-url');
             const wrap = document.getElementById('contest-prize-preview');
@@ -7839,7 +7888,7 @@
             const status = contestRankingStatus();
             return {
                 // 1 · Armar
-                contestName: contestVal('contest-name'),
+                contestName: cleanContestName(contestVal('contest-name')),
                 contestDescription: contestVal('contest-description'),
                 termsContent: getBasesText(),
                 prizeImageUrl: contestVal('contest-prize-image-url'),
@@ -7933,6 +7982,9 @@
             }
 
             // Vistas previas en vivo
+            const nameInput = document.getElementById('contest-name');
+            if (nameInput) nameInput.addEventListener('input', updateContestNamePreview);
+
             const prizeUrlInput = document.getElementById('contest-prize-image-url');
             if (prizeUrlInput) prizeUrlInput.addEventListener('input', updatePrizeImagePreview);
 
@@ -7984,7 +8036,7 @@
             const openPreviewBtn = document.getElementById('open-contest-preview-btn');
             if (openPreviewBtn) {
                 openPreviewBtn.addEventListener('click', () => {
-                    const name = contestVal('contest-name');
+                    const name = cleanContestName(contestVal('contest-name'));
                     const desc = contestVal('contest-description');
                     const status = contestRankingStatus();
 
@@ -8100,7 +8152,7 @@
                 };
 
                 // 1 · Armar
-                setVal('contest-name', data.contestName);
+                setVal('contest-name', cleanContestName(data.contestName));
                 setVal('contest-description', data.contestDescription);
                 // Las bases viejas quedaron guardadas como HTML crudo: las traducimos
                 // al formato del editor para que no haya que limpiarlas a mano.
@@ -8149,6 +8201,7 @@
                 });
 
                 // Refrescar toda la UI derivada
+                updateContestNamePreview();
                 updatePrizeImagePreview();
                 updateCountdownPreviewText();
                 updateRankingStatusCards();

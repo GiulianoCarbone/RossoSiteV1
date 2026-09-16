@@ -6963,6 +6963,17 @@
     }
 
     // --- TEXTOS DEL CONCURSO (nombre, descripción y bases desde el panel admin) ---
+    // El panel guarda solo el nombre ("GRIFERÍAS"): el "Desafío", los signos y el
+    // trofeo los agrega la intranet. Si alguien pega el título entero lo recortamos,
+    // si no sale "Desafío Desafío GRIFERÍAS 🏆 🏆".
+    function cleanContestName(raw) {
+      return String(raw || '')
+        .replace(/^[\s¡!]+/, '')
+        .replace(/^(desaf[ií]o|concurso|reto)\b\s*[:;\-–—]?\s*/i, '')
+        .replace(/[\s!¡:;.\-–—\u2190-\u2BFF\uFE0F\u{1F000}-\u{1FAFF}]+$/u, '')
+        .trim();
+    }
+
     function escapeBasesHtml(t) {
       return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
@@ -7006,7 +7017,7 @@
       };
 
       // Un solo nombre alimenta los cinco títulos del concurso
-      const name = (data.contestName || '').trim();
+      const name = cleanContestName(data.contestName);
       if (name) {
         setText('contest-hero-title', 'Desafío ' + name + ' 🏆');
         setText('contest-hero-tagline', '¡' + name + '! 🏆');
