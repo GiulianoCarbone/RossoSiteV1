@@ -7,6 +7,7 @@
     <title>Calculadora de Costo de Almacenamiento | Rosso Materiales</title>
     <meta name="description"
         content="Calculá de forma simple el costo de almacenamiento y recargo del 0,5% por mercadería no retirada en Rosso Materiales.">
+    <meta name="robots" content="noindex,nofollow">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="assets/FAV.png" rel="icon">
@@ -295,6 +296,133 @@
             color: var(--accent);
         }
 
+        /* Solicitud de Desbloqueo (misma pauta que el modal del panel corporativo) */
+        .unlock-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--brand);
+            margin-top: 20px;
+            scroll-margin-top: 90px;
+        }
+
+        .unlock-card .section-title {
+            border-bottom-color: var(--brand);
+        }
+
+        .unlock-intro {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.55;
+            margin-bottom: 18px;
+        }
+
+        .unlock-block {
+            background: #f8f9fa;
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+        }
+
+        .unlock-block h3 {
+            margin-bottom: 8px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--brand);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .unlock-block p,
+        .unlock-block ul {
+            color: #444;
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
+        .unlock-block ul {
+            padding-left: 20px;
+        }
+
+        .unlock-block li+li {
+            margin-top: 4px;
+        }
+
+        .unlock-example {
+            display: inline-block;
+            margin-top: 8px;
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--brand);
+        }
+
+        .unlock-mails {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .unlock-mail {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-family: monospace;
+            font-size: 0.82rem;
+            color: var(--brand);
+            word-break: break-all;
+        }
+
+        .unlock-warning {
+            background: #fff4ed;
+            border: 1px solid #f6c9ae;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin: 4px 0 18px;
+            color: #8a3b12;
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
+        .unlock-warning p+p {
+            margin-top: 10px;
+        }
+
+        .unlock-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: fit-content;
+            margin: 0 auto;
+            background: var(--brand);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.92rem;
+            transition: var(--transition);
+        }
+
+        .unlock-cta:hover {
+            background: var(--accent);
+        }
+
+        .unlock-outro {
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 14px;
+        }
 
     </style>
 </head>
@@ -433,6 +561,70 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- SOLICITUD DE DESBLOQUEO (misma pauta que el modal del panel corporativo) -->
+            <section class="unlock-card" id="desbloqueo">
+                <h2 class="section-title"><i class="fa-solid fa-unlock-keyhole"></i> Solicitud de Desbloqueo</h2>
+                <p class="unlock-intro">
+                    Nueva pauta para la solicitud de desbloqueos. A partir de ahora, para agilizar la gestión, deberán seguir
+                    las siguientes indicaciones en la redacción de los correos.
+                </p>
+
+                <div class="unlock-block">
+                    <h3><i class="fa-solid fa-at"></i> Destinatarios del correo</h3>
+                    <p>El pedido debe enviarse a las dos casillas:</p>
+                    <div class="unlock-mails">
+                        <span class="unlock-mail">jgarcia@rossomateriales.com.ar</span>
+                        <span class="unlock-mail">mdelpero@rossomateriales.com.ar</span>
+                    </div>
+                </div>
+
+                <div class="unlock-block">
+                    <h3><i class="fa-solid fa-envelope"></i> Asunto del correo</h3>
+                    <p>Incluir la palabra <strong>DESBLOQUEO</strong> seguida del nombre del cliente.</p>
+                    <span class="unlock-example">DESBLOQUEO &ndash; Cliente XYZ</span>
+                </div>
+
+                <div class="unlock-block">
+                    <h3><i class="fa-solid fa-list-check"></i> Detalle en el cuerpo del correo</h3>
+                    <ul>
+                        <li>Nombre del cliente</li>
+                        <li>Número de Nota de Pedido</li>
+                        <li>Número de Remito correspondiente a la acción</li>
+                        <li>Fecha del Remito</li>
+                    </ul>
+                </div>
+
+                <div class="unlock-block">
+                    <h3><i class="fa-solid fa-paperclip"></i> Documentación obligatoria (adjuntar)</h3>
+                    <ul>
+                        <li>Copia del comprobante</li>
+                        <li>Copia del documento de identidad del titular de la operación</li>
+                    </ul>
+                </div>
+
+                <div class="unlock-warning">
+                    <p>
+                        Por favor, asegúrense de cumplir con estas pautas para evitar demoras en el procesamiento.
+                        <strong>No se contestarán reenvíos de correos</strong>: una vez enviado deberán esperar respuesta de la
+                        solicitud.
+                    </p>
+                    <p>
+                        Las habilitaciones de comprobantes desbloqueados deberán cumplir con la pauta de realizar la entrega de la
+                        totalidad de la mercadería habilitada. En el caso de que al comprobante solicitado se le realice una
+                        segunda depuración, el cliente deberá abonar el importe calculado en concepto de almacenamiento tal como
+                        dice la factura para así habilitar la entrega.
+                    </p>
+                </div>
+
+                <!-- El href se completa con el cliente cargado arriba (ver updateUnlockMail) -->
+                <a class="unlock-cta" id="unlock-cta"
+                    href="mailto:jgarcia@rossomateriales.com.ar,mdelpero@rossomateriales.com.ar?subject=DESBLOQUEO%20%E2%80%93%20Cliente&amp;body=Nombre%20del%20cliente%3A%0AN%C3%BAmero%20de%20Nota%20de%20Pedido%3A%0AN%C3%BAmero%20de%20Remito%3A%0AFecha%20del%20Remito%3A%0A%0AAdjunto%3A%20copia%20del%20comprobante%20y%20copia%20del%20documento%20de%20identidad%20del%20titular%20de%20la%20operaci%C3%B3n.">
+                    <i class="fa-solid fa-paper-plane"></i> Redactar correo
+                </a>
+
+                <p class="unlock-outro">Ante cualquier consulta, quedamos a disposición.</p>
+            </section>
         </div>
     </main>
 
@@ -451,6 +643,18 @@
         const inputTasa = document.getElementById('tasa-recargo');
         const inputIngreso = document.getElementById('fecha-ingreso');
         const inputRetiro = document.getElementById('fecha-retiro');
+        const TASA_DEFAULT = 0.5;
+        const UNLOCK_TO = 'jgarcia@rossomateriales.com.ar,mdelpero@rossomateriales.com.ar';
+
+        const tasaValida = (v) => v !== undefined && v !== null && v !== '' && !isNaN(parseFloat(v));
+
+        // Si se borra el porcentaje, al salir del campo vuelve al 0,5 por defecto
+        inputTasa.addEventListener('change', () => {
+            if (!tasaValida(inputTasa.value)) {
+                inputTasa.value = TASA_DEFAULT;
+                saveAndCalculate();
+            }
+        });
 
         // Inicializar fechas al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
@@ -465,7 +669,7 @@
                     const state = JSON.parse(savedState);
                     inputCliente.value = state.cliente || '';
                     inputImporte.value = state.importe || '';
-                    inputTasa.value = state.tasa !== undefined ? state.tasa : 0.5;
+                    inputTasa.value = tasaValida(state.tasa) ? state.tasa : TASA_DEFAULT;
                     inputIngreso.value = state.ingreso || hoy;
                     inputRetiro.value = state.retiro || hoy;
                 } catch (e) {
@@ -475,6 +679,7 @@
 
             validateDates();
             calculate();
+            updateUnlockMail();
         });
 
         // Validar que las fechas sean correctas
@@ -505,6 +710,20 @@
         function saveAndCalculate() {
             saveToLocalStorage();
             calculate();
+            updateUnlockMail();
+        }
+
+        // Prearma el correo de desbloqueo con el cliente cargado en la calculadora
+        function updateUnlockMail() {
+            const cliente = inputCliente.value.trim();
+            const subject = 'DESBLOQUEO – ' + (cliente || 'Cliente');
+            const body = 'Nombre del cliente:' + (cliente ? ' ' + cliente : '') + '\n' +
+                'Número de Nota de Pedido:\n' +
+                'Número de Remito:\n' +
+                'Fecha del Remito:\n\n' +
+                'Adjunto: copia del comprobante y copia del documento de identidad del titular de la operación.';
+            document.getElementById('unlock-cta').href =
+                'mailto:' + UNLOCK_TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         }
 
         function saveToLocalStorage() {
@@ -521,7 +740,7 @@
         // Lógica de cálculo
         function calculate() {
             const importe = parseFloat(inputImporte.value) || 0;
-            const tasa = parseFloat(inputTasa.value) / 100 || 0.005;
+            const tasa = (tasaValida(inputTasa.value) ? parseFloat(inputTasa.value) : TASA_DEFAULT) / 100;
             const ingresoStr = inputIngreso.value;
             const retiroStr = inputRetiro.value;
 
