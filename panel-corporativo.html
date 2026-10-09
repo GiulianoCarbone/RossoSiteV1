@@ -2606,6 +2606,124 @@
       }
     }
 
+    /* --- ACADEMIA ROSSO (resumen del legajo; el detalle vive en academia.html) --- */
+    .academia-body {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .academia-loading,
+    .academia-intro {
+      margin: 0;
+      font-size: .92rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .academia-rank {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .academia-rank strong {
+      font-size: 1.05rem;
+      color: var(--brand);
+    }
+
+    .academia-rank span {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .academia-track {
+      height: 8px;
+      background: #eef0f6;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .academia-track span {
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #fbbf24, var(--accent));
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform .5s ease-out;
+    }
+
+    .academia-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .academia-stat {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+
+    .academia-stat b {
+      display: block;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--brand);
+      line-height: 1.1;
+    }
+
+    .academia-stat small {
+      font-size: .74rem;
+      color: var(--muted);
+    }
+
+    .academia-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      align-self: flex-start;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    .academia-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background-color .2s ease, transform .2s ease;
+    }
+
+    .academia-cta:hover {
+      background: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .academia-track span,
+      .academia-cta {
+        transition: none;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .hero-anuncio-badge {
         animation: none;
@@ -3050,6 +3168,12 @@
           </a>
         </li>
         <li class="hamburger-menu-item">
+          <a href="#academia">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Academia Rosso</span>
+          </a>
+        </li>
+        <li class="hamburger-menu-item">
           <a href="#capacitaciones">
             <i class="fa-solid fa-calendar-days"></i>
             <span>Agenda</span>
@@ -3331,9 +3455,17 @@
                 <i class="fa-solid fa-magnifying-glass-dollar"></i>
                 <span>Análisis de Veraz</span>
               </a>
+              <a href="formulario-cheque.html" class="tool-link">
+                <i class="fa-solid fa-money-check-dollar"></i>
+                <span>Operación con Cheque</span>
+              </a>
               <a href="pdf/manualdeproductos.html" class="tool-link">
                 <i class="fa-solid fa-book-open"></i>
                 <span>Manual de Productos</span>
+              </a>
+              <a href="academia.html" class="tool-link">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Academia Rosso</span>
               </a>
               <div id="open-promo-modal-btn" class="tool-link" style="cursor: pointer;">
                 <i class="fa-solid fa-photo-film"></i>
@@ -3368,6 +3500,19 @@
 
 
             </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN ACADEMIA ROSSO -->
+        <div class="panel-card" id="academia">
+          <div class="panel-card-header">
+            <div class="panel-card-icon-title">
+              <span class="panel-card-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+              <h3>Academia Rosso</h3>
+            </div>
+          </div>
+          <div class="panel-card-body academia-body" id="academia-body" aria-live="polite">
+            <p class="academia-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Cargando tu legajo…</p>
           </div>
         </div>
 
@@ -4602,6 +4747,125 @@
         if (fechaEl) fechaEl.textContent = getFechaLarga();
       }
 
+      // --- ACADEMIA ROSSO: resumen del legajo ---
+      // El legajo se guarda en academia_progreso/{dni sanitizado}, igual que en
+      // academia.html. Se lee recién cuando la tarjeta entra en pantalla: quien no
+      // baja hasta ella no gasta ni una lectura (son 2: vendedores + legajo).
+      // OJO: los puntos y los rangos están DUPLICADOS de renderHome() en
+      // academia.html; si cambian allá, replicarlos acá.
+      let academiaNombre = null;
+      let academiaKey = null;
+      let academiaObserver = null;
+
+      function academiaSanitizeKey(s) {
+        return String(s).trim().replace(/[\/\.\#\$\[\]]/g, "_").replace(/\s+/g, "_").slice(0, 120);
+      }
+
+      function academiaResumen(progreso) {
+        let puntos = 0, niveles = 0, certificados = 0;
+        Object.values(progreso.modulos || {}).forEach((m) => {
+          Object.values(m.niveles || {}).forEach((n) => {
+            puntos += n.mejorPuntos || 0;
+            if (n.aprobado) niveles++;
+          });
+          if (m.examenFinal) {
+            puntos += m.examenFinal.mejorPuntos || 0;
+            if (m.examenFinal.aprobado) { niveles++; certificados++; }
+          }
+        });
+        if (progreso.examenMaestro) puntos += progreso.examenMaestro.mejorPuntos || 0;
+
+        let rango = "Asesor Trainee", tope = 250, avance = puntos / 250;
+        if (puntos >= 600) {
+          rango = "Asesor Máster 🌟"; tope = 1000; avance = puntos / 1000;
+        } else if (puntos >= 250) {
+          rango = "Asesor Especialista ⭐"; tope = 600; avance = (puntos - 250) / 350;
+        }
+
+        return {
+          puntos, niveles, certificados, rango, tope,
+          avance: Math.min(1, avance),
+          maestro: !!(progreso.examenMaestro && progreso.examenMaestro.aprobado)
+        };
+      }
+
+      function renderAcademia(progreso) {
+        const body = document.getElementById("academia-body");
+        if (!body) return;
+
+        if (!progreso) {
+          body.innerHTML = `
+            <p class="academia-intro">Capacitate producto por producto con quizzes cortos, sumá XP y ganá tus certificados. Tu progreso queda guardado en tu legajo.</p>
+            <a class="academia-cta" href="academia.html"><i class="fa-solid fa-play"></i> Empezar ahora</a>`;
+          return;
+        }
+
+        const r = academiaResumen(progreso);
+        body.innerHTML = `
+          <div>
+            <div class="academia-rank">
+              <strong>${r.rango}</strong>
+              <span>${r.puntos} / ${r.tope} XP</span>
+            </div>
+            <div class="academia-track"><span id="academia-bar"></span></div>
+          </div>
+          <div class="academia-stats">
+            <div class="academia-stat"><b>${r.puntos}</b><small>XP</small></div>
+            <div class="academia-stat"><b>${r.niveles}</b><small>Niveles aprobados</small></div>
+            <div class="academia-stat"><b>${r.certificados}</b><small>Módulos certificados</small></div>
+          </div>
+          ${r.maestro ? '<span class="academia-badge"><i class="fa-solid fa-trophy"></i> Certificación General aprobada</span>' : ""}
+          <a class="academia-cta" href="academia.html"><i class="fa-solid fa-arrow-right"></i> Seguir capacitándome</a>`;
+
+        // Un frame después para que la barra arranque en 0 y se anime
+        requestAnimationFrame(() => {
+          const bar = document.getElementById("academia-bar");
+          if (bar) bar.style.transform = `scaleX(${r.avance})`;
+        });
+      }
+
+      async function cargarAcademia() {
+        const body = document.getElementById("academia-body");
+        const nombre = academiaNombre;
+        try {
+          if (!academiaKey) {
+            const snap = await db.collection("vendedores").where("nombre", "==", nombre).limit(1).get();
+            const dni = snap.empty ? null : snap.docs[0].data().dni;
+            academiaKey = academiaSanitizeKey(dni || nombre);
+          }
+          const doc = await db.collection("academia_progreso").doc(academiaKey).get();
+          if (nombre !== academiaNombre) return;   // cambió el usuario mientras leía
+          renderAcademia(doc.exists ? doc.data() : null);
+        } catch (error) {
+          console.warn("No se pudo cargar el legajo de la Academia:", error);
+          if (body) body.innerHTML = `
+            <p class="academia-intro">No pudimos cargar tu progreso ahora, pero podés entrar igual.</p>
+            <a class="academia-cta" href="academia.html"><i class="fa-solid fa-arrow-right"></i> Ir a la Academia</a>`;
+        }
+      }
+
+      function observarAcademia(nombre) {
+        const card = document.getElementById("academia");
+        if (!card || nombre === academiaNombre) return;
+        academiaNombre = nombre;
+        academiaKey = null;
+        if (academiaObserver) academiaObserver.disconnect();
+
+        if (!("IntersectionObserver" in window)) { cargarAcademia(); return; }
+        academiaObserver = new IntersectionObserver((entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          academiaObserver.disconnect();
+          cargarAcademia();
+        }, { rootMargin: "200px" });
+        academiaObserver.observe(card);
+      }
+
+      // Al volver desde academia.html con "atrás" el navegador puede restaurar la
+      // página congelada: se relee el legajo para no mostrar el XP viejo.
+      window.addEventListener("pageshow", (e) => {
+        if (e.persisted && academiaKey) cargarAcademia();
+      });
+
       // --- LÓGICA DE LOGIN Y RENDERIZADO INICIAL ---
       function checkLogin() {
         // ***** LÍNEA CORREGIDA *****
@@ -4639,6 +4903,7 @@
           populateUsefulLinks();
           initializeCalendar();
           loadContestConfig();
+          observarAcademia(loggedInUserName);
 
           // Inicia la lógica del contador de usuarios
           updateUserSession(); // Registra la sesión al cargar
