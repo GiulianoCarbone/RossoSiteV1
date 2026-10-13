@@ -2039,10 +2039,37 @@
             box-shadow: 0 2px 8px rgba(22, 163, 74, 0.12);
         }
 
+        /* Medida del puntaje (unidades, importe, m²...) */
+        .score-unit-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 12px 16px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            background: #f8fafc;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+        }
+
+        .score-unit-row .input-group {
+            flex: 0 1 220px;
+        }
+
+        .score-unit-example {
+            font-size: 0.84rem;
+            color: var(--muted);
+            padding-bottom: 11px;
+        }
+
+        .score-unit-example strong {
+            color: var(--ink-soft);
+        }
+
         /* Leaderboard Ranking Table */
         .ranking-table-header {
             display: grid;
-            grid-template-columns: 46px 1.4fr 1.1fr 100px 42px;
+            grid-template-columns: 46px 1.4fr 1.1fr 130px 42px;
             gap: 10px;
             padding: 8px 12px;
             font-size: 0.74rem;
@@ -2059,7 +2086,7 @@
 
         .contest-rank-row {
             display: grid;
-            grid-template-columns: 46px 1.4fr 1.1fr 100px 42px;
+            grid-template-columns: 46px 1.4fr 1.1fr 130px 42px;
             gap: 10px;
             align-items: center;
             padding: 8px 12px;
@@ -3945,6 +3972,27 @@
                             </button>
                         </div>
 
+                        <!-- En qué se mide el concurso: manda la columna, el modal de ranking y el podio -->
+                        <div class="score-unit-row">
+                            <div class="input-group" style="margin: 0;">
+                                <label for="contest-score-unit">¿En qué se mide?</label>
+                                <select id="contest-score-unit">
+                                    <option value="unidades">Unidades</option>
+                                    <option value="importe">Importe ($)</option>
+                                    <option value="m2">Metros cuadrados (m²)</option>
+                                    <option value="puntos">Puntos</option>
+                                    <option value="otra">Otra…</option>
+                                </select>
+                            </div>
+                            <div class="input-group" id="contest-score-unit-custom-wrap" style="margin: 0; display: none;">
+                                <label for="contest-score-unit-custom">Nombre de la medida</label>
+                                <input type="text" id="contest-score-unit-custom" maxlength="20" placeholder="Ej: Bolsas, kg, Litros">
+                            </div>
+                            <div class="score-unit-example">
+                                Así se ve en la intranet: <strong id="contest-score-unit-example">245 u.</strong>
+                            </div>
+                        </div>
+
                         <div id="ranking-body">
                             <div class="contest-cat-subtabs">
                                 <button type="button" class="contest-cat-pill active-cat-a" data-rank-cat="A">
@@ -3962,7 +4010,7 @@
                                 <span>Pos.</span>
                                 <span>Nombre del Vendedor</span>
                                 <span>Sucursal</span>
-                                <span>Unidades</span>
+                                <span id="ranking-score-header">Unidades</span>
                                 <span style="text-align: center;">Acción</span>
                             </div>
 
@@ -4080,8 +4128,8 @@
                                     <input type="text" id="winner-a-branch" placeholder="Ej: Concepción">
                                 </div>
                                 <div class="input-group" style="margin-bottom: 0;">
-                                    <label for="winner-a-score" style="font-size: 0.82rem;">Unidades / Puntos</label>
-                                    <input type="number" id="winner-a-score" placeholder="Ej: 245">
+                                    <label for="winner-a-score" class="winner-score-label" style="font-size: 0.82rem;">Unidades</label>
+                                    <input type="number" step="any" id="winner-a-score" placeholder="Ej: 245">
                                 </div>
                             </div>
 
@@ -4102,8 +4150,8 @@
                                     <input type="text" id="winner-b-branch" placeholder="Ej: Famaillá">
                                 </div>
                                 <div class="input-group" style="margin-bottom: 0;">
-                                    <label for="winner-b-score" style="font-size: 0.82rem;">Unidades / Puntos</label>
-                                    <input type="number" id="winner-b-score" placeholder="Ej: 198">
+                                    <label for="winner-b-score" class="winner-score-label" style="font-size: 0.82rem;">Unidades</label>
+                                    <input type="number" step="any" id="winner-b-score" placeholder="Ej: 198">
                                 </div>
                             </div>
 
@@ -4124,8 +4172,8 @@
                                     <input type="text" id="winner-c-branch" placeholder="Ej: Zona Norte">
                                 </div>
                                 <div class="input-group" style="margin-bottom: 0;">
-                                    <label for="winner-c-score" style="font-size: 0.82rem;">Unidades / Puntos</label>
-                                    <input type="number" id="winner-c-score" placeholder="Ej: 300">
+                                    <label for="winner-c-score" class="winner-score-label" style="font-size: 0.82rem;">Unidades</label>
+                                    <input type="number" step="any" id="winner-c-score" placeholder="Ej: 300">
                                 </div>
                             </div>
                         </div>
@@ -7460,6 +7508,59 @@
             return radio ? radio.value : 'visible';
         }
 
+        // --- Medida del puntaje: unidades, importe, m², puntos u otra ---
+        // Copia de contestScoreFormat en panel-corporativo.html: si tocás una, tocá la otra.
+        // label = encabezado de columna · short = sufijo en el ranking · long = etiqueta del podio
+        function contestScoreFormat(unit, custom) {
+            const num = (n) => Number(n).toLocaleString('es-AR', { maximumFractionDigits: 2 });
+            const money = (n) => '$ ' + Number(n).toLocaleString('es-AR', { maximumFractionDigits: 0 });
+            const customName = String(custom || '').trim();
+            const presets = {
+                unidades: { label: 'Unidades', short: 'u.', long: 'Unidades' },
+                importe: { label: 'Importe ($)', short: '', long: '', money: true },
+                m2: { label: 'm²', short: 'm²', long: 'm²' },
+                puntos: { label: 'Puntos', short: 'pts', long: 'Puntos' }
+            };
+            const p = unit === 'otra'
+                ? (customName ? { label: customName, short: customName, long: customName } : presets.unidades)
+                : (presets[unit] || presets.unidades);
+            return {
+                ...p,
+                value: (v) => {
+                    const n = parseFloat(v);
+                    if (isNaN(n)) return String(v || 0);
+                    return p.money ? money(n) : num(n);
+                }
+            };
+        }
+
+        function contestScoreUnit() {
+            return {
+                unit: contestVal('contest-score-unit') || 'unidades',
+                custom: contestVal('contest-score-unit-custom')
+            };
+        }
+
+        function updateScoreUnitUI() {
+            const { unit, custom } = contestScoreUnit();
+            const fmt = contestScoreFormat(unit, custom);
+
+            const customWrap = document.getElementById('contest-score-unit-custom-wrap');
+            if (customWrap) customWrap.style.display = unit === 'otra' ? '' : 'none';
+
+            const header = document.getElementById('ranking-score-header');
+            if (header) header.textContent = fmt.label;
+
+            document.querySelectorAll('.winner-score-label').forEach(l => { l.textContent = fmt.label; });
+            document.querySelectorAll('.rank-units').forEach(i => { i.placeholder = fmt.label; });
+
+            const example = document.getElementById('contest-score-unit-example');
+            if (example) {
+                const sample = fmt.money ? 1250000 : 245;
+                example.textContent = fmt.value(sample) + (fmt.short ? ' ' + fmt.short : '');
+            }
+        }
+
         // --- Aviso de cambios sin guardar ---
         function markContestDirty() {
             const flag = document.getElementById('contest-dirty-flag');
@@ -7874,7 +7975,8 @@
             container.querySelectorAll('.contest-rank-row').forEach(row => {
                 const name = row.querySelector('.rank-name') ? row.querySelector('.rank-name').value.trim() : '';
                 const branch = row.querySelector('.rank-branch') ? row.querySelector('.rank-branch').value.trim() : '';
-                const units = row.querySelector('.rank-units') ? (parseInt(row.querySelector('.rank-units').value) || 0) : 0;
+                // parseFloat: los m² o importes pueden traer decimales
+                const units = row.querySelector('.rank-units') ? (parseFloat(row.querySelector('.rank-units').value) || 0) : 0;
                 // Las filas en blanco no se publican: antes viajaban a Firestore y
                 // la intranet las dibujaba como puestos con guion y 0 unidades.
                 if (!name) return;
@@ -7903,6 +8005,8 @@
 
                 // 2 · Mientras corre
                 rankingStatus: status,
+                scoreUnit: contestScoreUnit().unit,
+                scoreUnitCustom: contestScoreUnit().custom,
                 // La intranet mira este campo además del estado: lo derivamos para
                 // que no puedan contradecirse como pasaba con el toggle separado.
                 showRankingButton: status !== 'hidden',
@@ -7997,6 +8101,11 @@
             document.querySelectorAll('input[name="ranking-status"]').forEach(radio => {
                 radio.addEventListener('change', updateRankingStatusCards);
             });
+
+            const scoreUnitSelect = document.getElementById('contest-score-unit');
+            if (scoreUnitSelect) scoreUnitSelect.addEventListener('change', updateScoreUnitUI);
+            const scoreUnitCustom = document.getElementById('contest-score-unit-custom');
+            if (scoreUnitCustom) scoreUnitCustom.addEventListener('input', updateScoreUnitUI);
 
             ['show-ranking-a', 'show-ranking-b', 'show-ranking-c'].forEach(id => {
                 const el = document.getElementById(id);
@@ -8109,7 +8218,7 @@
                 <div class="rank-badge-wrap">${medalBadge}</div>
                 <input type="text" class="rank-name" placeholder="Nombre del Vendedor" value="${data ? (data.name || '') : ''}">
                 <input type="text" class="rank-branch" placeholder="Sucursal" value="${data ? (data.branch || '') : ''}">
-                <input type="number" class="rank-units" placeholder="Cant." value="${data ? (data.units || 0) : 0}">
+                <input type="number" step="any" min="0" class="rank-units" placeholder="${contestScoreFormat(contestScoreUnit().unit, contestScoreUnit().custom).label}" value="${data ? (data.units || 0) : 0}">
                 <div style="text-align: center;">
                     <button type="button" class="action-btn btn-delete" onclick="this.closest('.contest-rank-row').remove(); window.updateRankingIndices('${category}');" title="Eliminar fila" style="width: 32px; height: 32px; font-size: 0.8rem; margin: 0 auto;">
                         <i class="fa-solid fa-trash"></i>
@@ -8178,6 +8287,9 @@
                 const radio = document.getElementById('rstatus-' + status);
                 if (radio) radio.checked = true;
                 setVal('contest-goal-current', data.goalCurrent);
+                // Los concursos viejos no tienen el campo: eran todos por unidades
+                setVal('contest-score-unit', data.scoreUnit || 'unidades');
+                setVal('contest-score-unit-custom', data.scoreUnitCustom);
 
                 ['A', 'B', 'C'].forEach(cat => {
                     const container = document.getElementById('ranking-' + cat.toLowerCase() + '-container');
@@ -8205,6 +8317,7 @@
                 updatePrizeImagePreview();
                 updateCountdownPreviewText();
                 updateRankingStatusCards();
+                updateScoreUnitUI();
                 updateActiveCategoriesUI();
                 updateGoalUI();
                 clearContestDirty();

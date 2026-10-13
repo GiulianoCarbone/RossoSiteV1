@@ -7121,7 +7121,7 @@
             <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
               <span id="winner-a-display-score"
                 style="font-size: 1.8rem; color: #3b82f6; font-weight: 900; font-family: 'Inter', sans-serif;">0</span>
-              <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 700;">UNIDADES</span>
+              <span class="winner-score-unit" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Unidades</span>
             </div>
           </div>
 
@@ -7147,7 +7147,7 @@
             <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
               <span id="winner-c-display-score"
                 style="font-size: 1.8rem; color: #16a34a; font-weight: 900; font-family: 'Inter', sans-serif;">0</span>
-              <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 700;">UNIDADES</span>
+              <span class="winner-score-unit" style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; text-transform: uppercase;">Unidades</span>
             </div>
           </div>
         </div>
@@ -7308,6 +7308,32 @@
       if (termsEl && terms) termsEl.innerHTML = formatBasesText(terms);
     }
 
+    // --- MEDIDA DEL PUNTAJE (unidades, importe, m², puntos u otra) ---
+    // Copia de contestScoreFormat en admin/panel-admin.html: si tocás una, tocá la otra.
+    // label = encabezado de columna · short = sufijo en el ranking · long = etiqueta del podio
+    function contestScoreFormat(unit, custom) {
+      const num = (n) => Number(n).toLocaleString('es-AR', { maximumFractionDigits: 2 });
+      const money = (n) => '$ ' + Number(n).toLocaleString('es-AR', { maximumFractionDigits: 0 });
+      const customName = String(custom || '').trim();
+      const presets = {
+        unidades: { label: 'Unidades', short: 'u.', long: 'Unidades' },
+        importe: { label: 'Importe ($)', short: '', long: '', money: true },
+        m2: { label: 'm²', short: 'm²', long: 'm²' },
+        puntos: { label: 'Puntos', short: 'pts', long: 'Puntos' }
+      };
+      const p = unit === 'otra'
+        ? (customName ? { label: customName, short: customName, long: customName } : presets.unidades)
+        : (presets[unit] || presets.unidades);
+      return {
+        ...p,
+        value: (v) => {
+          const n = parseFloat(v);
+          if (isNaN(n)) return String(v || 0);
+          return p.money ? money(n) : num(n);
+        }
+      };
+    }
+
     // --- META PARA ACTIVAR EL PREMIO (barra de progreso del modal de ranking) ---
     const goalMoneyFmt = new Intl.NumberFormat('es-AR', {
       style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 0
@@ -7376,6 +7402,10 @@
         // 2. Meta para activar el premio (opcional)
         renderContestGoal(data);
 
+        // Los concursos viejos no tienen scoreUnit: eran todos por unidades
+        const scoreFmt = contestScoreFormat(data.scoreUnit, data.scoreUnitCustom);
+        const escapeScore = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
         // Helper function for dynamic ranking rendering
         function renderRanking(containerId, rankingData, category) {
           const container = document.getElementById(containerId);
@@ -7421,7 +7451,7 @@
                   <div style="font-weight: 700; color: #1f2937; font-size: 0.9rem;">${item.name || '-'}</div>
                   <div style="font-size: 0.75rem; color: #6b7280;">${item.branch || '-'}</div>
                 </div>
-                <div style="font-weight: 800; color: ${unitColor}; font-size: 1rem;">${item.units || 0}</div>
+                <div style="font-weight: 800; color: ${unitColor}; font-size: 1rem; white-space: nowrap;">${scoreFmt.value(item.units || 0)}${scoreFmt.short ? ` <span style="font-size: 0.72rem; font-weight: 700; color: #94a3b8;">${escapeScore(scoreFmt.short)}</span>` : ''}</div>
               </div>
             `;
           });
@@ -7506,15 +7536,21 @@
             // Populate Modal Static Data
             if (data.winnerAName) document.getElementById('winner-a-display-name').textContent = data.winnerAName;
             if (data.winnerABranch) document.getElementById('winner-a-display-branch').textContent = data.winnerABranch;
-            if (data.winnerAScore) document.getElementById('winner-a-display-score').textContent = data.winnerAScore;
+            if (data.winnerAScore) document.getElementById('winner-a-display-score').textContent = scoreFmt.value(data.winnerAScore);
 
             if (data.winnerBName) document.getElementById('winner-b-display-name').textContent = data.winnerBName;
             if (data.winnerBBranch) document.getElementById('winner-b-display-branch').textContent = data.winnerBBranch;
-            if (data.winnerBScore) document.getElementById('winner-b-display-score').textContent = data.winnerBScore;
+            if (data.winnerBScore) document.getElementById('winner-b-display-score').textContent = scoreFmt.value(data.winnerBScore);
 
             if (data.winnerCName) document.getElementById('winner-c-display-name').textContent = data.winnerCName;
             if (data.winnerCBranch) document.getElementById('winner-c-display-branch').textContent = data.winnerCBranch;
-            if (data.winnerCScore) document.getElementById('winner-c-display-score').textContent = data.winnerCScore;
+            if (data.winnerCScore) document.getElementById('winner-c-display-score').textContent = scoreFmt.value(data.winnerCScore);
+
+            // "UNIDADES" debajo del puntaje; en importe el "$" ya lo dice todo
+            document.querySelectorAll('.winner-score-unit').forEach(el => {
+              el.textContent = scoreFmt.long;
+              el.style.display = scoreFmt.long ? '' : 'none';
+            });
           }
         }
       } catch (err) {
