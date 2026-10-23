@@ -1085,6 +1085,8 @@ main {
 .page-nosotros main {
   flex-grow: 1;
   display: flex;
+  padding-top: var(--header-h);
+  box-sizing: border-box;
   /* Añadimos flex para poder centrar la sección */
 }
 
