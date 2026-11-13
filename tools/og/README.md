@@ -14,7 +14,7 @@ Para volver a generar una imagen (1200×630) con Edge en modo headless:
 ```
 
 Después hay que pasarla a JPG (calidad ~86, menos de 300 KB) y guardarla en `assets/og/`.
-Si se abre o se cierra una sucursal, hay que actualizar el "9" y los nombres en `og-sucursales.html`.
+Si se abre o se cierra una sucursal, hay que actualizar el número y los nombres en `og-sucursales.html`.
 
 ## Catálogo
 
@@ -22,3 +22,18 @@ Si se abre o se cierra una sucursal, hay que actualizar el "9" y los nombres en 
 más liviano que sucursales, porque el fondo ya es muy claro. Las píldoras son las categorías reales del
 catálogo (colección `categorias` de Firestore): si se agrega o se renombra una categoría, actualizarlas acá.
 Mensajes alternativos con #1, #2 o #3. Salida: `assets/og/og-catalogo.jpg`.
+
+## Inicio
+
+`og-inicio.html` usa `fondo-inicio.jpg` (casa de ladrillo en obra con los cerros de fondo, generado con Magnific).
+Las píldoras salen del propio index.html: 8 sucursales, stock permanente, acopio, entrega a pie de obra, catálogo online.
+Mensajes alternativos con #1, #2 o #3. Salida: `assets/og/og-inicio.jpg`.
+
+## Trabajá con nosotros
+
+`og-trabaja.html` usa `fondo-trabaja.jpg` (la foto real de `assets/SLIDER/banner-trabaja.webp`).
+Como hay una persona, el armado principal (A) la deja a la izquierda casi sin velo y pone el texto a la derecha;
+el armado B (todo centrado) le tapa la cara. Se compara con #<mensaje>-<armado>, por ejemplo #2-b.
+Salida: `assets/og/og-trabaja.jpg`.
+
+Ojo con la cantidad de sucursales: J.B. Alberdi está comentada en sucursales.html, así que son 8.

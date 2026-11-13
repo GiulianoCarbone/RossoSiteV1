@@ -3580,12 +3580,6 @@
       const dotsEl = document.getElementById('hero-dots');
       if (!track || !dotsEl) return;
 
-      const FALLBACK = [
-        'assets/SLIDER/Slider-catalogo.jpg',
-        'assets/SLIDER/Slider-catalogo1.jpg',
-        'assets/SLIDER/Slider-catalogo2.jpg'
-      ];
-
       let urls = [];
       try {
         const doc = await db.collection('config').doc('catalogoSlider').get();
@@ -3602,7 +3596,13 @@
         }
       } catch (e) {}
 
-      if (urls.length === 0) urls = FALLBACK;
+      // Sin slides cargados en el panel (o si Firestore falla): se oculta el encabezado entero
+      // en vez de mostrar imágenes rotas. Los slides se administran en config/catalogoSlider.
+      if (urls.length === 0) {
+        const hero = track.closest('.catalog-hero');
+        if (hero) hero.style.display = 'none';
+        return;
+      }
 
       track.innerHTML = urls.map((url, i) => `
         <div class="hero-slide${i === 0 ? ' active' : ''}">

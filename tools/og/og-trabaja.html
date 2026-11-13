@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=block" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: #fff; }
+  .og {
+    position: relative; width: 1200px; height: 630px; font-family: "Inter", sans-serif; color: #272e68;
+    background: #fff url("fondo-trabaja.jpg") left -170px center / auto 630px no-repeat;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  }
+  .og::before { content: ""; position: absolute; inset: 0; }
+  .og > * { position: relative; }
+
+  /* Armado A: la persona a la izquierda casi sin velo, el velo se hace denso detrás del texto */
+  .og.a { align-items: flex-end; padding-right: 60px; }
+  .og.a .box { width: 640px; display: flex; flex-direction: column; align-items: center; }
+  .og.a::before {
+    background: linear-gradient(90deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.18) 28%,
+                rgba(255,255,255,.86) 46%, rgba(255,255,255,.93) 100%);
+  }
+  /* Armado B: todo centrado con velo radial, como sucursales */
+  .og.b .box { display: flex; flex-direction: column; align-items: center; }
+  .og.b::before {
+    background:
+      radial-gradient(ellipse 58% 68% at 50% 50%, rgba(255,255,255,.93) 0%, rgba(255,255,255,.78) 55%, rgba(255,255,255,.4) 100%),
+      linear-gradient(180deg, rgba(255,255,255,0) 60%, rgba(255,255,255,.6) 100%);
+  }
+
+  .logo { height: 76px; margin-bottom: 22px; }
+  .title { font-weight: 800; font-size: 66px; line-height: 1.02; letter-spacing: -2.2px; }
+  .title em { font-style: normal; color: #ec6434; }
+  .sub { margin-top: 16px; font-weight: 600; font-size: 27px; letter-spacing: -.4px; color: #3d4470; }
+  .rule { width: 64px; height: 4px; border-radius: 2px; background: #ec6434; margin: 22px auto 20px; }
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 1000px; }
+  .og.a .chips { max-width: 600px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 18px; line-height: 1;
+    padding: 9px 15px 9px 13px; border-radius: 999px; color: #272e68;
+    background: rgba(255,255,255,.88); border: 1px solid #dcdfec;
+    box-shadow: 0 2px 8px rgba(39,46,104,.08);
+  }
+  .chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #ec6434; flex: none; }
+</style>
+</head>
+<body>
+<div class="og a" id="og">
+  <div class="box">
+    <img class="logo" src="logo-trim.png" alt="Rosso">
+    <div class="title" id="title">Construí tu futuro<br><em>con Rosso</em></div>
+    <div class="sub" id="sub">Envianos tu CV y sumate al equipo</div>
+    <div class="rule"></div>
+    <!-- Beneficios tal cual figuran en trabaja-con-nosotros.html -->
+    <div class="chips">
+      <span class="chip">Estabilidad laboral</span>
+      <span class="chip">Crecimiento profesional</span>
+      <span class="chip">Buen ambiente de trabajo</span>
+      <span class="chip">Presencia regional</span>
+    </div>
+  </div>
+</div>
+<script>
+  // Comparar: #<mensaje>-<armado>, por ejemplo #2-b. Mensajes 1 a 3, armados a (persona a la izquierda) o b (centrado).
+  const variantes = {
+    "1": ['Construí tu futuro<br><em>con Rosso</em>', 'Envianos tu CV y sumate al equipo'],
+    "2": ['Sumate al<br><em>equipo Rosso</em>', 'Recibimos postulaciones todo el año'],
+    "3": ['¿Te sumás<br><em>al equipo?</em>', 'Envianos tu CV y construí tu futuro con Rosso']
+  };
+  const [msg, armado] = location.hash.slice(1).split('-');
+  if (variantes[msg]) { document.getElementById('title').innerHTML = variantes[msg][0]; document.getElementById('sub').innerHTML = variantes[msg][1]; }
+  if (armado === 'b') { const og = document.getElementById('og'); og.classList.remove('a'); og.classList.add('b'); }
+</script>
+</body>
+</html>
