@@ -15,3 +15,10 @@ Para volver a generar una imagen (1200×630) con Edge en modo headless:
 
 Después hay que pasarla a JPG (calidad ~86, menos de 300 KB) y guardarla en `assets/og/`.
 Si se abre o se cierra una sucursal, hay que actualizar el "9" y los nombres en `og-sucursales.html`.
+
+## Catálogo
+
+`og-catalogo.html` usa `fondo-catalogo.jpg` (showroom generado con Magnific, Nano Banana 2.1) con un velo
+más liviano que sucursales, porque el fondo ya es muy claro. Las píldoras son las categorías reales del
+catálogo (colección `categorias` de Firestore): si se agrega o se renombra una categoría, actualizarlas acá.
+Mensajes alternativos con #1, #2 o #3. Salida: `assets/og/og-catalogo.jpg`.

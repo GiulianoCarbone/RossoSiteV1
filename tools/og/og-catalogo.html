@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=block" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: #fff; }
+  .og {
+    position: relative; width: 1200px; height: 630px; font-family: "Inter", sans-serif; color: #272e68;
+    background: #fff url("fondo-catalogo.jpg") center / cover no-repeat;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  }
+  /* Velo blanco completo como en sucursales, pero más liviano: el showroom ya es muy claro */
+  .og::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 52% 62% at 50% 50%, rgba(255,255,255,.86) 0%, rgba(255,255,255,.6) 55%, rgba(255,255,255,.12) 100%),
+      linear-gradient(180deg, rgba(255,255,255,0) 65%, rgba(255,255,255,.45) 100%);
+  }
+  .og > * { position: relative; }
+  .logo { height: 80px; margin-bottom: 24px; }
+  .title { font-weight: 800; font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; }
+  .title em { font-style: normal; color: #ec6434; }
+  .sub { margin-top: 16px; font-weight: 600; font-size: 30px; letter-spacing: -.5px; color: #3d4470; }
+  .sub b { color: #ec6434; font-weight: 800; }
+  .rule { width: 64px; height: 4px; border-radius: 2px; background: #ec6434; margin: 24px auto 22px; }
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 1060px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 18px; line-height: 1;
+    padding: 9px 15px 9px 13px; border-radius: 999px; color: #272e68;
+    background: rgba(255,255,255,.85); border: 1px solid #dcdfec;
+    box-shadow: 0 2px 8px rgba(39,46,104,.08);
+  }
+  .chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #ec6434; flex: none; }
+</style>
+</head>
+<body>
+<div class="og">
+  <img class="logo" src="logo-trim.png" alt="Rosso">
+  <div class="title" id="title">Explorá nuestro<br><em>catálogo online</em></div>
+  <div class="sub" id="sub">Armá tu lista y cotizá por WhatsApp</div>
+  <div class="rule"></div>
+  <!-- Categorías reales del catálogo (colección `categorias` de Firestore) -->
+  <div class="chips">
+    <span class="chip">Pisos y Revestimientos</span>
+    <span class="chip">Griferías</span>
+    <span class="chip">Juegos de Baño</span>
+    <span class="chip">Muebles de Baño</span>
+    <span class="chip">Bachas</span>
+    <span class="chip">Aberturas</span>
+    <span class="chip">Termotanques</span>
+    <span class="chip">Tanques de agua</span>
+    <span class="chip">Construcción</span>
+    <span class="chip">Terminaciones</span>
+  </div>
+</div>
+<script>
+  // Variantes de mensaje para comparar: abrir con #1, #2 o #3
+  const variantes = {
+    "1": ['Explorá nuestro<br><em>catálogo online</em>', 'Armá tu lista y cotizá por WhatsApp'],
+    "2": ['Cotizá tu obra<br><em>desde el celular</em>', 'Armá tu lista y consultá por WhatsApp'],
+    "3": ['Todo para tu obra,<br><em>en un solo lugar</em>', 'Armá tu lista y cotizá por WhatsApp']
+  };
+  const v = variantes[location.hash.slice(1)];
+  if (v) { document.getElementById('title').innerHTML = v[0]; document.getElementById('sub').innerHTML = v[1]; }
+</script>
+</body>
+</html>
