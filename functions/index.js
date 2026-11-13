@@ -823,3 +823,78 @@ exports.mejorarAnuncio = onRequest(
     }
   }
 );
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Cloud Function: enviarPush
+ * Puente entre el panel admin y el webhook de n8n que manda las push al
+ * equipo. Antes el panel llamaba al webhook directo y sin credenciales, así
+ * que cualquiera que viera la URL podía mandarle a todos un aviso con el
+ * link que quisiera. Ahora:
+ *   • solo el admin autenticado puede pedir un envío (ID token de Firebase);
+ *   • esta función le habla a n8n con una clave que vive como SECRET
+ *     (N8N_PUSH_SECRET) y que el webhook exige por Header Auth.
+ * No confundir con `sendPushNotification`: esa es otra función desplegada
+ * cuyo fuente no está en el repo.
+ * ───────────────────────────────────────────────────────────────────────── */
+const N8N_PUSH_SECRET = defineSecret('N8N_PUSH_SECRET');
+const N8N_PUSH_URL = 'https://n8n-production-4e14.up.railway.app/webhook/send-push';
+const LINK_PUSH_DEFAULT = '/panel-corporativo.html';
+
+// Acepta rutas del sitio ("/algo", "pagina.html") y URLs http(s). Un dominio
+// sin protocolo ("www.sitio.com") se completa con https; cualquier otra cosa
+// (incluido "javascript:") va al panel.
+function linkPush(v) {
+  const s = String(v == null ? '' : v).trim().slice(0, 500);
+  if (/^\/(?!\/)/.test(s) || /^https?:\/\//i.test(s)) return s;
+  if (/^[\w-]+\.html?([?#].*)?$/i.test(s)) return '/' + s;
+  if (/^[\w-]+(\.[\w-]+)+(\/|$)/.test(s)) return 'https://' + s;
+  return LINK_PUSH_DEFAULT;
+}
+
+exports.enviarPush = onRequest(
+  { secrets: [N8N_PUSH_SECRET], cors: true, region: 'us-central1' },
+  async (req, res) => {
+    try {
+      if (req.method !== 'POST') return res.status(405).json({ error: 'Método no permitido' });
+
+      // Mismo control que `sugerir` y `mejorarAnuncio`: solo el admin
+      const authz = req.headers.authorization || '';
+      const token = authz.startsWith('Bearer ') ? authz.slice(7) : '';
+      if (!token) return res.status(401).json({ error: 'Falta autenticación' });
+      let decoded;
+      try { decoded = await admin.auth().verifyIdToken(token); }
+      catch (e) { return res.status(401).json({ error: 'Token inválido' }); }
+      if (!ADMIN_EMAILS.includes(decoded.email)) {
+        return res.status(403).json({ error: 'Solo el admin puede usar esta función' });
+      }
+
+      const b = req.body || {};
+      const title = limpiar(b.title, 150);
+      const body = limpiar(b.body, 500);
+      if (!title) return res.status(400).json({ error: 'Falta el título del aviso' });
+
+      // Mismo formato que mandaba el panel: el service worker lee `body`
+      const r = await fetch(N8N_PUSH_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Rosso-Push-Key': N8N_PUSH_SECRET.value().trim(),
+        },
+        body: JSON.stringify({ title, body, link: linkPush(b.link) }),
+        signal: AbortSignal.timeout(20000),
+      });
+
+      const txt = await r.text();
+      let respuesta;
+      try { respuesta = JSON.parse(txt); } catch (e) { respuesta = txt.slice(0, 300); }
+      if (!r.ok) {
+        console.error('enviarPush: n8n respondió', r.status, String(txt).slice(0, 300));
+        return res.status(502).json({ error: `n8n respondió ${r.status}` });
+      }
+      return res.json({ ok: true, n8n: respuesta });
+    } catch (e) {
+      console.error('enviarPush error:', e);
+      return res.status(500).json({ error: 'Error interno: ' + (e.message || String(e)) });
+    }
+  }
+);

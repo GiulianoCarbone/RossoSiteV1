@@ -6930,27 +6930,32 @@
             };
         }
 
-        // Función para enviar Push a n8n (reemplaza a OneSignal)
-        async function sendPushNotification(title, message, link) {
-            const N8N_PUSH_WEBHOOK = 'https://n8n-production-4e14.up.railway.app/webhook/send-push';
+        // Las push salen por la Cloud Function `enviarPush`: verifica que quien
+        // pide el envío sea el admin y recién ahí se lo pasa a n8n con la clave
+        // secreta. El panel ya no conoce la URL del webhook.
+        const ENVIAR_PUSH_URL = 'https://us-central1-backend-panel-vendedores.cloudfunctions.net/enviarPush';
 
+        async function sendPushNotification(title, message, link) {
             // Se usa 'body' (estándar Web Push) para que el SW lo lea directamente
             const body = {
                 title: title,
-                body: message,    // ← era 'message', ahora 'body' (coincide con el SW)
+                body: message,
                 link: link || '/panel-corporativo.html'
             };
 
             try {
-                const response = await fetch(N8N_PUSH_WEBHOOK, {
+                const idToken = await auth.currentUser.getIdToken();
+                const response = await fetch(ENVIAR_PUSH_URL, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${idToken}` },
                     body: JSON.stringify(body)
                 });
-                const result = await response.json();
-                console.log("Push enviado a n8n:", result);
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(result.error || `HTTP ${response.status}`);
+                console.log("Push enviado:", result);
             } catch (error) {
                 console.error("Error enviando Push:", error);
+                toast("Se guardó, pero no se pudo enviar el aviso push al equipo.", "error");
             }
         }
 
