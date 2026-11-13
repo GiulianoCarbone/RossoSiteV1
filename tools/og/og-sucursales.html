@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=block" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: #fff; }
+  .og {
+    position: relative; width: 1200px; height: 630px; font-family: "Inter", sans-serif; color: #272e68;
+    background: #fff url("fondo-sucursales.jpg") left -361px top -279px / 1584px auto no-repeat;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  }
+  /* Velo blanco completo: más denso en el centro, más suave en los bordes para que se vea la fachada */
+  .og::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 68% at 50% 50%, rgba(255,255,255,.93) 0%, rgba(255,255,255,.78) 55%, rgba(255,255,255,.42) 100%),
+      linear-gradient(180deg, rgba(255,255,255,0) 60%, rgba(255,255,255,.6) 100%);
+  }
+  .og > * { position: relative; }
+  .logo { height: 80px; margin-bottom: 24px; }
+  .title { font-weight: 800; font-size: 72px; line-height: 1.02; letter-spacing: -2.4px; }
+  .title em { font-style: normal; color: #ec6434; }
+  .sub { margin-top: 16px; font-weight: 600; font-size: 30px; letter-spacing: -.5px; color: #3d4470; }
+  .sub b { color: #ec6434; font-weight: 800; }
+  .rule { width: 64px; height: 4px; border-radius: 2px; background: #ec6434; margin: 24px auto 22px; }
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 1000px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 7px; font-weight: 600; font-size: 18px; line-height: 1;
+    padding: 9px 15px 9px 12px; border-radius: 999px; color: #272e68;
+    background: rgba(255,255,255,.85); border: 1px solid #dcdfec;
+    box-shadow: 0 2px 8px rgba(39,46,104,.08);
+  }
+  .chip svg { width: 14px; height: 14px; flex: none; fill: #ec6434; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></symbol>
+</svg>
+<div class="og">
+  <img class="logo" src="logo-trim.png" alt="Rosso">
+  <div class="title" id="title">Encontrá tu Rosso<br><em>más cercano</em></div>
+  <div class="sub"><b>9</b> sucursales en Tucumán y Salta</div>
+  <div class="rule"></div>
+  <div class="chips">
+    <span class="chip"><svg><use href="#pin"/></svg>San Miguel de Tucumán</span>
+    <span class="chip"><svg><use href="#pin"/></svg>Salta</span>
+    <span class="chip"><svg><use href="#pin"/></svg>Metán</span>
+    <span class="chip"><svg><use href="#pin"/></svg>Monteros</span>
+    <span class="chip"><svg><use href="#pin"/></svg>Concepción</span>
+    <span class="chip"><svg><use href="#pin"/></svg>Aguilares</span>
+    <span class="chip"><svg><use href="#pin"/></svg>Famaillá</span>
+    <span class="chip"><svg><use href="#pin"/></svg>J.B. Alberdi</span>
+    <span class="chip"><svg><use href="#pin"/></svg>Tafí del Valle</span>
+  </div>
+</div>
+<script>
+  // Mensaje elegido: el del HTML de arriba ("Encontrá tu Rosso más cercano").
+  // Alternativas para comparar: abrir con #1, #2 o #3
+  const variantes = {
+    "1": 'Siempre hay un Rosso<br><em>cerca tuyo</em>',
+    "2": 'Estamos <em>cerca</em><br>de tu obra',
+    "3": 'Donde estés,<br><em>hay un Rosso cerca</em>'
+  };
+  const v = variantes[location.hash.slice(1)];
+  if (v) document.getElementById('title').innerHTML = v;
+</script>
+</body>
+</html>
