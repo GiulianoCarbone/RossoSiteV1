@@ -837,7 +837,7 @@
     const lineas = lista.map(i =>
       `• ${i.nombre} (SKU: ${i.sku})${i.unidad ? ' — ' + i.cantidad + ' ' + i.unidad : ' — Cantidad: ' + i.cantidad}`
     ).join('\n');
-    const msg = encodeURIComponent(`Hola! Quiero consultar sobre los siguientes productos:\n\n${lineas}\n\n¿Cuál es la disponibilidad y precio de cada uno?\nMuchas gracias.`);
+    const msg = encodeURIComponent(`Hola! Estoy armando los materiales para mi obra y elegí estos productos del catálogo web:\n\n${lineas}\n\n¿Me pueden ayudar?`);
     sendBtn.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
     sendBtn.style.opacity = '1'; sendBtn.style.pointerEvents = 'auto';
   }
@@ -974,7 +974,7 @@
 
     // WhatsApp
     const msg = encodeURIComponent(
-      `Hola! Quiero consultar sobre este producto:\n\n• ${p.nombre} (SKU: ${p.sku})\n\n¿Cuál es la disponibilidad y precio?\nMuchas gracias.`
+      `Hola! Estoy viendo este producto en el catálogo web para mi obra:\n\n• ${p.nombre} (SKU: ${p.sku})\n\n¿Me pueden ayudar?`
     );
     document.getElementById('btn-wp').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
