@@ -181,33 +181,6 @@
       gap: 6px;
     }
 
-    /* Cantidad */
-    .qty-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-    .qty-label { font-size: 0.85rem; font-weight: 600; }
-    .qty-ctrl  {
-      display: flex; align-items: center;
-      border: 1.5px solid var(--border); border-radius: 9px; overflow: hidden;
-    }
-    .qty-btn {
-      background: #f3f4f6; border: none;
-      width: 36px; height: 36px;
-      font-size: 1.1rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background .15s;
-    }
-    .qty-btn:hover { background: #e5e7eb; }
-    .qty-input {
-      width: 48px; text-align: center;
-      border: none;
-      border-left: 1.5px solid var(--border);
-      border-right: 1.5px solid var(--border);
-      height: 36px; font-size: 0.95rem; font-family: inherit;
-      outline: none;
-      -moz-appearance: textfield;
-    }
-    .qty-input::-webkit-outer-spin-button,
-    .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-
     /* Botones acción */
     .pdp-actions { display: flex; flex-direction: column; gap: 10px; }
     .btn-pdp-add {
@@ -393,11 +366,6 @@
     .qp-item-info { flex: 1; min-width: 0; }
     .qp-item-name { font-size: 0.83rem; font-weight: 600; line-height: 1.3; margin-bottom: 2px; }
     .qp-item-sku  { display: none; }
-    .qp-qty-row   { display: flex; align-items: center; gap: 8px; }
-    .qp-qty-ctrl  { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-    .qp-qty-btn   { background: #f3f4f6; border: none; width: 26px; height: 26px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .qp-qty-btn:hover { background: #e5e7eb; }
-    .qp-qty-val   { width: 32px; text-align: center; border-left: 1px solid var(--border); border-right: 1px solid var(--border); height: 26px; line-height: 26px; font-size: 0.82rem; }
     .qp-item-del  { background: none; border: none; color: #d1d5db; cursor: pointer; font-size: 1.1rem; padding: 4px; transition: color .15s; align-self: flex-start; }
     .qp-item-del:hover { color: #dc2626; }
     .qp-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 0.88rem; }
@@ -580,15 +548,6 @@
         <div class="pdp-desc"  id="pdp-desc"></div>
         <div class="pdp-unidad" id="pdp-unidad"></div>
 
-        <div class="qty-row">
-          <span class="qty-label">Cantidad:</span>
-          <div class="qty-ctrl">
-            <button class="qty-btn" onclick="changeQty(-1)">−</button>
-            <input class="qty-input" type="number" id="qty" value="1" min="1" max="999" />
-            <button class="qty-btn" onclick="changeQty(1)">+</button>
-          </div>
-        </div>
-
         <div class="pdp-actions">
           <button class="btn-pdp-add" id="btn-add" onclick="agregarALista()">
             <i class="fa-solid fa-list-check"></i> Agregar a mi lista
@@ -690,7 +649,7 @@
       </div>
     </div>
     <div class="mc-footer">
-      <button class="btn-mc-apply" onclick="aplicarCalculo()">Hacer pedido por esta cantidad</button>
+      <button class="btn-mc-apply" onclick="aplicarCalculo()">Agregar a mi lista</button>
     </div>
   </div>
 </div>
@@ -819,14 +778,6 @@
           <div class="qp-item-info">
             <div class="qp-item-name">${esc(item.nombre)}</div>
             <div class="qp-item-sku">SKU ${esc(item.sku)}</div>
-            <div class="qp-qty-row">
-              <div class="qp-qty-ctrl">
-                <button class="qp-qty-btn" onclick="cambiarCantidad('${esc(item.sku)}',-1)">−</button>
-                <div class="qp-qty-val">${item.cantidad}</div>
-                <button class="qp-qty-btn" onclick="cambiarCantidad('${esc(item.sku)}',1)">+</button>
-              </div>
-              ${item.unidad ? `<span style="font-size:0.72rem;color:var(--muted)">${esc(item.unidad)}</span>` : ''}
-            </div>
           </div>
           <button class="qp-item-del" onclick="quitarItem('${esc(item.sku)}')"><i class="fa-solid fa-xmark"></i></button>
         </div>`;
@@ -834,20 +785,10 @@
 
     countEl.textContent = `${lista.length} producto${lista.length !== 1 ? 's' : ''}`;
 
-    const lineas = lista.map(i =>
-      `• ${i.nombre} (SKU: ${i.sku})${i.unidad ? ' — ' + i.cantidad + ' ' + i.unidad : ' — Cantidad: ' + i.cantidad}`
-    ).join('\n');
-    const msg = encodeURIComponent(`Hola! Estoy armando los materiales para mi obra y elegí estos productos del catálogo web:\n\n${lineas}\n\n¿Me pueden ayudar?`);
+    const lineas = lista.map(i => `• ${i.nombre} (SKU: ${i.sku})`).join('\n');
+    const msg = encodeURIComponent(`Hola 👋, me interesan estos productos que vi en el catálogo:\n\n${lineas}`);
     sendBtn.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
     sendBtn.style.opacity = '1'; sendBtn.style.pointerEvents = 'auto';
-  }
-
-  function cambiarCantidad(sku, delta) {
-    const item = lista.find(i => i.sku === sku);
-    if (!item) return;
-    item.cantidad = Math.max(1, item.cantidad + delta);
-    guardarLista();
-    renderPanel();
   }
 
   function quitarItem(sku) {
@@ -859,25 +800,13 @@
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarPanel(); });
 
-  /* ── Cantidad ── */
-  function changeQty(delta) {
-    const input = document.getElementById('qty');
-    input.value = Math.max(1, (parseInt(input.value) || 1) + delta);
-  }
-
-  /* ── Agregar a lista ── */
+  /* ── Agregar a lista (sin cantidades: se hablan después por WhatsApp) ── */
   function agregarALista() {
     if (!producto) return;
-    const qty = parseInt(document.getElementById('qty').value) || 1;
-    const existente = lista.find(i => i.sku === producto.sku);
-    if (existente) {
-      existente.cantidad += qty;
-    } else {
+    if (!lista.some(i => i.sku === producto.sku)) {
       lista.push({
         sku:      producto.sku,
         nombre:   producto.nombre,
-        cantidad: qty,
-        unidad:   producto.unidad || '',
         cat:      [producto.categoria, producto.subcategoria].filter(Boolean).join(' › '),
         imagenUrl: getImg(producto, 'thumb')
       });
@@ -974,7 +903,7 @@
 
     // WhatsApp
     const msg = encodeURIComponent(
-      `Hola! Estoy viendo este producto en el catálogo web para mi obra:\n\n• ${p.nombre} (SKU: ${p.sku})\n\n¿Me pueden ayudar?`
+      `Hola 👋, me interesa ${p.nombre} que vi en el catálogo (SKU: ${p.sku}).`
     );
     document.getElementById('btn-wp').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
@@ -1072,10 +1001,6 @@
 
   function aplicarCalculo() {
     if (calculoCajas < 1) return;
-    document.getElementById('qty').value = calculoCajas;
-    if (producto) {
-      producto.unidad = 'Cajas'; // Cambiamos temporalmente la unidad para que se vea en la lista
-    }
     agregarALista();
     cerrarCalculadora();
     abrirPanel();
@@ -1128,10 +1053,8 @@
     db.collection('catalogo').where('sku', '==', sku).limit(1).get().then(snap => {
       if (snap.empty) return;
       const p = { id: snap.docs[0].id, ...snap.docs[0].data() };
-      const existente = lista.find(i => i.sku === p.sku);
-      if (existente) { existente.cantidad += 1; }
-      else {
-        lista.push({ sku: p.sku, nombre: p.nombre, cantidad: 1, unidad: p.unidad || '',
+      if (!lista.some(i => i.sku === p.sku)) {
+        lista.push({ sku: p.sku, nombre: p.nombre,
           cat: [p.categoria, p.subcategoria].filter(Boolean).join(' › '),
           imagenUrl: getImg(p, 'thumb') });
       }

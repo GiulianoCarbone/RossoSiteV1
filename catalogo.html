@@ -2249,63 +2249,6 @@
       margin-bottom: 20px;
     }
 
-    .qty-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .qty-label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .qty-ctrl {
-      display: flex;
-      align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .qty-btn {
-      background: #f3f4f6;
-      border: none;
-      width: 32px;
-      height: 32px;
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background .15s;
-    }
-
-    .qty-btn:hover {
-      background: #e5e7eb;
-    }
-
-    .qty-input {
-      width: 44px;
-      text-align: center;
-      border: none;
-      border-left: 1px solid var(--border);
-      border-right: 1px solid var(--border);
-      height: 32px;
-      font-size: 0.9rem;
-      font-family: inherit;
-      outline: none;
-      -moz-appearance: textfield;
-    }
-
-    .qty-input::-webkit-outer-spin-button,
-    .qty-input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
     .modal-btn-add {
       width: 100%;
       padding: 12px;
@@ -2530,46 +2473,6 @@
 
     .qp-item-sku {
       display: none;
-    }
-
-    .qp-qty-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .qp-qty-ctrl {
-      display: flex;
-      align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .qp-qty-btn {
-      background: #f3f4f6;
-      border: none;
-      width: 26px;
-      height: 26px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .qp-qty-btn:hover {
-      background: #e5e7eb;
-    }
-
-    .qp-qty-val {
-      width: 32px;
-      text-align: center;
-      border-left: 1px solid var(--border);
-      border-right: 1px solid var(--border);
-      height: 26px;
-      line-height: 26px;
-      font-size: 0.82rem;
     }
 
     .qp-item-del {
@@ -3312,15 +3215,6 @@
           <div class="modal-desc" id="m-desc"></div>
           <div class="modal-unidad" id="m-unidad"></div>
 
-          <div class="qty-row">
-            <span class="qty-label">Cantidad:</span>
-            <div class="qty-ctrl">
-              <button class="qty-btn" onclick="changeQty(-1)">−</button>
-              <input class="qty-input" type="number" id="modal-qty" value="1" min="1" max="100" onchange="clampQtyInput(this)" />
-              <button class="qty-btn" onclick="changeQty(1)">+</button>
-            </div>
-          </div>
-
           <a class="modal-btn-full" id="modal-btn-full" href="#">
             <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver producto completo
           </a>
@@ -3514,7 +3408,7 @@
     let filtroCat = '';
     let filtroSub = '';
     let productoModal = null;// producto abierto en modal
-    let lista = cargarLista(); // array de { sku, nombre, cantidad, cat, imagenUrl }
+    let lista = cargarLista(); // array de { sku, nombre, cat, imagenUrl } (sin cantidades)
 
     /* ══════════════════════════════════════════════════════════
        CLOUDINARY
@@ -4468,7 +4362,6 @@
       document.getElementById('m-desc').textContent = p.descripcion || '';
       document.getElementById('m-desc').style.display = p.descripcion ? 'block' : 'none';
       document.getElementById('m-unidad').textContent = p.unidad ? `Unidad: ${p.unidad}` : '';
-      document.getElementById('modal-qty').value = 1;
 
       // Botón agregar
       const enLista = lista.some(i => i.sku === p.sku);
@@ -4480,9 +4373,7 @@
 
       // WhatsApp individual
       const wpMsg = encodeURIComponent(
-        `Hola! Estoy viendo este producto en el catálogo web para mi obra:\n\n` +
-        `• ${p.nombre} (SKU: ${p.sku})\n\n` +
-        `¿Me pueden ayudar?`
+        `Hola 👋, me interesa ${p.nombre} que vi en el catálogo (SKU: ${p.sku}).`
       );
       document.getElementById('modal-btn-wp').href = `https://wa.me/${WA_NUMBER}?text=${wpMsg}`;
       document.getElementById('modal-btn-full').href = `producto.html?sku=${encodeURIComponent(p.sku)}`;
@@ -4622,25 +4513,9 @@
       if (sugerenciasSection) sugerenciasSection.style.display = 'none';
     }
 
-    const MAX_QTY = 100;
-    function clampQty(n) {
-      n = parseInt(n) || 1;
-      return Math.min(MAX_QTY, Math.max(1, n));
-    }
-
-    function changeQty(delta) {
-      const input = document.getElementById('modal-qty');
-      input.value = clampQty((parseInt(input.value) || 1) + delta);
-    }
-
-    function clampQtyInput(input) {
-      input.value = clampQty(input.value);
-    }
-
     function agregarDesdeModal() {
       if (!productoModal) return;
-      const qty = clampQty(document.getElementById('modal-qty').value);
-      agregarALista(productoModal.sku, qty);
+      agregarALista(productoModal.sku);
       // Actualizar botón del modal
       const btn = document.getElementById('modal-btn-add');
       btn.innerHTML = '<i class="fa-solid fa-check"></i> Ya está en tu lista';
@@ -4661,22 +4536,18 @@
       localStorage.setItem(LISTA_KEY, JSON.stringify(lista));
     }
 
-    function agregarALista(sku, qty = 1) {
+    function agregarALista(sku) {
       const p = todosLosProductos.find(x => x.sku === sku);
       if (!p) return;
-      const existente = lista.find(i => i.sku === sku);
-      if (existente) {
-        existente.cantidad = clampQty(existente.cantidad + qty);
-      } else {
-        lista.push({
-          sku: p.sku,
-          nombre: p.nombre,
-          cantidad: clampQty(qty),
-          unidad: p.unidad || '',
-          cat: [p.categoria, p.subcategoria].filter(Boolean).join(' › '),
-          imagenUrl: getImgSrc(p, 'thumb')
-        });
-      }
+      // Sin cantidades: la lista solo dice qué productos le interesan al
+      // cliente; las cantidades se hablan después por WhatsApp.
+      if (lista.some(i => i.sku === sku)) return;
+      lista.push({
+        sku: p.sku,
+        nombre: p.nombre,
+        cat: [p.categoria, p.subcategoria].filter(Boolean).join(' › '),
+        imagenUrl: getImgSrc(p, 'thumb')
+      });
       guardarLista();
       actualizarFAB();
       renderGrid();     // refresca estado de botones
@@ -4691,14 +4562,6 @@
       renderGrid();
     }
 
-    function cambiarCantidadPanel(sku, delta) {
-      const item = lista.find(i => i.sku === sku);
-      if (!item) return;
-      item.cantidad = clampQty(item.cantidad + delta);
-      guardarLista();
-      renderPanel();
-    }
-
     function limpiarLista() {
       if (!confirm('¿Vaciar toda la lista?')) return;
       lista = [];
@@ -4711,7 +4574,6 @@
     function actualizarFAB() {
       const fab = document.getElementById('quote-fab');
       const badge = document.getElementById('fab-badge');
-      const total = lista.reduce((s, i) => s + i.cantidad, 0);
       badge.textContent = lista.length;
       fab.classList.toggle('hidden', lista.length === 0);
       document.body.classList.toggle('has-quote', lista.length > 0);
@@ -4764,14 +4626,6 @@
           <div class="qp-item-info">
             <div class="qp-item-name">${esc(item.nombre)}</div>
             <div class="qp-item-sku">SKU ${esc(item.sku)} ${item.cat ? '· ' + esc(item.cat) : ''}</div>
-            <div class="qp-qty-row">
-              <div class="qp-qty-ctrl">
-                <button class="qp-qty-btn" onclick="cambiarCantidadPanel('${esc(item.sku)}',-1)">−</button>
-                <div class="qp-qty-val">${item.cantidad}</div>
-                <button class="qp-qty-btn" onclick="cambiarCantidadPanel('${esc(item.sku)}',1)">+</button>
-              </div>
-              ${item.unidad ? `<span style="font-size:0.72rem;color:var(--muted)">${esc(item.unidad)}</span>` : ''}
-            </div>
           </div>
           <button class="qp-item-del" onclick="quitarDeLista('${esc(item.sku)}')">
             <i class="fa-solid fa-xmark"></i>
@@ -4782,11 +4636,9 @@
       countEl.textContent = `${lista.length} producto${lista.length !== 1 ? 's' : ''}`;
 
       // Armar mensaje WhatsApp
-      const lineas = lista.map(i =>
-        `• ${i.nombre} (SKU: ${i.sku})${i.unidad ? ' — ' + i.cantidad + ' ' + i.unidad : ' — Cantidad: ' + i.cantidad}`
-      ).join('\n');
+      const lineas = lista.map(i => `• ${i.nombre} (SKU: ${i.sku})`).join('\n');
       const msg = encodeURIComponent(
-        `Hola! Estoy armando los materiales para mi obra y elegí estos productos del catálogo web:\n\n${lineas}\n\n¿Me pueden ayudar?`
+        `Hola 👋, me interesan estos productos que vi en el catálogo:\n\n${lineas}`
       );
       sendBtn.href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
       sendBtn.onclick = (e) => consultarWhatsApp(e, sendBtn.href);
@@ -4872,9 +4724,7 @@
         trackEvent('leads');
       }
 
-      const lineas = lista.map(i =>
-        `- ${i.nombre} | SKU: ${i.sku} | Cantidad: ${i.cantidad}${i.unidad ? ' ' + i.unidad : ''}`
-      ).join('\n');
+      const lineas = lista.map(i => `- ${i.nombre} | SKU: ${i.sku}`).join('\n');
 
       const cuerpo = [
         `Solicitud de presupuesto`,
@@ -4945,12 +4795,11 @@
         item.sku,
         item.nombre,
         item.cat || '—',
-        `${item.cantidad}${item.unidad ? ' ' + item.unidad : ''}`,
       ]);
 
       doc.autoTable({
         startY: 42,
-        head: [['#', 'SKU', 'Producto', 'Categoría', 'Cantidad']],
+        head: [['#', 'SKU', 'Producto', 'Categoría']],
         body: rows,
         styles: { fontSize: 9, cellPadding: 4, font: 'helvetica' },
         headStyles: { fillColor: brand, textColor: 255, fontStyle: 'bold' },
@@ -4959,8 +4808,7 @@
           0: { cellWidth: 10, halign: 'center' },
           1: { cellWidth: 28 },
           2: { cellWidth: 'auto' },
-          3: { cellWidth: 38 },
-          4: { cellWidth: 24, halign: 'center' },
+          3: { cellWidth: 50 },
         },
         margin: { left: 14, right: 14 },
       });
