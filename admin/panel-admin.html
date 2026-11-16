@@ -3966,15 +3966,24 @@
                         <div id="contest-goal-setup-fields" class="goal-off" style="margin-top: 18px;">
                             <div class="contest-grid-2col" style="margin-bottom: 0;">
                                 <div class="input-group" style="margin-bottom: 0;">
-                                    <label for="contest-goal-target">Meta total ($)</label>
-                                    <input type="number" id="contest-goal-target" min="0" step="1" placeholder="Ej: 25000">
-                                    <small>Monto que hay que alcanzar entre todos para activar el premio.</small>
+                                    <label for="contest-goal-unit">¿En qué se mide la meta?</label>
+                                    <select id="contest-goal-unit">
+                                        <option value="importe">Monto ($)</option>
+                                        <option value="unidades">Unidades</option>
+                                    </select>
+                                    <small>Depende del concurso: un mínimo de venta en pesos o una cantidad de unidades.</small>
                                 </div>
                                 <div class="input-group" style="margin-bottom: 0;">
-                                    <label for="contest-goal-title">Título de la leyenda</label>
-                                    <input type="text" id="contest-goal-title" placeholder="Ej: Mínimo de clasificación del equipo">
-                                    <small>Si lo dejás vacío se muestra “Meta para activar el premio”.</small>
+                                    <label for="contest-goal-target" id="contest-goal-target-label">Meta total ($)</label>
+                                    <input type="number" id="contest-goal-target" min="0" step="1" placeholder="Ej: 25000">
+                                    <small id="contest-goal-target-help">Monto que hay que alcanzar entre todos para activar el premio.</small>
                                 </div>
+                            </div>
+
+                            <div class="input-group" style="margin: 14px 0 0;">
+                                <label for="contest-goal-title">Título de la leyenda</label>
+                                <input type="text" id="contest-goal-title" placeholder="Ej: Mínimo de clasificación del equipo">
+                                <small>Si lo dejás vacío se muestra “Meta para activar el premio”.</small>
                             </div>
 
                             <div class="input-group" style="margin: 14px 0 0;">
@@ -4098,7 +4107,7 @@
 
                         <div id="goal-live-on" style="display: none;">
                             <div class="input-group" style="max-width: 320px; margin: 14px 0 18px;">
-                                <label for="contest-goal-current">Acumulado hasta ahora ($)</label>
+                                <label for="contest-goal-current" id="contest-goal-current-label">Acumulado hasta ahora ($)</label>
                                 <input type="number" id="contest-goal-current" min="0" step="1" placeholder="Ej: 9930">
                                 <small>Actualizalo junto con las posiciones.</small>
                             </div>
@@ -7632,6 +7641,22 @@
             style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 0
         });
 
+        // Medida de la meta: 'importe' (pesos) o 'unidades'. Los concursos viejos
+        // no tienen el campo y eran todos en pesos.
+        // Copia de goalFormat en panel-corporativo.html: si tocás una, tocá la otra.
+        function goalFormat(unit) {
+            if (unit === 'unidades') {
+                return {
+                    units: true,
+                    value: (n) => {
+                        const v = Number(n) || 0;
+                        return v.toLocaleString('es-AR', { maximumFractionDigits: 2 }) + (v === 1 ? ' unidad' : ' unidades');
+                    }
+                };
+            }
+            return { units: false, value: (n) => goalMoneyFmt.format(Number(n) || 0) };
+        }
+
         // El campo guarda solo el nombre: el "Desafío" y el trofeo los pone la
         // intranet. Si el usuario pega el título entero, lo recortamos acá y en
         // panel-corporativo.html (cleanContestName está duplicada en los dos).
@@ -7823,6 +7848,7 @@
             const box = document.getElementById('goal-admin-preview');
             if (!box) return;
 
+            const gf = goalFormat(contestVal('contest-goal-unit'));
             const target = contestNum('contest-goal-target');
             const current = contestNum('contest-goal-current');
             const pct = target > 0 ? Math.max(0, Math.min(100, (current / target) * 100)) : 0;
@@ -7833,8 +7859,8 @@
             document.getElementById('gp-title-text').textContent = contestVal('contest-goal-title') || 'Meta para activar el premio';
             document.getElementById('gp-pct').textContent = pct.toLocaleString('es-AR', { maximumFractionDigits: 1 }) + '%';
             document.getElementById('gp-fill').style.width = pct + '%';
-            document.getElementById('gp-current').textContent = goalMoneyFmt.format(current);
-            document.getElementById('gp-target').textContent = goalMoneyFmt.format(target);
+            document.getElementById('gp-current').textContent = gf.value(current);
+            document.getElementById('gp-target').textContent = gf.value(target);
 
             const rem = document.getElementById('gp-remaining');
             if (target <= 0) {
@@ -7842,7 +7868,7 @@
             } else if (done) {
                 rem.innerHTML = '¡Meta alcanzada! El premio ya está activado 🎉';
             } else {
-                rem.innerHTML = 'Faltan <strong>' + goalMoneyFmt.format(remaining) + '</strong> para activar el premio';
+                rem.innerHTML = 'Faltan <strong>' + gf.value(remaining) + '</strong> para activar el premio';
             }
 
             const note = document.getElementById('gp-note');
@@ -7855,8 +7881,25 @@
             }
         }
 
+        // Etiquetas y ejemplos de los campos de la meta según se mida en pesos o unidades
+        function updateGoalUnitLabels() {
+            const units = goalFormat(contestVal('contest-goal-unit')).units;
+            const set = (id, prop, val) => {
+                const el = document.getElementById(id);
+                if (el) el[prop] = val;
+            };
+            set('contest-goal-target-label', 'textContent', units ? 'Meta total (unidades)' : 'Meta total ($)');
+            set('contest-goal-target-help', 'textContent', units
+                ? 'Unidades que hay que vender entre todos para activar el premio.'
+                : 'Monto que hay que alcanzar entre todos para activar el premio.');
+            set('contest-goal-target', 'placeholder', units ? 'Ej: 500' : 'Ej: 25000');
+            set('contest-goal-current-label', 'textContent', units ? 'Acumulado hasta ahora (unidades)' : 'Acumulado hasta ahora ($)');
+            set('contest-goal-current', 'placeholder', units ? 'Ej: 230' : 'Ej: 9930');
+        }
+
         function updateGoalUI() {
             const enabled = contestChecked('show-goal-progress');
+            updateGoalUnitLabels();
 
             const setupFields = document.getElementById('contest-goal-setup-fields');
             if (setupFields) setupFields.classList.toggle('goal-off', !enabled);
@@ -8159,6 +8202,7 @@
                 showRankingB: contestChecked('show-ranking-b'),
                 showRankingC: contestChecked('show-ranking-c'),
                 showGoalProgress: contestChecked('show-goal-progress'),
+                goalUnit: goalFormat(contestVal('contest-goal-unit')).units ? 'unidades' : 'importe',
                 goalTitle: contestVal('contest-goal-title'),
                 goalNote: contestVal('contest-goal-note'),
                 goalTarget: contestNum('contest-goal-target'),
@@ -8197,7 +8241,7 @@
                 return;
             }
             if (payload.showGoalProgress && payload.goalTarget <= 0) {
-                toast('Cargá la meta total en pesos o apagá la meta en "1 · Armar el concurso".', 'error');
+                toast('Cargá la meta total o apagá la meta en "1 · Armar el concurso".', 'error');
                 return;
             }
 
@@ -8274,6 +8318,8 @@
 
             const goalToggle = document.getElementById('show-goal-progress');
             if (goalToggle) goalToggle.addEventListener('change', updateGoalUI);
+            const goalUnitSelect = document.getElementById('contest-goal-unit');
+            if (goalUnitSelect) goalUnitSelect.addEventListener('change', updateGoalUI);
 
             ['contest-goal-title', 'contest-goal-note', 'contest-goal-target', 'contest-goal-current'].forEach(id => {
                 const el = document.getElementById(id);
@@ -8438,6 +8484,8 @@
                 setChk('show-ranking-c', data.showRankingC !== false);
 
                 setChk('show-goal-progress', data.showGoalProgress === true);
+                // Los concursos viejos no tienen el campo: su meta era en pesos
+                setVal('contest-goal-unit', data.goalUnit === 'unidades' ? 'unidades' : 'importe');
                 setVal('contest-goal-title', data.goalTitle);
                 setVal('contest-goal-note', data.goalNote);
                 setVal('contest-goal-target', data.goalTarget);

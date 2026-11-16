@@ -7339,10 +7339,27 @@
       style: 'currency', currency: 'ARS', minimumFractionDigits: 0, maximumFractionDigits: 0
     });
 
+    // Medida de la meta: 'importe' (pesos) o 'unidades'. Los concursos viejos
+    // no tienen el campo y eran todos en pesos.
+    // Copia de goalFormat en admin/panel-admin.html: si tocás una, tocá la otra.
+    function goalFormat(unit) {
+      if (unit === 'unidades') {
+        return {
+          units: true,
+          value: (n) => {
+            const v = Number(n) || 0;
+            return v.toLocaleString('es-AR', { maximumFractionDigits: 2 }) + (v === 1 ? ' unidad' : ' unidades');
+          }
+        };
+      }
+      return { units: false, value: (n) => goalMoneyFmt.format(Number(n) || 0) };
+    }
+
     function renderContestGoal(data) {
       const box = document.getElementById('contest-goal-box');
       if (!box) return;
 
+      const gf = goalFormat(data.goalUnit);
       const target = Number(data.goalTarget) || 0;
       const current = Number(data.goalCurrent) || 0;
 
@@ -7361,11 +7378,11 @@
       document.getElementById('contest-goal-pct').textContent =
         pct.toLocaleString('es-AR', { maximumFractionDigits: 1 }) + '%';
       document.getElementById('contest-goal-fill').style.width = pct + '%';
-      document.getElementById('contest-goal-current').textContent = goalMoneyFmt.format(current);
-      document.getElementById('contest-goal-target').textContent = goalMoneyFmt.format(target);
+      document.getElementById('contest-goal-current').textContent = gf.value(current);
+      document.getElementById('contest-goal-target').textContent = gf.value(target);
       document.getElementById('contest-goal-remaining').innerHTML = done
         ? '¡Meta alcanzada! El premio ya está activado 🎉'
-        : `Faltan <strong>${goalMoneyFmt.format(remaining)}</strong> para activar el premio`;
+        : `Faltan <strong>${gf.value(remaining)}</strong> para activar el premio`;
 
       const note = document.getElementById('contest-goal-note');
       if (data.goalNote) {
