@@ -199,6 +199,59 @@
             font-size: .8rem;
         }
 
+        /* ===== Campo de imagen en Cloudinary =====
+           Reemplaza a los inputs de "URL de la imagen": el input real queda
+           oculto (lo sigue leyendo el código de cada sección) y esto lo maneja. */
+        .img-cloud {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            background: #f4f6fa;
+            border-radius: var(--radius-sm);
+        }
+        .img-cloud__thumb {
+            flex: 0 0 72px;
+            height: 72px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--muted);
+            font-size: 1.4rem;
+        }
+        .img-cloud__thumb img { width: 100%; height: 100%; object-fit: contain; }
+        .img-cloud__thumb.is-rota::after { content: 'No carga'; font-size: .7rem; font-weight: 600; color: var(--danger); }
+        .img-cloud__body { flex: 1; min-width: 0; }
+        .img-cloud__estado {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+            font-size: .8rem;
+            color: var(--muted);
+            overflow-wrap: anywhere;
+        }
+        .img-cloud__badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 2px 9px;
+            border-radius: 999px;
+            font-size: .76rem;
+            font-weight: 600;
+        }
+        .img-cloud__badge.is-ok { background: #e8f6ee; color: #15803d; }
+        .img-cloud__badge.is-ext { background: #fff4e0; color: #9a5300; }
+        .img-cloud__badge.is-vacio { background: #e9ecf3; color: var(--muted); }
+        .img-cloud__acciones { display: flex; flex-wrap: wrap; gap: 6px; }
+        .img-cloud__acciones button { width: auto; padding: 7px 12px; font-size: .84rem; }
+        .img-cloud__acciones .btn-quitar { background: transparent; color: var(--danger); }
+        .img-cloud__acciones .btn-quitar:hover { background: #fdf0f0; }
+
         /* ===== Botones =====
            `button` sigue siendo ancho completo por defecto: hay formularios
            en todo el panel que cuentan con eso. Los botones de acción de las
@@ -3551,9 +3604,9 @@
                 <div class="panel-card" style="padding: 20px; max-width: 600px;">
                     <form id="social-config-form">
                         <div class="input-group">
-                            <label>URL Imagen del Post</label>
-                            <input type="url" id="social-image-url" placeholder="https://..." required>
-                            <small>Link directo a la imagen que queres mostrar.</small>
+                            <label>Imagen del post</label>
+                            <input type="url" id="social-image-url" placeholder="https://...">
+                            <small>Subila desde la compu o el celular, o pegá un link en "Desde URL": queda guardada en Cloudinary.</small>
                         </div>
                         <div class="input-group">
                             <label>Link Instagram</label>
@@ -3583,9 +3636,9 @@
                     </p>
                     <form id="review-config-form">
                         <div class="input-group">
-                            <label>URL Imagen de la Reseña</label>
-                            <input type="url" id="review-image-url" placeholder="https://..." required>
-                            <small>Link directo a la captura de pantalla de la reseña de Google Maps.</small>
+                            <label>Imagen de la reseña</label>
+                            <input type="url" id="review-image-url" placeholder="https://...">
+                            <small>Captura de pantalla de la reseña de Google Maps.</small>
                         </div>
                         <div class="input-group">
                             <label>Nombre de la Sucursal</label>
@@ -3608,9 +3661,9 @@
                     </p>
                     <form id="vendedor-config-form">
                         <div class="input-group">
-                            <label>URL Imagen del Compañero</label>
-                            <input type="url" id="vendedor-image-url" placeholder="https://..." required>
-                            <small>Link directo a la foto del compañero.</small>
+                            <label>Foto del compañero</label>
+                            <input type="url" id="vendedor-image-url" placeholder="https://...">
+                            <small>Abajo ves cómo queda en la tarjeta.</small>
                         </div>
                         <div class="input-group">
                             <label>Nombre Completo</label>
@@ -3702,7 +3755,7 @@
                             </div>
 
                             <div class="input-group">
-                                <label>URL de la imagen <span style="color:var(--muted); font-weight:400;">(opcional)</span></label>
+                                <label>Imagen <span style="color:var(--muted); font-weight:400;">(opcional)</span></label>
                                 <input type="url" id="anuncio-imagen" placeholder="https://...">
                                 <small>Foto del compañero o imagen del aviso. Se muestra redonda.</small>
                             </div>
@@ -3841,9 +3894,9 @@
                             <h3><i class="fa-solid fa-gift"></i> Premio</h3>
 
                             <div class="input-group" style="margin-top: 14px;">
-                                <label for="contest-prize-image-url">URL de la imagen</label>
-                                <input type="url" id="contest-prize-image-url" placeholder="https://i.ibb.co/...">
-                                <small>Link directo en PNG/JPG. Con fondo transparente queda mejor sobre la tarjeta.</small>
+                                <label>Imagen del premio</label>
+                                <input type="url" id="contest-prize-image-url" placeholder="https://...">
+                                <small>PNG o JPG. Con fondo transparente queda mejor sobre la tarjeta.</small>
                             </div>
 
                             <div class="contest-prize-preview-box">
@@ -3853,7 +3906,7 @@
                                 </div>
                                 <div id="contest-prize-placeholder" style="color: var(--muted); text-align: center; padding: 20px;">
                                     <i class="fa-solid fa-image" style="font-size: 2.4rem; opacity: 0.35; margin-bottom: 8px; display: block;"></i>
-                                    <span style="font-size: 0.85rem;">Pegá una URL arriba para previsualizar el premio</span>
+                                    <span style="font-size: 0.85rem;">Subí una imagen arriba para previsualizar el premio</span>
                                 </div>
                             </div>
                         </div>
@@ -4680,6 +4733,7 @@
             initTrainings();
             initSuggestions();
             initNotifications();
+            initCamposImagen();
             initSocialConfig();
             initReviewConfig();
             initVendedorConfig();
@@ -7125,10 +7179,232 @@
             document.getElementById("notification-form-modal").style.display = "flex";
         };
 
+        // --- IMÁGENES EN CLOUDINARY ---
+        // Antes estas imágenes eran links pegados a mano (ImageKit). Ahora se suben a Cloudinary con el
+        // mismo preset sin firma que usa el catálogo, cada sección en su carpeta panel-admin/<carpeta>.
+        // Quedan FUERA de rosso/ a propósito: la limpieza automática del catálogo (Cloud Function
+        // limpiarImagenesCatalogo) solo toca rosso/, así que nunca puede llevarse una de estas.
+        // En Firestore se sigue guardando una URL completa en el mismo campo, así que el panel
+        // corporativo, que la usa tal cual como src, no necesita cambios.
+        const CLOUDINARY_CLOUD = 'dbntmfmdv';
+        const CLOUDINARY_PRESET = 'rosso_productos';
+        const CAMPOS_IMAGEN = [
+            { id: 'social-image-url', carpeta: 'redes', requerida: true, miniatura: true },
+            { id: 'review-image-url', carpeta: 'resena', requerida: true, miniatura: true },
+            { id: 'vendedor-image-url', carpeta: 'companero', requerida: true },   // ya tiene vista previa propia
+            { id: 'anuncio-imagen', carpeta: 'anuncios' },                         // ídem
+            { id: 'contest-prize-image-url', carpeta: 'desafio' },                 // ídem
+        ];
+
+        function esUrlCloudinary(url) {
+            return typeof url === 'string' && url.startsWith('https://res.cloudinary.com/' + CLOUDINARY_CLOUD + '/');
+        }
+
+        // f_auto,q_auto: cada navegador recibe el formato más liviano que soporta (WebP/AVIF, conserva la
+        // transparencia de los PNG). c_limit,w_1600: frena las fotos gigantes del celular sin agrandar las chicas.
+        function urlEntregaCloudinary(publicId) {
+            return 'https://res.cloudinary.com/' + CLOUDINARY_CLOUD + '/image/upload/f_auto,q_auto,c_limit,w_1600/' + publicId;
+        }
+
+        let widgetCloudinaryListo = null;
+        function cargarWidgetCloudinary() {
+            // Se carga recién la primera vez que alguien sube una imagen: el resto del panel no lo necesita.
+            if (!widgetCloudinaryListo) {
+                widgetCloudinaryListo = new Promise((ok, falla) => {
+                    const s = document.createElement('script');
+                    s.src = 'https://upload-widget.cloudinary.com/global/all.js';
+                    s.onload = ok;
+                    s.onerror = () => { widgetCloudinaryListo = null; s.remove(); falla(new Error('no cargó el widget')); };
+                    document.head.appendChild(s);
+                });
+            }
+            return widgetCloudinaryListo;
+        }
+
+        // Subida "desde link": Cloudinary descarga la imagen de esa URL por su cuenta. Sirve para pasar
+        // las imágenes que ya estaban en ImageKit sin tener que bajarlas y volver a subirlas.
+        async function copiarLinkACloudinary(url, carpeta) {
+            const fd = new FormData();
+            fd.append('file', url);
+            fd.append('upload_preset', CLOUDINARY_PRESET);
+            fd.append('folder', 'panel-admin/' + carpeta);
+            const r = await fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', { method: 'POST', body: fd });
+            const d = await r.json().catch(() => ({}));
+            if (!r.ok || !d.public_id) throw new Error((d.error && d.error.message) || ('HTTP ' + r.status));
+            return urlEntregaCloudinary(d.public_id);
+        }
+
+        // Los campos obligatorios se validan acá y no con "required": el input real está oculto y el
+        // navegador frenaría el envío sin mostrar ningún aviso.
+        function faltaImagen(id, mensaje) {
+            if (document.getElementById(id).value.trim()) return false;
+            toast(mensaje, 'error');
+            return true;
+        }
+
+        function montarCampoImagen(cfg) {
+            const input = document.getElementById(cfg.id);
+            if (!input || input.dataset.imgCloud) return;
+            input.dataset.imgCloud = '1';
+            input.style.display = 'none';
+
+            const caja = document.createElement('div');
+            caja.className = 'img-cloud';
+            input.insertAdjacentElement('afterend', caja);
+
+            const nativo = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+            let ocupado = '';      // texto de lo que está haciendo; mientras tanto los botones se apagan
+            let widget = null;
+
+            function boton(texto, acc, clase, icono) {
+                const b = document.createElement('button');
+                b.type = 'button';     // sin esto enviaría el formulario
+                b.dataset.acc = acc;
+                if (clase) b.className = clase;
+                if (icono) { const i = document.createElement('i'); i.className = icono; b.append(i, ' '); }
+                b.append(texto);
+                b.disabled = !!ocupado;
+                return b;
+            }
+
+            function render() {
+                const url = nativo.get.call(input).trim();
+                const externa = !!url && !esUrlCloudinary(url);
+                caja.replaceChildren();
+
+                if (cfg.miniatura) {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'img-cloud__thumb';
+                    if (url) {
+                        const img = document.createElement('img');
+                        img.alt = '';
+                        img.onerror = () => { thumb.classList.add('is-rota'); img.remove(); };
+                        img.src = url;
+                        thumb.append(img);
+                    } else {
+                        thumb.innerHTML = '<i class="fa-regular fa-image"></i>';
+                    }
+                    caja.append(thumb);
+                }
+
+                const body = document.createElement('div');
+                body.className = 'img-cloud__body';
+                const estado = document.createElement('div');
+                estado.className = 'img-cloud__estado';
+                if (ocupado) {
+                    estado.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+                    estado.append(' ' + ocupado);
+                } else if (!url) {
+                    estado.innerHTML = '<span class="img-cloud__badge is-vacio">Sin imagen</span>';
+                } else if (externa) {
+                    let host = 'otro sitio';
+                    try { host = new URL(url).hostname; } catch (e) { /* link mal formado */ }
+                    estado.innerHTML = '<span class="img-cloud__badge is-ext"><i class="fa-solid fa-link"></i> Link externo</span>';
+                    estado.append(host);
+                } else {
+                    estado.innerHTML = '<span class="img-cloud__badge is-ok"><i class="fa-solid fa-cloud"></i> En Cloudinary</span>';
+                }
+
+                const acciones = document.createElement('div');
+                acciones.className = 'img-cloud__acciones';
+                if (externa) acciones.append(boton('Pasar a Cloudinary', 'copiar', '', 'fa-solid fa-cloud-arrow-up'));
+                acciones.append(boton(url ? 'Cambiar imagen' : 'Subir imagen', 'subir', 'btn-neutral', externa ? '' : 'fa-solid fa-cloud-arrow-up'));
+                if (url && !cfg.requerida) acciones.append(boton('Quitar', 'quitar', 'btn-quitar'));
+
+                body.append(estado, acciones);
+                caja.append(body);
+            }
+
+            // El valor nuevo se escribe en el input real y se avisa con un evento "input": así siguen
+            // andando las vistas previas y el aviso de "cambios sin guardar" que ya escuchan ese campo.
+            function fijar(url) {
+                nativo.set.call(input, url);
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                render();
+            }
+
+            async function copiar() {
+                ocupado = 'Copiando a Cloudinary…';
+                render();
+                try {
+                    const nueva = await copiarLinkACloudinary(nativo.get.call(input).trim(), cfg.carpeta);
+                    ocupado = '';
+                    fijar(nueva);
+                    toast('Imagen copiada a Cloudinary. Guardá los cambios para que quede.', 'success');
+                } catch (e) {
+                    ocupado = '';
+                    render();
+                    console.error('No se pudo copiar a Cloudinary:', e);
+                    toast('No se pudo copiar a Cloudinary (' + e.message + '). Sigue el link de antes.', 'error');
+                }
+            }
+
+            async function subir() {
+                if (!widget) {
+                    ocupado = 'Abriendo Cloudinary…';
+                    render();
+                    try {
+                        await cargarWidgetCloudinary();
+                    } catch (e) {
+                        toast('No se pudo abrir Cloudinary. Revisá la conexión.', 'error');
+                        return;
+                    } finally {
+                        ocupado = '';
+                        render();
+                    }
+                    widget = cloudinary.createUploadWidget({
+                        cloudName: CLOUDINARY_CLOUD,
+                        uploadPreset: CLOUDINARY_PRESET,
+                        folder: 'panel-admin/' + cfg.carpeta,
+                        multiple: false,
+                        maxFiles: 1,
+                        resourceType: 'image',
+                        sources: ['local', 'url', 'camera'],
+                        language: 'es',
+                        text: { es: { or: 'O', menu: { files: 'Mis archivos', url: 'Desde URL', camera: 'Cámara' } } }
+                    }, (error, result) => {
+                        if (error) { toast('Error al subir la imagen.', 'error'); return; }
+                        if (result && result.event === 'success') {
+                            fijar(urlEntregaCloudinary(result.info.public_id));
+                            widget.close();
+                            toast('Imagen subida. Guardá los cambios para que quede.', 'success');
+                        }
+                    });
+                }
+                widget.open();
+            }
+
+            caja.addEventListener('click', (e) => {
+                const b = e.target.closest('button[data-acc]');
+                if (!b || ocupado) return;
+                if (b.dataset.acc === 'copiar') copiar();
+                else if (b.dataset.acc === 'subir') subir();
+                else if (b.dataset.acc === 'quitar') fijar('');
+            });
+
+            // Cada sección carga sus datos con input.value = ... en varios lugares (cargar, editar un
+            // anuncio, el desafío). En vez de tocar cada uno, el campo se entera solo: se intercepta el
+            // setter de value de ESTE input y se redibuja. form.reset() no pasa por el setter: por eso
+            // también se escucha el evento reset (que corre antes de limpiar, de ahí el setTimeout).
+            Object.defineProperty(input, 'value', {
+                configurable: true,
+                get() { return nativo.get.call(this); },
+                set(v) { nativo.set.call(this, v); render(); },
+            });
+            if (input.form) input.form.addEventListener('reset', () => setTimeout(render, 0));
+
+            render();
+        }
+
+        function initCamposImagen() {
+            CAMPOS_IMAGEN.forEach(montarCampoImagen);
+        }
+
         // --- SOCIAL CONFIG LOGIC ---
         function initSocialConfig() {
             document.getElementById("social-config-form").onsubmit = async (e) => {
                 e.preventDefault();
+                if (faltaImagen("social-image-url", "Falta la imagen del post.")) return;
                 const data = {
                     imageUrl: document.getElementById("social-image-url").value,
                     instagramUrl: document.getElementById("social-instagram-url").value,
@@ -7164,6 +7440,7 @@
         function initReviewConfig() {
             document.getElementById("review-config-form").onsubmit = async (e) => {
                 e.preventDefault();
+                if (faltaImagen("review-image-url", "Falta la imagen de la reseña.")) return;
                 const data = {
                     imageUrl: document.getElementById("review-image-url").value,
                     branchName: document.getElementById("review-branch-name-input").value,
@@ -7210,6 +7487,7 @@
 
             document.getElementById("vendedor-config-form").onsubmit = async (e) => {
                 e.preventDefault();
+                if (faltaImagen("vendedor-image-url", "Falta la foto del compañero.")) return;
                 const data = {
                     imageUrl: document.getElementById("vendedor-image-url").value,
                     name: document.getElementById("vendedor-name-input").value,

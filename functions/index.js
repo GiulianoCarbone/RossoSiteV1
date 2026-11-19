@@ -898,3 +898,166 @@ exports.enviarPush = onRequest(
     }
   }
 );
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Imágenes del catálogo: mandarlas a la PAPELERA de Cloudinary
+ * El panel sube con un preset SIN firma (rosso_productos), que puede subir
+ * pero no mover ni borrar. Eso exige el api_secret, que no puede estar en el
+ * navegador: vive acá como SECRET `CLOUDINARY_URL`
+ * (cloudinary://<api_key>:<api_secret>@<cloud_name>; la key es una propia,
+ * "firebase-catalogo", para poder revocarla sin tocar nada más).
+ *
+ * No se borra en el momento: la imagen se RENOMBRA a
+ * rosso/papelera/<AAAA-MM-DD>/<resto del id>. Para el sitio es como borrarla
+ * (la URL vieja deja de existir), pero si fue un error se recupera desde la
+ * Media Library. La papelera se vacía a mano desde la consola de Cloudinary.
+ *
+ *   • limpiarImagenesCatalogo: trigger de Firestore. Cuando un producto pierde
+ *     imágenes (la "×" + Guardar, o Eliminar producto) las manda a la papelera.
+ *   • descartarImagenesCatalogo: lo llama el panel con las imágenes que se
+ *     subieron en el modal y nunca se guardaron (se sacaron con la "×" antes
+ *     de guardar, o se cerró el modal sin guardar). Esas nunca tocan Firestore,
+ *     así que el trigger no las ve.
+ *
+ * Resguardos: solo se mueve lo que está bajo la carpeta rosso/ y nada que
+ * algún producto siga usando (por ejemplo, al cambiar el SKU el panel crea el
+ * producto nuevo con las mismas imágenes antes de borrar el viejo).
+ * Lo que ya había quedado huérfano antes de esto no se toca.
+ * ───────────────────────────────────────────────────────────────────────── */
+const { onDocumentWritten } = require('firebase-functions/v2/firestore');
+const crypto = require('crypto');
+
+const CLOUDINARY_URL = defineSecret('CLOUDINARY_URL');
+const CARPETA_CLOUDINARY = 'rosso/';
+const CARPETA_PAPELERA = 'rosso/papelera';
+
+function credencialesCloudinary() {
+  const raw = CLOUDINARY_URL.value().trim().replace(/^CLOUDINARY_URL=/, '');
+  const m = raw.match(/^cloudinary:\/\/([^:]+):([^@]+)@(.+)$/);
+  if (!m) throw new Error('CLOUDINARY_URL mal formado: se espera cloudinary://<api_key>:<api_secret>@<cloud_name>');
+  return { apiKey: m[1], apiSecret: m[2], cloud: m[3] };
+}
+
+function esImagenNuestra(id) {
+  return typeof id === 'string' && id.length < 300
+    && id.startsWith(CARPETA_CLOUDINARY) && !id.startsWith(CARPETA_PAPELERA + '/')
+    && !id.includes('..') && !/^https?:/i.test(id);
+}
+
+// Firma de la Upload API: parámetros ordenados alfabéticamente + api_secret, SHA-1.
+function firmarCloudinary(params, apiSecret) {
+  const base = Object.keys(params).sort().map((k) => `${k}=${params[k]}`).join('&');
+  return crypto.createHash('sha1').update(base + apiSecret).digest('hex');
+}
+
+async function imagenEnUso(publicId) {
+  const snap = await admin.firestore().collection('catalogo')
+    .where('imagenes', 'array-contains', publicId).limit(1).get();
+  return !snap.empty;
+}
+
+// Upload API "rename" firmado: rosso/productos/abc → rosso/papelera/2026-11-19/productos/abc.
+// invalidate=true también saca la URL vieja del caché del CDN.
+async function moverAPapelera(publicId, cred) {
+  const fecha = new Date().toISOString().slice(0, 10);
+  const destino = `${CARPETA_PAPELERA}/${fecha}/${publicId.slice(CARPETA_CLOUDINARY.length)}`;
+  const params = {
+    from_public_id: publicId, to_public_id: destino, invalidate: 'true',
+    timestamp: String(Math.floor(Date.now() / 1000)),
+  };
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${cred.cloud}/image/rename`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ ...params, api_key: cred.apiKey, signature: firmarCloudinary(params, cred.apiSecret) }),
+    signal: AbortSignal.timeout(15000),
+  });
+  const d = await r.json().catch(() => ({}));
+  if (r.status === 404) return 'no existía';
+  if (!r.ok) throw new Error(`Cloudinary ${r.status}: ${(d.error && d.error.message) || JSON.stringify(d)}`);
+
+  // La cuenta está en modo de "carpetas dinámicas" (verificado 2026-11-19): la carpeta que se ve
+  // en la Media Library (asset_folder) NO sale del id, así que el rename solo cambia la URL. Para
+  // que aparezca en la papelera hay que moverla de carpeta aparte, una subcarpeta por día para
+  // poder vaciar fechas enteras. Si esto falla la imagen igual quedó fuera del sitio (ya se
+  // renombró): solo se avisa en el log.
+  const carpeta = `${CARPETA_PAPELERA}/${fecha}`;
+  try {
+    const ruta = destino.split('/').map(encodeURIComponent).join('/');
+    const basic = Buffer.from(`${cred.apiKey}:${cred.apiSecret}`).toString('base64');
+    const r2 = await fetch(`https://api.cloudinary.com/v1_1/${cred.cloud}/resources/image/upload/${ruta}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', Authorization: `Basic ${basic}` },
+      body: new URLSearchParams({ asset_folder: carpeta }),
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!r2.ok) console.warn(`No se pudo mover ${destino} a la carpeta ${carpeta}: Cloudinary ${r2.status} ${(await r2.text()).slice(0, 200)}`);
+  } catch (e) {
+    console.warn(`No se pudo mover ${destino} a la carpeta ${carpeta}:`, e.message || e);
+  }
+
+  return `papelera: ${destino}`;
+}
+
+async function papeleraSiNadieLaUsa(ids, origen) {
+  const candidatas = [...new Set(ids)].filter(esImagenNuestra);
+  const resultado = {};
+  if (!candidatas.length) return resultado;
+  const cred = credencialesCloudinary();
+  for (const id of candidatas) {
+    try {
+      if (await imagenEnUso(id)) {
+        resultado[id] = 'en uso';
+      } else {
+        resultado[id] = await moverAPapelera(id, cred);
+      }
+    } catch (e) {
+      resultado[id] = 'error';
+      console.error(`${origen}: no se pudo mandar a la papelera ${id}:`, e.message || e);
+    }
+  }
+  console.log(`${origen}:`, JSON.stringify(resultado));
+  return resultado;
+}
+
+exports.limpiarImagenesCatalogo = onDocumentWritten(
+  { document: 'catalogo/{sku}', region: 'us-central1', secrets: [CLOUDINARY_URL] },
+  async (event) => {
+    const antes = event.data && event.data.before.exists ? event.data.before.data() : null;
+    const despues = event.data && event.data.after.exists ? event.data.after.data() : null;
+    const imgsAntes = Array.isArray(antes && antes.imagenes) ? antes.imagenes : [];
+    const imgsDespues = Array.isArray(despues && despues.imagenes) ? despues.imagenes : [];
+    const sacadas = imgsAntes.filter((id) => !imgsDespues.includes(id));
+    if (!sacadas.length) return; // la gran mayoría de las escrituras: no cambió ninguna imagen
+    await papeleraSiNadieLaUsa(sacadas, `limpiarImagenesCatalogo ${event.params.sku}`);
+  }
+);
+
+exports.descartarImagenesCatalogo = onRequest(
+  { secrets: [CLOUDINARY_URL], cors: true, region: 'us-central1' },
+  async (req, res) => {
+    try {
+      if (req.method !== 'POST') return res.status(405).json({ error: 'Método no permitido' });
+
+      // Mismo control que las demás: solo el admin (el único que puede escribir el catálogo)
+      const authz = req.headers.authorization || '';
+      const token = authz.startsWith('Bearer ') ? authz.slice(7) : '';
+      if (!token) return res.status(401).json({ error: 'Falta autenticación' });
+      let decoded;
+      try { decoded = await admin.auth().verifyIdToken(token); }
+      catch (e) { return res.status(401).json({ error: 'Token inválido' }); }
+      if (!ADMIN_EMAILS.includes(decoded.email)) {
+        return res.status(403).json({ error: 'Solo el admin puede usar esta función' });
+      }
+
+      const ids = (req.body || {}).ids;
+      if (!Array.isArray(ids) || !ids.length || ids.length > 10) {
+        return res.status(400).json({ error: 'Se espera una lista de 1 a 10 imágenes' });
+      }
+      const resultado = await papeleraSiNadieLaUsa(ids, 'descartarImagenesCatalogo');
+      return res.json({ ok: true, resultado });
+    } catch (e) {
+      console.error('descartarImagenesCatalogo error:', e);
+      return res.status(500).json({ error: 'Error interno: ' + (e.message || String(e)) });
+    }
+  }
+);

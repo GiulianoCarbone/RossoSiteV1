@@ -2426,6 +2426,92 @@
       cursor: not-allowed;
       pointer-events: none;
     }
+
+    /* ── Slides del hero en Cloudinary ── */
+    .slide-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 8px;
+      background: #f8f9fb;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .slide-num { font-size: 0.72rem; color: var(--muted); font-weight: 600; white-space: nowrap; min-width: 46px; }
+    .slide-thumb {
+      flex: 0 0 132px;
+      aspect-ratio: 1728 / 576;      /* la misma proporción del slider del catálogo */
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+    }
+    .slide-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .slide-thumb.is-rota::after { content: 'No carga'; font-size: 0.7rem; font-weight: 600; color: var(--danger); }
+    .slide-info { flex: 1; min-width: 0; }
+    .slide-estado {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .slide-badge.is-ok { background: #e8f6ee; color: #15803d; }
+    .slide-badge.is-ext { background: #fff4e0; color: #9a5300; }
+    .slide-badge.is-vacio { background: #eceef2; color: var(--muted); }
+    .slide-acciones { display: flex; flex-wrap: wrap; gap: 6px; }
+    .slide-acciones button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 11px;
+      border-radius: 7px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+    }
+    .slide-acciones button.is-main { background: var(--brand); border-color: var(--brand); color: #fff; }
+    .slide-acciones button:disabled { opacity: .5; cursor: not-allowed; }
+    .slide-quitar {
+      background: none;
+      border: 1px solid #fca5a5;
+      border-radius: 6px;
+      color: #ef4444;
+      width: 28px;
+      height: 28px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .slide-quitar:hover { background: #fef2f2; }
+    .slide-quitar:disabled { opacity: .4; cursor: not-allowed; }
+    @media (max-width: 560px) {
+      .slide-row { flex-wrap: wrap; }
+      .slide-thumb { flex-basis: calc(100% - 100px); }
+      .slide-info { flex-basis: 100%; }
+    }
   </style>
 </head>
 
@@ -2750,7 +2836,7 @@
             <h3 style="font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px">
               <i class="fa-solid fa-desktop" style="color:var(--accent)"></i> Imágenes del Hero Slider — Desktop
             </h3>
-            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px">Pegá la URL directa de cada imagen. Los cambios se guardan para todos los visitantes del catálogo.</p>
+            <p style="font-size:0.8rem;color:var(--muted);margin-bottom:16px">Subí la imagen de cada slide (ideal 1728 × 576 px) o pegá un link en "Desde URL": queda guardada en Cloudinary. Los cambios se ven en el catálogo cuando tocás «Guardar imágenes».</p>
 
             <div id="slider-slides-list"></div>
 
@@ -3388,6 +3474,10 @@
     let productosFiltrados = [];
     let editandoId = null;
     let imagenesModal = [];
+    // Imágenes subidas a Cloudinary desde el modal que todavía no se guardaron en ningún producto.
+    // Si se descartan (la "×" antes de guardar, o cerrar sin guardar) van a la papelera de Cloudinary.
+    // Las que ya estaban guardadas las manda la Cloud Function limpiarImagenesCatalogo al guardar.
+    let subidasModal = [];
     let pendienteEliminarId = null;
     let viewMode = 'grid';   // 'grid' | 'list'
 
@@ -3436,6 +3526,7 @@
       }, (error, result) => {
         if (error) { toast('Error al subir imagen.', 'error'); return; }
         if (result && result.event === 'success') {
+          subidasModal.push(result.info.public_id);
           if (imagenesModal.length < 3) {
             imagenesModal.push(result.info.public_id);
             renderImagenesModal();
@@ -4179,7 +4270,31 @@
       setTimeout(() => document.getElementById('f-nombre').focus(), 100);
     }
 
+    const DESCARTAR_IMG_URL = 'https://us-central1-backend-panel-vendedores.cloudfunctions.net/descartarImagenesCatalogo';
+
+    // Manda a la papelera de Cloudinary imágenes subidas que no quedaron en ningún producto. La función
+    // igual verifica que nadie las use antes de moverlas. No bloquea nada: si falla, la imagen
+    // queda huérfana en Cloudinary como pasaba antes.
+    async function descartarSubidas(ids) {
+      if (!ids.length || !auth.currentUser) return;
+      try {
+        const idToken = await auth.currentUser.getIdToken();
+        for (let i = 0; i < ids.length; i += 10) {
+          await fetch(DESCARTAR_IMG_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${idToken}` },
+            body: JSON.stringify({ ids: ids.slice(i, i + 10) }),
+            keepalive: true,
+          });
+        }
+      } catch (e) {
+        console.warn('No se pudieron descartar imágenes en Cloudinary:', e);
+      }
+    }
+
     function cerrarModal() {
+      // Cerrar sin guardar: lo que se subió en este modal no quedó en ningún producto
+      if (subidasModal.length) { descartarSubidas(subidasModal); subidasModal = []; }
       document.getElementById('modal-producto').classList.remove('open');
       const sn = document.getElementById('sugerencia-nombre');
       if (sn) sn.style.display = 'none';
@@ -4323,6 +4438,9 @@
         actualizarStats();
         poblarSelectCategoria();
         filtrarProductos();
+        // Lo que se subió en este modal pero no quedó en el producto (se sacó con la "×" antes de guardar)
+        descartarSubidas(subidasModal.filter(pid => !imagenesModal.includes(pid)));
+        subidasModal = [];
         cerrarModal();
         await escribirSnapshot();
       } catch (e) {
@@ -4873,24 +4991,132 @@
       renderSliderSlidesMobile();
     }
 
+    /* — Slides en Cloudinary —
+       Antes se pegaba el link de cada slide (estaban en ImageKit). Ahora cada slide se sube a Cloudinary,
+       o se copia desde su link actual con "Pasar a Cloudinary" (Cloudinary descarga la URL por su cuenta,
+       sin volver a subirla). Van a panel-catalogo/slider, FUERA de rosso/: la limpieza automática de
+       imágenes del catálogo (Cloud Function limpiarImagenesCatalogo) solo toca rosso/.
+       En Firestore sigue yendo una URL completa en el mismo array, así que catalogo.html no cambia. */
+    const SLIDES = {
+      desktop: { arr: () => sliderSlides, render: () => renderSliderSlides(), sync: () => syncSliderFromInputs(),
+                 quitar: 'sliderRemoveSlide', carpeta: 'panel-catalogo/slider' },
+      mobile:  { arr: () => sliderSlidesMobile, render: () => renderSliderSlidesMobile(), sync: () => syncSliderMobileFromInputs(),
+                 quitar: 'sliderRemoveSlideMobile', carpeta: 'panel-catalogo/slider-mobile' },
+    };
+    let slideOcupado = null;          // { lista, i } mientras se copia un slide: apaga los botones de esa lista
+    let slideDestino = null;          // { lista, i } del slide que va a recibir lo que se suba con el widget
+    const widgetsSlider = {};
+
+    function esUrlCloudinary(url) {
+      return typeof url === 'string' && url.startsWith(`https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/`);
+    }
+
+    // f_auto,q_auto: WebP/AVIF livianos según el navegador. c_limit,w_2400: el slider llega a 1500 px de
+    // ancho (3000 en pantallas retina), así que solo frena archivos enormes y nunca agranda.
+    function urlSlideCloudinary(publicId) {
+      return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,c_limit,w_2400/${publicId}`;
+    }
+
+    async function copiarLinkACloudinary(url, carpeta) {
+      const fd = new FormData();
+      fd.append('file', url);
+      fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      fd.append('folder', carpeta);
+      const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: 'POST', body: fd });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || !d.public_id) throw new Error((d.error && d.error.message) || ('HTTP ' + r.status));
+      return urlSlideCloudinary(d.public_id);
+    }
+
+    function filaSlideHtml(lista, url, i, total) {
+      const L = SLIDES[lista];
+      const ocupadaLista = !!slideOcupado && slideOcupado.lista === lista;
+      const estaFila = ocupadaLista && slideOcupado.i === i;
+      const dis = ocupadaLista ? 'disabled' : '';
+      const externa = !!url && !esUrlCloudinary(url);
+      let host = 'otro sitio';
+      if (externa) { try { host = new URL(url).hostname; } catch (e) { /* link mal formado */ } }
+
+      const estado = estaFila
+        ? '<i class="fa-solid fa-spinner fa-spin"></i> Copiando a Cloudinary…'
+        : !url ? '<span class="slide-badge is-vacio">Sin imagen</span>'
+        : externa ? `<span class="slide-badge is-ext"><i class="fa-solid fa-link"></i> Link externo</span>${escHtml(host)}`
+        : '<span class="slide-badge is-ok"><i class="fa-solid fa-cloud"></i> En Cloudinary</span>';
+
+      return `
+        <div class="slide-row" data-idx="${i}">
+          <span class="slide-num">Slide ${i + 1}</span>
+          <div class="slide-thumb">${url ? `<img src="${escHtml(url)}" alt="" loading="lazy" onerror="this.parentNode.classList.add('is-rota');this.remove()">` : '<i class="fa-regular fa-image"></i>'}</div>
+          <div class="slide-info">
+            <div class="slide-estado">${estado}</div>
+            <div class="slide-acciones">
+              ${externa ? `<button type="button" class="is-main" onclick="slideCopiar('${lista}', ${i})" ${dis}><i class="fa-solid fa-cloud-arrow-up"></i> Pasar a Cloudinary</button>` : ''}
+              <button type="button" onclick="slideSubir('${lista}', ${i})" ${dis}>${externa ? '' : '<i class="fa-solid fa-cloud-arrow-up"></i> '}${url ? 'Cambiar imagen' : 'Subir imagen'}</button>
+            </div>
+          </div>
+          <input type="hidden" value="${escHtml(url)}" />
+          ${total > 1
+            ? `<button type="button" class="slide-quitar" onclick="${L.quitar}(${i})" title="Eliminar slide" ${dis}><i class="fa-solid fa-xmark"></i></button>`
+            : ''}
+        </div>`;
+    }
+
+    async function slideCopiar(lista, i) {
+      const L = SLIDES[lista];
+      if (slideOcupado) return;
+      L.sync();
+      const original = L.arr()[i];
+      slideOcupado = { lista, i };
+      L.render();
+      try {
+        const nueva = await copiarLinkACloudinary(original, L.carpeta);
+        // Los botones de la lista quedan apagados mientras copia, pero por las dudas: solo se reemplaza
+        // si ese slide sigue teniendo el mismo link.
+        if (L.arr()[i] === original) L.arr()[i] = nueva;
+        toast('Slide copiado a Cloudinary. Tocá «Guardar imágenes» para que quede.', 'success');
+      } catch (e) {
+        console.error('No se pudo copiar a Cloudinary:', e);
+        toast('No se pudo copiar a Cloudinary (' + escHtml(e.message) + '). Sigue el link de antes.', 'error');
+      } finally {
+        slideOcupado = null;
+        L.render();
+      }
+    }
+
+    function slideSubir(lista, i) {
+      const L = SLIDES[lista];
+      if (slideOcupado) return;
+      L.sync();
+      slideDestino = { lista, i };
+      if (!widgetsSlider[lista]) {
+        widgetsSlider[lista] = cloudinary.createUploadWidget({
+          cloudName: CLOUDINARY_CLOUD_NAME,
+          uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+          folder: L.carpeta,
+          multiple: false,
+          maxFiles: 1,
+          resourceType: 'image',
+          sources: ['local', 'url', 'camera'],
+          language: 'es',
+          text: { es: { or: 'O', menu: { files: 'Mis archivos', url: 'Desde URL', camera: 'Cámara' } } }
+        }, (error, result) => {
+          if (error) { toast('Error al subir la imagen.', 'error'); return; }
+          if (result && result.event === 'success' && slideDestino && slideDestino.lista === lista) {
+            L.sync();
+            L.arr()[slideDestino.i] = urlSlideCloudinary(result.info.public_id);
+            L.render();
+            widgetsSlider[lista].close();
+            toast('Slide subido. Tocá «Guardar imágenes» para que quede.', 'success');
+          }
+        });
+      }
+      widgetsSlider[lista].open();
+    }
+
     function renderSliderSlides() {
       const list = document.getElementById('slider-slides-list');
       if (!list) return;
-      list.innerHTML = sliderSlides.map((url, i) => `
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px" data-idx="${i}">
-          <span style="font-size:0.72rem;color:var(--muted);font-weight:600;white-space:nowrap;min-width:50px">Slide ${i + 1}</span>
-          <input type="url" value="${escHtml(url)}" placeholder="https://..."
-            style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;outline:none;transition:border-color .2s;min-width:0"
-            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" />
-          ${sliderSlides.length > 1
-            ? `<button onclick="sliderRemoveSlide(${i})" title="Eliminar slide"
-                style="background:none;border:1px solid #fca5a5;border-radius:6px;color:#ef4444;width:28px;height:28px;font-size:0.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s"
-                onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
-                <i class="fa-solid fa-xmark"></i>
-              </button>`
-            : ''}
-        </div>
-      `).join('');
+      list.innerHTML = sliderSlides.map((url, i) => filaSlideHtml('desktop', url, i, sliderSlides.length)).join('');
     }
 
     function syncSliderFromInputs() {
@@ -4901,14 +5127,15 @@
     }
 
     function sliderAddSlide() {
+      if (slideOcupado) return;
       syncSliderFromInputs();
       sliderSlides.push('');
       renderSliderSlides();
-      const rows = document.querySelectorAll('#slider-slides-list [data-idx]');
-      if (rows.length) rows[rows.length - 1].querySelector('input')?.focus();
+      slideSubir('desktop', sliderSlides.length - 1);   // agregar = elegir la imagen del slide nuevo
     }
 
     function sliderRemoveSlide(i) {
+      if (slideOcupado) return;
       syncSliderFromInputs();
       sliderSlides.splice(i, 1);
       renderSliderSlides();
@@ -4921,7 +5148,7 @@
       const btn = document.getElementById('btn-slider-save');
 
       if (urls.length === 0) {
-        msg.textContent = 'Agregá al menos una URL de imagen.';
+        msg.textContent = 'Agregá al menos una imagen.';
         msg.style.display = 'block';
         msg.style.background = '#fef2f2';
         msg.style.color = '#dc2626';
@@ -4961,21 +5188,7 @@
     function renderSliderSlidesMobile() {
       const list = document.getElementById('slider-slides-list-mobile');
       if (!list) return;
-      list.innerHTML = sliderSlidesMobile.map((url, i) => `
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px" data-idx="${i}">
-          <span style="font-size:0.72rem;color:var(--muted);font-weight:600;white-space:nowrap;min-width:50px">Slide ${i + 1}</span>
-          <input type="url" value="${escHtml(url)}" placeholder="https://..."
-            style="flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;outline:none;transition:border-color .2s;min-width:0"
-            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" />
-          ${sliderSlidesMobile.length > 1
-            ? `<button onclick="sliderRemoveSlideMobile(${i})" title="Eliminar slide"
-                style="background:none;border:1px solid #fca5a5;border-radius:6px;color:#ef4444;width:28px;height:28px;font-size:0.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s"
-                onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">
-                <i class="fa-solid fa-xmark"></i>
-              </button>`
-            : ''}
-        </div>
-      `).join('');
+      list.innerHTML = sliderSlidesMobile.map((url, i) => filaSlideHtml('mobile', url, i, sliderSlidesMobile.length)).join('');
     }
 
     function syncSliderMobileFromInputs() {
@@ -4986,14 +5199,15 @@
     }
 
     function sliderAddSlideMobile() {
+      if (slideOcupado) return;
       syncSliderMobileFromInputs();
       sliderSlidesMobile.push('');
       renderSliderSlidesMobile();
-      const rows = document.querySelectorAll('#slider-slides-list-mobile [data-idx]');
-      if (rows.length) rows[rows.length - 1].querySelector('input')?.focus();
+      slideSubir('mobile', sliderSlidesMobile.length - 1);
     }
 
     function sliderRemoveSlideMobile(i) {
+      if (slideOcupado) return;
       syncSliderMobileFromInputs();
       sliderSlidesMobile.splice(i, 1);
       renderSliderSlidesMobile();
@@ -5006,7 +5220,7 @@
       const btn = document.getElementById('btn-slider-save-mobile');
 
       if (urls.length === 0) {
-        msg.textContent = 'Agregá al menos una URL de imagen.';
+        msg.textContent = 'Agregá al menos una imagen.';
         msg.style.display = 'block';
         msg.style.background = '#fef2f2';
         msg.style.color = '#dc2626';
