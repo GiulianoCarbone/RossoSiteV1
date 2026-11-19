@@ -15,13 +15,20 @@ Para volver a generar una imagen (1200×630) con Edge en modo headless:
 
 Después hay que pasarla a JPG (calidad ~86, menos de 300 KB) y guardarla en `assets/og/`.
 Si se abre o se cierra una sucursal, hay que actualizar el número y los nombres en `og-sucursales.html`.
+**En uso: armado B "apto miniatura" (`og-sucursales.html#b`)**, salida `assets/og/og-sucursales-v2.jpg` (logo grande,
+sin píldoras de ciudades; ver la explicación en Catálogo). La `og-sucursales.jpg` es la versión vieja con píldoras.
 
 ## Catálogo
 
 `og-catalogo.html` usa `fondo-catalogo.jpg` (showroom generado con Magnific, Nano Banana 2.1) con un velo
 más liviano que sucursales, porque el fondo ya es muy claro. Las píldoras son las categorías reales del
 catálogo (colección `categorias` de Firestore): si se agrega o se renombra una categoría, actualizarlas acá.
-Mensajes alternativos con #1, #2 o #3. Salida: `assets/og/og-catalogo.jpg`.
+Mensajes alternativos con #1, #2 o #3.
+Armado B "apto miniatura" con `-b` (ej. `#1-b`): logo y título grandes, sin píldoras. Es para cuando el link lo
+manda el agente IA de WhatsApp Business: ahí la vista previa sale como un cuadradito recortado del centro y muy chico.
+**El que está en uso es `#1-b`**, salida `assets/og/og-catalogo-v2.jpg` (la `og-catalogo.jpg` es la versión vieja con
+píldoras). Si se vuelve a cambiar, usar otro nombre (v3…) porque WhatsApp guarda la imagen en caché por URL.
+Ojo: en el comando de Edge usar la ruta de Windows (`file:///d:/WEB/...`); con `$PWD` de Git Bash no encuentra el archivo.
 
 ## Inicio
 

@@ -35,6 +35,19 @@
     box-shadow: 0 2px 8px rgba(39,46,104,.08);
   }
   .chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #ec6434; flex: none; }
+
+  /* Armado B, "apto miniatura": el agente de WhatsApp Business muestra la vista previa como un
+     cuadradito recortado del centro (630×630 de 1200×630) y muy chico. Logo y título grandes en el
+     centro para que se reconozca aunque salga borroso; sin píldoras (en la miniatura son ruido). */
+  .og.b .logo { height: 170px; margin-bottom: 26px; }
+  .og.b .title { font-size: 80px; letter-spacing: -2.8px; }
+  .og.b .sub { margin-top: 18px; font-size: 30px; }
+  .og.b .rule, .og.b .chips { display: none; }
+  .og.b::before {
+    background:
+      radial-gradient(ellipse 50% 70% at 50% 50%, rgba(255,255,255,.92) 0%, rgba(255,255,255,.7) 60%, rgba(255,255,255,.18) 100%),
+      linear-gradient(180deg, rgba(255,255,255,0) 65%, rgba(255,255,255,.45) 100%);
+  }
 </style>
 </head>
 <body>
@@ -58,14 +71,16 @@
   </div>
 </div>
 <script>
-  // Variantes de mensaje para comparar: abrir con #1, #2 o #3
+  // Variantes de mensaje para comparar: abrir con #1, #2 o #3; armado apto miniatura con -b (ej. #1-b)
   const variantes = {
     "1": ['Explorá nuestro<br><em>catálogo online</em>', 'Armá tu lista y cotizá por WhatsApp'],
     "2": ['Cotizá tu obra<br><em>desde el celular</em>', 'Armá tu lista y consultá por WhatsApp'],
     "3": ['Todo para tu obra,<br><em>en un solo lugar</em>', 'Armá tu lista y cotizá por WhatsApp']
   };
-  const v = variantes[location.hash.slice(1)];
+  const [msg, armado] = location.hash.slice(1).split('-');
+  const v = variantes[msg];
   if (v) { document.getElementById('title').innerHTML = v[0]; document.getElementById('sub').innerHTML = v[1]; }
+  if (armado === 'b') document.querySelector('.og').classList.add('b');
 </script>
 </body>
 </html>

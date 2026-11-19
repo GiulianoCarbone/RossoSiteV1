@@ -35,6 +35,14 @@
     box-shadow: 0 2px 8px rgba(39,46,104,.08);
   }
   .chip svg { width: 14px; height: 14px; flex: none; fill: #ec6434; }
+
+  /* Armado B, "apto miniatura" (igual que el catálogo): el agente de WhatsApp Business muestra un cuadradito
+     recortado del centro (630×630). Logo y título grandes, sin píldoras. El título a 74px entra justo en
+     esos 630px; más grande se corta "Encontrá tu Rosso" en la miniatura. */
+  .og.b .logo { height: 170px; margin-bottom: 26px; }
+  .og.b .title { font-size: 74px; letter-spacing: -2.6px; }
+  .og.b .sub { margin-top: 18px; font-size: 32px; }
+  .og.b .rule, .og.b .chips { display: none; }
 </style>
 </head>
 <body>
@@ -59,14 +67,16 @@
 </div>
 <script>
   // Mensaje elegido: el del HTML de arriba ("Encontrá tu Rosso más cercano").
-  // Alternativas para comparar: abrir con #1, #2 o #3
+  // Alternativas para comparar: abrir con #1, #2 o #3; armado apto miniatura con #b (o #1-b, etc.)
   const variantes = {
     "1": 'Siempre hay un Rosso<br><em>cerca tuyo</em>',
     "2": 'Estamos <em>cerca</em><br>de tu obra',
     "3": 'Donde estés,<br><em>hay un Rosso cerca</em>'
   };
-  const v = variantes[location.hash.slice(1)];
+  const partes = location.hash.slice(1).split('-');
+  const v = variantes[partes[0]];
   if (v) document.getElementById('title').innerHTML = v;
+  if (partes.includes('b')) document.querySelector('.og').classList.add('b');
 </script>
 </body>
 </html>
