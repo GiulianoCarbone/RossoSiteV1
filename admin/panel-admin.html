@@ -2281,6 +2281,23 @@
             border-color: var(--brand) !important;
         }
 
+        .contest-rank-row select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-sm);
+            font-size: 0.88rem;
+            color: var(--ink);
+            background: #ffffff;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .contest-rank-row select:focus {
+            outline: none;
+            border-color: var(--brand);
+        }
+
         /* Winner Cards */
         .contest-winner-grid {
             display: grid;
@@ -4248,7 +4265,7 @@
                                 </div>
                                 <div class="input-group" style="margin-bottom: 10px;">
                                     <label for="winner-a-branch" style="font-size: 0.82rem;">Sucursal</label>
-                                    <input type="text" id="winner-a-branch" placeholder="Ej: Concepción">
+                                    <select id="winner-a-branch"></select>
                                 </div>
                                 <div class="input-group" style="margin-bottom: 0;">
                                     <label for="winner-a-score" class="winner-score-label" style="font-size: 0.82rem;">Unidades</label>
@@ -4270,7 +4287,7 @@
                                 </div>
                                 <div class="input-group" style="margin-bottom: 10px;">
                                     <label for="winner-b-branch" style="font-size: 0.82rem;">Sucursal</label>
-                                    <input type="text" id="winner-b-branch" placeholder="Ej: Famaillá">
+                                    <select id="winner-b-branch"></select>
                                 </div>
                                 <div class="input-group" style="margin-bottom: 0;">
                                     <label for="winner-b-score" class="winner-score-label" style="font-size: 0.82rem;">Unidades</label>
@@ -8684,6 +8701,32 @@
             loadContestConfig(true);
         }
 
+        // --- Sucursales del desplegable (ranking y podio) ---
+        // Si abre una sucursal nueva, se agrega acá y aparece en todos los desplegables.
+        const CONTEST_SUCURSALES = [
+            'Aguilares', 'Casa Central', 'Concepción', 'E-commerce', 'Famaillá', 'Manantial',
+            'Mayorista Manantial', 'Mayorista Salta', 'Metán', 'Monteros', 'Salta', 'Tafí del Valle'
+        ];
+
+        // "Metan", "famailla", "Ecommerce" -> misma clave que la opción de la lista
+        function contestBranchKey(s) {
+            return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+                .toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        // Lo que se cargó a mano antes se acomoda a la opción equivalente. Si no
+        // figura en la lista, queda como opción extra para no perderlo al guardar.
+        function contestBranchOptions(value) {
+            const raw = String(value || '').trim();
+            const match = CONTEST_SUCURSALES.find(s => contestBranchKey(s) === contestBranchKey(raw));
+            const selected = match || raw;
+            let html = '<option value="">Elegir…</option>';
+            if (raw && !match) html += `<option value="${escapeHtml(raw)}" selected>${escapeHtml(raw)}</option>`;
+            html += CONTEST_SUCURSALES.map(s =>
+                `<option value="${escapeHtml(s)}"${s === selected ? ' selected' : ''}>${escapeHtml(s)}</option>`).join('');
+            return html;
+        }
+
         // --- Filas del ranking con medallas ---
         window.addRankingRow = function(category, data = null) {
             const container = document.getElementById('ranking-' + category.toLowerCase() + '-container');
@@ -8701,7 +8744,7 @@
             row.innerHTML = `
                 <div class="rank-badge-wrap">${medalBadge}</div>
                 <input type="text" class="rank-name" placeholder="Nombre del Vendedor" value="${data ? (data.name || '') : ''}">
-                <input type="text" class="rank-branch" placeholder="Sucursal" value="${data ? (data.branch || '') : ''}">
+                <select class="rank-branch" aria-label="Sucursal">${contestBranchOptions(data ? data.branch : '')}</select>
                 <input type="number" step="any" min="0" class="rank-units" placeholder="${contestScoreFormat(contestScoreUnit().unit, contestScoreUnit().custom).label}" value="${data ? (data.units || 0) : 0}">
                 <div style="text-align: center;">
                     <button type="button" class="action-btn btn-delete" onclick="this.closest('.contest-rank-row').remove(); window.updateRankingIndices('${category}');" title="Eliminar fila" style="width: 32px; height: 32px; font-size: 0.8rem; margin: 0 auto;">
@@ -8794,7 +8837,13 @@
                 ['a', 'b', 'c'].forEach(c => {
                     const up = c.toUpperCase();
                     setVal('winner-' + c + '-name', data['winner' + up + 'Name']);
-                    setVal('winner-' + c + '-branch', data['winner' + up + 'Branch']);
+                    const branchEl = document.getElementById('winner-' + c + '-branch');
+                    // A y B eligen sucursal de la lista; en C el campo es un "Detalle" libre
+                    if (branchEl && branchEl.tagName === 'SELECT') {
+                        branchEl.innerHTML = contestBranchOptions(data['winner' + up + 'Branch']);
+                    } else {
+                        setVal('winner-' + c + '-branch', data['winner' + up + 'Branch']);
+                    }
                     setVal('winner-' + c + '-score', data['winner' + up + 'Score']);
                 });
 
